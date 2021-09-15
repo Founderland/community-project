@@ -5,3 +5,17 @@
 body {
   margin: 0;
 }
+
+.text-grotesk {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.text-mono {
+  font-family: 'Space Mono', monospace;
+
+}
+
+.text-hanson {
+  font-family: 'Hanson';
+}
+
