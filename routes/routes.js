@@ -6,6 +6,7 @@ const setupRoutes = (app) => {
     app.use("/api/form/founders", foundersRouter)
     //INVESTORS
     app.use("/api/form/investors", investorsRouter)
+
 }
 
 module.exports = {
