@@ -6,9 +6,9 @@ const ApplicantsDispatcher = () => {
   return (
     <>
       <div className="h-full w-full flex flex-col items-evenly  ">
-        <div className="flex flex-col  justify-start items-center h-full md:h-1/3 ">
+        <div className="flex flex-col  justify-start items-center h-1/3 md:h-1/3 ">
           <FullLogo className="hidden md:flex w-screen h-auto" />
-          <TwoLinesLogo className=" sm:flex md:hidden h-auto" />
+          <TwoLinesLogo className=" sm:flex md:hidden h-auto w-screen" />
           <h3 className="text-grotesk px-10 pb-10 text-xs md:text-base">
             WE’RE HERE TO BUILD A NEW INCLUSIVE, INTERSECTIONAL STANDARD FOR
             ENTREPRENEURS
@@ -37,7 +37,7 @@ const ApplicantsDispatcher = () => {
             to="/form/newsletter">
             NEWSLETTER <br className="hidden md:flex" /> SIGN-UP
           </Link>
-          <p className=" text-center md:flex  text-grotesk px-5 my-5 ">
+          <p className=" text-center md:flex  text-grotesk px-5 my-4 ">
             Subscribe to our newsletter and stay updated
           </p>
         </div>
