@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 function App() {
   return (
     <Router>
-      <div className="flex flex-col justify-center ">
+      <div className="flex  flex-col justify-center ">
         <Navbar />
         <div className="flex h-screen justify-center items-center w-full ">
           <Route
