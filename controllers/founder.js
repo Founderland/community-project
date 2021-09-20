@@ -1,14 +1,14 @@
-const FoundersApplicant = require('../models/FoundersApplicant')
+const FounderApplicant = require('../models/FounderApplicant')
 
 //CURRENT STRUCTURE
 //     question: {type: String, required: true},
 //     answer: {type: String, required: true},
 //     userId: {type: Number, required: true}, 
 
-//FIND ALL FOUNDERS APPLICANTS
-const findAllFoundersApplicants = async (req, res) => {
+//FIND ALL FOUNder APPLICANTS
+const findAllFounderApplicants = async (req, res) => {
     try{
-        const result = await FoundersApplicant.find({})
+        const result = await FounderApplicant.find({})
         res.send(result)
     }catch(err){
         console.log(err)
@@ -17,11 +17,11 @@ const findAllFoundersApplicants = async (req, res) => {
 }
 
 //ADD NEW FOUNDER APPLICANT
-const addFoundersApplicant = async (req, res) => {
+const addFounderApplicant = async (req, res) => {
     const {question,answer,userId} = req.body
     try {
         if(!answer) return await Promise.reject("ANSWER_MISSING")
-        const newApplicant = await FoundersApplicant.create({
+        const newApplicant = await FounderApplicant.create({
             question,
             answer,
             userId
@@ -38,6 +38,6 @@ const addFoundersApplicant = async (req, res) => {
 }
 
 module.exports = {
-    findAllFoundersApplicants,
-    addFoundersApplicant
+    findAllFounderApplicants,
+    addFounderApplicant
 }
