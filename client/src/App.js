@@ -3,6 +3,8 @@ import ApplicantsDispatcher from "./components/ApplicantsDispatcher";
 import Form from "./components/Form";
 import Navbar from "./components/Navbar";
 import Thankyou from "./components/Thankyou";
+import Applicants from './components/Applicants'
+import Admin from './components/Admin'
 
 function App() {
   return (
