@@ -1,8 +1,11 @@
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
 require('dotenv').config()
-const { setupRoutes } = require('./routes/routes.js')
+const express = require('express')
+const mongoose = require('mongoose')
+const passport = require('passport');
+const app = express()
+const setupRoutes = require('./routes/routes.js')
+
+app.use(passport.initialize());
 
 const port = process.env.PORT || 3000
 

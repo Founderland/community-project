@@ -1,14 +1,14 @@
-const foundersRouter = require('./founders.routes')
-const investorsRouter = require('./investors.routes')
+const founderRouter = require('./founder.routes')
+const investorRouter = require('./investor.routes')
+const authRouter = require('./auth.routes')
 
 const setupRoutes = (app) => {
     //FOUNDERS
-    app.use("/api/form/founders", foundersRouter)
+    app.use("/api/founder", founderRouter)
     //INVESTORS
-    app.use("/api/form/investors", investorsRouter)
-
+    app.use("/api/investor", investorRouter)
+    //Auth
+    app.use("/api/auth", authRouter)    
 }
 
-module.exports = {
-    setupRoutes,
-}
+module.exports = setupRoutes

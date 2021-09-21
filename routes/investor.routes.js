@@ -1,10 +1,10 @@
-const router = require('express').Router()
+const investorRouter = require('express').Router()
 const investorController = require('../controllers/investor')
 
 //GET ALL FORM RESPONSE
-router.get('/', investorController.findAllInvestorApplicants)
+investorRouter.get('/', investorController.findAllInvestorApplicants)
 
 //ADD A NEW FORM RESPONSE
-router.post('/', investorController.addInvestorApplicant)
+investorRouter.post('/', investorController.addInvestorApplicant)
 
-module.exports = router
+module.exports = investorRouter

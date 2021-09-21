@@ -1,10 +1,10 @@
-const router = require('express').Router()
-const founderController = require('../controller/founder')
+const founderRouter = require('express').Router()
+const founderController = require('../controllers/founder')
 
 //GET ALL FORM RESPONSE
-router.get('/', founderController.findAllFounderApplicants)
+founderRouter.get('/', founderController.findAllFounderApplicants)
 
 //ADD A NEW FORM RESPONSE
-router.post('/', founderController.addFounderApplicant)
+founderRouter.post('/', founderController.addFounderApplicant)
 
-module.exports = router
+module.exports = founderRouter
