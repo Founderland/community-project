@@ -7,16 +7,19 @@ const setupRoutes = require('./routes/routes.js')
 
 app.use(passport.initialize());
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 
-app.use(express.json())
+app.use(express.json());
 
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.1gd27.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`)
-        .then(() => console.log('Connected to MONGO ATLAS'))
-        .catch((err) => console.log(err))
- 
-setupRoutes(app)
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.1gd27.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+  )
+  .then(() => console.log("Connected to MONGO ATLAS"))
+  .catch((err) => console.log(err));
+
+setupRoutes(app);
 
 app.listen(port, () => {
-    console.log('Server started')
-})
+  console.log(`Server started ${port}`);
+});

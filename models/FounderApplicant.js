@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const founderResponseSchema = new mongoose.Schema({
-    question: {type: String, required: true},
-    answer: {type: String, required: true},
-    userId: {type: Number, required: true}, 
-})
+const foundersResponseSchema = new mongoose.Schema({
+  question_id: { type: String, required: true },
+  answer: { type: String, required: true },
+  userId: { type: Number, required: true },
+});
 
-const Founder = mongoose.model('Founder',founderResponseSchema)
+const Founder = mongoose.model("Founder", foundersResponseSchema);
 
-module.exports = Founder
+module.exports = Founder;
