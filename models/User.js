@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const sha256 = require('sha256')
 
 const userSchema = new mongoose.Schema(
     {
@@ -14,10 +15,10 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        password: {
+        hashedpassword: {
             type: String
         },
-        mainColor: {
+        role: {
             type: String, 
             enum: ['sadmin', 'admin', 'user'], 
             required: true, 
@@ -30,6 +31,12 @@ const userSchema = new mongoose.Schema(
     },
     { strict: false }
 )
+/**
+ * @param {*} password
+ */
+ userSchema.methods.comparePassword = function comparePassword(password) {
+    return this.hashedPassword === sha256(password);
+  };
 
 const User = mongoose.model('User',userSchema)
 

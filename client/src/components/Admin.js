@@ -4,7 +4,6 @@ import AdminMenu from './AdminMenu'
 
 const Admin = () => {
     const [logged, setLogged] = useState(false)
-
     return (
         <>
         {logged ? <AdminMenu /> : <AdminLogin setLogged={setLogged}/>}

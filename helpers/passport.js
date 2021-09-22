@@ -1,57 +1,28 @@
-const bcrypt = require("bcryptjs")
-const User = require("../models/User")
-const passport = require("passport")
-const LocalStrategy = require("passport-local").Strategy
+const { Strategy, ExtractJwt } = require('passport-jwt')
+const passport = require('passport')
+const User = require('../models/User')
+const underscoreId = '_id'
 
-passport.serializeUser((user, done) => {
-    done(null, user.id)
-})
-
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(err, user)
+const applyPassportStrategy = passport => {
+  const options = {};
+  options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+  options.secretOrKey = process.env.PRIVATE_KEY;
+  passport.use(
+    new Strategy(options, (payload, done) => {
+      User.findOne({ email: payload.email }, (err, user) => {
+        if (err) {
+          return done(err, false);
+        }
+        if (user) {
+          return done(null, {
+            email: user.email,
+            _id: user[underscoreId],
+          });
+        }
+        return done(null, false);
+      });
     })
-})
+  );
+};
 
-// Local Strategy
-passport.use(
-    new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-        User.findOne({ email: email })
-            .then(user => {
-                bcrypt.compare(password, user.password, (err, isMatch) => {
-                    if (err) throw err
-                    if (isMatch) {
-                        return done(null, user)
-                    } else {
-                        return done(null, false, { message: "Wrong password" })
-                    }
-                })
-            })
-            .catch(err => {
-                return done(null, false, { message: err })
-            })
-    })
-)
-
-module.exports = passport;
-
-// // Create new User
-// if (!user) {
-//     const newUser = new User({ email, password });
-//     // Hash password before saving in database
-//     bcrypt.genSalt(10, (err, salt) => {
-//         bcrypt.hash(newUser.password, salt, (err, hash) => {
-//             if (err) throw err;
-//             newUser.password = hash;
-//             newUser
-//                 .save()
-//                 .then(user => {
-//                     return done(null, user);
-//                 })
-//                 .catch(err => {
-//                     return done(null, false, { message: err });
-//                 });
-//         });
-//     });
-//     // Return other user
-// } else {
+module.exports = {applyPassportStrategy}

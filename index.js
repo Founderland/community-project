@@ -1,15 +1,16 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const passport = require('passport');
+const passport = require('passport')
+const {applyPassportStrategy} = require('./helpers/passport')
 const app = express()
 const setupRoutes = require('./routes/routes.js')
-
-app.use(passport.initialize());
+ 
 
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(express.json())
+applyPassportStrategy(passport)
 
 mongoose
   .connect(

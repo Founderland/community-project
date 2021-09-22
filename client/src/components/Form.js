@@ -1,5 +1,4 @@
 import StepWizard from "react-step-wizard";
-import axios from "axios";
 
 const dumyData = [
   {
