@@ -1,28 +1,32 @@
-const { Strategy, ExtractJwt } = require('passport-jwt')
 const passport = require('passport')
-const User = require('../models/User')
-const underscoreId = '_id'
+const { authenticateUser } = require('../controllers/auth')
+const localStrategy = require('passport-local').Strategy
+const JWTstrategy = require('passport-jwt').Strategy
+const ExtractJWT = require('passport-jwt').ExtractJwt
 
-const applyPassportStrategy = passport => {
-  const options = {};
-  options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  options.secretOrKey = process.env.PRIVATE_KEY;
-  passport.use(
-    new Strategy(options, (payload, done) => {
-      User.findOne({ email: payload.email }, (err, user) => {
-        if (err) {
-          return done(err, false);
-        }
-        if (user) {
-          return done(null, {
-            email: user.email,
-            _id: user[underscoreId],
-          });
-        }
-        return done(null, false);
-      });
-    })
-  );
-};
+passport.use(
+  'login',
+  new localStrategy(
+    {
+      email: 'email',
+      password: 'password'
+    },
+    authenticateUser
+  )
+)
 
-module.exports = {applyPassportStrategy}
+passport.use(
+  new JWTstrategy(
+    {
+      secretOrKey: process.env.PRIVATE_KEY,
+      jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
+    },
+    async (token, done) => {
+      try {
+        return done(null, token.user);
+      } catch (error) {
+        done(error)
+      }
+    }
+  )
+)

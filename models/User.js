@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const sha256 = require('sha256')
+const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema(
     {
@@ -31,12 +31,12 @@ const userSchema = new mongoose.Schema(
     },
     { strict: false }
 )
-/**
- * @param {*} password
- */
- userSchema.methods.comparePassword = function comparePassword(password) {
-    return this.hashedPassword === sha256(password);
-  };
+
+userSchema.methods.isValidPassword = async (password) => {
+    const user = this
+    const compare = await bcrypt.compare(password, user.password)
+    return compare
+}
 
 const User = mongoose.model('User',userSchema)
 

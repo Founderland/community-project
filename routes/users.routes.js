@@ -6,6 +6,6 @@ const { registerValidation } = require('../helpers/utils')
 
 UserRouter.get('/users', passport.authenticate('jwt', { session: false }), userController.findAll)
 
-UserRouter.post('/register', registerValidation, userController.addNew)
+// UserRouter.post('/register', registerValidation, userController.addNew)
 
 module.exports = UserRouter
