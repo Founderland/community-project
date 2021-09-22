@@ -129,9 +129,8 @@ const dumyData = [
 const Question = ({ _id, question, type, category, answers }) => {
   console.log(answers);
   return (
-    <div>
-      <label>{question}</label>
-      <br />
+    <div className="p-2 ">
+      <label for="">{question}</label>
       <Answers type={type} answers={answers} />
     </div>
   );
@@ -139,21 +138,23 @@ const Question = ({ _id, question, type, category, answers }) => {
 
 const Answers = ({ type, answers }) => {
   return (
-    <div>
+    <div className="">
       {type === "open" ? (
         <input
           type="text"
-          className=""
+          className="p-2 my-2"
           name="firstname"
-          placeholder="First Name"
+          placeholder="Your answer"
+          id={answers[0]._id}
           // onChange={update}
         />
       ) : (
         <>
           {answers.map((answer) => (
-            <>
+            <div className="flex m-2 ">
               <input
                 type="radio"
+                className="m-2"
                 id={answer._id}
                 name="fav_language"
                 value={answer.answer}
@@ -161,20 +162,19 @@ const Answers = ({ type, answers }) => {
               {answer.answer !== "open" && (
                 <>
                   <label for="html"> {answer.answer}</label>
-                  <br />
                 </>
               )}
               {answer.answer === "open" && (
                 <input
                   type="text"
                   id={answer._id}
-                  className="form-control"
+                  className="p-1"
                   name={answer.answer}
                   placeholder="open"
                   // onChange={update}
                 />
               )}
-            </>
+            </div>
           ))}
         </>
       )}
@@ -189,10 +189,14 @@ const First = (props) => {
 
   const { questions } = props;
   return (
-    <div className="h-full w-full flex justify-center flex-col">
-      <h3 className="text-center ">Welcome to {questions[0].category}</h3>
-      <h2>Current Step {props.currentStep}</h2>
-      <div className="bg-gray-200 p-5">
+    <div className="h-screen w-full flex justify-center flex-col">
+      <h3 className="text-center hidden md:flex ">
+        Welcome to {questions[0].category}
+      </h3>
+      <h2 className="text-center hidden md:flex ">
+        Current Step {props.currentStep}
+      </h2>
+      <div className="bg-gray-200 p-10 h-full">
         {questions.map((question, i) => (
           <Question key={i} {...question} />
         ))}
@@ -216,21 +220,27 @@ const Second = (props) => {
 
   return (
     <div>
-      <div className="h-full w-full flex justify-center flex-col">
-        <h3 className="text-center ">Welcome to {questions[0].category}</h3>
-        <h2>Current Step {props.currentStep}</h2>
-        <div className="bg-gray-200 p-5">
+      <div className="h-screen w-full flex justify-center flex-col">
+        <h3 className="text-center hidden md:flex ">
+          Welcome to {questions[0].category}
+        </h3>
+        <h2 className="text-center hidden md:flex ">
+          Current Step {props.currentStep}
+        </h2>
+        <div className="bg-gray-200 p-10 h-screen">
           {questions.map((question, i) => (
             <Question key={i} {...question} />
           ))}
         </div>
         {/* <Stats step={1} {...props} /> */}
-        <button className="p-5 bg-fblue" onClick={props.previousStep}>
-          Prev
-        </button>
-        <button className="p-5 bg-fblue" onClick={props.nextStep}>
-          Next
-        </button>
+        <div className="flex justify center">
+          <button className="p-5 bg-fblue w-1/2" onClick={props.previousStep}>
+            Prev
+          </button>
+          <button className="p-5 bg-fblue w-1/2" onClick={props.nextStep}>
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -265,11 +275,20 @@ const Form = ({ match }) => {
   );
 
   return (
-    <StepWizard isHashEnabled>
-      <First hashKey={"FirstStep"} questions={aboutYouQuestions} />
-      <Second hashKey={"SecondStep"} questions={aboutYourBusiness} />
-      <Third questions={aboutYourBusiness} />
-    </StepWizard>
+    <div className=" m-0 flex flex-row-reverse w-screen items-end">
+      <StepWizard isHashEnabled className="lg:w-2/3">
+        <First hashKey={"FirstStep"} questions={aboutYouQuestions} />
+        <Second hashKey={"SecondStep"} questions={aboutYourBusiness} />
+        <Third questions={aboutYourBusiness} />
+      </StepWizard>
+      <div className=" hidden lg:flex justify-center items-center bg-fblue w-1/3 h-screen">
+        <ul>
+          <li>About you</li>
+          <li> About your business</li>
+          <li>Tell us more</li>
+        </ul>
+      </div>
+    </div>
   );
 
   // <div>THIS IS THE {memberType} FORM</div>;
