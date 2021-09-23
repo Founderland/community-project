@@ -299,10 +299,10 @@ const Form = ({ match }) => {
 
   questions && console.log(questions);
 
-  const aboutYouQuestions = questions.filter(
+  const aboutYouQuestions = questions?.filter(
     (item) => item.category === "About You"
   );
-  const aboutYourBusiness = questions.filter(
+  const aboutYourBusiness = questions?.filter(
     (item) => item.category === "About Your Business"
   );
 

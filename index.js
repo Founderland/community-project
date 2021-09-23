@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
-const { setupRoutes } = require("./routes/routes.js");
+const setupRoutes = require("./routes/routes.js");
 
 const path = require("path");
 app.use(express.static(path.join(__dirname, "build")));
