@@ -2,7 +2,7 @@ const AdminLogin = ({setLogged}) => {
     return (
        
         <div className="flex h-screen justify-center items-center w-full ">
-<div className="flex bg-white shadow-lg lg:w-1/2">
+<div className="flex bg-white shadow-lg lg:w-2/3">
             <div className="hidden lg:block lg:w-1/2 bg-fblue">
             </div>
             <div className="w-full p-8 lg:w-1/2">
