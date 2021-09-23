@@ -5,7 +5,7 @@ import { ReactComponent as TwoLinesLogo } from "../assets/2_lines_logo.svg";
 const ApplicantsDispatcher = () => {
   return (
     <>
-      <div className="h-full w-full flex flex-col items-evenly  ">
+      <div className="h-screen w-full flex flex-col items-evenly  ">
         <div className="flex flex-col  justify-start items-center h-1/3 md:h-1/3 ">
           <FullLogo className="hidden md:flex w-screen h-auto" />
           <TwoLinesLogo className=" sm:flex md:hidden h-auto w-screen" />
