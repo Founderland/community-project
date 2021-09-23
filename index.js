@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const { setupRoutes } = require("./routes/routes.js");
 
+const path = require("path");
+app.use(express.static(path.join(__dirname, "build")));
+
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -16,6 +19,10 @@ mongoose
   .catch((err) => console.log(err));
 
 setupRoutes(app);
+
+app.use((req, res) =>
+  res.sendFile(path.join(__dirname, "build", "index.html"))
+);
 
 app.listen(port, () => {
   console.log(`Server started ${port}`);
