@@ -15,8 +15,9 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    hashedpassword: {
+    hashedPassword: {
       type: String,
+      required: true,
     },
     role: {
       type: String,
@@ -28,8 +29,8 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-  },
-  { strict: false }
+  }
+  // { strict: false }
 );
 
 // userSchema.methods.isValidPassword = async (password) => {

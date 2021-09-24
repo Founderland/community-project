@@ -1,51 +1,56 @@
-const { validationResult } = require('express-validator')
-const User = require('../models/User')
-const { generateHashedPassword, calculateToken } = require('../helpers/user')
+const { validationResult } = require("express-validator");
+const User = require("../models/User");
+const { generateHashedPassword, calculateToken } = require("../helpers/user");
 
 const findAll = async (req, res) => {
-    User.find({} ,(err, result) => {
-        res.status(200).json({
-          data: result,
-        })
-      })
-  }
+  const users = await User.find({});
+  if (users)
+    res.status(200).json({
+      data: users,
+    });
+};
 
 const addUser = async (req, res) => {
-    const errorsAfterValidation = validationResult(req)
+  const errorsAfterValidation = validationResult(req);
+  const { email, password, role } = req.body;
+  try {
     if (!errorsAfterValidation.isEmpty()) {
+      await Promise.reject("VALIDATION_FAILED");
+    }
+
+    const user = await User.findOne({ email });
+    if (user) await Promise.reject("USER_EXISTS_ALREADY");
+
+    const data = {
+      email,
+      hashedPassword: generateHashedPassword(password),
+      role,
+    };
+    const newUser = await User.create(data);
+
+    res.status(200).json(newUser);
+  } catch (e) {
+    console.log(e);
+    if (e === "USER_EXISTS_ALREADY") {
+      res.status(403).json({
+        code: 403,
+        errors: "USER_EXISTS_ALREADY",
+      });
+    } else if (e === "VALIDATION_FAILED") {
       res.status(400).json({
         code: 400,
         errors: errorsAfterValidation.mapped(),
-      })
+      });
     } else {
-      try {
-        const { email, password } = req.body
-        const user = await User.findOne({ email })
-        if (!user) {
-          const data = await {
-                email,
-                hashedPassword: generateHashedPassword(password),
-              }
-          const newUser = await User.create(data)
-          delete newUser.hashedPassword;
-          res.status(200).json(newUser);
-        } else {
-          res.status(403).json({
-            code: 403,
-            errors: 'USER_EXISTS_ALREADY',
-          })
-        }
-      } catch (e) {
-        res.status(500).json({
-          code: 500,
-          errors: 'SOME_THING_WENT_WRONG',
-        })
-      }
+      res.status(500).json({
+        code: 500,
+        errors: "SOMETHING_WENT_WRONG",
+      });
     }
   }
-
+};
 
 module.exports = {
-    findAll,
-    addUser,
-}
+  findAll,
+  addUser,
+};

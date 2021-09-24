@@ -8,8 +8,7 @@ const authenticateUser = async (req, email, password, done) => {
     if (!user) {
       return done(null, false, { message: "User not found" });
     }
-
-    if (!bcrypt.compareSync(password, user.password)) {
+    if (!bcrypt.compareSync(password, user.hashedPassword)) {
       return done(null, false, { message: "Wrong Password" });
     }
     return done(null, user, { message: "Logged in Successfully" });

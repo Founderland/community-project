@@ -2,10 +2,15 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const flash = require("connect-flash");
-const session = require("");
+const session = require("express-session");
 const app = express();
 const setupRoutes = require("./routes/routes.js");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const { authenticateUser } = require("./controllers/auth");
+const User = require("./models/User");
 const port = process.env.PORT || 3000;
+const passportMiddleware = require("./middleware/passport");
 
 app.use(express.json());
 
@@ -23,25 +28,10 @@ app.use(
     saveUninitialized: true,
   })
 );
-// NR.2
-passport.serializeUser((user, cb) => {
-  cb(null, user._id);
-});
-// NR.3
-passport.deserializeUser((id, cb) => {
-  User.findById(id)
-    .then((user) => {
-      cb(null, user);
-    })
-    .catch((err) => {
-      cb(err);
-    });
-});
 
-// NR.4
 app.use(flash());
 
-require("./middleware/passport");
+passportMiddleware();
 
 app.use(passport.initialize());
 app.use(passport.session());
