@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import AdminLogin from './AdminLogin'
-import AdminMenu from './AdminMenu'
+import AdminMain from './AdminMain'
 
 const Admin = () => {
     const [logged, setLogged] = useState(false)
     return (
         <>
-        {logged ? <AdminMenu /> : <AdminLogin setLogged={setLogged}/>}
+        {logged ? <AdminMain setLogged={setLogged}/> : <AdminLogin setLogged={setLogged}/>}
         </>
     )
 }

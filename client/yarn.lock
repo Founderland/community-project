@@ -1280,6 +1280,16 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@headlessui/react@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.4.1.tgz#0a8dbb20e1d63dcea55bfc3ab1b87637aaac7777"
+  integrity sha512-gL6Ns5xQM57cZBzX6IVv6L7nsam8rDEpRhs5fg28SN64ikfmuuMgunc+Rw5C1cMScnvFM+cz32ueVrlSFEVlSg==
+
+"@heroicons/react@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-1.0.4.tgz#11847eb2ea5510419d7ada9ff150a33af0ad0863"
+  integrity sha512-3kOrTmo8+Z8o6AL0rzN82MOf8J5CuxhRLFhpI8mrn+3OqekA6d5eb1GYO3EYYo1Vn6mYQSMNTzCWbEwUInb0cQ==
+
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.5.0.tgz"
@@ -2026,11 +2036,6 @@
   resolved "https://registry.npmjs.org/@typescript-eslint/types/-/types-4.31.1.tgz"
   integrity sha512-kixltt51ZJGKENNW88IY5MYqTBA8FR0Md8QdGbJD2pKZ+D5IvxjTYDNtJPDxFBiXmka2aJsITdB1BtO1fsgmsQ==
 
-"@typescript-eslint/types@4.31.2":
-  version "4.31.2"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-4.31.2.tgz#2aea7177d6d744521a168ed4668eddbd912dfadf"
-  integrity sha512-kWiTTBCTKEdBGrZKwFvOlGNcAsKGJSBc8xLvSjSppFO88AqGxGNYtF36EuEYG6XZ9vT0xX8RNiHbQUKglbSi1w==
-
 "@typescript-eslint/typescript-estree@3.10.1":
   version "3.10.1"
   resolved "https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-3.10.1.tgz"
@@ -2071,14 +2076,6 @@
   integrity sha512-PCncP8hEqKw6SOJY+3St4LVtoZpPPn+Zlpm7KW5xnviMhdqcsBty4Lsg4J/VECpJjw1CkROaZhH4B8M1OfnXTQ==
   dependencies:
     "@typescript-eslint/types" "4.31.1"
-    eslint-visitor-keys "^2.0.0"
-
-"@typescript-eslint/visitor-keys@4.31.2":
-  version "4.31.2"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-4.31.2.tgz#7d5b4a4705db7fe59ecffb273c1d082760f635cc"
-  integrity sha512-PrBId7EQq2Nibns7dd/ch6S6/M4/iwLM9McbgeEbCXfxdwRUNxJ4UNreJ6Gh3fI2GNKNrWnQxKL7oCPmngKBug==
-  dependencies:
-    "@typescript-eslint/types" "4.31.2"
     eslint-visitor-keys "^2.0.0"
 
 "@webassemblyjs/ast@1.9.0":
