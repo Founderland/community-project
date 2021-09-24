@@ -6,9 +6,6 @@ const session = require("express-session");
 const app = express();
 const setupRoutes = require("./routes/routes.js");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const { authenticateUser } = require("./controllers/auth");
-const User = require("./models/User");
 const port = process.env.PORT || 3000;
 const passportMiddleware = require("./middleware/passport");
 
