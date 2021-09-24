@@ -2,6 +2,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { UserGroupIcon, ClipboardCheckIcon, BellIcon } from '@heroicons/react/outline'
 import { UserIcon, MenuIcon } from '@heroicons/react/solid'
+
 const AdminHeader = ({view, setLogged, setView, setMenuToggle}) => {
     return (
         <div className="flex justify-between items-center p-6">
