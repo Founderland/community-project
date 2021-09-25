@@ -106,8 +106,8 @@ const AddQuestionForm = () => {
                   />
                 </div>
 
-                <div className="flex flex-col w-full lg:w-3/6 text-mono py-5   items-center  md:flex-row lg:justify-around lg:items-center">
-                  <div className="flex w-2/3 items-center  lg:justify-around">
+                <div className="flex flex-col w-full lg:w-3/6 text-mono py-5   items-start  md:flex-row lg:justify-around md:items-center">
+                  <div className="flex w-2/3 items-center lg:justify-around">
                     <label
                       for="newAnswer"
                       className="  w-2/3 lg:w-4/6  lg:text-center lg:mb-0 ">
@@ -123,13 +123,13 @@ const AddQuestionForm = () => {
                       }
                     />
                   </div>
-                  <div className="flex flex-row  w-full  xl:w-1/4 text-mono py-5  items-center justify-evenly  xl:justify-start xl:justify-evenly lg:items-center">
+                  <div className="flex flex-row  w-full  xl:w-2/4 text-mono py-5  items-center justify-between md:justify-evenly  xl:justify-evenly ">
                     <label className=" text-center lg:text-left lg:w-1/6   lg:mb-0 lg:mx-5">
                       Ideal?{" "}
                     </label>
                     <input
                       type="checkbox"
-                      className=" lg:w-1/6 "
+                      className=" lg:w-1/6 w-5 h-5"
                       onChange={() =>
                         setNewAnswer({ ...newAnswer, ideal: !newAnswer.ideal })
                       }
