@@ -1,7 +1,10 @@
 import StepWizard from "react-step-wizard";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import First from './Forms/First'
+import Second from './Forms/Second'
+import Third from './Forms/Third'
+import ActiveDot from "./Forms/ActiveDot";
 // const dumyData = [
 //   {
 //     _id: "614af929a47c96b7a3decf1e",
@@ -126,169 +129,16 @@ import { useEffect, useState } from "react";
 //     __v: 0,
 //   },
 // ];
-
-const Question = ({ _id, question, type, category, answers }) => {
-  return (
-    <div className="p-2 ">
-      <label for="">{question}</label>
-      <Answers type={type} answers={answers} questionId={_id} />
-    </div>
-  );
-};
-
-const Answers = ({ type, answers, questionId }) => {
-  return (
-    <div className="">
-      {type === "open" ? (
-        <input
-          type="text"
-          className="p-2 my-2"
-          name="firstname"
-          placeholder="Your answer"
-          id={answers[0]._id}
-          onChange={(e) => console.log(e.target.id, e.target.value, questionId)}
-        />
-      ) : (
-        <>
-          {answers.map((answer) => (
-            <div className="flex m-2 ">
-              <input
-                type="radio"
-                className="m-2"
-                id={answer._id}
-                name="fav_language"
-                value={answer.answer}
-              />
-              {answer.answer !== "open" && (
-                <>
-                  <label for="html"> {answer.answer}</label>
-                </>
-              )}
-              {answer.answer === "open" && (
-                <input
-                  type="text"
-                  id={answer._id}
-                  className="p-1"
-                  name={answer.answer}
-                  placeholder="open"
-                  onChange={(e) => console.log(e.target.id)}
-                />
-              )}
-            </div>
-          ))}
-        </>
-      )}
-    </div>
-  );
-};
-
-const First = (props) => {
-  // const update = (e) => {
-  //   props.update(e.target.name, e.target.value);
-  // };
-
-  const { questions } = props;
-
-  return (
-    <div className="h-screen w-full flex flex-col md:items-center ">
-      <h3 className="text-center hidden md:flex ">
-        Welcome to {questions[0]?.category}
-      </h3>
-      <h2 className="text-center hidden md:flex ">
-        Current Step {props.currentStep}
-      </h2>
-      <div className=" flex flex-col justify-between bg-gray-200 p-10  h-full">
-        <div>
-          {questions.map((question, i) => (
-            <Question key={i} {...question} />
-          ))}
-        </div>
-        <div className=" hidden md:flex justify-end p-10 ">
-          <button className="p-5 bg-fblue w-2/6" onClick={props.nextStep}>
-            Next
-          </button>
-        </div>
-      </div>
-      <div className="flex justify-center md:hidden">
-        <button className="p-5 bg-fblue w-screen" onClick={props.nextStep}>
-          Next
-        </button>
-      </div>
-      {/* <Stats step={1} {...props} /> */}
-    </div>
-  );
-};
-
-const Second = (props) => {
-  // const validate = () => {98
-  //     if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
-  //         props.previousStep();
-  //     }
-  // };
-
-  const { questions } = props;
-  return (
-    <div>
-      <div className="h-screen w-full flex justify-center flex-col">
-        <h3 className="text-center hidden md:flex ">
-          Welcome to {questions[0]?.category}
-        </h3>
-        <h2 className="text-center hidden md:flex ">
-          Current Step {props.currentStep}
-        </h2>
-        <div className=" flex flex-col justify-between bg-gray-200 p-10  h-full">
-          <div>
-            {questions.map((question, i) => (
-              <Question key={i} {...question} />
-            ))}
-          </div>
-          <div className=" hidden md:flex justify-around p-10 ">
-            <button className="p-5 bg-fblue w-1/3" onClick={props.previousStep}>
-              Prev
-            </button>
-            <button className="p-5 bg-fblue w-1/3" onClick={props.nextStep}>
-              Next
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-center md:hidden">
-          <button className="p-5 bg-fblue w-1/2" onClick={props.previousStep}>
-            Prev
-          </button>
-          <button className="p-5 bg-fblue w-1/2" onClick={props.nextStep}>
-            Next
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Third = (props) => {
-  // const validate = () => {
-  //     if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
-  //         props.previousStep();
-  //     }
-  // };
-
-  return (
-    <div>
-      {props.firstname && <h3>Hey {props.firstname}! 👋</h3>}
-      I've added validation to the previous button.
-      {/* <Stats step={2} {...props} previousStep={validate} /> */}
-    </div>
-  );
-};
-
 const Form = ({ match }) => {
   // console.log(match);
   // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
   // const { memberType } = match.params;
   const [questions, setQuestions] = useState([]);
+  const [activeStep, setactiveStep] = useState(1)
 
   useEffect(() => {
     axios
-      .get("/api/form/founders/questions")
+      .get("http://localhost:3000/api/form/founders/questions")
       .then((res) => {
         setQuestions(res.data);
       })
@@ -306,24 +156,30 @@ const Form = ({ match }) => {
     (item) => item.category === "About Your Business"
   );
 
+  
+  const WizardNav = ({ activeStep }) => (
+    <div className=" hidden md:flex h-screen justify-center items-center bg-fblue z-10 md:w-1/3">
+    <ul>
+        {activeStep === 1 ? <div className="flex items-center"><ActiveDot /><li>About you</li></div> : <li>About you</li>}
+        {activeStep === 2 ? <div className="flex items-center"><ActiveDot /><li>About Your Business</li></div> : <li>About Your Business</li>}
+        {activeStep === 3 ? <div className="flex items-center"><ActiveDot /><li>Tell Us more</li></div> : <li>Tell Us more</li>}
+    </ul>
+  </div>
+  )
+
+
   return (
-    <div className=" m-0 flex flex-row-reverse w-screen items-end">
+    <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
       {questions && (
         <>
-          <StepWizard isHashEnabled className="md:w-2/3">
+          <StepWizard onStepChange={(res)=>setactiveStep(res.activeStep)} isHashEnabled className="h-screen md:w-2/3">
             <First hashKey={"FirstStep"} questions={aboutYouQuestions} />
             <Second hashKey={"SecondStep"} questions={aboutYourBusiness} />
             <Third questions={aboutYourBusiness} />
           </StepWizard>
         </>
       )}
-      <div className=" hidden md:flex justify-center items-center bg-fblue md:w-1/3 h-screen">
-        <ul>
-          <li>About you</li>
-          <li> About your business</li>
-          <li>Tell us more</li>
-        </ul>
-      </div>
+      <WizardNav activeStep={activeStep}/>
     </div>
   );
 
