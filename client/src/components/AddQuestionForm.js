@@ -1,13 +1,16 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 const AddQuestionForm = () => {
   // TODO
+
   const [questionInfo, setQuestionInfo] = useState({
     category: "About You",
     question: "",
     type: "open",
+    rank: "Not Important - just for info/further context",
+    answers: [],
   });
-  const [answerType, setAnswerType] = useState("");
+
   const [final, setFinal] = useState([]);
   const [newAnswer, setNewAnswer] = useState({
     answer: "",
@@ -20,8 +23,15 @@ const AddQuestionForm = () => {
   };
 
   const handleSubmit = () => {
-    const test = { ...questionInfo, answers: [final] };
-    console.log(test);
+    const newQuestion = { ...questionInfo, answers: final };
+    console.log(newQuestion);
+
+    newQuestion
+      ? axios
+          .post("/api/form/founders/add", newQuestion)
+          .then((result) => console.log(result))
+          .catch((e) => console.log(e))
+      : console.log("shit");
   };
 
   return (
@@ -44,16 +54,16 @@ const AddQuestionForm = () => {
               }
             />
           </div>
-          <div className="flex flex-col items-start lg:flex-row lg:justify-around lg:items-center ">
-            <div className=" w-full lg:w-1/2 text-mono py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center">
+          <div className="flex flex-col items-start lg:flex-wrap xl:flex-nowrap lg:flex-row lg:justify-start lg:justify-between lg:items-center ">
+            <div className=" w-full lg:w-1/2 xl:w-1/3 text-mono py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center">
               <label
                 for="newQuestion"
-                className=" w-full lg:w-1/3 mb-5  lg:mb-0">
+                className=" w-full lg:w-1/3 xl:w-4/6 mb-5  lg:mb-0">
                 Category
               </label>
               <select
                 id="category"
-                className="p-3 border-solid border-gray-300 w-auto shadow-md w-full lg:w-2/3"
+                className="p-3 border-solid border-gray-300 w-auto shadow-md w-full lg:w-2/3 xl:1/6"
                 onChange={(e) =>
                   setQuestionInfo({ ...questionInfo, category: e.target.value })
                 }>
@@ -64,7 +74,7 @@ const AddQuestionForm = () => {
                 <option value="Tell us more">Tell us more</option>
               </select>
             </div>
-            <div className="w-full  lg:w-1/2  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-between xl:items-center">
+            <div className="w-full lg:w-1/2 xl:w-1/3  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-between xl:items-center">
               <label
                 for="newQuestion"
                 className=" lg:w-1/3  mb-5  lg:mx-6 lg:mb-0 lg:text-center">
@@ -80,6 +90,33 @@ const AddQuestionForm = () => {
                 <option value="list">Dropdown list</option>
                 <option value="choice"> Single Choice </option>
                 <option value="multiple">Multiple selections </option>
+              </select>
+            </div>
+            <div className="w-full lg:w-4/4 xl:w-1/3  text-mono py-5  flex flex-col items-between lg:flex-row lg:items-center justify-between ">
+              <label
+                for="rank"
+                className=" lg:w-1/6  mb-5   lg:mb-0 xl:mx-6 xl:text-center">
+                Rank
+              </label>
+              <select
+                id="rank"
+                className="p-3  border-solid border-gray-300 w-auto shadow-md lg:w-5/6"
+                onChange={(e) =>
+                  setQuestionInfo({ ...questionInfo, rank: e.target.value })
+                }>
+                <option value="Not Important - just for info/further context">
+                  Not Important - just for info/further context
+                </option>
+                <option value="Vital - Deal Maker or Breaker">
+                  Vital - Deal Maker or Breaker
+                </option>
+                <option value="Very Important - variable is scrutinized">
+                  {" "}
+                  Very Important - variable is scrutinized{" "}
+                </option>
+                <option value="Moderately Important - potentially a determining factor">
+                  Moderately Important - potentially a determining factor{" "}
+                </option>
               </select>
             </div>
           </div>

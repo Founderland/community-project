@@ -8,9 +8,7 @@ import Thankyou from "./components/Thankyou";
 function App() {
   return (
     <>
-      <AddQuestionForm />
       <Router>
-        {/* <div className="flex  flex-col justify-center "> */}
         {/* <Navbar /> */}
         <Route
           exact
@@ -19,7 +17,11 @@ function App() {
         />
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/form/:memberType" component={Form} />
-        {/* </div> */}
+        <Route
+          exact
+          path="/admin/founder/addQuestion"
+          component={AddQuestionForm}
+        />
       </Router>
     </>
   );
