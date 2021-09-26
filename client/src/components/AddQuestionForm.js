@@ -35,10 +35,10 @@ const AddQuestionForm = () => {
   };
 
   return (
-    <div className="h-1/2 flex flex-col justify-center bg-gray-100 text-xl">
-      <div className="shadow-xl flex flex-col justify-center items-center bg-white ">
+    <div className="h-1/2 flex flex-col justify-center text-xl m-4 shadow-xl ">
+      <div className=" flex flex-col justify-center items-center bg-white py-4 rounded-lg">
         <h1 className="text-grotesk font-bold p-3">Add new Questions</h1>
-        <div className="h-5/6 w-5/6 bg-gray-100">
+        <div className="h-full w-5/6 ">
           <div className="  text-mono py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center ">
             <label for="newQuestion" className=" w-full lg:w-1/6 mb-5 lg:m-0 ">
               Question
@@ -47,7 +47,7 @@ const AddQuestionForm = () => {
               type="text"
               id="newQuestion"
               name="newQuestion"
-              className="p-3 border-solid border-gray-300 shadow-md w-full lg:w-5/6"
+              className="p-3  shadow-md w-full lg:w-5/6"
               placeholder="New question"
               onChange={(e) =>
                 setQuestionInfo({ ...questionInfo, question: e.target.value })
@@ -122,8 +122,8 @@ const AddQuestionForm = () => {
           </div>
           <div className="text-mono py-5 flex flex-col flex-wrap  xl:flex-nowrap lg:flex-row items-center justify-between">
             {questionInfo.type !== "open" && (
-              <>
-                <div className="flex flex-col w-full lg:w-3/6 text-mono py-5   items-between justify-between lg:flex-row lg:justify-between lg:items-center">
+              <div className=" flex flex-col lg:flex-row shadow-inner rounded-lg bg-gray-100 border-round-xl w-full p-2">
+                <div className=" flex flex-col w-full lg:w-3/6 text-mono py-5   items-between justify-between lg:flex-row lg:justify-between lg:items-center">
                   <label
                     for="newAnswer"
                     className=" w-full lg:w-1/3 mb-5  lg:mb-0">
@@ -180,7 +180,7 @@ const AddQuestionForm = () => {
                     </button>
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
           <div className=" flex flex-col w-full items-center justify-between">
