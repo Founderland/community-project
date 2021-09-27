@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import AddNewAnswer from "./AddNewAnswer";
 import NewQuestionResponse from "./NewQuestionResponse";
-import FromPreview from "./FormPreview";
+import FormPreview from "./FormPreview";
 
 const AddQuestionForm = () => {
   const [questionInfo, setQuestionInfo] = useState({
@@ -212,7 +212,7 @@ const AddQuestionForm = () => {
         </div>
       </div>
       {showPreview && (
-        <FromPreview
+        <FormPreview
           questionInfo={questionInfo}
           final={final}
           setShowPreview={setShowPreview}

@@ -1,4 +1,4 @@
-const FromPreview = ({ questionInfo, final, setShowPreview }) => {
+const FormPreview = ({ questionInfo, final, setShowPreview }) => {
   return (
     <div className="fixed h-full w-full bg-white">
       <span onClick={() => setShowPreview(false)}> &#10060; </span>
@@ -48,4 +48,4 @@ const FromPreview = ({ questionInfo, final, setShowPreview }) => {
   );
 };
 
-export default FromPreview;
+export default FormPreview;
