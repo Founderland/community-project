@@ -1,10 +1,11 @@
 import StepWizard from "react-step-wizard";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import First from './Forms/First'
-import Second from './Forms/Second'
-import Third from './Forms/Third'
-import ActiveDot from "./Forms/ActiveDot";
+import FormPage from "./Forms/FormPage";
+import symbolsVertical from "../assets/images/symbol_vertical_big.png";
+import whiteLogo from "../assets/images/twoLinesWhite.svg";
+import CategoryItem from "./Forms/CategoryItem";
+
 // const dumyData = [
 //   {
 //     _id: "614af929a47c96b7a3decf1e",
@@ -134,7 +135,11 @@ const Form = ({ match }) => {
   // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
   // const { memberType } = match.params;
   const [questions, setQuestions] = useState([]);
-  const [activeStep, setactiveStep] = useState(1)
+  const [activeStep, setactiveStep] = useState(0);
+
+  const [categoryNames, setCategoryNames] = useState([]);
+  const [pagesInCategory, setPagesInCategory] = useState([]);
+  const [formatedQuestions, setFormatedQuestions] = useState([]);
 
   useEffect(() => {
     axios
@@ -147,43 +152,116 @@ const Form = ({ match }) => {
       });
   }, []);
 
-  questions && console.log(questions);
+  useEffect(() => {
+    if (questions.length > 0) {
+      const QuestionsArray = [];
+      const pagesInEachCategory = [];
 
-  const aboutYouQuestions = questions.filter(
-    (item) => item.category === "About You"
-  );
-  const aboutYourBusiness = questions.filter(
-    (item) => item.category === "About Your Business"
-  );
+      //  Finding the unique category value in the question array of objects
+      const uniqueCategories = [
+        ...new Set(questions.map((item) => item.category)),
+      ];
 
-  
+      // Looping through each unique category
+      for (const cat of uniqueCategories) {
+        const pageArray = [];
+
+        // Filtering unique Category items and saving it to CatArray
+        const catArray = questions.filter((item) => item.category === cat);
+
+        // Finding the highest page number for each category in CatArray
+        const maxPageNumber = catArray.reduce(function (prev, current) {
+          return parseInt(prev.categoryPage) > parseInt(current.categoryPage)
+            ? prev
+            : current;
+        }).categoryPage;
+
+        // splitting catArray into different arrays with unique pageNumbers
+        for (let i = 1; i <= maxPageNumber; i++) {
+          pageArray.push(catArray.filter((item) => item.categoryPage === i));
+        }
+
+        //output Array:
+        // QuestionsArray = [cat1,cat2,cat3]
+        // cat1 = [[pg1],[pg2]]
+        // cat2 = [[pg1],[pg2]]
+        // cat3 = [[pg1],[pg2]]
+        // pg1 = question object with page 1 ...
+        QuestionsArray.push(pageArray);
+
+        pagesInEachCategory.push(maxPageNumber);
+      }
+      setCategoryNames(uniqueCategories);
+      setPagesInCategory(pagesInEachCategory);
+      setFormatedQuestions(QuestionsArray);
+    }
+  }, [questions]);
+
+  //eg:pagesInCategory=[[3],[2],1[]]
+  // activeStep = 4
+  // setactiveStep(2)
+  const getActiveStep = (activeStep) => {
+   let sum = 0;
+    console.log(pagesInCategory);
+    for (let i = 0; i < pagesInCategory.length; i++) {
+      sum = sum + pagesInCategory[i];
+      if (activeStep <= sum) {
+        setactiveStep(i);
+        break;
+      }
+    }
+  };
+
   const WizardNav = ({ activeStep }) => (
-    <div className=" hidden md:flex h-screen justify-center items-center bg-fblue z-10 md:w-1/3">
-    <ul>
-        {activeStep === 1 ? <div className="flex items-center"><ActiveDot /><li>About you</li></div> : <li>About you</li>}
-        {activeStep === 2 ? <div className="flex items-center"><ActiveDot /><li>About Your Business</li></div> : <li>About Your Business</li>}
-        {activeStep === 3 ? <div className="flex items-center"><ActiveDot /><li>Tell Us more</li></div> : <li>Tell Us more</li>}
-    </ul>
-  </div>
-  )
-
-
-  return (
-    <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
-      {questions && (
-        <>
-          <StepWizard onStepChange={(res)=>setactiveStep(res.activeStep)} isHashEnabled className="h-screen md:w-2/3">
-            <First hashKey={"FirstStep"} questions={aboutYouQuestions} />
-            <Second hashKey={"SecondStep"} questions={aboutYourBusiness} />
-            <Third questions={aboutYourBusiness} />
-          </StepWizard>
-        </>
-      )}
-      <WizardNav activeStep={activeStep}/>
+    <div className=" hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12">
+      <div className="h-3/4 w-full flex items-center justify-center pl-8">
+        <ul>
+          {categoryNames.map((item, index) => (
+            <CategoryItem text={item} isActive={activeStep === index} />
+          ))}
+        </ul>
+      </div>
+      <div className="h-1/4 w-2/3 flex items-center  ">
+        <img className="text-fpink" src={whiteLogo} alt="logo" />
+      </div>
     </div>
   );
 
-  // <div>THIS IS THE {memberType} FORM</div>;
+  const Symbols = () => (
+    <div className="hidden md:w-1/12 md:flex md:justify-end">
+      <img src={symbolsVertical} alt="symbols" />
+    </div>
+  );
+
+  return (
+    <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
+      <Symbols />
+      {questions && (
+        <>
+          {/* setactiveStep(res.activeStep) */}
+          <StepWizard
+            initialStep={1}
+            onStepChange={(res) => getActiveStep(res.activeStep)}
+            className="h-screen md:w-8/12"
+          >
+            {formatedQuestions.map((catItems, catIndex, catArray) =>
+              catItems.map((pagesItems, pageIndex, pageArray) => (
+                <FormPage
+                  questions={pagesItems}
+                  isFirst={pageIndex === 0 && catIndex === 0}
+                  isLast={
+                    pageIndex === pageArray.length - 1 &&
+                    catIndex === catArray.length - 1
+                  }
+                />
+              ))
+            )}
+          </StepWizard>
+        </>
+      )}
+      <WizardNav activeStep={activeStep} />
+    </div>
+  );
 };
 
 export default Form;

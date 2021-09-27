@@ -4,7 +4,7 @@ const Answers = ({ type, answers, questionId }) => {
        {type === "open" ? (
          <input
            type="text"
-           className="p-2 my-2"
+           className="flex-1 appearance-none border border-gray-300 w-3/5 py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fblue-light focus:border-transparent"
            name="firstname"
            placeholder="Your answer"
            id={answers[0]._id}
@@ -45,3 +45,10 @@ const Answers = ({ type, answers, questionId }) => {
 };
  
 export default Answers
+
+{/* <div class=" relative ">
+    <label for="name-with-label" class="text-gray-700">
+        Email
+    </label>
+    <input type="text" id="name-with-label" class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="email" placeholder="Your name"/>
+    </div> */}

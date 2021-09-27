@@ -1,7 +1,7 @@
-import logoMdWhite from "../assets/images/logo_md_white.png";
-import arrow from "../assets/images/arrow.svg";
-import symbolVerticalBig from "../assets/images/symbols_vertical_big.svg";
-import logoLgWhite from "../assets/images/logo_large_white.png";
+import logoMdWhite from "../../assets/images/logo_md_white.png";
+import arrow from "../../assets/images/arrow.svg";
+import symbolVerticalBig from "../../assets/images/symbols_vertical_big.svg";
+import logoLgWhite from "../../assets/images/logo_large_white.png";
 
 const Thankyou = () => {
   return (
@@ -30,7 +30,7 @@ const Thankyou = () => {
 
           <div className="hidden bg-black items-center justify-center md:flex sm:w-4/12 md:w-2/12">
             <img
-              className="md:h-3/4 lg:object-fit"
+              className="md:h-3/4 md:object-fit"
               src={logoLgWhite}
               alt="Logo"
             />
@@ -38,7 +38,7 @@ const Thankyou = () => {
 
           <div className="max-w-20 w-20 self-end md:w-2/12">
             <img
-              className="md:w-full lg:object-fit"
+              className="md:w-full md:object-fit"
               src={symbolVerticalBig}
               alt="Logo"
             />
