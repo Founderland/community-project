@@ -26,6 +26,7 @@ const founderFormSchem = new mongoose.Schema({
       notes: { type: String },
     },
   ],
+  categoryPage: { type: Number, required: true },
 });
 
 const FounderForm = mongoose.model("FounderForm", founderFormSchem);

@@ -7,7 +7,7 @@ import Thankyou from "./components/Thankyou";
 
 function App() {
   return (
-    <>
+    <div>
       <Router>
         {/* <Navbar /> */}
         <Route
@@ -23,7 +23,7 @@ function App() {
           component={AddQuestionForm}
         />
       </Router>
-    </>
+    </div>
   );
 }
 
