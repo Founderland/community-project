@@ -14,8 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 mongoose
   .connect(
-    `mongodb+srv://dbUser:wildersDev@cluster0.1gd27.mongodb.net/Founderland?retryWrites=true&w=majority`
-    // `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.1gd27.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.1gd27.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => console.log("Connected to MONGO ATLAS"))
   .catch((err) => console.log(err));
