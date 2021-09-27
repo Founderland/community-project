@@ -1,13 +1,16 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
 require("dotenv").config();
-const { setupRoutes } = require("./routes/routes.js");
+const express = require("express");
+const mongoose = require("mongoose");
+const flash = require("connect-flash");
+const session = require("express-session");
+const app = express();
+const setupRoutes = require("./routes/routes.js");
+const passport = require("passport");
+const port = process.env.PORT || 3000;
+const passportMiddleware = require("./middleware/passport");
 
 const path = require("path");
 app.use(express.static(path.join(__dirname, "build")));
-
-const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -18,6 +21,21 @@ mongoose
   )
   .then(() => console.log("Connected to MONGO ATLAS"))
   .catch((err) => console.log(err));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(flash());
+
+passportMiddleware();
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 setupRoutes(app);
 

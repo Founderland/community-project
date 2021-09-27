@@ -2,12 +2,11 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import AddQuestionForm from "./components/AddQuestionForm";
 import ApplicantsDispatcher from "./components/ApplicantsDispatcher";
 import Form from "./components/Form";
-import Navbar from "./components/Navbar";
 import Thankyou from "./components/Thankyou";
 
 function App() {
   return (
-    <div>
+    <>
       <Router>
         {/* <Navbar /> */}
         <Route
@@ -23,7 +22,7 @@ function App() {
           component={AddQuestionForm}
         />
       </Router>
-    </div>
+    </>
   );
 }
 

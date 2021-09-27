@@ -2,130 +2,130 @@ import StepWizard from "react-step-wizard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-// const dumyData = [
-//   {
-//     _id: "614af929a47c96b7a3decf1e",
-//     category: "About You",
-//     question: "Name",
-//     rank: "Not Important - just for info/further context",
-//     type: "open",
-//     answers: [
-//       {
-//         answer: "open",
-//         ideal: "yes",
-//         points: 0,
-//         notes: "",
-//         _id: "614af929a47c96b7a3decf1f",
-//       },
-//     ],
-//     __v: 0,
-//   },
-//   {
-//     _id: "614af997a47c96b7a3decf21",
-//     category: "About You",
-//     question: "Title/Position",
-//     rank: "Not Important - just for info/further context",
-//     type: "open",
-//     answers: [
-//       {
-//         answer: "open",
-//         ideal: "yes",
-//         points: 0,
-//         notes: "",
-//         _id: "614af997a47c96b7a3decf22",
-//       },
-//     ],
-//     __v: 0,
-//   },
-//   {
-//     _id: "614af9aaa47c96b7a3decf24",
-//     category: "About You",
-//     question: "Contact Information",
-//     rank: "Not Important - just for info/further context",
-//     type: "open",
-//     answers: [
-//       {
-//         answer: "open",
-//         ideal: "yes",
-//         points: 0,
-//         notes: "",
-//         _id: "614af9aaa47c96b7a3decf25",
-//       },
-//     ],
-//     __v: 0,
-//   },
-//   {
-//     _id: "614afa73a47c96b7a3decf27",
-//     category: "About You",
-//     question:
-//       "Do you identify as a woman who has faced obstacles tied to your ethnicity/race and gender in your entrepreneurial journey?",
-//     rank: "Very Important - variable is scrutinized",
-//     type: "choice",
-//     answers: [
-//       {
-//         answer: "Yes",
-//         ideal: "yes",
-//         points: 50,
-//         notes: "",
-//         _id: "614afa73a47c96b7a3decf28",
-//       },
-//       {
-//         answer: "No",
-//         ideal: "yes",
-//         points: 0,
-//         notes: "",
-//         _id: "614afa73a47c96b7a3decf29",
-//       },
-//       {
-//         answer: "open",
-//         ideal: "yes",
-//         points: 0,
-//         notes: "",
-//         _id: "614afa73a47c96b7a3decf2a",
-//       },
-//     ],
-//     __v: 0,
-//   },
-//   {
-//     _id: "614afc27a47c96b7a3decf2c",
-//     category: "About Your Business",
-//     question: "Where is your Business registered (based)?",
-//     rank: "Vital - Deal Maker or Breaker",
-//     type: "choice",
-//     answers: [
-//       {
-//         answer: "Continental Europe",
-//         ideal: "yes",
-//         points: 50,
-//         notes: "",
-//         _id: "614afc27a47c96b7a3decf2d",
-//       },
-//       {
-//         answer: "United Kingdom",
-//         ideal: "yes",
-//         points: 50,
-//         notes: "",
-//         _id: "614afc27a47c96b7a3decf2e",
-//       },
-//       {
-//         answer:
-//           "Not in Europe or the UK but planning on relocating to that area",
-//         ideal: "yes",
-//         points: 200,
-//         notes: "",
-//         _id: "614afc27a47c96b7a3decf2f",
-//       },
-//       {
-//         answer: "Not in Europe or the UK",
-//         ideal: "no",
-//         points: 0,
-//         notes: "",
-//         _id: "614afc27a47c96b7a3decf30",
-//       },
-//     ],
-//     __v: 0,
-//   },
-// ];
+const dumyData = [
+  {
+    _id: "614af929a47c96b7a3decf1e",
+    category: "About You",
+    question: "Name",
+    rank: "Not Important - just for info/further context",
+    type: "open",
+    answers: [
+      {
+        answer: "open",
+        ideal: "yes",
+        points: 0,
+        notes: "",
+        _id: "614af929a47c96b7a3decf1f",
+      },
+    ],
+    __v: 0,
+  },
+  {
+    _id: "614af997a47c96b7a3decf21",
+    category: "About You",
+    question: "Title/Position",
+    rank: "Not Important - just for info/further context",
+    type: "open",
+    answers: [
+      {
+        answer: "open",
+        ideal: "yes",
+        points: 0,
+        notes: "",
+        _id: "614af997a47c96b7a3decf22",
+      },
+    ],
+    __v: 0,
+  },
+  {
+    _id: "614af9aaa47c96b7a3decf24",
+    category: "About You",
+    question: "Contact Information",
+    rank: "Not Important - just for info/further context",
+    type: "open",
+    answers: [
+      {
+        answer: "open",
+        ideal: "yes",
+        points: 0,
+        notes: "",
+        _id: "614af9aaa47c96b7a3decf25",
+      },
+    ],
+    __v: 0,
+  },
+  {
+    _id: "614afa73a47c96b7a3decf27",
+    category: "About You",
+    question:
+      "Do you identify as a woman who has faced obstacles tied to your ethnicity/race and gender in your entrepreneurial journey?",
+    rank: "Very Important - variable is scrutinized",
+    type: "choice",
+    answers: [
+      {
+        answer: "Yes",
+        ideal: "yes",
+        points: 50,
+        notes: "",
+        _id: "614afa73a47c96b7a3decf28",
+      },
+      {
+        answer: "No",
+        ideal: "yes",
+        points: 0,
+        notes: "",
+        _id: "614afa73a47c96b7a3decf29",
+      },
+      {
+        answer: "open",
+        ideal: "yes",
+        points: 0,
+        notes: "",
+        _id: "614afa73a47c96b7a3decf2a",
+      },
+    ],
+    __v: 0,
+  },
+  {
+    _id: "614afc27a47c96b7a3decf2c",
+    category: "About Your Business",
+    question: "Where is your Business registered (based)?",
+    rank: "Vital - Deal Maker or Breaker",
+    type: "choice",
+    answers: [
+      {
+        answer: "Continental Europe",
+        ideal: "yes",
+        points: 50,
+        notes: "",
+        _id: "614afc27a47c96b7a3decf2d",
+      },
+      {
+        answer: "United Kingdom",
+        ideal: "yes",
+        points: 50,
+        notes: "",
+        _id: "614afc27a47c96b7a3decf2e",
+      },
+      {
+        answer:
+          "Not in Europe or the UK but planning on relocating to that area",
+        ideal: "yes",
+        points: 200,
+        notes: "",
+        _id: "614afc27a47c96b7a3decf2f",
+      },
+      {
+        answer: "Not in Europe or the UK",
+        ideal: "no",
+        points: 0,
+        notes: "",
+        _id: "614afc27a47c96b7a3decf30",
+      },
+    ],
+    __v: 0,
+  },
+];
 
 const Question = ({ _id, question, type, category, answers }) => {
   return (
@@ -299,10 +299,10 @@ const Form = ({ match }) => {
 
   questions && console.log(questions);
 
-  const aboutYouQuestions = questions.filter(
+  const aboutYouQuestions = dumyData.filter(
     (item) => item.category === "About You"
   );
-  const aboutYourBusiness = questions.filter(
+  const aboutYourBusiness = dumyData.filter(
     (item) => item.category === "About Your Business"
   );
 

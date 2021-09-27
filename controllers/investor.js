@@ -1,14 +1,8 @@
-const InvestorsApplicant = require('../models/InvestorsApplicant')
+const InvestorApplicant = require('../models/InvestorApplicant')
 
-//CURRENT STRUCTURE
-//     question: {type: String, required: true},
-//     answer: {type: String, required: true},
-//     userId: {type: Number, required: true}, 
-
-//FIND ALL INVESTORS APPLICANTS
-const findAllInvestorsApplicants = async (req, res) => {
+const findAllInvestorApplicants = async (req, res) => {
     try{
-        const result = await InvestorsApplicant.find({})
+        const result = await InvestorApplicant.find({})
         res.status(200).json(result)
     }catch(err){
         console.log(err)
@@ -16,12 +10,11 @@ const findAllInvestorsApplicants = async (req, res) => {
     }
 }
 
-//ADD NEW INVESTOR APPLICANT
-const addInvestorsApplicant = async (req, res) => {
+const addInvestorApplicant = async (req, res) => {
     const {question,answer,userId} = req.body
     try {
         if(!answer) return await Promise.reject("ANSWER_MISSING")
-        const newApplicant = await InvestorsApplicant.create({
+        const newApplicant = await InvestorApplicant.create({
             question,
             answer,
             userId
@@ -38,6 +31,6 @@ const addInvestorsApplicant = async (req, res) => {
 }
 
 module.exports = {
-    findAllInvestorsApplicants,
-    addInvestorsApplicant
+    findAllInvestorApplicants,
+    addInvestorApplicant
 }
