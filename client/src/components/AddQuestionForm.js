@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AddNewAnswer from "./AddNewAnswer";
 import NewQuestionResponse from "./NewQuestionResponse";
+import FromPreview from "./FormPreview";
 
 const AddQuestionForm = () => {
   const [questionInfo, setQuestionInfo] = useState({
@@ -21,6 +22,7 @@ const AddQuestionForm = () => {
   });
   const [isSuccessful, setIsSuccessfull] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleNewAnswer = (e) => {
     setFinal((pre) => (pre.length > 0 ? [...pre, newAnswer] : [newAnswer]));
@@ -191,7 +193,14 @@ const AddQuestionForm = () => {
               />
             )}
           </div>
-          <div className=" flex flex-col w-full items-center justify-between">
+          <div className=" flex flex-row w-full items-center justify-center">
+            <button
+              type="button"
+              className="hidden md:flex p-4 bg-white text-fblue rounded-lg "
+              onClick={() => setShowPreview(true)}>
+              {" "}
+              Preview
+            </button>
             <button
               type="button"
               className="p-4 bg-fblue text-white rounded-lg "
@@ -202,6 +211,13 @@ const AddQuestionForm = () => {
           </div>
         </div>
       </div>
+      {showPreview && (
+        <FromPreview
+          questionInfo={questionInfo}
+          final={final}
+          setShowPreview={setShowPreview}
+        />
+      )}
     </div>
   );
 };
