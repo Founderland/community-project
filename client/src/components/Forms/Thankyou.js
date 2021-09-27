@@ -33,8 +33,7 @@ const Thankyou = () => {
               className="md:h-3/4 md:object-fit"
               src={logoLgWhite}
               alt="Logo"
-            />
-          </div>
+            /></div>
 
           <div className="max-w-20 w-20 self-end md:w-2/12">
             <img
