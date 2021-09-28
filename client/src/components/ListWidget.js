@@ -18,14 +18,13 @@ const styles = {
 const ListWidget = ({ title, data }) => {
     const [offset, setOffset] = useState(0)
     const [dataToDisplay, setDataToDisplay] = useState([])
-    const [perPage] = useState(5)
+    const [perPage] = useState(10)
     const [pageCount, setPageCount] = useState(0)
     const handlePageClick = (e) => {
         const selectedPage = e.selected
         setOffset(selectedPage)
     }
     const getData = async () => {
-        console.log(data.data, offset * perPage, offset + perPage)
         const slice = data.data.slice(
             offset * perPage,
             offset * perPage + perPage
@@ -78,7 +77,7 @@ const ListWidget = ({ title, data }) => {
                                             <div className="flex items-center justify-center">
                                                 {item.reviews.map((review) => (
                                                     <img
-                                                        className={`w-6 h-6 -ml-2 rounded-full border ${
+                                                        className={`w-6 h-6 -ml-1 rounded-full border ${
                                                             styles[review.role]
                                                         } transform transition duration-150 hover:scale-150`}
                                                         src={review.avatar_url}
