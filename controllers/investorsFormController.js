@@ -1,18 +1,16 @@
-const FoundersForm = require("../models/FoundersForm");
+const InvestorsForm = require("../models/InvestorsForm");
 
 const addNew = async (req, res) => {
   const { category, question, rank, type, answers, categoryPage } = req.body;
   try {
-    console.log(category, question, rank, type, answers, categoryPage);
-    const newFoundersForm = await FoundersForm.create({
+    const newInvestorsForm = await InvestorsForm.create({
       category,
       categoryPage,
       question,
-      rank,
       type,
       answers,
     });
-    res.status(200).json(newFoundersForm);
+    res.status(200).json(newInvestorsForm);
   } catch (e) {
     console.log(e);
     res.status(400).send(e);
@@ -20,7 +18,7 @@ const addNew = async (req, res) => {
 };
 
 const findAll = async (req, res) => {
-  const result = await FoundersForm.find({});
+  const result = await InvestorsForm.find({});
   res.status(200).json(result);
 };
 

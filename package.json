@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "both" : "rm -rf build && cd client && npm run build && mv build ../ && cd .. && nodemon index.js"
+    "both": "rm -rf build && cd client && npm run build && mv build ../ && cd .. && nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,8 +14,10 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "express-validator": "^6.12.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.5",

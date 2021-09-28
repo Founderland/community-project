@@ -1,21 +1,20 @@
-const User = require('../models/User')
-require('dotenv').config()
+const User = require("../models/User");
+require("dotenv").config();
+const bcrypt = require("bcrypt");
 
-const authenticateUser = async (email, password, done) => {
+const authenticateUser = async (req, email, password, done) => {
   try {
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email });
     if (!user) {
-      return done(null, false, { message: 'User not found' })
+      return done(null, false, { message: "User not found" });
     }
-    const validate = await user.isValidPassword(password)
-    if (!validate) {
-      return done(null, false, { message: 'Wrong Password' })
+    if (!bcrypt.compareSync(password, user.hashedPassword)) {
+      return done(null, false, { message: "Wrong Password" });
     }
-    return done(null, user, { message: 'Logged in Successfully' })
+    return done(null, user, { message: "Logged in Successfully" });
   } catch (error) {
-    return done(error)
+    return done(error);
   }
-}
+};
 
-module.exports = { authenticateUser }
-
+module.exports = { authenticateUser };

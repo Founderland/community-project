@@ -1,7 +1,11 @@
-import StepWizard from "react-step-wizard";
-import axios from "axios";
-import { useEffect, useState } from "react";
-
+import StepWizard from 'react-step-wizard'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import FormPage from './Forms/FormPage'
+import symbolsVertical from '../assets/images/symbol_vertical_big.png'
+import whiteLogo from '../assets/images/twoLinesWhite.svg'
+import CategoryItem from './Forms/CategoryItem'
+import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
 // const dumyData = [
 //   {
 //     _id: "614af929a47c96b7a3decf1e",
@@ -126,208 +130,155 @@ import { useEffect, useState } from "react";
 //     __v: 0,
 //   },
 // ];
-
-const Question = ({ _id, question, type, category, answers }) => {
-  return (
-    <div className="p-2 ">
-      <label for="">{question}</label>
-      <Answers type={type} answers={answers} questionId={_id} />
-    </div>
-  );
-};
-
-const Answers = ({ type, answers, questionId }) => {
-  return (
-    <div className="">
-      {type === "open" ? (
-        <input
-          type="text"
-          className="p-2 my-2"
-          name="firstname"
-          placeholder="Your answer"
-          id={answers[0]._id}
-          onChange={(e) => console.log(e.target.id, e.target.value, questionId)}
-        />
-      ) : (
-        <>
-          {answers.map((answer) => (
-            <div className="flex m-2 ">
-              <input
-                type="radio"
-                className="m-2"
-                id={answer._id}
-                name="fav_language"
-                value={answer.answer}
-              />
-              {answer.answer !== "open" && (
-                <>
-                  <label for="html"> {answer.answer}</label>
-                </>
-              )}
-              {answer.answer === "open" && (
-                <input
-                  type="text"
-                  id={answer._id}
-                  className="p-1"
-                  name={answer.answer}
-                  placeholder="open"
-                  onChange={(e) => console.log(e.target.id)}
-                />
-              )}
-            </div>
-          ))}
-        </>
-      )}
-    </div>
-  );
-};
-
-const First = (props) => {
-  // const update = (e) => {
-  //   props.update(e.target.name, e.target.value);
-  // };
-
-  const { questions } = props;
-
-  return (
-    <div className="h-screen w-full flex flex-col md:items-center ">
-      <h3 className="text-center hidden md:flex ">
-        Welcome to {questions[0]?.category}
-      </h3>
-      <h2 className="text-center hidden md:flex ">
-        Current Step {props.currentStep}
-      </h2>
-      <div className=" flex flex-col justify-between bg-gray-200 p-10  h-full">
-        <div>
-          {questions.map((question, i) => (
-            <Question key={i} {...question} />
-          ))}
-        </div>
-        <div className=" hidden md:flex justify-end p-10 ">
-          <button className="p-5 bg-fblue w-2/6" onClick={props.nextStep}>
-            Next
-          </button>
-        </div>
-      </div>
-      <div className="flex justify-center md:hidden">
-        <button className="p-5 bg-fblue w-screen" onClick={props.nextStep}>
-          Next
-        </button>
-      </div>
-      {/* <Stats step={1} {...props} /> */}
-    </div>
-  );
-};
-
-const Second = (props) => {
-  // const validate = () => {98
-  //     if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
-  //         props.previousStep();
-  //     }
-  // };
-
-  const { questions } = props;
-  return (
-    <div>
-      <div className="h-screen w-full flex justify-center flex-col">
-        <h3 className="text-center hidden md:flex ">
-          Welcome to {questions[0]?.category}
-        </h3>
-        <h2 className="text-center hidden md:flex ">
-          Current Step {props.currentStep}
-        </h2>
-        <div className=" flex flex-col justify-between bg-gray-200 p-10  h-full">
-          <div>
-            {questions.map((question, i) => (
-              <Question key={i} {...question} />
-            ))}
-          </div>
-          <div className=" hidden md:flex justify-around p-10 ">
-            <button className="p-5 bg-fblue w-1/3" onClick={props.previousStep}>
-              Prev
-            </button>
-            <button className="p-5 bg-fblue w-1/3" onClick={props.nextStep}>
-              Next
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-center md:hidden">
-          <button className="p-5 bg-fblue w-1/2" onClick={props.previousStep}>
-            Prev
-          </button>
-          <button className="p-5 bg-fblue w-1/2" onClick={props.nextStep}>
-            Next
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Third = (props) => {
-  // const validate = () => {
-  //     if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
-  //         props.previousStep();
-  //     }
-  // };
-
-  return (
-    <div>
-      {props.firstname && <h3>Hey {props.firstname}! 👋</h3>}
-      I've added validation to the previous button.
-      {/* <Stats step={2} {...props} previousStep={validate} /> */}
-    </div>
-  );
-};
-
 const Form = ({ match }) => {
-  // console.log(match);
-  // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
-  // const { memberType } = match.params;
-  const [questions, setQuestions] = useState([]);
+    // console.log(match);
+    // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
+    // const { memberType } = match.params;
+    const [questions, setQuestions] = useState([])
+    const [activeStep, setactiveStep] = useState(0)
 
-  useEffect(() => {
-    axios
-      .get("/api/form/founders/questions")
-      .then((res) => {
-        setQuestions(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    const [categoryNames, setCategoryNames] = useState([])
+    const [pagesInCategory, setPagesInCategory] = useState([])
+    const [formatedQuestions, setFormatedQuestions] = useState([])
 
-  questions && console.log(questions);
+    useEffect(() => {
+        axios
+            .get('http://localhost:3000/api/form/founders/questions')
+            .then((res) => {
+                setQuestions(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [])
 
-  const aboutYouQuestions = questions?.filter(
-    (item) => item.category === "About You"
-  );
-  const aboutYourBusiness = questions?.filter(
-    (item) => item.category === "About Your Business"
-  );
+    useEffect(() => {
+        if (questions.length > 0) {
+            const QuestionsArray = []
+            const pagesInEachCategory = []
 
-  return (
-    <div className=" m-0 flex flex-row-reverse w-screen items-end">
-      {questions && (
+            //  Finding the unique category value in the question array of objects
+            const uniqueCategories = [
+                ...new Set(questions?.map((item) => item.category)),
+            ]
+
+            // Looping through each unique category
+            for (const cat of uniqueCategories) {
+                const pageArray = []
+
+                // Filtering unique Category items and saving it to CatArray
+                const catArray = questions.filter(
+                    (item) => item.category === cat
+                )
+
+                // Finding the highest page number for each category in CatArray
+                const maxPageNumber = catArray.reduce(function (prev, current) {
+                    return parseInt(prev.categoryPage) >
+                        parseInt(current.categoryPage)
+                        ? prev
+                        : current
+                }).categoryPage
+
+                // splitting catArray into different arrays with unique pageNumbers
+                for (let i = 1; i <= maxPageNumber; i++) {
+                    pageArray.push(
+                        catArray.filter((item) => item.categoryPage === i)
+                    )
+                }
+
+                //output Array:
+                // QuestionsArray = [cat1,cat2,cat3]
+                // cat1 = [[pg1],[pg2]]
+                // cat2 = [[pg1],[pg2]]
+                // cat3 = [[pg1],[pg2]]
+                // pg1 = question object with page 1 ...
+                QuestionsArray.push(pageArray)
+
+                pagesInEachCategory.push(maxPageNumber)
+            }
+            setCategoryNames(uniqueCategories)
+            setPagesInCategory(pagesInEachCategory)
+            setFormatedQuestions(QuestionsArray)
+        }
+    }, [questions])
+
+    //eg:pagesInCategory=[[3],[2],1[]]
+    // activeStep = 4
+    // setactiveStep(2)
+    const getActiveStep = (activeStep) => {
+        let sum = 0
+        console.log(pagesInCategory)
+        for (let i = 0; i < pagesInCategory.length; i++) {
+            sum = sum + pagesInCategory[i]
+            if (activeStep <= sum) {
+                setactiveStep(i)
+                break
+            }
+        }
+    }
+
+    const WizardNav = ({ activeStep }) => (
+        <div className=" hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12">
+            <div className="h-3/4 w-full flex items-center justify-center pl-8">
+                <ul>
+                    {categoryNames.map((item, index) => (
+                        <CategoryItem
+                            text={item}
+                            isActive={activeStep === index}
+                        />
+                    ))}
+                </ul>
+            </div>
+            <div className="h-1/4 w-2/3 flex items-center  ">
+                <img className="text-fpink" src={whiteLogo} alt="logo" />
+            </div>
+        </div>
+    )
+
+    const Symbols = () => (
         <>
-          <StepWizard isHashEnabled className="md:w-2/3">
-            <First hashKey={"FirstStep"} questions={aboutYouQuestions} />
-            <Second hashKey={"SecondStep"} questions={aboutYourBusiness} />
-            <Third questions={aboutYourBusiness} />
-          </StepWizard>
+            <div className="hidden md:w-1/12 md:flex md:justify-end">
+                <img src={symbolsVertical} alt="symbols" />
+            </div>
+            <div className="md:hidden h-12 items-end fixed bottom-0 z-10">
+                <img
+                    src={symbolsHorizontal}
+                    alt="logo"
+                    className="h-full object-cover object-left"
+                />
+            </div>
         </>
-      )}
-      <div className=" hidden md:flex justify-center items-center bg-fblue md:w-1/3 h-screen">
-        <ul>
-          <li>About you</li>
-          <li> About your business</li>
-          <li>Tell us more</li>
-        </ul>
-      </div>
-    </div>
-  );
+    )
 
-  // <div>THIS IS THE {memberType} FORM</div>;
-};
+    return (
+        <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
+            <Symbols />
+            {questions && (
+                <>
+                    {/* setactiveStep(res.activeStep) */}
+                    <StepWizard
+                        initialStep={1}
+                        onStepChange={(res) => getActiveStep(res.activeStep)}
+                        className="h-screen md:w-8/12 mb-8"
+                    >
+                        {formatedQuestions.map((catItems, catIndex, catArray) =>
+                            catItems.map((pagesItems, pageIndex, pageArray) => (
+                                <FormPage
+                                    questions={pagesItems}
+                                    isFirst={pageIndex === 0 && catIndex === 0}
+                                    isLast={
+                                        pageIndex === pageArray.length - 1 &&
+                                        catIndex === catArray.length - 1
+                                    }
+                                />
+                            ))
+                        )}
+                    </StepWizard>
+                </>
+            )}
+            <WizardNav activeStep={activeStep} />
+        </div>
+    )
+}
 
-export default Form;
+export default Form
