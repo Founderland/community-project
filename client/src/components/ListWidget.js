@@ -18,7 +18,7 @@ const styles = {
 const ListWidget = ({ title, data }) => {
     const [offset, setOffset] = useState(0)
     const [dataToDisplay, setDataToDisplay] = useState([])
-    const [perPage] = useState(10)
+    const [perPage] = useState(5)
     const [pageCount, setPageCount] = useState(0)
     const handlePageClick = (e) => {
         const selectedPage = e.selected
