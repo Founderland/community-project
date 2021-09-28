@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
+    "magic": "(cd client && npm start) & npm run dev",
     "both": "rm -rf build && cd client && npm run build && mv build ../ && cd .. && nodemon index.js"
   },
   "keywords": [],
