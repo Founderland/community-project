@@ -1,9 +1,9 @@
-const UserRouter = require("express").Router();
-const userController = require("../controllers/user");
-const passport = require("passport");
-const { isAdmin } = require("./auth.routes");
+const UserRouter = require('express').Router()
+const userController = require('../controllers/user')
+const passport = require('passport')
+const { isAdmin } = require('./auth.routes')
 
-const { registerValidation } = require("../helpers/validators");
+const { registerValidation } = require('../helpers/validators')
 
 // UserRouter.get(
 //   "/all",
@@ -11,12 +11,12 @@ const { registerValidation } = require("../helpers/validators");
 //   userController.findAll
 // );
 
-// UserRouter.post('/register', registerValidation, userController.addNew)
+UserRouter.post('/register', registerValidation, userController.addUser)
 
-UserRouter.get("/all", userController.findAll);
+UserRouter.get('/all', userController.findAll)
 
-UserRouter.get("/test", isAdmin, (req, res) => {
-  res.send(req.user);
-});
+UserRouter.get('/test', isAdmin, (req, res) => {
+    res.send(req.user)
+})
 
-module.exports = UserRouter;
+module.exports = UserRouter
