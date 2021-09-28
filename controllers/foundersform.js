@@ -3,6 +3,7 @@ const FoundersForm = require("../models/FoundersForm");
 const addNew = async (req, res) => {
   const { category, question, rank, type, answers, categoryPage } = req.body;
   try {
+    console.log(category, question, rank, type, answers, categoryPage);
     const newFoundersForm = await FoundersForm.create({
       category,
       categoryPage,
@@ -10,6 +11,7 @@ const addNew = async (req, res) => {
       rank,
       type,
       answers,
+      categoryPage,
     });
     res.status(200).json(newFoundersForm);
   } catch (e) {
