@@ -1,5 +1,6 @@
 const founderRouter = require("./founder.routes");
 const investorRouter = require("./investor.routes");
+const formRouter = require("./form.routes");
 const userRouter = require("./users.routes");
 const formRouter = require("./form.routes");
 const { authRouter, isUser, isAdmin } = require("./auth.routes");

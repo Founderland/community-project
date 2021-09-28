@@ -18,6 +18,7 @@ const founderFormSchem = new mongoose.Schema({
     enum: ["open", "list", "choice", "multiple"],
     required: true,
   },
+
   answers: [
     {
       answer: { type: String, required: true },
