@@ -1,10 +1,15 @@
-const AddNewAnswer = ({ setNewAnswer, newAnswer, handleNewAnswer }) => {
+const AddNewAnswer = ({
+  setNewAnswer,
+  newAnswer,
+  handleNewAnswer,
+  memberType,
+}) => {
   return (
     <>
       <div className=" flex flex-col lg:flex-row shadow-inner rounded-lg bg-gray-100 border-round-xl w-full p-5  xl:px-2">
         <div className=" flex flex-col w-full lg:w-3/6 xl:w-3/6 text-mono py-5   items-between justify-between lg:flex-row xl:justify-start lg:items-center">
           <label
-            for="newAnswer"
+            HtmlFor="newAnswer"
             className=" w-full lg:w-1/4 mb-5 xl:w-3/6 lg:mb-0">
             Add answer
           </label>
@@ -24,35 +29,44 @@ const AddNewAnswer = ({ setNewAnswer, newAnswer, handleNewAnswer }) => {
         </div>
 
         <div className="flex flex-col w-full lg:w-3/6 text-mono py-5   items-start  md:flex-row lg:justify-center md:items-center">
-          <div className="flex w-2/3  lg:w-3/6 items-center lg:justify-around">
-            <label
-              for="newAnswer"
-              className="  w-2/3 lg:w-2/6  lg:text-center lg:mb-0 ">
-              Score
-            </label>
-            <input
-              type="text"
-              id="score"
-              className=" p-2 border-solid border-gray-300 shadow-md w-2/6 xl:w-2/6 rounded-lg"
-              placeholder="0"
-              value={newAnswer.points}
-              onChange={(e) =>
-                setNewAnswer({ ...newAnswer, points: e.target.value })
-              }
-            />
-          </div>
-          <div className="flex flex-row  w-full  lg:w-5/6 text-mono py-5  items-center justify-between md:justify-evenly  ">
-            <label className=" text-center  lg:w-2/6   lg:mb-0 lg:ml-5">
-              Ideal?{" "}
-            </label>
-            <input
-              type="checkbox"
-              className=" lg:w-1/6 w-5 h-5 "
-              checked={newAnswer.ideal}
-              onChange={() =>
-                setNewAnswer({ ...newAnswer, ideal: !newAnswer.ideal })
-              }
-            />
+          {memberType === "founder" && (
+            <div className="flex w-2/3  lg:w-3/6 items-center lg:justify-around">
+              <label
+                HtmlFor="newAnswer"
+                className="  w-2/3 lg:w-2/6  lg:text-center lg:mb-0 ">
+                Score
+              </label>
+              <input
+                type="text"
+                id="score"
+                className=" p-2 border-solid border-gray-300 shadow-md w-2/6 xl:w-2/6 rounded-lg"
+                placeholder="0"
+                value={newAnswer.points}
+                onChange={(e) =>
+                  setNewAnswer({ ...newAnswer, points: e.target.value })
+                }
+              />
+            </div>
+          )}
+          <div
+            className={`flex flex-row  w-full  lg:w-5/6 text-mono py-5  items-center ${
+              memberType === "founder" ? "justify-between" : "flex flex-col "
+            } md:justify-evenly`}>
+            {memberType === "founder" && (
+              <>
+                <label className=" text-center  lg:w-2/6   lg:mb-0 lg:ml-5">
+                  Ideal?{" "}
+                </label>
+                <input
+                  type="checkbox"
+                  className=" lg:w-1/6 w-5 h-5 "
+                  checked={newAnswer.ideal}
+                  onChange={() =>
+                    setNewAnswer({ ...newAnswer, ideal: !newAnswer.ideal })
+                  }
+                />
+              </>
+            )}
             <button
               type="button"
               className="p-4 bg-fblue text-white lg:w-2/6 rounded-lg"

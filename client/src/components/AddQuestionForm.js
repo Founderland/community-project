@@ -3,8 +3,13 @@ import axios from "axios";
 import AddNewAnswer from "./AddNewAnswer";
 import NewQuestionResponse from "./NewQuestionResponse";
 import FormPreview from "./FormPreview";
+import { useParams } from "react-router";
 
 const AddQuestionForm = () => {
+  const { memberType } = useParams();
+
+  console.log(memberType);
+
   const [questionInfo, setQuestionInfo] = useState({
     category: "About You",
     question: "",
@@ -14,7 +19,7 @@ const AddQuestionForm = () => {
     categoryPage: 1,
   });
 
-  const [final, setFinal] = useState([]);
+  const [answersList, setAnswersList] = useState([]);
   const [newAnswer, setNewAnswer] = useState({
     answer: "",
     points: 0,
@@ -25,7 +30,10 @@ const AddQuestionForm = () => {
   const [showPreview, setShowPreview] = useState(false);
 
   const handleNewAnswer = (e) => {
-    setFinal((pre) => (pre.length > 0 ? [...pre, newAnswer] : [newAnswer]));
+    setAnswersList((pre) =>
+      pre.length > 0 ? [...pre, newAnswer] : [newAnswer]
+    );
+    // restoring default values
     setNewAnswer({
       answer: " ",
       points: 0,
@@ -34,10 +42,15 @@ const AddQuestionForm = () => {
   };
 
   const handleSubmit = () => {
-    const newQuestion = { ...questionInfo, answers: final };
-
+    let newQuestion = { ...questionInfo, answers: answersList };
+    // Deleting unnecessary fields for non founders
+    if (memberType !== "founder") {
+      delete newQuestion.rank;
+      newQuestion.answers.forEach((i) => delete i.points && delete i.ideal);
+    }
+    console.log(newQuestion);
     axios
-      .post("/api/form/founders/add", newQuestion)
+      .post(`/api/form/${memberType}/add`, newQuestion)
       .then((result) => {
         // console.log(result);
         setIsSuccessfull(true);
@@ -53,6 +66,7 @@ const AddQuestionForm = () => {
         }, 7000);
       });
 
+    // restoring default values
     setQuestionInfo({
       category: "About You",
       question: "",
@@ -61,17 +75,19 @@ const AddQuestionForm = () => {
       answers: [],
       categoryPage: 1,
     });
+    // emptying answers list
+    setAnswersList([]);
   };
 
   return (
-    <div className=" h-screen w-screen flex flex-col justify-evenly items-stretch text-xl m-4 shadow-xl ">
+    <div className=" h-full w-screen flex flex-col justify-evenly items-stretch text-xl m-4 shadow-xl ">
       <div className=" flex flex-col justify-center items-center bg-white py-4 rounded-lg">
         <NewQuestionResponse isSuccessful={isSuccessful} isError={isError} />
         <h1 className="text-grotesk font-bold p-3">Add new Questions</h1>
         <div className="h-full w-5/6 ">
           <div className="  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
-              for="newQuestion"
+              HtmlFor="newQuestion"
               className=" w-full lg:w-1/6 xl:w-64 mb-5 lg:m-0 ">
               Question
             </label>
@@ -91,7 +107,7 @@ const AddQuestionForm = () => {
             <div className="w-full flex justify-between xl:justify-start xl:w-full">
               <div className=" w-2/3 lg:w-1/2 xl:w-4/5 text-mono py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center xl:justify-start">
                 <label
-                  for="newQuestion"
+                  HtmlFor="newQuestion"
                   className=" w-full lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0">
                   Category
                 </label>
@@ -105,9 +121,7 @@ const AddQuestionForm = () => {
                       category: e.target.value,
                     })
                   }>
-                  <option default value="About You">
-                    About you
-                  </option>
+                  <option value="About You">About you</option>
                   <option value="About Your Business">
                     About Your Business
                   </option>
@@ -116,7 +130,7 @@ const AddQuestionForm = () => {
               </div>
               <div className="  w-1/5 lg:w-1/4 xl:w-1/3 text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center">
                 <label
-                  for="newQuestion"
+                  HtmlFor="newQuestion"
                   className=" w-full lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center">
                   Page
                 </label>
@@ -139,34 +153,40 @@ const AddQuestionForm = () => {
               </div>
             </div>
             <div className="w-full  text-mono py-5  flex flex-col items-between lg:flex-row lg:items-center justify-between ">
-              <label for="rank" className=" lg:w-1/6  mb-5   lg:mb-0  ">
-                Rank
-              </label>
-              <select
-                id="rank"
-                className="p-3  border-solid border-gray-300 w-auto shadow-md lg:w-5/6 rounded-lg"
-                value={questionInfo.rank}
-                onChange={(e) =>
-                  setQuestionInfo({ ...questionInfo, rank: e.target.value })
-                }>
-                <option value="Not Important - just for info/further context">
-                  Not Important - just for info/further context
-                </option>
-                <option value="Vital - Deal Maker or Breaker">
-                  Vital - Deal Maker or Breaker
-                </option>
-                <option value="Very Important - variable is scrutinized">
-                  {" "}
-                  Very Important - variable is scrutinized{" "}
-                </option>
-                <option value="Moderately Important - potentially a determining factor">
-                  Moderately Important - potentially a determining factor{" "}
-                </option>
-              </select>
+              {/* Hiding Rank for non founder memebers */}
+              {memberType === "founder" && (
+                <>
+                  <label HtmlFor="rank" className=" lg:w-1/6  mb-5   lg:mb-0  ">
+                    Rank
+                  </label>
+
+                  <select
+                    id="rank"
+                    className="p-3  border-solid border-gray-300 w-auto shadow-md lg:w-5/6 rounded-lg"
+                    value={questionInfo.rank}
+                    onChange={(e) =>
+                      setQuestionInfo({ ...questionInfo, rank: e.target.value })
+                    }>
+                    <option value="Not Important - just for info/further context">
+                      Not Important - just for info/further context
+                    </option>
+                    <option value="Vital - Deal Maker or Breaker">
+                      Vital - Deal Maker or Breaker
+                    </option>
+                    <option value="Very Important - variable is scrutinized">
+                      {" "}
+                      Very Important - variable is scrutinized{" "}
+                    </option>
+                    <option value="Moderately Important - potentially a determining factor">
+                      Moderately Important - potentially a determining factor{" "}
+                    </option>
+                  </select>
+                </>
+              )}
             </div>
             <div className="w-full lg:w-1/2 xl:w-full  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start xl:items-center">
               <label
-                for="newQuestion"
+                HtmlFor="newQuestion"
                 className=" lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 ">
                 Type of answer
               </label>
@@ -190,6 +210,7 @@ const AddQuestionForm = () => {
                 setNewAnswer={setNewAnswer}
                 newAnswer={newAnswer}
                 handleNewAnswer={handleNewAnswer}
+                memberType={memberType}
               />
             )}
           </div>
@@ -214,7 +235,7 @@ const AddQuestionForm = () => {
       {showPreview && (
         <FormPreview
           questionInfo={questionInfo}
-          final={final}
+          answersList={answersList}
           setShowPreview={setShowPreview}
         />
       )}
