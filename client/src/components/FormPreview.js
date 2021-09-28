@@ -1,4 +1,4 @@
-const FormPreview = ({ questionInfo, final, setShowPreview }) => {
+const FormPreview = ({ questionInfo, answersList, setShowPreview }) => {
   return (
     <div className="fixed h-full w-full bg-white">
       <span onClick={() => setShowPreview(false)}> &#10060; </span>
@@ -14,7 +14,7 @@ const FormPreview = ({ questionInfo, final, setShowPreview }) => {
             />
           ) : (
             <>
-              {final.map((answer) => (
+              {answersList.map((answer) => (
                 <div className="flex m-2 ">
                   <input
                     type="radio"

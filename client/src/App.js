@@ -22,7 +22,7 @@ function App() {
         {/* </div> */}
         <Route
           exact
-          path="/admin/founder/addQuestion"
+          path="/admin/:memberType/addQuestion"
           component={AddQuestionForm}
         />
       </Router>
