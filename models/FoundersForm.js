@@ -18,14 +18,16 @@ const founderFormSchem = new mongoose.Schema({
     enum: ["open", "list", "choice", "multiple"],
     required: true,
   },
+
   answers: [
     {
       answer: { type: String, required: true },
-      ideal: { type: String, enum: ["yes", "no"] },
+      ideal: { type: Boolean },
       points: { type: Number, required: true },
       notes: { type: String },
     },
   ],
+  categoryPage: { type: Number, required: true },
 });
 
 const FounderForm = mongoose.model("FounderForm", founderFormSchem);
