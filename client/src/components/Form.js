@@ -5,7 +5,7 @@ import FormPage from "./Forms/FormPage";
 import symbolsVertical from "../assets/images/symbol_vertical_big.png";
 import whiteLogo from "../assets/images/twoLinesWhite.svg";
 import CategoryItem from "./Forms/CategoryItem";
-
+import symbolsHorizontal from "../assets/images/SymbolsHorizontal.png"
 // const dumyData = [
 //   {
 //     _id: "614af929a47c96b7a3decf1e",
@@ -228,9 +228,15 @@ const Form = ({ match }) => {
   );
 
   const Symbols = () => (
+    <>
     <div className="hidden md:w-1/12 md:flex md:justify-end">
       <img src={symbolsVertical} alt="symbols" />
     </div>
+            <div className ="md:hidden h-12 items-end fixed bottom-0 z-10">
+            
+            <img src={symbolsHorizontal} alt="logo" className="h-full object-cover object-left" />
+      </div>
+      </>
   );
 
   return (
@@ -242,7 +248,7 @@ const Form = ({ match }) => {
           <StepWizard
             initialStep={1}
             onStepChange={(res) => getActiveStep(res.activeStep)}
-            className="h-screen md:w-8/12"
+            className="h-screen md:w-8/12 mb-8"
           >
             {formatedQuestions.map((catItems, catIndex, catArray) =>
               catItems.map((pagesItems, pageIndex, pageArray) => (

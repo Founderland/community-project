@@ -1,8 +1,0 @@
-.item::after{
-   content: "";
-   position: absolute;
-   height: 2rem;
-   border-left: solid 2px white;
-   left: 10px;
-   top: 28px;
-}

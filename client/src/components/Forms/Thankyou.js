@@ -2,27 +2,30 @@ import logoMdWhite from "../../assets/images/logo_md_white.png";
 import arrow from "../../assets/images/arrow.svg";
 import symbolVerticalBig from "../../assets/images/symbols_vertical_big.svg";
 import logoLgWhite from "../../assets/images/logo_large_white.png";
+import { AnswersContext } from "../../contexts/AnswersProvider";
+import { useContext } from "react"
 
 const Thankyou = () => {
+ 
   return (
     <div>
-      <div className=" h-screen flex-col">
+      <div className=" h-screen flex flex-col justify-end">
         <div className="flex w-screen justify-end h-4/5 md:h-full">
-          <div className="flex flex-col max-w-xs  md:max-w-full">
+          <div className="flex flex-col max-w-xs  md:max-w-full  justify-evenly justify-evenly">
             <div className="text-right flex justify-end pt-8 pr-6 md:pl-24 md:py-10 md:justify-start">
-              <img className="md:w-60 w-20" src={arrow} alt="Logo" />
+              <img className="md:w-56 w-20" src={arrow} alt="Logo" />
             </div>
             <div className="w-full text-hanson   pr-6  text-right md:text-left py-10 md:py-5 md:pl-24 ">
               <h1 className="text-5xl md:text-7xl"> THANK YOU </h1>
             </div>
             <div className="w-full text-grotesk pr-6 text-right md:text-left  md:px-24">
-              <h1 className="text-2xl">
-                We appreciate your effort and we will get back to you at our
-                earliest.
+              <h1 className="text-lg md:text-2xl  lg:text-2xl">
+              Thanks for showing  interest in our growing community! We will be in touch within a few weeks.
               </h1>
+              
             </div>
-            <div className="flex justify-center py-10 mt-4 md:mt-10">
-              <button class="bg-fpink hover:bg-fblue transition ease-in-out duration-600  text-white font-bold  py-2 px-4 border border-black-700 text-mono ">
+            <div className="flex justify-start pl-24 py-10 mt-4 pr-6 md:mt-10">
+              <button class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono ">
                 RETURN TO HOMEPAGE
               </button>
             </div>
@@ -44,7 +47,7 @@ const Thankyou = () => {
           </div>
         </div>
 
-        <div className="h-1/5 bg-black flex justify-end items-center p-6 md:hidden">
+        <div className="h-1/6 bg-black flex justify-end items-center p-6 md:hidden">
           <div>
             <img src={logoMdWhite} alt="Logo" />
           </div>
