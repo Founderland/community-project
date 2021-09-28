@@ -11,7 +11,6 @@ const addNew = async (req, res) => {
       rank,
       type,
       answers,
-      categoryPage,
     });
     res.status(200).json(newFoundersForm);
   } catch (e) {

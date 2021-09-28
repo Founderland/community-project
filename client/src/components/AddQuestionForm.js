@@ -37,9 +37,9 @@ const AddQuestionForm = () => {
     const newQuestion = { ...questionInfo, answers: final };
 
     axios
-      .post("/api/form/founders/add", newQuestion)
+      .post("http://localhost:3000/api/form/founders/add", newQuestion)
       .then((result) => {
-        // console.log(result);
+        console.log(result);
         setIsSuccessfull(true);
         setTimeout(() => {
           setIsSuccessfull(false);
@@ -72,7 +72,7 @@ const AddQuestionForm = () => {
           <div className="  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
               for="newQuestion"
-              className=" w-full lg:w-1/6 xl:w-64 mb-5 lg:m-0 ">
+              className=" w-full font-bold text-grotesk lg:w-1/6 xl:w-64 mb-5 lg:m-0 ">
               Question
             </label>
             <input
@@ -92,7 +92,7 @@ const AddQuestionForm = () => {
               <div className=" w-2/3 lg:w-1/2 xl:w-4/5 text-mono py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center xl:justify-start">
                 <label
                   for="newQuestion"
-                  className=" w-full lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0">
+                  className=" w-full text-grotesk font-bold lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0">
                   Category
                 </label>
                 <select
@@ -117,8 +117,8 @@ const AddQuestionForm = () => {
               <div className="  w-1/5 lg:w-1/4 xl:w-1/3 text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center">
                 <label
                   for="newQuestion"
-                  className=" w-full lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center">
-                  Page
+                  className=" w-full  text-grotesk font-bold lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center">
+                  Category Page
                 </label>
                 <select
                   id="category"
@@ -139,7 +139,9 @@ const AddQuestionForm = () => {
               </div>
             </div>
             <div className="w-full  text-mono py-5  flex flex-col items-between lg:flex-row lg:items-center justify-between ">
-              <label for="rank" className=" lg:w-1/6  mb-5   lg:mb-0  ">
+              <label
+                for="rank"
+                className="  text-grotesk font-bold lg:w-1/6  mb-5  lg:mb-0  ">
                 Rank
               </label>
               <select
@@ -167,7 +169,7 @@ const AddQuestionForm = () => {
             <div className="w-full lg:w-1/2 xl:w-full  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start xl:items-center">
               <label
                 for="newQuestion"
-                className=" lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 ">
+                className=" text-grotesk font-bold lg:w-1/3 xl:w-1/6 mb-5 lg:mb-0 ">
                 Type of answer
               </label>
               <select
@@ -203,7 +205,7 @@ const AddQuestionForm = () => {
             </button>
             <button
               type="button"
-              className="p-4 bg-fblue text-white rounded-lg "
+              className="p-4 bg-fblue text-white text-grotesk font-bold rounded-lg "
               onClick={handleSubmit}>
               {" "}
               Submit
