@@ -49,14 +49,13 @@ export default function SelectAnswer({answers, selectedAnswer}) {
 
 
    return (
-      <div className="w-64">
+      <div className="w-1/2">
       <div className="mt-1 relative">
           <button
               type="button"
               ref={selectButton}
               onClick={() => setShowList(!showList)}
-              className="relative w-full bg-white  border-gray mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm"
-          >
+              className="relative w-full bg-white  border-gray mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm md:text-lg" >
               <span className="flex items-center">
                   <span className="ml-3 block truncate">{selectedItem ? selectedItem : "Select Item"}</span>
               </span>
@@ -83,7 +82,7 @@ export default function SelectAnswer({answers, selectedAnswer}) {
                             role="listbox"
                             aria-labelledby="listbox-label"
                             aria-activedescendant="listbox-item-3"
-                            className="max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+                            className="max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm md:text-md xl:text-lg"
                   >
                      
                      {
