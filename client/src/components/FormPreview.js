@@ -1,51 +1,34 @@
-const FormPreview = ({ questionInfo, answersList, setShowPreview }) => {
-  return (
-    <div className="fixed h-full w-full bg-white">
-      <span onClick={() => setShowPreview(false)}> &#10060; </span>
-      <div className="  h-full flex justify-center items-center">
-        <div className="p-2 ">
-          <label for="">{questionInfo.question}</label>
-          {questionInfo.type === "open" ? (
-            <input
-              type="text"
-              className="p-2 my-2"
-              name="firstname"
-              placeholder="Your answer"
-            />
-          ) : (
-            <>
-              {answersList.map((answer) => (
-                <div className="flex m-2 ">
-                  <input
-                    type="radio"
-                    className="m-2"
-                    id={answer._id}
-                    name="fav_language"
-                    value={answer.answer}
-                  />
-                  {answer.answer !== "open" && (
-                    <>
-                      <label for="html"> {answer.answer}</label>
-                    </>
-                  )}
-                  {answer.answer === "open" && (
-                    <input
-                      type="text"
-                      id={answer._id}
-                      className="p-1"
-                      name={answer.answer}
-                      placeholder="open"
-                      onChange={(e) => console.log(e.target.id)}
-                    />
-                  )}
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+import Form from './Form'
 
-export default FormPreview;
+const FormPreview = ({
+    questionInfo,
+    answersList,
+    setShowPreview,
+    memberType,
+    questionPreview,
+}) => {
+    return (
+        <div
+            className="fixed h-full w-full bg-white 
+        "
+        >
+            <div className="flex justify-start items-center bg-fblue-dark">
+                <span
+                    className="bg-fblue-dark px-5 cursor-pointer"
+                    onClick={() => setShowPreview(false)}
+                >
+                    &#10060;
+                </span>
+                <h3 className="text-grotesk p-1 text-white">Close Preview</h3>
+            </div>
+            <div className="  h-full flex justify-center items-center">
+                <Form
+                    memberType={memberType}
+                    questionPreview={questionPreview}
+                />
+            </div>
+        </div>
+    )
+}
+
+export default FormPreview

@@ -291,9 +291,9 @@ const AddQuestionForm = () => {
             </div>
             {showPreview && (
                 <FormPreview
-                    questionInfo={questionInfo}
-                    answersList={answersList}
+                    questionPreview={{ ...questionInfo, answers: answersList }}
                     setShowPreview={setShowPreview}
+                    memberType={memberType}
                 />
             )}
         </div>

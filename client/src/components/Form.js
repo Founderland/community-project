@@ -130,7 +130,7 @@ import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
 //     __v: 0,
 //   },
 // ];
-const Form = ({ match }) => {
+const Form = ({ match, memberType, questionPreview }) => {
     // console.log(match);
     // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
     // const { memberType } = match.params;
@@ -143,9 +143,16 @@ const Form = ({ match }) => {
 
     useEffect(() => {
         axios
-            .get('http://localhost:3001/api/form/founder/questions')
+            .get(`http://localhost:3001/api/form/${memberType}/questions`)
             .then((res) => {
-                setQuestions(res.data)
+                if (questionPreview) {
+                    const data = res.data
+                    data.push(questionPreview)
+                    setQuestions(data)
+                } else {
+                    setQuestions(res.data)
+                }
+                console.log(res.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -264,6 +271,7 @@ const Form = ({ match }) => {
                         {formatedQuestions.map((catItems, catIndex, catArray) =>
                             catItems.map((pagesItems, pageIndex, pageArray) => (
                                 <FormPage
+                                    questionPreview={questionPreview}
                                     questions={pagesItems}
                                     isFirst={pageIndex === 0 && catIndex === 0}
                                     isLast={
