@@ -55,7 +55,7 @@ const ApplicantsDispatcher = () => {
 
                     <div className="h-1/4 w-1/2  md:h-4/5 md:w-full">
                         <Link
-                            to="/form/founder"
+                            to="/form/investor"
                             className=" h-full w-full flex bg-fblue md:bg-white md:w-full justify-center items-center md:flex-row-reverse xl:flex-col-reverse"
                         >
                             <div className="hidden md:flex items-center justify-end h-full md:w-2/6 xl:w-5/6 xl:hover:bg-fblue  xl:justify-center xl:items-center xl:relative ">
@@ -86,7 +86,7 @@ const ApplicantsDispatcher = () => {
                     </div>
                     <div className="h-1/4 w-1/2  md:h-4/5 md:w-full">
                         <Link
-                            to="/form/founder"
+                            to="/form/ally"
                             className=" h-full w-full flex bg-flime md:bg-white md:w-full justify-center items-center xl:flex-col-reverse"
                         >
                             <div className="hidden md:flex items-center justify-end h-full md:w-2/6 xl:w-5/6 xl:hover:bg-flime  xl:justify-center xl:items-center xl:relative ">

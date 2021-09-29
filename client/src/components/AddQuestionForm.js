@@ -272,7 +272,7 @@ const AddQuestionForm = () => {
                     <div className=" flex flex-row w-full items-center justify-center">
                         <button
                             type="button"
-                            className="hidden md:flex p-4 bg-white text-fblue rounded-lg "
+                            className="flex p-4 bg-white text-fblue rounded-lg "
                             onClick={() => setShowPreview(true)}
                         >
                             {' '}

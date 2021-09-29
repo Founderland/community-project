@@ -133,7 +133,9 @@ import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
 const Form = ({ match, memberType, questionPreview }) => {
     // console.log(match);
     // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
-    // const { memberType } = match.params;
+    if (match?.params.memberType) {
+        memberType = match.params.memberType
+    }
     const [questions, setQuestions] = useState([])
     const [activeStep, setactiveStep] = useState(0)
 
