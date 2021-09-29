@@ -10,7 +10,7 @@ const ApplicantsDispatcher = () => {
         <>
             <div className=" h-screen md:h-full w-full flex flex-col justify-between xl:items-center  ">
                 <div className="flex flex-col  justify-start items-center h-1/4 md:h-1/4 ">
-                    <FullLogo className="hidden md:flex w-screen h-60 " />
+                    <FullLogo className="hidden md:flex w-screen h-44 lg:h-60" />
                     <TwoLinesLogo className=" flex md:hidden h-auto w-screen" />
                     <h3 className="text-grotesk px-10 pb-5 text-xs md:text-base lg:text-xl xl:text-2xl">
                         WE’RE HERE TO BUILD A NEW INCLUSIVE, INTERSECTIONAL
@@ -27,7 +27,7 @@ const ApplicantsDispatcher = () => {
                                 <img
                                     src={FoundersLogo}
                                     alt="Founders logo"
-                                    className=" z-10 h-full w-full hover:opacity-0"
+                                    className=" z-10 h-full w-full xl:hover:opacity-0"
                                 />
                                 <div className="opacity-0 xl:opacity-100 absolute  z-0 flex flex-row ">
                                     <h2 className=" py-5 text-grotesk text-xl text-center text-white px-3">
@@ -40,7 +40,7 @@ const ApplicantsDispatcher = () => {
                                 </div>
                             </div>
                             <div className=" flex justify-center items-center md:w-2/6   xl:w-2/6 text-hanson   md:flex-col xl:text-3xl ">
-                                <h1 className="text-white md:text-black text-2xl xl:text-3xl ">
+                                <h1 className="text-white md:text-black text-2xl xl:text-4xl ">
                                     FOUNDER
                                 </h1>
                                 <div className="hidden md:block  xl:hidden text-grotesk text-xl text-center px-3">
@@ -62,7 +62,7 @@ const ApplicantsDispatcher = () => {
                                 <img
                                     src={InvestorsLogo}
                                     alt="Investors logo"
-                                    className=" z-10 h-full w-full hover:opacity-0"
+                                    className=" z-10 h-full w-full xl:hover:opacity-0"
                                 />
                                 <div className="opacity-0 xl:opacity-100 absolute  z-0 flex flex-row ">
                                     <h2 className=" py-5 text-grotesk text-xl text-center text-white px-3">
@@ -73,7 +73,7 @@ const ApplicantsDispatcher = () => {
                                 </div>
                             </div>
                             <div className=" flex justify-center items-center md:w-2/6   xl:w-2/6 text-hanson   md:flex-col xl:text-3xl  ">
-                                <h1 className="text-white md:text-black text-2xl xl:text-3xl ">
+                                <h1 className="text-white md:text-black text-2xl xl:text-4xl ">
                                     INVESTOR
                                 </h1>
                                 <div className="hidden md:block  xl:hidden text-grotesk text-xl text-center px-3 ">
@@ -93,7 +93,7 @@ const ApplicantsDispatcher = () => {
                                 <img
                                     src={AllyLogo}
                                     alt="Ally logo"
-                                    className=" z-10 h-full w-full hover:opacity-0"
+                                    className=" z-10 h-full w-full xl:hover:opacity-0"
                                 />
                                 <div className="opacity-0 xl:opacity-100 absolute  z-0 flex flex-row ">
                                     <h2 className=" py-5 text-grotesk text-xl text-center px-3">
@@ -104,7 +104,7 @@ const ApplicantsDispatcher = () => {
                                 </div>
                             </div>
                             <div className=" flex justify-center items-center md:w-2/6   xl:w-2/6 text-hanson   md:flex-col xl:text-3xl  ">
-                                <h1 className="text-2xl xl:text-3xl ">ALLY</h1>
+                                <h1 className="text-2xl xl:text-4xl ">ALLY</h1>
                                 <div className="hidden md:block  xl:hidden text-grotesk text-xl text-center px-3">
                                     Are you an individual seeking to tangibly
                                     support overlooked women founders in Europe?
@@ -113,14 +113,14 @@ const ApplicantsDispatcher = () => {
                         </Link>
                     </div>
                 </div>
-                <div className="flex flex-col-reverse justify-start  w-screen h-50   md:justify-end items-center md:h-1/4  ">
+                <div className="flex flex-col-reverse justify-start  w-screen h-60  md:justify-end items-center md:h-1/4  ">
                     <Link
                         className="flex items-center justify-center p-5 text-white text-center text-hanson  text-xl md:text-lg xl:text-3xl h-2/5 w-full  md:h-2/5 md:w-1/4 bg-black "
                         to="/form/newsletter"
                     >
                         NEWSLETTER <br className="hidden md:flex" /> SIGN-UP
                     </Link>
-                    <p className=" text-center md:flex  text-grotesk px-5 my-4 ">
+                    <p className=" text-center md:flex text-grotesk px-5 my-4 lg:text-2xl">
                         Subscribe to our newsletter and stay updated
                     </p>
                 </div>

@@ -21,11 +21,6 @@ function App() {
                 <Route exact path="/form/:memberType" component={Form} />
                 <Route exact path="/thankyou" component={Thankyou} />
                 <Route exact path="/admin" component={Admin} />
-                <Route
-                    exact
-                    path="/admin/:memberType/addQuestion"
-                    component={AddQuestionForm}
-                />
             </Router>
         </AnswersProvider>
     )
