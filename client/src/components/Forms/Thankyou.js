@@ -47,12 +47,19 @@ const Thankyou = () => {
                         />
                     </div>
 
-                    <div className="max-w-20 w-20  self-end md:w-2/12 lg:w-2/12 xl:w-1/12">
+                    <div className="max-w-20 w-20  self-end md:w-2/12 lg:w-2/12 xl:w-1/12 relative">
                         <img
                             className="md:w-full md:object-fit"
                             src={symbolVerticalBig}
                             alt="Logo"
                         />
+                        <div className=" hidden lg:flex lg:w-full absolute inset-x-0 bottom-0">
+                            <img
+                                className="lg:w-full lg:object-fit"
+                                src={founderlandGif}
+                                alt="Gif"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -63,13 +70,6 @@ const Thankyou = () => {
                 </div>
 
                 {/* Gif */}
-                <div className=" hidden  max-w-20 w-20 lg:flex self-end lg:w-1/12  xl:w-1/12 absolute ">
-                    <img
-                        className="lg:w-full lg:object-fit"
-                        src={founderlandGif}
-                        alt="Gif"
-                    />
-                </div>
             </div>
 
             {/* For desktop  */}

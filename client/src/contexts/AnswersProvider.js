@@ -1,35 +1,38 @@
-import { createContext,useState,useEffect } from "react";
-   export const AnswersContext = createContext(null);
+import { createContext, useState, useEffect } from 'react'
+
+// creating a context and exporting it
+export const AnswersContext = createContext(null)
 
 function AnswersProvider({ children }) {
-    
-   const [answers, setAnswers] = useState([])
-   const [submit, setSubmit] = useState(false)
+    const [answers, setAnswers] = useState([])
+    const [submit, setSubmit] = useState(false)
 
-   const answerHandler = (inputValue) => {
-      answers[inputValue.id] = inputValue.value;
-      setAnswers({ ...answers })
-      
-   }
+    const answerHandler = (inputValue) => {
+        answers[inputValue.id] = inputValue.value
+        setAnswers({ ...answers })
+    }
 
-   useEffect(() => {
-      console.log(answers)
-   }, [answers])
+    const submitHandler = (value) => {
+        setSubmit(value)
+    }
 
-   const submitHandler = () => {
-      setSubmit(true);
-   }
+    useEffect(() => {
+        console.log(answers)
+    }, [answers])
 
-   const previousHandler = () => {
-      setSubmit(false);
-   }
-
-   return (
-      <AnswersContext.Provider value={{ answers:answers, answerHandler:answerHandler, submit:submit, submitHandler:submitHandler, previousHandler:previousHandler }}>
-         {children}
-      </AnswersContext.Provider>
-   )
+    return (
+        //  Providing the context
+        <AnswersContext.Provider
+            value={{
+                answers: answers,
+                answerHandler: answerHandler,
+                submit: submit,
+                submitHandler: submitHandler,
+            }}
+        >
+            {children}
+        </AnswersContext.Provider>
+    )
 }
-
 
 export default AnswersProvider

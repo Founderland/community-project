@@ -207,7 +207,7 @@ const Form = ({ match }) => {
     // setactiveStep(2)
     const getActiveStep = (activeStep) => {
         let sum = 0
-        console.log(pagesInCategory)
+        // console.log(pagesInCategory)
         for (let i = 0; i < pagesInCategory.length; i++) {
             sum = sum + pagesInCategory[i]
             if (activeStep <= sum) {
