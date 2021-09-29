@@ -1,13 +1,15 @@
 const AlliesForm = require('../models/AlliesForm')
 
 const addNew = async (req, res) => {
-    const { category, question, rank, type, answers, categoryPage } = req.body
+    const { category, question, type, answers, categoryPage, mandatory } =
+        req.body
     try {
         const newInvestorsForm = await InvestorsForm.create({
             category,
             categoryPage,
             question,
             type,
+            mandatory,
             answers,
         })
         res.status(200).json(newInvestorsForm)

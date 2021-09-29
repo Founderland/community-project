@@ -47,7 +47,7 @@ const AddNewAnswer = ({
                                 onChange={(e) =>
                                     setNewAnswer({
                                         ...newAnswer,
-                                        points: e.target.value,
+                                        points: Number(e.target.value),
                                     })
                                 }
                             />

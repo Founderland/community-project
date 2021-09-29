@@ -5,26 +5,27 @@ import NewQuestionResponse from './NewQuestionResponse'
 import FormPreview from './FormPreview'
 import { useParams } from 'react-router'
 
-const AddQuestionForm = ({ memberType }) => {
-    //     const { memberType } = useParams()
+const AddQuestionForm = () => {
+    const { memberType } = useParams()
 
-    console.log(memberType)
-
-    const [questionInfo, setQuestionInfo] = useState({
+    const defaultQuestion = {
         category: 'About You',
         question: '',
         type: 'open',
         rank: 'Not Important - just for info/further context',
         answers: [],
         categoryPage: 1,
-    })
+        mandatory: true,
+    }
+    const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
 
     const [answersList, setAnswersList] = useState([])
-    const [newAnswer, setNewAnswer] = useState({
+    const defaultAnswer = {
         answer: '',
         points: 0,
         ideal: false,
-    })
+    }
+    const [newAnswer, setNewAnswer] = useState(defaultAnswer)
     const [isSuccessful, setIsSuccessfull] = useState(false)
     const [isError, setIsError] = useState(false)
     const [showPreview, setShowPreview] = useState(false)
@@ -34,11 +35,7 @@ const AddQuestionForm = ({ memberType }) => {
             pre.length > 0 ? [...pre, newAnswer] : [newAnswer]
         )
         // restoring default values
-        setNewAnswer({
-            answer: ' ',
-            points: 0,
-            ideal: false,
-        })
+        setNewAnswer(defaultAnswer)
     }
 
     const handleSubmit = () => {
@@ -72,14 +69,7 @@ const AddQuestionForm = ({ memberType }) => {
             })
 
         // restoring default values
-        setQuestionInfo({
-            category: 'About You',
-            question: '',
-            type: 'open',
-            rank: 'Not Important - just for info/further context',
-            answers: [],
-            categoryPage: 1,
-        })
+        setQuestionInfo(defaultQuestion)
         // emptying answers list
         setAnswersList([])
     }
@@ -94,11 +84,11 @@ const AddQuestionForm = ({ memberType }) => {
                 <h1 className="text-grotesk font-bold p-3">
                     Add new Questions
                 </h1>
-                <div className="h-full w-5/6 w-full">
+                <div className="h-full w-full px-5">
                     <div className="  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
                         <label
                             HtmlFor="newQuestion"
-                            className=" w-full font-bold text-grotesk lg:w-1/6 xl:w-64 mb-5 lg:m-0 "
+                            className=" w-full font-bold text-grotesk lg:w-1/6  mb-5 lg:m-0 "
                         >
                             Question
                         </label>
@@ -106,7 +96,7 @@ const AddQuestionForm = ({ memberType }) => {
                             type="text"
                             id="newQuestion"
                             name="newQuestion"
-                            className="p-3  shadow-md w-full lg:w-5/6 xl:w-full rounded-lg"
+                            className="p-3  shadow-md w-full lg:w-5/6 xl:w-4/6 rounded-lg"
                             placeholder="New question"
                             value={questionInfo.question}
                             onChange={(e) =>
@@ -216,31 +206,52 @@ const AddQuestionForm = ({ memberType }) => {
                                 </>
                             )}
                         </div>
-                        <div className="w-full lg:w-1/2 xl:w-full  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start xl:items-center">
-                            <label
-                                HtmlFor="newQuestion"
-                                className="text-grotesk font-bold lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 "
-                            >
-                                Type of answer
-                            </label>
-                            <select
-                                id="answerType"
-                                className="p-3  bg-white w-auto shadow-md lg:w-2/3 xl:w-3/6 rounded-lg"
-                                value={questionInfo.type}
-                                onChange={(e) =>
-                                    setQuestionInfo({
-                                        ...questionInfo,
-                                        type: e.target.value,
-                                    })
-                                }
-                            >
-                                <option value="open">Open</option>
-                                <option value="list">Dropdown list</option>
-                                <option value="choice"> Single Choice </option>
-                                <option value="multiple">
-                                    Multiple selections{' '}
-                                </option>
-                            </select>
+                        <div className="w-full  text-mono py-5  flex flex-row  items-start lg:items-center justify-between lg:flex-row xl:justify-start ">
+                            <div className="flex flex-col lg:flex-row lg:items-center xl:justify-between w-2/4">
+                                <label
+                                    HtmlFor="newQuestion"
+                                    className="text-grotesk font-bold lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 "
+                                >
+                                    Type of answer
+                                </label>
+                                <select
+                                    id="answerType"
+                                    className="p-3  bg-white w-auto shadow-md lg:w-2/3 xl:w-4/6 rounded-lg"
+                                    value={questionInfo.type}
+                                    onChange={(e) =>
+                                        setQuestionInfo({
+                                            ...questionInfo,
+                                            type: e.target.value,
+                                        })
+                                    }
+                                >
+                                    <option value="open">Open</option>
+                                    <option value="list">Dropdown list</option>
+                                    <option value="choice">
+                                        {' '}
+                                        Single Choice{' '}
+                                    </option>
+                                    <option value="multiple">
+                                        Multiple selections{' '}
+                                    </option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col lg:flex-row justify-start md:justify-evenly xl:justify-center items-center w-2/4 ">
+                                <label className=" text-grotesk font-bold text-center mb-9 lg:w-2/6 lg:mb-0 lg:ml-5">
+                                    Mandatory{' '}
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    className=" lg:w-1/6 w-5 h-5 "
+                                    checked={questionInfo.mandatory}
+                                    onChange={() =>
+                                        setQuestionInfo({
+                                            ...questionInfo,
+                                            mandatory: !questionInfo.mandatory,
+                                        })
+                                    }
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="text-mono py-5 flex flex-col flex-wrap  xl:flex-nowrap lg:flex-row items-center justify-between">

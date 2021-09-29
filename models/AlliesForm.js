@@ -15,6 +15,7 @@ const alliesFormSchema = new mongoose.Schema({
         },
     ],
     categoryPage: { type: Number, required: true },
+    mandatory: { type: Boolean, required: true },
 })
 
 const AlliesForm = mongoose.model('AlliesForm', alliesFormSchema)
