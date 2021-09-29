@@ -1,9 +1,4 @@
-import {
-  PencilAltIcon,
-  EyeIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from '@heroicons/react/outline'
+import { PencilAltIcon, EyeIcon } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
 import ReactPaginate from 'react-paginate'
 
@@ -125,14 +120,14 @@ const ListWidget = ({ title, data }) => {
                     <ReactPaginate
                       previousLabel={'<'}
                       previousClassName={
-                        'h-8 w-8 mr-1 flex justify-center items-center cursor-pointer text-lg hover:text-fblue'
+                        'w-8 mr-1 flex justify-center items-center cursor-pointer text-lg'
                       }
-                      previousLinkClassName={'outline-none'}
+                      previousLinkClassName={'outline-none hover:text-fblue'}
                       nextLabel={'>'}
                       nextClassName={
-                        'h-8 w-8 mr-1 flex justify-center items-center cursor-pointer text-lg hover:text-fblue'
+                        'w-8 mr-1 flex justify-center items-center cursor-pointer text-lg'
                       }
-                      nextLinkClassName={'outline-none'}
+                      nextLinkClassName={'outline-none hover:text-fblue'}
                       breakLabel={'...'}
                       breakClassName={
                         'w-8 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-150 ease-in border-t-2 border-transparent'
