@@ -31,6 +31,7 @@ const AddQuestionForm = () => {
     const [showPreview, setShowPreview] = useState(false)
 
     const handleNewAnswer = (e) => {
+        console.log(newAnswer.answer)
         setAnswersList((pre) =>
             pre.length > 0 ? [...pre, newAnswer] : [newAnswer]
         )
@@ -99,12 +100,16 @@ const AddQuestionForm = () => {
                             className="p-3  shadow-md w-full lg:w-5/6 xl:w-4/6 rounded-lg"
                             placeholder="New question"
                             value={questionInfo.question}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                const value = e.target.value.trimStart()
                                 setQuestionInfo({
                                     ...questionInfo,
-                                    question: e.target.value,
+                                    question: value.replace(
+                                        value[0],
+                                        value[0]?.toUpperCase()
+                                    ),
                                 })
-                            }
+                            }}
                         />
                     </div>
                     <div className="flex flex-col items-start lg:flex-wrap lg:flex-row lg:justify-start lg:justify-between lg:items-center ">

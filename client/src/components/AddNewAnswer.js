@@ -20,12 +20,16 @@ const AddNewAnswer = ({
                         className="p-3 border-solid  shadow-md lg:w-2/3 xl:w-full rounded-lg"
                         placeholder="New answer"
                         value={newAnswer.answer}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            const value = e.target.value.trimStart()
                             setNewAnswer({
                                 ...newAnswer,
-                                answer: e.target.value,
+                                answer: value.replace(
+                                    value[0],
+                                    value[0]?.toUpperCase()
+                                ),
                             })
-                        }
+                        }}
                     />
                 </div>
 
@@ -44,6 +48,7 @@ const AddNewAnswer = ({
                                 className=" p-2 shadow-md w-2/6 xl:w-2/6 rounded-lg"
                                 placeholder="0"
                                 value={newAnswer.points}
+                                // onFocus={(newAnswer.points = '')}
                                 onChange={(e) =>
                                     setNewAnswer({
                                         ...newAnswer,
