@@ -137,7 +137,7 @@ const AddQuestionForm = () => {
                                         About Your Business
                                     </option>
                                     <option value="Tell us more">
-                                        Tell us more
+                                        Tell Us More
                                     </option>
                                 </select>
                             </div>

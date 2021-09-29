@@ -43,12 +43,12 @@ const AddNewAnswer = ({
                                 Score
                             </label>
                             <input
-                                type="text"
+                                type="number"
                                 id="score"
                                 className=" p-2 shadow-md w-2/6 xl:w-2/6 rounded-lg"
                                 placeholder="0"
                                 value={newAnswer.points}
-                                // onFocus={(newAnswer.points = '')}
+                                onFocus={(newAnswer.points = '')}
                                 onChange={(e) =>
                                     setNewAnswer({
                                         ...newAnswer,
