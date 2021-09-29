@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { ReactComponent as LogoLines } from '../assets/2_lines.svg'
-import { ReactComponent as ErrorLogo } from '../assets/error_logo.svg'
+import { ReactComponent as LogoLines } from '../../assets/2_lines.svg'
+import { ReactComponent as ErrorLogo } from '../../assets/error_logo.svg'
 import { Dialog } from '@headlessui/react'
 
 const loginURL = '/api/auth/log-in'

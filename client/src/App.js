@@ -1,18 +1,14 @@
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import AddQuestionForm from './components/AddQuestionForm'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import ApplicantsDispatcher from './components/ApplicantsDispatcher'
 import Form from './components/Form'
-import Navbar from './components/Navbar'
 import Thankyou from './components/Forms/Thankyou'
 import AnswersProvider from './contexts/AnswersProvider'
-import Admin from './components/Admin'
+import Admin from './components/Admin/Admin'
 
 function App() {
     return (
         <AnswersProvider>
             <Router>
-                {/* <div className="flex  flex-col justify-center "> */}
-                {/* <Navbar /> */}
                 <Route
                     exact
                     path="/join-our-community"
@@ -21,11 +17,6 @@ function App() {
                 <Route exact path="/form/:memberType" component={Form} />
                 <Route exact path="/thankyou" component={Thankyou} />
                 <Route exact path="/admin" component={Admin} />
-                <Route
-                    exact
-                    path="/admin/:memberType/addQuestion"
-                    component={AddQuestionForm}
-                />
             </Router>
         </AnswersProvider>
     )

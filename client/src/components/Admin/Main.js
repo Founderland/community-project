@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import AdminMenu from './AdminMenu'
-import AdminContent from './AdminContent'
-import AdminHeader from './AdminHeader'
+import Menu from './Menu'
+import Content from './Content'
+import Header from './Header'
 
 const views = [
     'Dashboard',
@@ -13,7 +13,7 @@ const views = [
     'Profile',
 ]
 
-const AdminMain = ({ setLogged }) => {
+const Main = ({ setLogged }) => {
     const [menuToggle, setMenuToggle] = useState(false)
     const [view, setView] = useState(0)
     const changeView = (view) => {
@@ -30,20 +30,20 @@ const AdminMain = ({ setLogged }) => {
                         }fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden`}
                         onClick={() => setMenuToggle(false)}
                     ></div>
-                    <AdminMenu
+                    <Menu
                         view={view}
                         changeView={changeView}
                         menuToggle={menuToggle}
                         setMenuToggle={setMenuToggle}
                     />
                     <div className="flex-1 flex flex-col overflow-hidden">
-                        <AdminHeader
+                        <Header
                             view={views[view]}
                             setMenuToggle={setMenuToggle}
                             setLogged={setLogged}
                             setView={setView}
                         />
-                        <AdminContent view={views[view]} />
+                        <Content view={views[view]} />
                     </div>
                 </div>
             </div>
@@ -51,4 +51,4 @@ const AdminMain = ({ setLogged }) => {
     )
 }
 
-export default AdminMain
+export default Main
