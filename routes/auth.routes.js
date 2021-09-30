@@ -24,7 +24,6 @@ const isAdmin = (req, res, next) => {
 // Route to check if the user is logged in
 authRouter.get('/verify', isUser, (req, res) => {
   req.user.hashedPassword = null
-  console.log(req.user.hashedPassword)
   res.send(req.user)
 })
 

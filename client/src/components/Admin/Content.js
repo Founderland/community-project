@@ -1,8 +1,11 @@
+import { useContext } from 'react'
+import { AdminContext } from '../../contexts/Admin'
 import AddQuestionForm from './AddQuestionForm'
 import Dashboard from './Dashboard'
 import Settings from './Settings'
 
-const Content = ({ view }) => {
+const Content = () => {
+  const { view } = useContext(AdminContext)
   return (
     <main className="overflow-x-hidden">
       <div className="items-center mx-auto px-4 py-2">

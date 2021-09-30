@@ -1,18 +1,15 @@
 import { useState } from 'react'
 import Login from './Login'
 import Main from './Main'
+import UserContext from '../../contexts/User'
 
 const Admin = () => {
-    const [logged, setLogged] = useState(false)
-    return (
-        <>
-            {logged ? (
-                <Main setLogged={setLogged} />
-            ) : (
-                <Login setLogged={setLogged} />
-            )}
-        </>
-    )
+  const [user, setUser] = useState(null)
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {user ? <Main /> : <Login />}
+    </UserContext.Provider>
+  )
 }
 
 export default Admin

@@ -1,12 +1,14 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ReactComponent as LogoLines } from '../../assets/2_lines.svg'
 import { ReactComponent as ErrorLogo } from '../../assets/error_logo.svg'
 import { Dialog } from '@headlessui/react'
+import { UserContext } from '../../contexts/User'
 
 const loginURL = '/api/auth/log-in'
 
-const AdminLogin = ({ setLogged }) => {
+const AdminLogin = () => {
+  const { setUser } = useContext(UserContext)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [modal, setModal] = useState(false)
@@ -19,9 +21,9 @@ const AdminLogin = ({ setLogged }) => {
       const response = await axios.post(loginURL, loginData)
       //If confirmed (setLogged - Save Username)
       if (response.data.email) {
-        setLogged(true)
         setUsername('')
         setPassword('')
+        setUser(response.data)
       } else {
         setModalMessage(response.data.message)
         setModal(true)
