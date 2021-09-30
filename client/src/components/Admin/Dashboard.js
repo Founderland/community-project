@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import UserContext from '../../contexts/User'
 import ChartWidget from './ChartWidget'
 import CompactWidget from './CompactWidget'
 import ListWidget from './ListWidget'
@@ -13,6 +15,7 @@ import {
 } from './_DummyData'
 
 const AdminDashboard = () => {
+  const { user } = useContext(UserContext)
   return (
     <div className="flex flex-col w-full px-3">
       <div class=" md:flex lg:flex w-full">
@@ -20,10 +23,14 @@ const AdminDashboard = () => {
         <CompactWidget data={investors} />
         <CompactWidget data={allies} />
       </div>
-      <div class=" md:flex lg:flex w-full">
-        <CompactWidget data={approved} />
-        <CompactWidget data={rejected} />
-      </div>
+      {user.role === 'admin' ? (
+        <div class=" md:flex lg:flex w-full">
+          <CompactWidget data={approved} />
+          <CompactWidget data={rejected} />
+        </div>
+      ) : (
+        'nothing to show'
+      )}
       <div class="md:flex lg:flex w-full">
         <ListWidget title="Pending Final Review" data={listData} />
       </div>
