@@ -3,7 +3,7 @@ import { useContext, useState } from 'react'
 import { ReactComponent as LogoLines } from '../../assets/2_lines.svg'
 import { ReactComponent as ErrorLogo } from '../../assets/error_logo.svg'
 import { Dialog } from '@headlessui/react'
-import { UserContext } from '../../contexts/User'
+import UserContext from '../../contexts/User'
 
 const loginURL = '/api/auth/log-in'
 

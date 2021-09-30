@@ -1,174 +1,16 @@
+import ChartWidget from './ChartWidget'
 import CompactWidget from './CompactWidget'
 import ListWidget from './ListWidget'
-
-const founders = {
-  label: 'Founders',
-  value: 124,
-  change: 0,
-  percent: '▼ 42.8%',
-}
-
-const investors = {
-  label: 'Investors',
-  value: 200,
-  change: 0,
-  percent: '▼ 42.8%',
-}
-
-const allies = {
-  label: 'Allies',
-  value: 124,
-  change: 1,
-  percent: '▲ 57.1%',
-}
-
-const approved = {
-  label: 'Approved',
-  value: 50,
-  change: 1,
-  percent: '▲ 57.1%',
-}
-
-const rejected = {
-  label: 'Rejected',
-  value: 124,
-  change: 0,
-  percent: '▼ 42.8%',
-}
-
-const listData = {
-  header: [
-    {
-      title: 'Role',
-      key: 'role',
-      style: 'py-3 px-6 text-left whitespace-nowrap',
-    },
-    { title: 'Name', key: 'name', style: 'text-left' },
-    {
-      title: 'Reviewed By',
-      key: 'reviews',
-      style: 'text-center sm:block hidden',
-    },
-    { title: 'Status', key: 'status', style: 'text-center' },
-    { title: 'Actions', key: '-', style: 'text-center' },
-  ],
-  data: [
-    {
-      role: 'Founder',
-      name: 'Eshal Rosas1',
-      reviews: [
-        {
-          name: 'Stephanie von Behr',
-          avatar_url: 'https://randomuser.me/api/portraits/women/2.jpg',
-          role: 'admin',
-        },
-        {
-          name: 'Victor',
-          avatar_url: 'https://randomuser.me/api/portraits/men/1.jpg',
-          role: 'user',
-        },
-      ],
-      status: 'Pending',
-    },
-    {
-      role: 'Founder',
-      name: 'Marta Marta2',
-      reviews: [
-        {
-          name: 'Stephanie von Behr',
-          avatar_url: 'https://randomuser.me/api/portraits/women/2.jpg',
-          role: 'admin',
-        },
-        {
-          name: 'Victor',
-          avatar_url: 'https://randomuser.me/api/portraits/men/1.jpg',
-          role: 'user',
-        },
-      ],
-      status: 'Pending',
-    },
-    {
-      role: 'Founder',
-      name: 'Eshal Rosas3',
-      reviews: [],
-      status: 'New',
-    },
-    {
-      role: 'Investor',
-      name: 'Jackeline Jackeline4',
-      reviews: [
-        {
-          name: 'Stephanie von Behr',
-          avatar_url: 'https://randomuser.me/api/portraits/women/2.jpg',
-          role: 'admin',
-        },
-        {
-          name: 'Victor',
-          avatar_url: 'https://randomuser.me/api/portraits/men/1.jpg',
-          role: 'user',
-        },
-      ],
-      status: 'Pending',
-    },
-    {
-      role: 'Ally',
-      name: 'Eshal Rosas5',
-      reviews: [],
-      status: 'New',
-    },
-    {
-      role: 'Founder',
-      name: 'Rosa Rosa6',
-      reviews: [
-        {
-          name: 'Stephanie von Behr',
-          avatar_url: 'https://randomuser.me/api/portraits/women/2.jpg',
-          role: 'admin',
-        },
-        {
-          name: 'Victor',
-          avatar_url: 'https://randomuser.me/api/portraits/men/1.jpg',
-          role: 'user',
-        },
-        {
-          name: 'Sasmitha',
-          avatar_url: 'https://randomuser.me/api/portraits/women/2.jpg',
-          role: 'user',
-        },
-      ],
-      status: 'Reviewed',
-    },
-    {
-      role: 'Ally',
-      name: 'Eshal Rosas7',
-      reviews: [],
-      status: 'New',
-    },
-    {
-      role: 'Ally',
-      name: 'Beatrice Beatrice8',
-      reviews: [],
-      status: 'New',
-    },
-    {
-      role: 'Founder',
-      name: 'Eshal Rosas9',
-      reviews: [
-        {
-          name: 'Stephanie von Behr',
-          avatar_url: 'https://randomuser.me/api/portraits/women/2.jpg',
-          role: 'admin',
-        },
-        {
-          name: 'Victor',
-          avatar_url: 'https://randomuser.me/api/portraits/men/1.jpg',
-          role: 'user',
-        },
-      ],
-      status: 'Pending',
-    },
-  ],
-}
+import {
+  founders,
+  investors,
+  allies,
+  listData,
+  approved,
+  rejected,
+  applicants,
+  members,
+} from './_DummyData'
 
 const AdminDashboard = () => {
   return (
@@ -182,8 +24,16 @@ const AdminDashboard = () => {
         <CompactWidget data={approved} />
         <CompactWidget data={rejected} />
       </div>
-      <div class=" md:flex lg:flex w-full">
+      <div class="md:flex lg:flex w-full">
         <ListWidget title="Pending Final Review" data={listData} />
+      </div>
+      <div class="md:flex lg:flex w-full justify-around">
+        <div className="h-40 w-1/3">
+          <ChartWidget data={members} />
+        </div>
+        <div className="h-40 w-1/3">
+          <ChartWidget data={applicants} />
+        </div>
       </div>
     </div>
   )

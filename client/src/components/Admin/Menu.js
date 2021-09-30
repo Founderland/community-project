@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { ReactComponent as LogoLines } from '../../assets/2_lines.svg'
-import { AdminContext } from '../../contexts/Admin'
+import AdminContext from '../../contexts/Admin'
 
 const active = 'border-r-4 border-white bg-blue-700'
 
