@@ -100,7 +100,7 @@ const AdminLogin = () => {
           </div>
           <div className="mt-1 flex justify-end">
             <button className="text-grotesk text-xs text-gray-500">
-              Forget Password?
+              Forgot Password?
             </button>
           </div>
           <div className="mt-8">

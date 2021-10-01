@@ -17,13 +17,26 @@ const views = [
 const Main = ({ setLogged }) => {
   const [menuToggle, setMenuToggle] = useState(false)
   const [view, setView] = useState(0)
+  const [modalMessage, setModalMessage] = useState({})
+  const [modal, setModal] = useState(false)
   const changeView = (view) => {
     setView(view)
     setMenuToggle(!menuToggle)
   }
   return (
     <AdminContext.Provider
-      value={{ menuToggle, setMenuToggle, view, setView, changeView, views }}
+      value={{
+        menuToggle,
+        setMenuToggle,
+        view,
+        setView,
+        changeView,
+        views,
+        modalMessage,
+        setModalMessage,
+        modal,
+        setModal,
+      }}
     >
       <div>
         <div>

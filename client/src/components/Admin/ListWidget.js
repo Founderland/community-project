@@ -36,7 +36,7 @@ const ListWidget = ({ title, data }) => {
   return (
     <div className="w-full px-2">
       <p className="text-mono">{title}</p>
-      <div className="bg-white shadow-md my-4">
+      <div className="bg-white shadow-md my-4 overflow-auto">
         <table className="min-w-max w-full table-auto">
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -55,8 +55,8 @@ const ListWidget = ({ title, data }) => {
                     console.log(header.key)
                     if (Array.isArray(item[header.key])) {
                       return (
-                        <td className="">
-                          <div className={`py-3 px-6 ${header.style}`}>
+                        <td className={`py-3 px-6 ${header.style}`}>
+                          <div className="flex items-center justify-center">
                             <span className="">array</span>
                           </div>
                         </td>
@@ -113,48 +113,46 @@ const ListWidget = ({ title, data }) => {
                 </td>
               </tr>
             )}
-            {data.data.length > perPage && (
-              <tr className="border-b border-gray-200 hover:bg-gray-100">
-                <td colspan={data.header.length}>
-                  <div className="flex items-center justify-center">
-                    <ReactPaginate
-                      previousLabel={'<'}
-                      previousClassName={
-                        'w-8 mr-1 flex justify-center items-center cursor-pointer text-lg'
-                      }
-                      previousLinkClassName={'outline-none hover:text-fblue'}
-                      nextLabel={'>'}
-                      nextClassName={
-                        'w-8 mr-1 flex justify-center items-center cursor-pointer text-lg'
-                      }
-                      nextLinkClassName={'outline-none hover:text-fblue'}
-                      breakLabel={'...'}
-                      breakClassName={
-                        'w-8 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-150 ease-in border-t-2 border-transparent'
-                      }
-                      disabledClassName={'text-gray-100'}
-                      pageCount={pageCount}
-                      marginPagesDisplayed={1}
-                      pageRangeDisplayed={4}
-                      onPageChange={handlePageClick}
-                      containerClassName={
-                        'my-1 flex py-1 list-none outline-none text-mono'
-                      }
-                      pageClassName={
-                        'w-8 px-1 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-100 ease-in border-t-2 border-transparent hover:border-fred'
-                      }
-                      pageLinkClassName={'outline-none'}
-                      activeClassName={
-                        'w-8 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-100 ease-in border-t-2 border-fblue'
-                      }
-                      activeLinkClassName={'outline-none'}
-                    />
-                  </div>
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
+        {data.data.length > perPage && (
+          <div className="border-b min-w-max w-full border-gray-200">
+            <div className="flex items-center justify-center">
+              <ReactPaginate
+                previousLabel={'<'}
+                previousClassName={
+                  'w-8 mr-1 flex justify-center items-center cursor-pointer text-lg'
+                }
+                previousLinkClassName={'outline-none hover:text-fblue'}
+                nextLabel={'>'}
+                nextClassName={
+                  'w-8 mr-1 flex justify-center items-center cursor-pointer text-lg'
+                }
+                nextLinkClassName={'outline-none hover:text-fblue'}
+                breakLabel={'...'}
+                breakClassName={
+                  'w-8 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-150 ease-in border-t-2 border-transparent'
+                }
+                disabledClassName={'text-gray-100'}
+                pageCount={pageCount}
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={4}
+                onPageChange={handlePageClick}
+                containerClassName={
+                  'my-1 flex py-1 list-none outline-none text-mono'
+                }
+                pageClassName={
+                  'w-8 px-1 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-100 ease-in border-t-2 border-transparent hover:border-fred'
+                }
+                pageLinkClassName={'outline-none'}
+                activeClassName={
+                  'w-8 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-100 ease-in border-t-2 border-fblue'
+                }
+                activeLinkClassName={'outline-none'}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

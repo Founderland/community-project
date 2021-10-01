@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import AdminContext from '../../contexts/Admin'
 import AddQuestionForm from './AddQuestionForm'
 import Dashboard from './Dashboard'
+import Profile from './Profile'
 import Settings from './Settings'
 
 const Content = () => {
@@ -17,6 +18,7 @@ const Content = () => {
                     {view === 'Investors Form' && (
                         <AddQuestionForm memberType={'investor'} />
                     )} */}
+          {views[view] === 'Profile' && <Profile />}
           {views[view] === 'Settings' && <Settings />}
         </div>
       </div>
