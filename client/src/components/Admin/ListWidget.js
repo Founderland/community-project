@@ -9,10 +9,10 @@ const styles = {
   founder:
     'bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs',
   investor: 'bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs',
-  ally: 'bg-flime bg-opacity-50 text-green-900 py-1 px-3 rounded-full text-xs',
-  sadmin: 'border-fred',
-  admin: 'border-fblue',
-  user: 'border-fpink',
+  ally: 'bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs',
+  sadmin: 'bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs',
+  admin: 'bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs',
+  user: 'bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs',
 }
 
 const ListWidget = ({ title, data }) => {
@@ -24,13 +24,14 @@ const ListWidget = ({ title, data }) => {
     const selectedPage = e.selected
     setOffset(selectedPage)
   }
-  const getData = async () => {
+
+  useEffect(() => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
     setPageCount(Math.ceil(data.data.length / perPage))
-  }
-  useEffect(() => {
-    getData()
+    return () => {
+      setDataToDisplay([])
+    }
   }, [offset])
   return (
     <div className="w-full px-2">
@@ -47,7 +48,7 @@ const ListWidget = ({ title, data }) => {
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
-            {dataToDisplay.length ? (
+            {dataToDisplay?.length ? (
               dataToDisplay.map((item) => {
                 const cells = data.header.map((header) => {
                   if (header.key !== '-') {
@@ -67,7 +68,7 @@ const ListWidget = ({ title, data }) => {
                               className={
                                 styles[item[header.key].toLowerCase()]
                                   ? styles[item[header.key].toLowerCase()]
-                                  : 'text-mono'
+                                  : ''
                               }
                             >
                               {item[header.key]}

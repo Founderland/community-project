@@ -77,7 +77,7 @@ const AddUser = () => {
           </div>
         </div>
       </div>
-      <div className="-mx-3 px-3 flex flex-col-reverse sm:flex-row items-center justify-around mb-2">
+      <div className="-mx-3 px-3 flex flex-col-reverse sm:flex-row items-center justify-around">
         <button className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue my-2 text-white">
           Cancel
         </button>

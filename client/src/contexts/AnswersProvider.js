@@ -11,7 +11,7 @@ function AnswersProvider({ children }) {
   }
 
   useEffect(() => {
-    console.log(answers)
+    // console.log(answers)
   }, [answers])
 
   const submitHandler = () => {

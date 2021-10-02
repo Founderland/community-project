@@ -6,10 +6,10 @@ const authenticateUser = async (req, email, password, done) => {
   try {
     const user = await User.findOne({ email })
     if (!user) {
-      return done(null, false, { message: 'User not found' })
+      return done(null, false, { message: 'User not found, please try again' })
     }
     if (!bcrypt.compareSync(password, user.hashedPassword)) {
-      return done(null, false, { message: 'Wrong Password' })
+      return done(null, false, { message: 'Wrong Password, please try again' })
     }
     delete user.hashedPassword
     return done(null, user, { message: 'Logged in Successfully' })

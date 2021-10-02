@@ -3,9 +3,12 @@ import { useContext, useEffect, useState } from 'react'
 import ListWidget from './ListWidget'
 import Loading from '../Loading'
 import AdminContext from '../../contexts/Admin'
-import Modal from '../Modal'
+import InfoModal from '../InfoModal'
 import { Tab } from '@headlessui/react'
 import UserContext from '../../contexts/User'
+import { UserAddIcon } from '@heroicons/react/outline'
+import ComponentModal from '../ComponentModal'
+import AddUser from './AddUser'
 
 const usersAPI = '/api/users/all'
 
@@ -16,24 +19,31 @@ const classNames = (...classes) => {
 const Settings = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const { modalMessage, setModal, setModalMessage } = useContext(AdminContext)
+  const { modalMessage, modal, setModal, setModalMessage } =
+    useContext(AdminContext)
+  const [add, setAdd] = useState(false)
   const { user } = useContext(UserContext)
+
+  //Get all registered Users and set the result as data
   useEffect(() => {
+    let loaded = true
     axios
       .get(usersAPI)
       .then((res) => {
-        let result = {
-          header: [
-            { title: 'Name', key: 'name', style: '' },
-            { title: 'Email', key: 'email', style: '' },
-            { title: 'Role', key: 'role', style: '' },
-            { title: 'Added on', key: 'date', style: '' },
-            { title: 'Actions', key: '-', style: '' },
-          ],
+        if (loaded) {
+          let result = {
+            header: [
+              { title: 'Name', key: 'name', style: '' },
+              { title: 'Email', key: 'email', style: '' },
+              { title: 'Role', key: 'role', style: 'sm:block hidden' },
+              { title: 'Added on', key: 'date', style: '' },
+              { title: 'Actions', key: '-', style: '' },
+            ],
+          }
+          result = { ...result, ...res.data }
+          setData(result)
+          setLoading(false)
         }
-        result = { ...result, ...res.data }
-        setData(result)
-        setLoading(false)
       })
       .catch((err) => {
         setModalMessage({
@@ -42,12 +52,16 @@ const Settings = () => {
         })
         setModal(true)
       })
+
+    return function cleanup() {
+      loaded = false
+    }
   }, [])
 
   return (
     <div className="flex flex-col w-full">
       {/* Modal for Messages */}
-      <Modal message={modalMessage} />
+      <InfoModal message={modalMessage} modal={modal} setModal={setModal} />
       {/* Tabs for Navigation */}
       <Tab.Group>
         <Tab.List className="flex p-1 space-x-1 bg-fblue">
@@ -55,7 +69,7 @@ const Settings = () => {
             <Tab
               className={({ selected }) =>
                 classNames(
-                  'w-full py-2.5 text-mono leading-5 font-medium ',
+                  'w-full py-2.5 text-mono tracking-wide font-medium ',
                   'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-40',
                   selected
                     ? 'text-fblue bg-white shadow-xl'
@@ -71,7 +85,7 @@ const Settings = () => {
           <Tab
             className={({ selected }) =>
               classNames(
-                'w-full py-2.5 text-mono leading-5 font-medium',
+                'w-full leading-6 py-2.5 text-mono tracking-wide font-medium',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
                 selected
                   ? 'text-fblue bg-white shadow-xl'
@@ -87,7 +101,16 @@ const Settings = () => {
             <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
               {loading && <Loading />}
               {!loading && (
-                <ListWidget title="Current Registered Users" data={data} />
+                <div className="">
+                  <ListWidget title="Current Registered Users" data={data} />
+                  <button
+                    className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                    onClick={() => setAdd(true)}
+                  >
+                    <UserAddIcon className="h-5 w-5" />
+                    <p className="text-mono text-sm">Add user</p>
+                  </button>
+                </div>
               )}
             </Tab.Panel>
           ) : (
@@ -97,6 +120,9 @@ const Settings = () => {
         </Tab.Panels>
       </Tab.Group>
       {/* Data to display */}
+      <ComponentModal modal={add} setModal={setAdd}>
+        <AddUser />
+      </ComponentModal>
     </div>
   )
 }

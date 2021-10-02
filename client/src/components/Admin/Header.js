@@ -21,7 +21,7 @@ const AdminHeader = () => {
           <MenuIcon className="h-6 w-6" />
         </button>
         <div>
-          <h1 className="text-2xl font-medium text-mono text-gray-800">
+          <h1 className="text-sm sm:text-2xl font-medium text-mono text-gray-800">
             {views[view]}
           </h1>
         </div>
