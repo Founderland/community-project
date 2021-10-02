@@ -6,6 +6,7 @@ export const AnswersContext = createContext(null)
 function AnswersProvider({ children }) {
     const [answers, setAnswers] = useState([])
     const [submit, setSubmit] = useState(false)
+    const [next, setNext] = useState(false)
 
     const answerHandler = (inputValue) => {
         answers[inputValue.id] = inputValue.value
@@ -14,6 +15,9 @@ function AnswersProvider({ children }) {
 
     const submitHandler = (value) => {
         setSubmit(value)
+    }
+    const nextHandler = (value) => {
+        setNext(value)
     }
 
     useEffect(() => {
@@ -28,6 +32,8 @@ function AnswersProvider({ children }) {
                 answerHandler: answerHandler,
                 submit: submit,
                 submitHandler: submitHandler,
+                nextHandler: nextHandler,
+                next: next,
             }}
         >
             {children}
