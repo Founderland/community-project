@@ -85,6 +85,7 @@ export default function SelectAnswer({ answers, selectedAnswer }) {
                             className="absolute mt-1 w-full z-10 rounded-md bg-white shadow-lg"
                         >
                             <ul
+                                required
                                 tabIndex={-1}
                                 role="listbox"
                                 aria-labelledby="listbox-label"
