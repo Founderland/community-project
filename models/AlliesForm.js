@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 // const Investor = require("./InvestorApplicant");
 
-const investorsFormSchema = new mongoose.Schema({
+const alliesFormSchema = new mongoose.Schema({
     category: { type: String, required: true },
     question: { type: String, required: true },
     type: {
@@ -18,6 +18,6 @@ const investorsFormSchema = new mongoose.Schema({
     mandatory: { type: Boolean, required: true },
 })
 
-const InvestorsForm = mongoose.model('InvestorsForm', investorsFormSchema)
+const AlliesForm = mongoose.model('AlliesForm', alliesFormSchema)
 
-module.exports = InvestorsForm
+module.exports = AlliesForm

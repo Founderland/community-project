@@ -1,4 +1,4 @@
-const InvestorsForm = require('../models/InvestorsForm')
+const AlliesForm = require('../models/AlliesForm')
 
 const addNew = async (req, res) => {
     const { category, question, type, answers, categoryPage, mandatory } =
@@ -20,7 +20,7 @@ const addNew = async (req, res) => {
 }
 
 const findAll = async (req, res) => {
-    const result = await InvestorsForm.find({})
+    const result = await AlliesForm.find({})
     res.status(200).json(result)
 }
 

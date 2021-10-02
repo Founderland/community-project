@@ -1,48 +1,120 @@
-const AdminLogin = ({setLogged}) => {
+import axios from 'axios'
+import { useState } from 'react'
+import { ReactComponent as LogoLines } from '../assets/2_lines.svg'
+import { ReactComponent as ErrorLogo } from '../assets/error_logo.svg'
+import { Dialog } from '@headlessui/react'
+
+const loginURL = '/api/auth/log-in'
+
+const AdminLogin = ({ setLogged }) => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [modal, setModal] = useState(false)
+    const [modalMessage, setModalMessage] = useState(
+        'Sorry something went wrong'
+    )
+
+    const login = async () => {
+        const loginData = { email: username, password }
+        //Axios call
+        try {
+            const response = await axios.post(loginURL, loginData)
+            //If confirmed (setLogged - Save Username)
+            if (response.data.email) {
+                setLogged(true)
+            } else {
+                setModalMessage(response.data.message)
+                setModal(true)
+            }
+        } catch (err) {
+            //If error modal with error details
+            console.log(err)
+            setModalMessage('Sorry something went wrong')
+            setModal(true)
+        }
+        setUsername('')
+        setPassword('')
+    }
+
     return (
-       
         <div className="flex h-screen justify-center items-center w-full ">
-<div className="flex bg-white shadow-lg lg:w-2/3 xl:w-1/2">
-            <div className="hidden lg:block lg:w-1/2 bg-fblue">
+            <Dialog
+                open={modal}
+                onClose={() => setModal(false)}
+                className="fixed z-10 inset-0 overflow-y-auto"
+            >
+                <div className="flex items-center justify-center min-h-screen h-full">
+                    <Dialog.Overlay className="fixed inset-0 bg-black opacity-40" />
+                    <div className="relative  bg-white rounded max-w-sm w-4/6 h-1/6 h-2/6 md:h-1/6 p-5">
+                        <div className="flex flex-col justify-between bg-gray-50 h-full rounded-lg shadow-inner items-center">
+                            <Dialog.Title className="bg-fred-light text-white text-center text-mono font-bold rounded-t p-2 w-full">
+                                Authentication Failed
+                            </Dialog.Title>
+                            <Dialog.Description className="flex justify-evenly items-center text-center text-mono text-lg w-full p-1 ">
+                                <ErrorLogo />
+                                {modalMessage}
+                            </Dialog.Description>
+                            <button
+                                className="  bg-flime text-black hover:bg-fblue hover:text-white text-mono p-2 w-1/2 sel"
+                                onClick={() => setModal(false)}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </Dialog>
+            <div className="flex bg-white shadow-lg lg:w-2/3 xl:w-1/2">
+                <div className="hidden lg:block lg:w-1/2 bg-fblue"></div>
+                <div className="w-full p-8 lg:w-1/2">
+                    <div className="flex justify-center">
+                        <LogoLines />
+                    </div>
+                    <div className="mt-4 flex items-center justify-between">
+                        <span className="border-b w-1/5 lg:w-1/4"></span>
+                        <p className="text-grotesk text-center text-blue-500 uppercase">
+                            Admin login
+                        </p>
+                        <span className="border-b w-1/5 lg:w-1/4"></span>
+                    </div>
+                    <div className="mt-4">
+                        <label className="text-grotesk block text-sm font-bold mb-2">
+                            Username
+                        </label>
+                        <input
+                            className="border border-gray-300 py-2 px-4 block w-full appearance-none"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <label className="text-grotesk block text-sm font-bold mb-2">
+                            Password
+                        </label>
+                        <input
+                            className="border border-gray-300 py-2 px-4 block w-full appearance-none"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <div className="mt-1 flex justify-end">
+                        <button className="text-grotesk text-xs text-gray-500">
+                            Forget Password?
+                        </button>
+                    </div>
+                    <div className="mt-8">
+                        <button
+                            className="w-full px-4 py-2 text-mono font-bold bg-flime transition-colors ease-in-out duration-500 hover:bg-fblue text-xs text-black hover:text-white"
+                            onClick={login}
+                        >
+                            Login
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div className="w-full p-8 lg:w-1/2">
-            <div className="flex justify-center">
-                <svg width="300" height="100" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" >
-                <path id="Path" d="M32.79 21.36 L108.11 21.36 108.11 42.76 56.11 42.76 56.11 49.57 96.82 49.57 96.82 70.17 56.1 70.17 56.1 91.67 32.79 91.67 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-1" d="M156.12 20.36 C161.738 20.314 167.352 20.665 172.92 21.41 177.547 22.044 182.08 23.236 186.42 24.96 190.222 26.413 193.679 28.644 196.57 31.51 199.339 34.421 201.438 37.902 202.72 41.71 204.28 46.368 205.028 51.259 204.93 56.17 205.019 60.976 204.361 65.766 202.98 70.37 201.824 74.101 199.914 77.556 197.37 80.52 194.715 83.447 191.433 85.737 187.77 87.22 183.464 89.014 178.943 90.241 174.32 90.87 168.521 91.659 162.672 92.026 156.82 91.97 Q132.01 91.97 120.76 82.92 109.51 73.87 109.51 54.92 109.51 37.31 121.01 28.86 132.51 20.41 156.12 20.36 Z M157.02 73.57 Q167.61 73.57 173.42 69.27 179.23 64.97 179.22 56.17 179.22 47.66 173.12 43.17 167.02 38.68 156.72 38.72 C153.513 38.674 150.314 39.061 147.21 39.87 144.733 40.509 142.429 41.687 140.46 43.32 138.726 44.818 137.372 46.707 136.51 48.83 135.61 51.157 135.169 53.636 135.21 56.13 135.025 60.964 137.049 65.619 140.71 68.78 Q146.22 73.58 157 73.57 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-2" d="M254.83 91.67 Q239.14 91.67 228.63 88.57 218.12 85.47 214.13 77.87 C212.007 73.42 210.686 68.63 210.23 63.72 209.438 55.258 209.104 46.759 209.23 38.26 L209.33 21.46 233.93 21.46 233.93 52.87 C233.918 54.658 234.018 56.445 234.23 58.22 234.497 60.002 235.019 61.737 235.78 63.37 236.555 65.166 237.736 66.758 239.23 68.02 241.075 69.447 243.181 70.5 245.43 71.12 248.5 72.006 251.685 72.427 254.88 72.37 258.062 72.431 261.235 72.01 264.29 71.12 266.476 70.52 268.517 69.482 270.29 68.07 271.712 66.787 272.824 65.197 273.54 63.42 274.266 61.781 274.754 60.047 274.99 58.27 275.166 56.475 275.249 54.673 275.24 52.87 L275.24 21.46 299.84 21.46 299.84 38.26 C300.024 46.757 299.723 55.257 298.94 63.72 298.484 68.63 297.164 73.42 295.04 77.87 293.623 80.562 291.583 82.876 289.09 84.62 286.28 86.569 283.149 88.008 279.84 88.87 276.105 89.897 272.292 90.616 268.44 91.02 263.918 91.482 259.375 91.699 254.83 91.67 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-3" d="M394.76 91.67 L363 91.67 328.6 49.37 328.6 91.67 305.24 91.67 305.24 21.46 337.75 21.46 371.55 63.07 371.55 21.46 394.76 21.46 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-4" d="M449.47 91.67 L401.16 91.67 401.16 21.67 449.16 21.67 C453.206 21.639 457.249 21.889 461.26 22.42 464.94 22.961 468.535 23.969 471.96 25.42 475.344 26.773 478.409 28.817 480.96 31.42 483.61 34.349 485.604 37.809 486.81 41.57 488.404 46.444 489.165 51.553 489.06 56.68 489.134 61.455 488.321 66.202 486.66 70.68 485.298 74.44 483.15 77.866 480.36 80.73 477.668 83.362 474.555 85.525 471.15 87.13 467.774 88.782 464.192 89.976 460.5 90.68 456.862 91.351 453.169 91.683 449.47 91.67 Z M447.87 72.57 C451.135 72.663 454.37 71.923 457.27 70.42 459.699 69.158 461.687 67.188 462.97 64.77 464.204 62.287 464.821 59.543 464.77 56.77 Q464.77 49.57 460.77 45.21 456.77 40.85 447.92 40.86 L424.52 40.86 424.52 72.57 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-5" d="M493.18 21.46 L570.69 21.46 570.69 41 516.48 41 516.48 47.2 567.29 47.2 567.29 65.91 516.48 65.91 516.48 72.21 570.69 72.21 570.69 91.71 493.18 91.71 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-6" d="M575.89 21.46 L627.5 21.46 C628.83 21.46 630.1 21.46 631.3 21.56 632.994 21.688 634.679 21.905 636.35 22.21 638.36 22.539 640.337 23.041 642.26 23.71 644.249 24.456 646.144 25.429 647.91 26.61 649.839 27.85 651.546 29.405 652.96 31.21 654.463 33.254 655.613 35.536 656.36 37.96 657.301 40.972 657.756 44.115 657.71 47.27 Q657.71 63.86 644.8 70.97 L659.21 91.67 632.3 91.57 620.3 75.07 599.2 75.07 599.2 91.67 575.89 91.67 Z M625.3 54.57 Q634 54.57 634 47.97 634 41.97 624.9 41.97 L599.2 41.97 599.2 54.58 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-7" d="M316.84 156 L367.76 156 367.76 179.3 293.54 179.3 293.54 109.13 316.84 109.13 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-8" d="M439.27 109.33 L470.77 179.33 443.77 179.33 438.47 167.53 403.76 167.53 398.46 179.33 371.65 179.33 403.06 109.33 Z M412.06 147.33 L430.16 147.33 421.06 128.93 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-9" d="M564.79 179.34 L533 179.34 498.58 137 498.58 179.31 475.27 179.31 475.27 109.13 507.78 109.13 541.58 150.74 541.58 109.13 564.79 109.13 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-10" d="M619.6 179.34 L571.29 179.34 571.29 109.34 619.29 109.34 C623.336 109.309 627.379 109.559 631.39 110.09 635.073 110.631 638.672 111.639 642.1 113.09 645.482 114.447 648.546 116.49 651.1 119.09 653.766 122.011 655.778 125.468 657 129.23 658.593 134.101 659.354 139.206 659.25 144.33 659.323 149.105 658.51 153.852 656.85 158.33 655.479 162.071 653.332 165.479 650.55 168.33 647.859 170.962 644.746 173.125 641.34 174.73 637.964 176.382 634.382 177.576 630.69 178.28 627.034 178.978 623.322 179.333 619.6 179.34 Z M618 160.24 C621.265 160.333 624.5 159.593 627.4 158.09 629.827 156.825 631.814 154.855 633.1 152.44 634.333 149.956 634.951 147.212 634.9 144.44 Q634.9 137.24 630.9 132.89 626.9 128.54 618 128.53 L594.6 128.53 594.6 160.24 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                <path id="Path-11" d="M209.55 126.83 L252.6 126.83 212.02 166.84 223.86 179.32 264.97 139.2 264.97 179.32 282.47 179.32 282.47 109.33 209.55 109.33 Z" fill="#000000" fill-opacity="1" stroke="none"/>
-                </svg>
-            </div>
-             <div className="mt-4 flex items-center justify-between">
-                    <span className="border-b w-1/5 lg:w-1/4"></span>
-                    <p className="text-grotesk text-center text-blue-500 uppercase">Admin login</p>
-                    <span className="border-b w-1/5 lg:w-1/4"></span>
-                </div>
-                <div className="mt-4">
-                    <label className="text-grotesk block text-sm font-bold mb-2">Username</label>
-                    <input className="border border-gray-300 py-2 px-4 block w-full appearance-none"/>
-                </div>
-                <div className="mt-4">
-                        <label className="text-grotesk block text-sm font-bold mb-2">Password</label>
-                        <input className="border border-gray-300 py-2 px-4 block w-full appearance-none" type="password"/>
-                </div>
-                <div className="mt-1 flex justify-end">
-                    <button className="text-grotesk text-xs text-gray-500">Forget Password?</button>
-                </div>
-                <div className="mt-8">
-                    <button className="w-full px-4 py-2 text-mono font-bold bg-flime transition-colors ease-in-out duration-500 hover:bg-fblue text-xs text-black hover:text-white" onClick={setLogged}>Login</button>
-                </div>
-            </div>
-        </div></div>)
+        </div>
+    )
 }
 
 export default AdminLogin

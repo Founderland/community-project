@@ -6,7 +6,11 @@ const Admin = () => {
     const [logged, setLogged] = useState(false)
     return (
         <>
-        {logged ? <AdminMain setLogged={setLogged}/> : <AdminLogin setLogged={setLogged}/>}
+            {logged ? (
+                <AdminMain setLogged={setLogged} />
+            ) : (
+                <AdminLogin setLogged={setLogged} />
+            )}
         </>
     )
 }

@@ -134,6 +134,7 @@ const Form = ({ match }) => {
     // console.log(match);
     // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
     // const { memberType } = match.params;
+
     const [questions, setQuestions] = useState([])
     const [activeStep, setactiveStep] = useState(0)
 
@@ -269,6 +270,10 @@ const Form = ({ match }) => {
                                     isLast={
                                         pageIndex === pageArray.length - 1 &&
                                         catIndex === catArray.length - 1
+                                    }
+                                    uniquePageNumber={
+                                        pageIndex.toString() +
+                                        catIndex.toString()
                                     }
                                 />
                             ))

@@ -33,7 +33,6 @@ export default function SelectAnswer({ answers, selectedAnswer }) {
 
     const listItem = (text, index) => (
         <li
-            key="{text}"
             id="listbox-item-0"
             role="option"
             onClick={() => itemClicked(text, index)}

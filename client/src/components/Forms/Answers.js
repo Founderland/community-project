@@ -3,10 +3,23 @@ import { AnswersContext } from '../../contexts/AnswersProvider'
 
 import { useContext, useEffect, useState } from 'react'
 
-const Answers = ({ type, answers, questionId }) => {
+const Answers = ({
+    type,
+    answers,
+    questionId,
+    uniquePageNumber,
+    questionName,
+}) => {
     const [answerData, setAnswerData] = useState({})
 
-    const { submit, answerHandler } = useContext(AnswersContext)
+    const {
+        submit,
+        answerHandler,
+        next,
+        nextHandler,
+        pageNumber,
+        questionPageHandler,
+    } = useContext(AnswersContext)
 
     useEffect(() => {
         if (submit) {
@@ -16,8 +29,22 @@ const Answers = ({ type, answers, questionId }) => {
 
     const selectedAnswer = (answer) => {
         setAnswerData({ id: questionId, value: answer })
-        console.log(answer)
     }
+
+    useEffect(() => {
+        if (next) {
+            if (pageNumber === uniquePageNumber) {
+                if (answerData && Object.keys(answerData).length === 0) {
+                    console.log('field is empty')
+                    questionPageHandler(false)
+                } else {
+                    console.log('validated')
+                    questionPageHandler(true)
+                }
+                nextHandler(false)
+            }
+        }
+    }, [next])
 
     return (
         <div className="">

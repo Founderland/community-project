@@ -1,34 +1,72 @@
 import Question from './Question'
 import smallLogo from '../../assets/images/smallLogo.svg'
-import Thankyou from './Thankyou'
 import { useHistory } from 'react-router-dom'
-import arrow from '../../assets/images/arrow.svg'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AnswersContext } from '../../contexts/AnswersProvider'
+import gif from '../../assets/images/loadingGif.gif'
 
 const FormPage = (props) => {
-    const { submitHandler } = useContext(AnswersContext)
+    const { questions, isFirst, isLast, uniquePageNumber } = props
+    const [submitBtnClicked, setsubmitBtnClicked] = useState(false)
+    const {
+        submitHandler,
+        nextHandler,
+        pageHandler,
+        pageValidate,
+        next,
+        submit,
+        clearValidationHandler,
+    } = useContext(AnswersContext)
+    const [gify, setGify] = useState(false)
 
     const history = useHistory()
 
-    const submit = () => {
-        submitHandler(true)
-
-        const timer = setTimeout(() => {
-            let path = `/thankyou`
-            history.push(path)
-        }, 2000)
-        return () => clearTimeout(timer)
+    const submitBtn = () => {
+        nextBtn()
+        setsubmitBtnClicked(true)
     }
 
     const previous = () => {
         submitHandler(false)
         props.previousStep()
     }
+    const nextBtn = () => {
+        nextHandler(true)
+        console.log(uniquePageNumber)
+        pageHandler(uniquePageNumber)
+    }
 
-    const { questions, isFirst, isLast } = props
+    useEffect(() => {
+        if (pageValidate) {
+            console.log('submit', submit)
+            submitBtnClicked && submitHandler(true)
+            if (!submit) {
+                props.nextStep()
+            }
+        }
+        if (submit) {
+            setGify(true)
+            const timer = setTimeout(() => {
+                let path = `/thankyou`
+                history.push(path)
+                setGify(false)
+            }, 1500)
+            return () => {
+                clearTimeout(timer)
+            }
+        }
+        clearValidationHandler()
+    }, [pageValidate, next, submit])
+
     return (
         <div>
+            {/* 
+                    Loading gif  */}
+            {gify && (
+                <div classname="absolute w-screen h-screen">
+                    <img src={gif} alt="gif" />
+                </div>
+            )}
             <div className="max-h-screen w-screen md:w-full flex justify-center flex-col overflow-y-scroll md:overflow-hidden ">
                 <div className=" flex flex-col justify-between  p-10 h-screen">
                     <div className="flex  justify-between md:justify-end mb-7">
@@ -50,7 +88,11 @@ const FormPage = (props) => {
                     </div>
                     <div>
                         {questions.map((question, i) => (
-                            <Question key={i} {...question} />
+                            <Question
+                                key={i}
+                                {...question}
+                                uniquePageNumber={uniquePageNumber}
+                            />
                         ))}
                     </div>
                     <div className="p-10 ">
@@ -71,7 +113,7 @@ const FormPage = (props) => {
                                     ? ' bg-black  hover:bg-black focus:ring-black'
                                     : 'bg-fblue hover:bg-fblue-dark focus:ring-fblue')
                             }
-                            onClick={isLast ? submit : props.nextStep}
+                            onClick={isLast ? submitBtn : nextBtn}
                         >
                             {isLast ? 'Submit' : 'Next'}
                         </button>
