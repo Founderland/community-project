@@ -26,7 +26,6 @@ const ListWidget = ({ title, data }) => {
   }
   const getData = async () => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
-    console.log(slice)
     setDataToDisplay(slice)
     setPageCount(Math.ceil(data.data.length / perPage))
   }
@@ -52,7 +51,6 @@ const ListWidget = ({ title, data }) => {
               dataToDisplay.map((item) => {
                 const cells = data.header.map((header) => {
                   if (header.key !== '-') {
-                    console.log(header.key)
                     if (Array.isArray(item[header.key])) {
                       return (
                         <td className={`py-3 px-6 ${header.style}`}>

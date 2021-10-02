@@ -132,7 +132,6 @@ import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
 // ];
 
 const Form = ({ match, memberType, questionPreview }) => {
-  // console.log(match);
   // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
   if (match?.params.memberType) {
     memberType = match.params.memberType
@@ -155,7 +154,6 @@ const Form = ({ match, memberType, questionPreview }) => {
         } else {
           setQuestions(res.data)
         }
-        console.log(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -212,7 +210,6 @@ const Form = ({ match, memberType, questionPreview }) => {
   // setactiveStep(2)
   const getActiveStep = (activeStep) => {
     let sum = 0
-    console.log(pagesInCategory)
     for (let i = 0; i < pagesInCategory.length; i++) {
       sum = sum + pagesInCategory[i]
       if (activeStep <= sum) {
