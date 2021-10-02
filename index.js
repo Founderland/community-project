@@ -6,7 +6,7 @@ const session = require('express-session')
 const app = express()
 const setupRoutes = require('./routes/routes.js')
 const passport = require('passport')
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
 const passportMiddleware = require('./middleware/passport')
 
 const path = require('path')

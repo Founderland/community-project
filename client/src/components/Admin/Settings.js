@@ -4,8 +4,13 @@ import ListWidget from './ListWidget'
 import Loading from '../Loading'
 import AdminContext from '../../contexts/Admin'
 import Modal from '../Modal'
+import { Tab } from '@headlessui/react'
 
 const usersAPI = '/api/users/all'
+
+const classNames = (...classes) => {
+  return classes.filter(Boolean).join(' ')
+}
 
 const Settings = () => {
   const [data, setData] = useState([])
@@ -25,11 +30,6 @@ const Settings = () => {
           ],
         }
         result = { ...result, ...res.data }
-        setModalMessage({
-          title: 'Success',
-          message: 'Successfully loaded the info from DB',
-        })
-        setModal(true)
         setData(result)
         setLoading(false)
       })
@@ -43,10 +43,48 @@ const Settings = () => {
   }, [])
 
   return (
-    <div className="flex flex-col justify-center w-full">
+    <div className="flex flex-col w-full">
+      {/* Modal for Messages */}
       <Modal message={modalMessage} />
-      {loading && <Loading />}
-      {!loading && <ListWidget title="Users" data={data} />}
+      {/* Tabs for Navigation */}
+      <Tab.Group>
+        <Tab.List className="flex p-1 space-x-1 bg-fblue">
+          <Tab
+            className={({ selected }) =>
+              classNames(
+                'w-full py-2.5 text-mono leading-5 font-medium ',
+                'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-40',
+                selected
+                  ? 'text-fblue bg-white shadow-xl'
+                  : 'text-white hover:bg-white hover:bg-opacity-20'
+              )
+            }
+          >
+            Users
+          </Tab>
+          <Tab
+            className={({ selected }) =>
+              classNames(
+                'w-full py-2.5 text-mono leading-5 font-medium',
+                'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
+                selected
+                  ? 'text-fblue bg-white shadow-xl'
+                  : 'text-white hover:bg-white hover:bg-opacity-20'
+              )
+            }
+          >
+            Profile
+          </Tab>
+        </Tab.List>
+        <Tab.Panels className="mt-2">
+          <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
+            {loading && <Loading />}
+            {!loading && <ListWidget title="" data={data} />}
+          </Tab.Panel>
+          <Tab.Panel>{!loading && 'User Profile'}</Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
+      {/* Data to display */}
     </div>
   )
 }
