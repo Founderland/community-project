@@ -19,9 +19,9 @@ const classNames = (...classes) => {
 const Settings = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [add, setAdd] = useState(false)
   const { modalMessage, modal, setModal, setModalMessage } =
     useContext(AdminContext)
-  const [add, setAdd] = useState(false)
   const { user } = useContext(UserContext)
 
   //Get all registered Users and set the result as data
@@ -69,7 +69,7 @@ const Settings = () => {
             <Tab
               className={({ selected }) =>
                 classNames(
-                  'w-full py-2.5 text-mono tracking-wide font-medium ',
+                  'w-full py-1 text-mono tracking-wide font-medium ',
                   'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-40',
                   selected
                     ? 'text-fblue bg-white shadow'
@@ -85,7 +85,7 @@ const Settings = () => {
           <Tab
             className={({ selected }) =>
               classNames(
-                'w-full py-2.5 text-mono tracking-wide font-medium',
+                'w-full py-1 text-mono tracking-wide font-medium',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
                 selected
                   ? 'text-fblue bg-white shadow'
@@ -97,7 +97,7 @@ const Settings = () => {
           </Tab>
         </Tab.List>
         <div className="w-full border -mt-0 border-t border-4 border-fblue"></div>
-        <Tab.Panels className="mt-2">
+        <Tab.Panels className="mt-6">
           {user.role === 'sadmin' ? (
             <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
               {loading && <Loading />}

@@ -6,7 +6,7 @@ const ComponentModal = ({ children, add, setAdd }) => {
     <Transition appear show={add} as={Fragment}>
       <Dialog
         as="div"
-        onClose={() => setAdd(false)}
+        onClose={() => setAdd(true)}
         className="fixed z-10 inset-0 overflow-y-auto"
       >
         <div className="flex justify-center items-center h-screen">
