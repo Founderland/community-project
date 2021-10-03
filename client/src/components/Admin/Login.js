@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useContext, useState } from 'react'
-import { ReactComponent as LogoLines } from '../../assets/2_lines.svg'
+import { ReactComponent as LogoLines } from '../../assets/line.svg'
+import { ReactComponent as SmallLogo } from '../../assets/small.svg'
 import UserContext from '../../contexts/User'
 import InfoModal from '../InfoModal'
 
@@ -52,11 +53,13 @@ const AdminLogin = () => {
   return (
     <div className="flex h-screen justify-center items-center w-full ">
       <InfoModal message={modalMessage} modal={modal} setModal={setModal} />
-      <div className="flex bg-white shadow-lg lg:w-2/3 xl:w-1/2">
-        <div className="hidden lg:block lg:w-1/2 bg-fblue"></div>
-        <div className="w-full p-8 lg:w-1/2">
+      <div className="flex bg-white shadow-lg md:w-2/3 xl:w-1/2">
+        <div className="relative hidden md:block md:w-1/2 bg-fblue">
+          <SmallLogo className="absolute bottom-0 h-20 w-20 text-white fill-current" />
+        </div>
+        <div className="w-full p-8 md:w-1/2">
           <div className="flex justify-center">
-            <LogoLines />
+            <LogoLines className="w-full" />
           </div>
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 lg:w-1/4"></span>

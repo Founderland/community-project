@@ -64,7 +64,7 @@ const Settings = () => {
       <InfoModal message={modalMessage} modal={modal} setModal={setModal} />
       {/* Tabs for Navigation */}
       <Tab.Group>
-        <Tab.List className="flex p-1 space-x-1 bg-fblue">
+        <Tab.List className="flex p-1 space-x-1 bg-fblue max-w-lg">
           {user.role === 'sadmin' ? (
             <Tab
               className={({ selected }) =>
@@ -72,7 +72,7 @@ const Settings = () => {
                   'w-full py-2.5 text-mono tracking-wide font-medium ',
                   'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-40',
                   selected
-                    ? 'text-fblue bg-white shadow-xl'
+                    ? 'text-fblue bg-white shadow'
                     : 'text-white hover:bg-white hover:bg-opacity-20'
                 )
               }
@@ -85,10 +85,10 @@ const Settings = () => {
           <Tab
             className={({ selected }) =>
               classNames(
-                'w-full leading-6 py-2.5 text-mono tracking-wide font-medium',
+                'w-full py-2.5 text-mono tracking-wide font-medium',
                 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
                 selected
-                  ? 'text-fblue bg-white shadow-xl'
+                  ? 'text-fblue bg-white shadow'
                   : 'text-white hover:bg-white hover:bg-opacity-20'
               )
             }
@@ -96,12 +96,13 @@ const Settings = () => {
             Profile
           </Tab>
         </Tab.List>
+        <div className="w-full border -mt-0 border-t border-4 border-fblue"></div>
         <Tab.Panels className="mt-2">
           {user.role === 'sadmin' ? (
             <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
               {loading && <Loading />}
               {!loading && (
-                <div className="">
+                <div className="w-full px-4">
                   <ListWidget title="Current Registered Users" data={data} />
                   <button
                     className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
@@ -120,8 +121,8 @@ const Settings = () => {
         </Tab.Panels>
       </Tab.Group>
       {/* Data to display */}
-      <ComponentModal modal={add} setModal={setAdd}>
-        <AddUser />
+      <ComponentModal add={add} setAdd={setAdd}>
+        <AddUser setAdd={setAdd} />
       </ComponentModal>
     </div>
   )
