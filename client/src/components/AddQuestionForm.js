@@ -234,6 +234,7 @@ const AddQuestionForm = () => {
                                     <option value="multiple">
                                         Multiple selections{' '}
                                     </option>
+                                    <option value="email">Email </option>
                                 </select>
                             </div>
                             <div className="flex flex-col lg:flex-row justify-start md:justify-evenly xl:justify-center items-center w-2/4 ">

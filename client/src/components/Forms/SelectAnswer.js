@@ -1,10 +1,23 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, {
+    useEffect,
+    useRef,
+    useContext,
+    useState,
+    useCallback,
+} from 'react'
+import { AnswersContext } from '../../contexts/AnswersProvider'
 
-export default function SelectAnswer({ answers, selectedAnswer }) {
+export default function SelectAnswer({
+    answers,
+    selectedAnswer,
+    selectValidation,
+}) {
     const [showList, setShowList] = useState(false)
     const [selectedItem, setSelectedItem] = useState('')
     const panelResultElement = useRef()
     const selectButton = useRef()
+
+    const { next } = useContext(AnswersContext)
 
     const handleClickOutside = useCallback((event) => {
         const myHTMLWrapper = panelResultElement.current
@@ -18,6 +31,7 @@ export default function SelectAnswer({ answers, selectedAnswer }) {
             setShowList(false)
         }
     }, [])
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside)
         return () => {
@@ -45,7 +59,7 @@ export default function SelectAnswer({ answers, selectedAnswer }) {
             </div>
         </li>
     )
-
+    console.log(selectValidation)
     return (
         <div className="flex flex-col md:flex-row">
             <div className="w-9/12 md:w-5/12">
@@ -54,7 +68,10 @@ export default function SelectAnswer({ answers, selectedAnswer }) {
                         type="button"
                         ref={selectButton}
                         onClick={() => setShowList(!showList)}
-                        className="relative w-full bg-white  border-gray mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm md:text-lg"
+                        className={
+                            'relative w-full bg-white mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm md:text-lg ' +
+                            (selectValidation ? 'border-gray' : 'border-fred')
+                        }
                     >
                         <span className="flex items-center">
                             <span className="ml-3 block truncate">

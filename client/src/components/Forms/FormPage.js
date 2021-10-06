@@ -12,6 +12,7 @@ const FormPage = (props) => {
     const { submitHandler, nextHandler, next } = useContext(AnswersContext)
     const [selected, setSelected] = useState([])
     const [gify, setGify] = useState(false)
+    const [selectValidation, setSelectValidation] = useState(true)
 
     const history = useHistory()
 
@@ -37,15 +38,18 @@ const FormPage = (props) => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(questions)
+        // console.log(questions)
         const questionType = questions.filter(
             (item) => item.type === 'choice' || item.type === 'list'
         )
-        console.log(questionType.length)
-        console.log(selected.length)
+        // console.log(questionType.length)
+        // console.log(selected.length)
         if (questionType.length === selected.length) {
             props.nextStep()
             setSelected([])
+            setSelectValidation(true)
+        } else {
+            setSelectValidation(false)
         }
     }
 
@@ -89,6 +93,7 @@ const FormPage = (props) => {
                                     key={i}
                                     {...question}
                                     selectedAnswer={selectedAnswer}
+                                    selectValidation={selectValidation}
                                 />
                             ))}
                         </div>

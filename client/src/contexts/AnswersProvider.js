@@ -10,7 +10,11 @@ function AnswersProvider({ children }) {
 
     const answerHandler = (inputValue) => {
         answers[inputValue.id] = inputValue.value
-        setAnswers({ ...answers })
+        const id = inputValue.id
+        const answer = inputValue.value
+        const object = { question_id: `${id}`, answer_value: `${answer}` }
+        answers.push(object)
+        setAnswers([...answers])
     }
 
     const submitHandler = (value) => {
