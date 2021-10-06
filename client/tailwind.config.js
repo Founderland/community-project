@@ -1,9 +1,12 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
+        ...colors,
         fblue: {
           light: '#4A8CE1',
           DEFAULT: '#0063e2',
@@ -23,9 +26,9 @@ module.exports = {
           light: '#E3F869',
           DEFAULT: '#d7fb03',
           dark: '#A4BF06',
-        }
-      }
-    }
+        },
+      },
+    },
   },
   variants: {
     extend: {},
