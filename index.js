@@ -10,15 +10,7 @@ const port = process.env.PORT || 3001
 const passportMiddleware = require('./middleware/passport')
 
 const path = require('path')
-app.use(express.static(path.join(__dirname, 'build')))
-
-// CORS Error
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
-  res.setHeader('Access-Control-Allow-Credentials', true)
-  res.setHeader('Access-Control-Allow-Headers', '*')
-  next()
-})
+app.use(express.static(path.join(__dirname, '/client/build/')))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -47,7 +39,9 @@ app.use(passport.session())
 
 setupRoutes(app)
 
-app.use((req, res) => res.sendFile(path.join(__dirname, 'build', 'index.html')))
+app.use((req, res) =>
+  res.sendFile(path.join(__dirname, '/client/build/', 'index.html'))
+)
 
 app.listen(port, () => {
   console.log(`Server started ${port}`)

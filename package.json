@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "magic": "(cd client && npm start) & npm run dev",
-    "both": "rm -rf build && cd client && npm run build && mv build ../ && cd .. && nodemon index.js"
+    "magic": "(cd client && yarn start) & yarn run dev",
+    "both": "cd client && yarn run build && cd .. && node index.js",
+    "deploy": "yarn && cd client && yarn",
+    "server": "nodemon index.js",
+    "client": "cd client && yarn start",
+    "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "heroku-postbuild": "cd client && yarn install && yarn run build"
   },
   "keywords": [],
   "author": "",
