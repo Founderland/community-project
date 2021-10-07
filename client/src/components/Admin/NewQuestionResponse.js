@@ -1,5 +1,5 @@
-import { ReactComponent as SuccessIcon } from '../assets/success_logo.svg'
-import { ReactComponent as ErrorIcon } from '../assets/error_logo.svg'
+import { ReactComponent as SuccessIcon } from '../../assets/success_logo.svg'
+import { ReactComponent as ErrorIcon } from '../../assets/error_logo.svg'
 
 const NewQuestionResponse = ({ isSuccessful, isError }) => {
     return (
