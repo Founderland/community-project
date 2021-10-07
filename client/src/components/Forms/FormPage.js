@@ -65,11 +65,11 @@ const FormPage = (props) => {
 
   return (
     <div>
-      {gify && (
+      {gify ?
         <div classname="absolute w-screen h-screen">
           <img src={gif} alt="gif" />
         </div>
-      )}
+      :
       <form onSubmit={handleSubmit}>
         <div className="max-h-screen w-screen md:w-full flex justify-center flex-col overflow-y-scroll md:overflow-hidden ">
           <div className=" flex flex-col justify-between  p-10 h-screen">
@@ -123,6 +123,7 @@ const FormPage = (props) => {
           </div>
         </div>
       </form>
+      }
     </div>
   )
 }
