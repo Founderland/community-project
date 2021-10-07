@@ -145,7 +145,7 @@ const Form = ({ match, memberType, questionPreview }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/form/${memberType}/questions`)
+      .get(`/api/form/${memberType}/questions`)
       .then((res) => {
         if (questionPreview) {
           const data = res.data
