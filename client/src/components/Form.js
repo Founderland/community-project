@@ -7,160 +7,158 @@ import whiteLogo from '../assets/images/twoLinesWhite.svg'
 import CategoryItem from './Forms/CategoryItem'
 import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
 
-const Form = ({ match }) => {
-    // console.log(match);
-    // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
-    // const { memberType } = match.params;
+const Form = ({ match, memberType, questionPreview }) => {
+  // console.log(match);
+  // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
+  // const { memberType } = match.params;
+  if (match?.params.memberType) {
+    memberType = match.params.memberType
+  }
+  const [questions, setQuestions] = useState([])
+  const [activeStep, setactiveStep] = useState(0)
 
-    const [questions, setQuestions] = useState([])
-    const [activeStep, setactiveStep] = useState(0)
+  const [categoryNames, setCategoryNames] = useState([])
+  const [pagesInCategory, setPagesInCategory] = useState([])
+  const [formatedQuestions, setFormatedQuestions] = useState([])
 
-    const [categoryNames, setCategoryNames] = useState([])
-    const [pagesInCategory, setPagesInCategory] = useState([])
-    const [formatedQuestions, setFormatedQuestions] = useState([])
-
-    useEffect(() => {
-        axios
-            .get('/api/form/founder/questions')
-            .then((res) => {
-                setQuestions(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [])
-
-    useEffect(() => {
-        if (questions.length > 0) {
-            const QuestionsArray = []
-            const pagesInEachCategory = []
-
-            //  Finding the unique category value in the question array of objects
-            const uniqueCategories = [
-                ...new Set(questions?.map((item) => item.category)),
-            ]
-
-            // Looping through each unique category
-            for (const cat of uniqueCategories) {
-                const pageArray = []
-
-                // Filtering unique Category items and saving it to CatArray
-                const catArray = questions.filter(
-                    (item) => item.category === cat
-                )
-
-                // Finding the highest page number for each category in CatArray
-                const maxPageNumber = catArray.reduce(function (prev, current) {
-                    return parseInt(prev.categoryPage) >
-                        parseInt(current.categoryPage)
-                        ? prev
-                        : current
-                }).categoryPage
-
-                // splitting catArray into different arrays with unique pageNumbers
-                for (let i = 1; i <= maxPageNumber; i++) {
-                    pageArray.push(
-                        catArray.filter((item) => item.categoryPage === i)
-                    )
-                }
-
-                //output Array:
-                // QuestionsArray = [cat1,cat2,cat3]
-                // cat1 = [[pg1],[pg2]]
-                // cat2 = [[pg1],[pg2]]
-                // cat3 = [[pg1],[pg2]]
-                // pg1 = question object with page 1 ...
-                QuestionsArray.push(pageArray)
-
-                pagesInEachCategory.push(maxPageNumber)
-            }
-            setCategoryNames(uniqueCategories)
-            setPagesInCategory(pagesInEachCategory)
-            setFormatedQuestions(QuestionsArray)
+  useEffect(() => {
+    axios
+      .get(`/api/form/${memberType}/questions`)
+      .then((res) => {
+        if (questionPreview) {
+          const data = res.data
+          data.push(questionPreview)
+          setQuestions(data)
+        } else {
+          setQuestions(res.data)
         }
-    }, [questions])
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
-    //eg:pagesInCategory=[[3],[2],1[]]
-    // activeStep = 4
-    // setactiveStep(2)
-    const getActiveStep = (activeStep) => {
-        let sum = 0
-        // console.log(pagesInCategory)
-        for (let i = 0; i < pagesInCategory.length; i++) {
-            sum = sum + pagesInCategory[i]
-            if (activeStep <= sum) {
-                setactiveStep(i)
-                break
-            }
+  useEffect(() => {
+    if (questions.length > 0) {
+      const QuestionsArray = []
+      const pagesInEachCategory = []
+
+      //  Finding the unique category value in the question array of objects
+      const uniqueCategories = [
+        ...new Set(questions?.map((item) => item.category)),
+      ]
+
+      // Looping through each unique category
+      for (const cat of uniqueCategories) {
+        const pageArray = []
+
+        // Filtering unique Category items and saving it to CatArray
+        const catArray = questions.filter((item) => item.category === cat)
+
+        // Finding the highest page number for each category in CatArray
+        const maxPageNumber = catArray.reduce(function (prev, current) {
+          return parseInt(prev.categoryPage) > parseInt(current.categoryPage)
+            ? prev
+            : current
+        }).categoryPage
+
+        // splitting catArray into different arrays with unique pageNumbers
+        for (let i = 1; i <= maxPageNumber; i++) {
+          pageArray.push(catArray.filter((item) => item.categoryPage === i))
         }
+
+        //output Array:
+        // QuestionsArray = [cat1,cat2,cat3]
+        // cat1 = [[pg1],[pg2]]
+        // cat2 = [[pg1],[pg2]]
+        // cat3 = [[pg1],[pg2]]
+        // pg1 = question object with page 1 ...
+        QuestionsArray.push(pageArray)
+
+        pagesInEachCategory.push(maxPageNumber)
+      }
+      setCategoryNames(uniqueCategories)
+      setPagesInCategory(pagesInEachCategory)
+      setFormatedQuestions(QuestionsArray)
     }
+  }, [questions])
 
-    const WizardNav = ({ activeStep }) => (
-        <div className=" hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12">
-            <div className="h-3/4 w-full flex items-center justify-center pl-8">
-                <ul>
-                    {categoryNames.map((item, index) => (
-                        <CategoryItem
-                            text={item}
-                            isActive={activeStep === index}
-                        />
-                    ))}
-                </ul>
-            </div>
-            <div className="h-1/4 w-2/3 flex items-center  ">
-                <img className="text-fpink" src={whiteLogo} alt="logo" />
-            </div>
-        </div>
-    )
+  //eg:pagesInCategory=[[3],[2],1[]]
+  // activeStep = 4
+  // setactiveStep(2)
+  const getActiveStep = (activeStep) => {
+    let sum = 0
+    // console.log(pagesInCategory)
+    for (let i = 0; i < pagesInCategory.length; i++) {
+      sum = sum + pagesInCategory[i]
+      if (activeStep <= sum) {
+        setactiveStep(i)
+        break
+      }
+    }
+  }
 
-    const Symbols = () => (
+  const WizardNav = ({ activeStep }) => (
+    <div className=" hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12">
+      <div className="h-3/4 w-full flex items-center justify-center pl-8">
+        <ul>
+          {categoryNames.map((item, index) => (
+            <CategoryItem text={item} isActive={activeStep === index} />
+          ))}
+        </ul>
+      </div>
+      <div className="h-1/4 w-2/3 flex items-center  ">
+        <img className="text-fpink" src={whiteLogo} alt="logo" />
+      </div>
+    </div>
+  )
+
+  const Symbols = () => (
+    <>
+      <div className="hidden md:w-1/12 md:flex md:justify-end">
+        <img src={symbolsVertical} alt="symbols" />
+      </div>
+      <div className="md:hidden h-12 items-end fixed bottom-0 z-10">
+        <img
+          src={symbolsHorizontal}
+          alt="logo"
+          className="h-full object-cover object-left"
+        />
+      </div>
+    </>
+  )
+
+  return (
+    <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
+      <Symbols />
+      {questions && (
         <>
-            <div className="hidden md:w-1/12 md:flex md:justify-end">
-                <img src={symbolsVertical} alt="symbols" />
-            </div>
-            <div className="md:hidden h-12 items-end fixed bottom-0 z-10">
-                <img
-                    src={symbolsHorizontal}
-                    alt="logo"
-                    className="h-full object-cover object-left"
+          {/* setactiveStep(res.activeStep) */}
+          <StepWizard
+            initialStep={1}
+            onStepChange={(res) => getActiveStep(res.activeStep)}
+            className="h-screen md:w-8/12 mb-8"
+          >
+            {formatedQuestions.map((catItems, catIndex, catArray) =>
+              catItems.map((pagesItems, pageIndex, pageArray) => (
+                <FormPage
+                  questionPreview={questionPreview}
+                  questions={pagesItems}
+                  isFirst={pageIndex === 0 && catIndex === 0}
+                  isLast={
+                    pageIndex === pageArray.length - 1 &&
+                    catIndex === catArray.length - 1
+                  }
+                  uniquePageNumber={pageIndex.toString() + catIndex.toString()}
                 />
-            </div>
-        </>
-    )
-
-    return (
-        <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
-            <Symbols />
-            {questions && (
-                <>
-                    {/* setactiveStep(res.activeStep) */}
-                    <StepWizard
-                        initialStep={1}
-                        onStepChange={(res) => getActiveStep(res.activeStep)}
-                        className="h-screen md:w-8/12 mb-8"
-                    >
-                        {formatedQuestions.map((catItems, catIndex, catArray) =>
-                            catItems.map((pagesItems, pageIndex, pageArray) => (
-                                <FormPage
-                                    questions={pagesItems}
-                                    isFirst={pageIndex === 0 && catIndex === 0}
-                                    isLast={
-                                        pageIndex === pageArray.length - 1 &&
-                                        catIndex === catArray.length - 1
-                                    }
-                                    uniquePageNumber={
-                                        pageIndex.toString() +
-                                        catIndex.toString()
-                                    }
-                                />
-                            ))
-                        )}
-                    </StepWizard>
-                </>
+              ))
             )}
-            <WizardNav activeStep={activeStep} />
-        </div>
-    )
+          </StepWizard>
+        </>
+      )}
+      <WizardNav activeStep={activeStep} />
+    </div>
+  )
 }
 
 export default Form
