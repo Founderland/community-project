@@ -47,7 +47,7 @@ const AddQuestionForm = () => {
     }
     console.log(newQuestion)
     axios
-      .post(`http://localhost:3001/api/form/${memberType}/add`, newQuestion)
+      .post(`/api/form/${memberType}/add`, newQuestion)
       .then((result) => {
         setIsSuccessfull(true)
         setTimeout(() => {
