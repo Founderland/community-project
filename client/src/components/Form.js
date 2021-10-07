@@ -21,7 +21,7 @@ const Form = ({ match }) => {
 
     useEffect(() => {
         axios
-            .get('http://localhost:3001/api/form/founder/questions')
+            .get('/api/form/founder/questions')
             .then((res) => {
                 setQuestions(res.data)
             })
