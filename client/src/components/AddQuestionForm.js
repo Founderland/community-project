@@ -76,7 +76,7 @@ const AddQuestionForm = () => {
     }
 
     return (
-        <div className=" h-full w-full flex flex-col justify-start items-stretch text-xl shadow-xl ">
+        <div className=" h-full overflow-hidden flex flex-col text-xl shadow-xl ">
             <div className=" flex flex-col justify-center items-center bg-white p-4 rounded-lg">
                 <NewQuestionResponse
                     isSuccessful={isSuccessful}
@@ -85,8 +85,8 @@ const AddQuestionForm = () => {
                 <h1 className="text-grotesk font-bold p-3">
                     Add new Questions
                 </h1>
-                <div className="h-full w-full px-5">
-                    <div className="  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
+                <div className=" w-full px-5">
+                    <div className="text-mono py-5 flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
                         <label
                             HtmlFor="newQuestion"
                             className=" w-full font-bold text-grotesk lg:w-1/6  mb-5 lg:m-0 "
@@ -97,7 +97,7 @@ const AddQuestionForm = () => {
                             type="text"
                             id="newQuestion"
                             name="newQuestion"
-                            className="p-3  shadow-md w-full lg:w-5/6 xl:w-4/6 rounded-lg"
+                            className="p-3 shadow-md w-full lg:w-5/6  rounded-lg"
                             placeholder="New question"
                             value={questionInfo.question}
                             onChange={(e) => {
@@ -141,7 +141,7 @@ const AddQuestionForm = () => {
                                     </option>
                                 </select>
                             </div>
-                            <div className="  w-1/4 lg:w-1/4 xl:w-1/3 text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center">
+                            <div className="  w-1/4 lg:w-1/4 xl:w-1/3 text-mono py-5 flex flex-col items-between justify-between lg:flex-row lg:items-center xl:justify-end ">
                                 <label
                                     HtmlFor="newQuestion"
                                     className=" w-full  text-grotesk font-bold lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center"
