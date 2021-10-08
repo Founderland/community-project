@@ -47,7 +47,7 @@ const FormPage = (props) => {
     )
     // console.log(questionType.length)
     // console.log(selected.length)
-    if (questionType.length === selected.length) {
+    if (questionType.length === selected.length || props.questionPreview) {
       props.nextStep()
       setSelected([])
       setSelectValidation(true)
