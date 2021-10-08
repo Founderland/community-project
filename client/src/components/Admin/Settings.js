@@ -17,6 +17,7 @@ const classNames = (...classes) => {
 const Settings = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [reload, setReload] = useState(0)
   const [task, setTask] = useState(null)
   const { user, setIModal, setModalMessage, setCModal } =
     useContext(AdminContext)
@@ -41,12 +42,13 @@ const Settings = () => {
       })
       .catch((err) => {
         setModalMessage({
+          icon: "info",
           title: "Error loading the database set",
-          message: err,
+          message: "Sorry, something went wrong",
         })
         setIModal(true)
       })
-  }, [])
+  }, [reload])
 
   const handleTask = (task) => {
     setTask(task)
@@ -119,7 +121,11 @@ const Settings = () => {
         </Tab.Panels>
       </Tab.Group>
       {/* Data to display */}
-      <ComponentModal>{task === "addUser" && <AddUser />}</ComponentModal>
+      <ComponentModal>
+        {task === "addUser" && (
+          <AddUser setReload={setReload} reload={reload} />
+        )}
+      </ComponentModal>
     </div>
   )
 }
