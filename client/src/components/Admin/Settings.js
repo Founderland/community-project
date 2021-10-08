@@ -14,9 +14,10 @@ const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ")
 }
 
-const Settings = () => {
+const Settings = ({ tab }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [reload, setReload] = useState(0)
   const [task, setTask] = useState(null)
   const { user, setIModal, setModalMessage, setCModal } =
     useContext(AdminContext)
@@ -28,10 +29,11 @@ const Settings = () => {
       .then((res) => {
         let result = {
           header: [
-            { title: "Name", key: "name", style: "" },
+            { title: "Name", key: "firstName", style: "" },
+            { title: " ", key: "lastName", style: "" },
             { title: "Email", key: "email", style: "" },
             { title: "Role", key: "role", style: "sm:block hidden" },
-            { title: "Added on", key: "date", style: "" },
+            { title: "Added on", key: "dateCreated", style: "sm:block hidden" },
             { title: "Actions", key: "-", style: "" },
           ],
         }
@@ -41,12 +43,13 @@ const Settings = () => {
       })
       .catch((err) => {
         setModalMessage({
+          icon: "info",
           title: "Error loading the database set",
-          message: err,
+          message: "Sorry, something went wrong",
         })
         setIModal(true)
       })
-  }, [])
+  }, [reload])
 
   const handleTask = (task) => {
     setTask(task)
@@ -56,7 +59,7 @@ const Settings = () => {
   return (
     <div className="flex flex-col w-full">
       {/* Tabs for Navigation */}
-      <Tab.Group>
+      <Tab.Group defaultIndex={tab}>
         <Tab.List className="flex p-1 space-x-1 bg-fblue max-w-lg">
           {user.role === "sadmin" ? (
             <Tab
@@ -89,7 +92,7 @@ const Settings = () => {
             Profile
           </Tab>
         </Tab.List>
-        <div className="w-full border -mt-0 border-t border-4 border-fblue"></div>
+        <div className="w-full border mt-0 border-t border-5 border-fblue"></div>
         <Tab.Panels className="mt-6">
           {user.role === "sadmin" ? (
             <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
@@ -119,7 +122,11 @@ const Settings = () => {
         </Tab.Panels>
       </Tab.Group>
       {/* Data to display */}
-      <ComponentModal>{task === "addUser" && <AddUser />}</ComponentModal>
+      <ComponentModal>
+        {task === "addUser" && (
+          <AddUser setReload={setReload} reload={reload} />
+        )}
+      </ComponentModal>
     </div>
   )
 }
