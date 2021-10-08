@@ -29,6 +29,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
     setPageCount(Math.ceil(data.data.length / perPage))
+    console.log()
     return () => {
       setDataToDisplay([])
     }
@@ -67,8 +68,8 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
                           <div className={`flex items-center ${cellAlignment}`}>
                             <span
                               className={
-                                styles[item[header.key].toLowerCase()]
-                                  ? styles[item[header.key].toLowerCase()]
+                                styles[item[header.key]?.toLowerCase()]
+                                  ? styles[item[header.key]?.toLowerCase()]
                                   : ""
                               }
                             >

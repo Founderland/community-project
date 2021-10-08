@@ -32,7 +32,12 @@ const AdminDashboard = () => {
         "nothing to show"
       )}
       <div className="md:flex lg:flex w-full">
-        <ListWidget title="Pending Final Review" data={listData} />
+        <ListWidget
+          title="Pending Final Review"
+          data={listData}
+          showing={5}
+          cellAlignment={"justify-center"}
+        />
       </div>
       <div className="md:flex lg:flex w-full justify-around">
         <div className="h-40 w-1/3">

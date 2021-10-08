@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "magic": "(cd client && yarn start) & yarn run dev",
+    "magic": "(cd client && yarn start) & yarn run server",
     "both": "cd client && yarn run build && cd .. && node index.js",
     "deploy": "yarn && cd client && yarn",
     "server": "nodemon index.js",
