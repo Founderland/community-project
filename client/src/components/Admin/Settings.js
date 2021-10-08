@@ -14,7 +14,7 @@ const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ")
 }
 
-const Settings = () => {
+const Settings = ({ tab }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(0)
@@ -58,7 +58,7 @@ const Settings = () => {
   return (
     <div className="flex flex-col w-full">
       {/* Tabs for Navigation */}
-      <Tab.Group>
+      <Tab.Group defaultIndex={tab}>
         <Tab.List className="flex p-1 space-x-1 bg-fblue max-w-lg">
           {user.role === "sadmin" ? (
             <Tab
@@ -91,7 +91,7 @@ const Settings = () => {
             Profile
           </Tab>
         </Tab.List>
-        <div className="w-full border -mt-0 border-t border-4 border-fblue"></div>
+        <div className="w-full border mt-0 border-t border-5 border-fblue"></div>
         <Tab.Panels className="mt-6">
           {user.role === "sadmin" ? (
             <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
