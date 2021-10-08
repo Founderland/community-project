@@ -11,12 +11,12 @@ const { registerValidation } = require('../helpers/validators')
 //   userController.findAll
 // );
 
-UserRouter.post('/register', registerValidation, userController.addUser)
+UserRouter.post('/add', isAdmin, registerValidation, userController.addUser)
 
-UserRouter.get('/all', userController.findAll)
+UserRouter.get('/all', isAdmin, userController.findAll)
 
 UserRouter.get('/test', isAdmin, (req, res) => {
-    res.send(req.user)
+	res.send(req.user)
 })
 
 module.exports = UserRouter
