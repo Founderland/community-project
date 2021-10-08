@@ -29,10 +29,11 @@ const Settings = ({ tab }) => {
       .then((res) => {
         let result = {
           header: [
-            { title: "Name", key: "name", style: "" },
+            { title: "Name", key: "firstName", style: "" },
+            { title: " ", key: "lastName", style: "" },
             { title: "Email", key: "email", style: "" },
             { title: "Role", key: "role", style: "sm:block hidden" },
-            { title: "Added on", key: "dateCreated", style: "" },
+            { title: "Added on", key: "dateCreated", style: "sm:block hidden" },
             { title: "Actions", key: "-", style: "" },
           ],
         }
