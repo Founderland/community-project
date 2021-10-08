@@ -32,7 +32,7 @@ const Settings = ({ tab }) => {
             { title: "Name", key: "name", style: "" },
             { title: "Email", key: "email", style: "" },
             { title: "Role", key: "role", style: "sm:block hidden" },
-            { title: "Added on", key: "date", style: "" },
+            { title: "Added on", key: "dateCreated", style: "" },
             { title: "Actions", key: "-", style: "" },
           ],
         }
