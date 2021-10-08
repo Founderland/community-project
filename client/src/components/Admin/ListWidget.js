@@ -15,10 +15,10 @@ const styles = {
   user: 'bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs',
 }
 
-const ListWidget = ({ title, data }) => {
+const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
-  const [perPage] = useState(5)
+  const [perPage] = useState(showing)
   const [pageCount, setPageCount] = useState(0)
   const handlePageClick = (e) => {
     const selectedPage = e.selected
@@ -38,10 +38,11 @@ const ListWidget = ({ title, data }) => {
       <p className="text-mono">{title}</p>
       <div className="bg-white shadow-md my-4 overflow-auto">
         <table className="min-w-max w-full table-auto">
+          {colSize && colSize}
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
               {data.header.map((header) => (
-                <th key={header.title} className={`py-3 px-6 ${header.style}`}>
+                <th key={header.title} className={`py-3 px-5 ${header.style}`}>
                   {header.title}
                 </th>
               ))}
@@ -54,16 +55,16 @@ const ListWidget = ({ title, data }) => {
                   if (header.key !== '-') {
                     if (Array.isArray(item[header.key])) {
                       return (
-                        <td className={`py-3 px-6 ${header.style}`}>
-                          <div className="flex items-center justify-center">
+                        <td className={`py-3 px-5 ${header.style}`}>
+                          <div className={`flex items-center ${cellAlignment}`}>
                             <span className="">array</span>
                           </div>
                         </td>
                       )
                     } else {
                       return (
-                        <td className={`py-3 px-6 ${header.style}`}>
-                          <div className="flex items-center justify-center">
+                        <td className={`py-3 px-5 ${header.style}`}>
+                          <div className={`flex items-center ${cellAlignment}`}>
                             <span
                               className={
                                 styles[item[header.key].toLowerCase()]
@@ -79,7 +80,7 @@ const ListWidget = ({ title, data }) => {
                     }
                   } else {
                     return (
-                      <td className="py-3 px-6 text-center">
+                      <td className="py-3 px-5 text-center">
                         <div className="flex justify-center">
                           <button className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125">
                             <PencilAltIcon className="w-4" />
@@ -101,8 +102,8 @@ const ListWidget = ({ title, data }) => {
             ) : (
               <tr className="border-b border-gray-200 hover:bg-gray-100">
                 <td
-                  colspan={data.header.length}
-                  className="py-3 px-6 text-left"
+                  colSpan={data.header.length}
+                  className="py-3 px-5 text-left"
                 >
                   <div className="flex items-center">
                     <span className="font-medium">

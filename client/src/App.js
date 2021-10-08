@@ -6,6 +6,7 @@ import AnswersProvider from './contexts/AnswersProvider'
 import Homepage from './components/Homepage.js'
 import Admin from './components/Admin/Admin'
 import AddQuestionForm from './components/Admin/AddQuestionForm'
+import AdminFoundersForm from './components/AdminFoundersForm'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           path="/admin/:memberType/addQuestion"
           component={AddQuestionForm}
         />
+        <Route exact path="/admin/foundersform" component={AdminFoundersForm} />
       </Router>
     </AnswersProvider>
   )
