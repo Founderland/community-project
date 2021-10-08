@@ -7,6 +7,7 @@ import Settings from './Settings'
 
 const Content = () => {
   const { view, views } = useContext(AdminContext)
+ 
   return (
     <main className="overflow-x-hidden">
       <div className="items-center mx-auto px-4 py-2">

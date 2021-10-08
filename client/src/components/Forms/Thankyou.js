@@ -3,9 +3,7 @@ import arrow from '../../assets/images/arrow.svg'
 import symbolVerticalBig from '../../assets/images/symbols_vertical_big.svg'
 import logoLgWhite from '../../assets/images/logo_large_white.png'
 import founderlandGif from '../../assets/images/founderlandThankyou.gif'
-import { AnswersContext } from '../../contexts/AnswersProvider'
-import { useContext } from 'react'
-
+import {Link} from 'react-router-dom'
 const Thankyou = () => {
     return (
         <div>
@@ -33,9 +31,9 @@ const Thankyou = () => {
                             </h1>
                         </div>
                         <div className="flex justify-start pl-24 py-10 mt-4 pr-6 md:mt-10">
-                            <button class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono ">
+                            <Link to="/" class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono ">
                                 RETURN TO HOMEPAGE
-                            </button>
+                            </Link>
                         </div>
                     </div>
 
