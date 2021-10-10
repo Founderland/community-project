@@ -21,10 +21,6 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
     )
     setAnswersList(updatedList)
     toggleEdit(i, true)
-    // refArray.current[i].children[3].classList.remove('hidden')
-    // refArray.current[i].children[4].classList.add('hidden')
-    // refArray.current[i].classList.remove('bg-fblue-light')
-    // refArray.current[i].classList.add('group', 'hover:bg-gray-300')
     setUpdated({})
   }
 
@@ -35,7 +31,6 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
   //   const [disable, setDisable] = useState(true)
 
   function toggleEdit(i, boolean) {
-    console.log(refArray.current[i].children)
     Array.from(refArray.current[i].children).forEach((element, index) => {
       if (index <= 2) {
         element.disabled = boolean
@@ -63,8 +58,6 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
       refArray.current.push(el)
     }
   }
-  console.log(answersList, 'updated')
-  console.log(refArray.current, 'test1')
   return (
     <>
       {answersList?.map((answer, i) => {
@@ -105,7 +98,6 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
                 })
               }}
             />
-            {/* <label className=" text-grotesk text-center ">Ideal? </label> */}
 
             <input
               type="checkbox"
@@ -124,7 +116,7 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
             />
             <button
               className={
-                'bg-gray-200 font-3xl w-1/3 md:w-1/4 m-2 group-hover:bg-gray-300 '
+                'bg-gray-200 font-3xl w-1/3 md:w-auto m-2 p-3 group-hover:bg-gray-300 '
               }
               onClick={() => toggleEdit(i, false)}
             >
@@ -132,7 +124,7 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
             </button>
             <button
               className={
-                'bg-gray-200 font-3xl w-1/3 md:w-1/4 hidden m-2 group-hover:bg-gray-300'
+                'bg-gray-200 font-3xl w-1/3 md:w-auto  hidden m-2 p-3 group-hover:bg-gray-300'
               }
               onClick={() => {
                 handleAnswerChange(i)
@@ -142,7 +134,7 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
               <CheckCircleIcon className="h-8 w-8 m-auto " />
             </button>
             <button
-              className="bg-gray-200 w-1/3 md:w-1/4 m-2 group-hover:bg-gray-300"
+              className="bg-gray-200 w-1/3 md:w-auto  m-2 p-3 group-hover:bg-gray-300"
               onClick={() => handleDelete(i)}
             >
               <TrashIcon className="h-8 w-8 m-auto" />
