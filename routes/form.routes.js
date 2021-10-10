@@ -9,6 +9,10 @@ const alliesForm = require('../controllers/alliesFormController')
 formRouter.post('/founder/add', foundersFormController.addNew)
 //GET ALL QUESTIONS
 formRouter.get('/founder/questions', foundersFormController.findAll)
+//ADD USER RESPONSE
+formRouter.post('/founder/response', foundersFormController.addResponse)
+
+   
 
 // INVESTORS
 

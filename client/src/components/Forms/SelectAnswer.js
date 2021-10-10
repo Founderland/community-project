@@ -42,7 +42,7 @@ export default function SelectAnswer({
     const itemClicked = (text, index) => {
         setSelectedItem(text)
         setShowList(!showList)
-        selectedAnswer(text)
+        selectedAnswer(text,answers[0]?._id)
     }
 
     const listItem = (text, index) => (
@@ -59,7 +59,7 @@ export default function SelectAnswer({
             </div>
         </li>
     )
-    console.log(selectValidation)
+    // console.log(selectValidation)
     return (
         <div className="flex flex-col md:flex-row">
             <div className="w-9/12 md:w-5/12">

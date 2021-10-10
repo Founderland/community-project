@@ -5,6 +5,7 @@ import Thankyou from './components/Forms/Thankyou'
 import AnswersProvider from './contexts/AnswersProvider'
 import Homepage from './components/Homepage.js'
 import Admin from './components/Admin/Admin'
+import FounderResponse from './components/Forms/FounderResponse'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/admin" component={Admin} />
+        <Route exact path="/foundersrespone" component={FounderResponse} />
       </Router>
     </AnswersProvider>
   )

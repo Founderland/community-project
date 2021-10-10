@@ -6,8 +6,13 @@ import symbolsVertical from '../assets/images/symbol_vertical_big.png'
 import whiteLogo from '../assets/images/twoLinesWhite.svg'
 import CategoryItem from './Forms/CategoryItem'
 import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
+import { AnswersContext } from '../contexts/AnswersProvider'
+
+import { useContext } from 'react'
 
 const Form = ({ match }) => {
+
+    const { submit } = useContext(AnswersContext)
     // console.log(match);
     // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
     // const { memberType } = match.params;
@@ -97,7 +102,7 @@ const Form = ({ match }) => {
 
     const WizardNav = ({ activeStep }) => (
         <div className=" hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12">
-            <div className="h-3/4 w-full flex items-center justify-center pl-8">
+            <div className= {!submit ? "h-3/4 w-full flex items-center justify-center pl-8": "hidden"} >
                 <ul>
                     {categoryNames.map((item, index) => (
                         <CategoryItem
@@ -107,7 +112,7 @@ const Form = ({ match }) => {
                     ))}
                 </ul>
             </div>
-            <div className="h-1/4 w-2/3 flex items-center  ">
+            <div className="h-1/4 w-2/3 flex items-center">
                 <img className="text-fpink" src={whiteLogo} alt="logo" />
             </div>
         </div>
@@ -129,7 +134,7 @@ const Form = ({ match }) => {
     )
 
     return (
-        <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
+        <div className=  " m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden" >
             <Symbols />
             {questions && (
                 <>
@@ -137,7 +142,7 @@ const Form = ({ match }) => {
                     <StepWizard
                         initialStep={1}
                         onStepChange={(res) => getActiveStep(res.activeStep)}
-                        className="h-screen md:w-8/12 mb-8"
+                        className= "h-screen md:w-8/12 mb-8" 
                     >
                         {formatedQuestions.map((catItems, catIndex, catArray) =>
                             catItems.map((pagesItems, pageIndex, pageArray) => (

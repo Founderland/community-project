@@ -9,11 +9,11 @@ import gif from '../../assets/images/loadingGif.gif'
 
 const FormPage = (props) => {
     const { questions, isFirst, isLast } = props
-    const { submitHandler, nextHandler, next } = useContext(AnswersContext)
+    const { submitHandler, nextHandler, prev, prevHandler } = useContext(AnswersContext)
     const [selected, setSelected] = useState([])
     const [gify, setGify] = useState(false)
     const [selectValidation, setSelectValidation] = useState(true)
-
+   
     const history = useHistory()
 
     const submit = (e) => {
@@ -24,13 +24,15 @@ const FormPage = (props) => {
             let path = `/thankyou`
             history.push(path)
             setGify(false)
-        }, 5000)
+        }, 4000)
         return () => clearTimeout(timer)
     }
 
     const previous = () => {
         submitHandler(false)
+        console.log("previous")
         props.previousStep()
+        prevHandler(true)
     }
 
     const nextClicked = () => {
@@ -43,10 +45,11 @@ const FormPage = (props) => {
             (item) => item.type === 'choice' || item.type === 'list'
         )
         // console.log(questionType.length)
-        // console.log(selected.length)
-        if (questionType.length === selected.length) {
+       console.log(prev)
+        if (questionType.length === selected.length || prev) {
             props.nextStep()
             setSelected([])
+            prevHandler(false)
             setSelectValidation(true)
         } else {
             setSelectValidation(false)
@@ -62,13 +65,15 @@ const FormPage = (props) => {
 
     return (
         <div>
-            {gify && (
-                <div classname="absolute w-screen h-screen">
+               {gify && (
+                <div classname="absolute w-screen h-screen ">
                     <img src={gif} alt="gif" />
+                    <p className="text-4xl font-monserrat font-semibold m-10"> You Form is getting Submitted !!</p>
                 </div>
             )}
+
             <form onSubmit={handleSubmit}>
-                <div className="max-h-screen w-screen md:w-full flex justify-center flex-col overflow-y-scroll md:overflow-hidden ">
+                <div  className= {!gify ? "max-h-screen w-screen md:w-full flex justify-center flex-col overflow-y-scroll md:overflow-hidden " : "hidden"} >
                     <div className=" flex flex-col justify-between  p-10 h-screen">
                         <div className="flex  justify-between md:justify-end mb-7">
                             <div className="md:hidden mt-3">
@@ -88,6 +93,7 @@ const FormPage = (props) => {
                             </div>
                         </div>
                         <div>
+                            {/* {console.log(questions)} */}
                             {questions.map((question, i) => (
                                 <Question
                                     key={i}
@@ -123,7 +129,7 @@ const FormPage = (props) => {
                     </div>
                 </div>
             </form>
-        </div>
+        </div > 
     )
 }
 
