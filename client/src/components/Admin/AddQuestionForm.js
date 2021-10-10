@@ -243,7 +243,7 @@ const AddQuestionForm = () => {
                 memberType={memberType}
               />
             )}
-            {console.log(answersList)}
+            {console.log(answersList, 'ANSWERLIST')}
           </div>
           <div></div>
           <div className=" flex flex-row w-full items-center justify-center">
