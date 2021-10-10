@@ -1,30 +1,31 @@
 import { useState } from 'react'
 import axios from 'axios'
-import AddNewAnswer from './AddNewAnswer'
+import AnswerSection from './AnswerSection'
 import NewQuestionResponse from './NewQuestionResponse'
 import FormPreview from './FormPreview'
 import { useParams } from 'react-router'
 
+const defaultQuestion = {
+  category: 'About You',
+  question: '',
+  type: 'open',
+  rank: 'Not Important - just for info/further context',
+  answers: [],
+  categoryPage: 1,
+  mandatory: true,
+}
+const defaultAnswer = {
+  answer: '',
+  points: 0,
+  ideal: false,
+}
+
 const AddQuestionForm = () => {
   const { memberType } = useParams()
 
-  const defaultQuestion = {
-    category: 'About You',
-    question: '',
-    type: 'open',
-    rank: 'Not Important - just for info/further context',
-    answers: [],
-    categoryPage: 1,
-    mandatory: true,
-  }
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
-
   const [answersList, setAnswersList] = useState([])
-  const defaultAnswer = {
-    answer: '',
-    points: 0,
-    ideal: false,
-  }
+
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
   const [isSuccessful, setIsSuccessfull] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -45,7 +46,6 @@ const AddQuestionForm = () => {
       delete newQuestion.rank
       newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
     }
-    console.log(newQuestion)
     axios
       .post(`/api/form/${memberType}/add`, newQuestion)
       .then((result) => {
@@ -234,14 +234,18 @@ const AddQuestionForm = () => {
           </div>
           <div className="text-mono py-5 flex flex-col flex-wrap  xl:flex-nowrap lg:flex-row items-center justify-between">
             {questionInfo.type !== 'open' && (
-              <AddNewAnswer
+              <AnswerSection
+                answersList={answersList}
+                setAnswersList={setAnswersList}
                 setNewAnswer={setNewAnswer}
                 newAnswer={newAnswer}
                 handleNewAnswer={handleNewAnswer}
                 memberType={memberType}
               />
             )}
+            {console.log(answersList)}
           </div>
+          <div></div>
           <div className=" flex flex-row w-full items-center justify-center">
             <button
               type="button"

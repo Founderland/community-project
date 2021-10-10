@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import ListWidget from './Admin/ListWidget'
+import ListWidget from './ListWidget'
 
 const AdminFoundersForm = () => {
   const [listData, setListData] = useState({ data: [], header: [] })

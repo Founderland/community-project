@@ -6,7 +6,7 @@ import AnswersProvider from './contexts/AnswersProvider'
 import Homepage from './components/Homepage.js'
 import Admin from './components/Admin/Admin'
 import AddQuestionForm from './components/Admin/AddQuestionForm'
-import AdminFoundersForm from './components/AdminFoundersForm'
+import AdminFoundersForm from './components/Admin/AdminFoundersForm'
 
 function App() {
   return (
