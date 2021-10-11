@@ -1,12 +1,11 @@
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import ApplicantsDispatcher from './components/ApplicantsDispatcher'
-import Form from './components/Form'
-import Thankyou from './components/Forms/Thankyou'
-import AnswersProvider from './contexts/AnswersProvider'
-import Homepage from './components/Homepage.js'
-import Admin from './components/Admin/Admin'
-import AddQuestionForm from './components/Admin/AddQuestion/AddQuestionForm'
-import QuestionsList from './components/Admin/QuestionsList'
+import { BrowserRouter as Router, Route } from "react-router-dom"
+import ApplicantsDispatcher from "./components/ApplicantsDispatcher"
+import Form from "./components/Form"
+import Thankyou from "./components/Forms/Thankyou"
+import AnswersProvider from "./contexts/AnswersProvider"
+import Homepage from "./components/Homepage.js"
+import Admin from "./components/Admin/Admin"
+import FounderResponse from "./components/Forms/FounderResponse"
 
 function App() {
   return (
@@ -21,12 +20,7 @@ function App() {
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/admin" component={Admin} />
-        {/* <Route
-          exact
-          path="/admin/:memberType/addQuestion"
-          component={AddQuestionForm}
-        /> */}
-        {/* <Route exact path="/admin/foundersform" component={QuestionsList} /> */}
+        <Route exact path="/foundersrespone" component={FounderResponse} />
       </Router>
     </AnswersProvider>
   )

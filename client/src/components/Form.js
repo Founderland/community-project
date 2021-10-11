@@ -1,19 +1,21 @@
-import StepWizard from 'react-step-wizard'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import FormPage from './Forms/FormPage'
-import symbolsVertical from '../assets/images/symbol_vertical_big.png'
-import whiteLogo from '../assets/images/twoLinesWhite.svg'
-import CategoryItem from './Forms/CategoryItem'
-import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
+import StepWizard from "react-step-wizard"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import FormPage from "./Forms/FormPage"
+import symbolsVertical from "../assets/images/symbol_vertical_big.png"
+import whiteLogo from "../assets/images/twoLinesWhite.svg"
+import CategoryItem from "./Forms/CategoryItem"
+import symbolsHorizontal from "../assets/images/SymbolsHorizontal.png"
+import { AnswersContext } from "../contexts/AnswersProvider"
 
-const Form = ({ match, memberType, questionPreview }) => {
+import { useContext } from "react"
+
+const Form = ({ match }) => {
+  const { submit } = useContext(AnswersContext)
   // console.log(match);
   // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
   // const { memberType } = match.params;
-  if (match?.params.memberType) {
-    memberType = match.params.memberType
-  }
+
   const [questions, setQuestions] = useState([])
   const [activeStep, setactiveStep] = useState(0)
 
@@ -23,15 +25,9 @@ const Form = ({ match, memberType, questionPreview }) => {
 
   useEffect(() => {
     axios
-      .get(`/api/form/${memberType}/questions`)
+      .get("/api/form/founder/questions")
       .then((res) => {
-        if (questionPreview) {
-          const data = res.data
-          data.push(questionPreview)
-          setQuestions(data)
-        } else {
-          setQuestions(res.data)
-        }
+        setQuestions(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -81,33 +77,24 @@ const Form = ({ match, memberType, questionPreview }) => {
       setPagesInCategory(pagesInEachCategory)
       setFormatedQuestions(QuestionsArray)
     }
-  }, [questions])
-
-  //eg:pagesInCategory=[[3],[2],1[]]
-  // activeStep = 4
-  // setactiveStep(2)
-  const getActiveStep = (activeStep) => {
-    let sum = 0
-    // console.log(pagesInCategory)
-    for (let i = 0; i < pagesInCategory.length; i++) {
-      sum = sum + pagesInCategory[i]
-      if (activeStep <= sum) {
-        setactiveStep(i)
-        break
-      }
-    }
-  }
+  }, [])
 
   const WizardNav = ({ activeStep }) => (
     <div className=" hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12">
-      <div className="h-3/4 w-full flex items-center justify-center pl-8">
+      <div
+        className={
+          !submit
+            ? "h-3/4 w-full flex items-center justify-center pl-8"
+            : "hidden"
+        }
+      >
         <ul>
           {categoryNames.map((item, index) => (
             <CategoryItem text={item} isActive={activeStep === index} />
           ))}
         </ul>
       </div>
-      <div className="h-1/4 w-2/3 flex items-center  ">
+      <div className="h-1/4 w-2/3 flex items-center">
         <img className="text-fpink" src={whiteLogo} alt="logo" />
       </div>
     </div>
@@ -115,16 +102,27 @@ const Form = ({ match, memberType, questionPreview }) => {
 
   const Symbols = () => (
     <>
-      <div className="hidden md:w-1/12 md:flex md:justify-end">
-        <img src={symbolsVertical} alt="symbols" />
-      </div>
-      <div className="md:hidden h-12 items-end fixed bottom-0 z-10">
-        <img
-          src={symbolsHorizontal}
-          alt="logo"
-          className="h-full object-cover object-left"
-        />
-      </div>
+      {/* setactiveStep(res.activeStep) */}
+      <StepWizard
+        initialStep={1}
+        onStepChange={(res) => getActiveStep(res.activeStep)}
+        className="h-screen md:w-8/12 mb-8"
+      >
+        {formatedQuestions.map((catItems, catIndex, catArray) =>
+          catItems.map((pagesItems, pageIndex, pageArray) => (
+            <FormPage
+              questionPreview={questionPreview}
+              questions={pagesItems}
+              isFirst={pageIndex === 0 && catIndex === 0}
+              isLast={
+                pageIndex === pageArray.length - 1 &&
+                catIndex === catArray.length - 1
+              }
+              uniquePageNumber={pageIndex.toString() + catIndex.toString()}
+            />
+          ))
+        )}
+      </StepWizard>
     </>
   )
 
@@ -142,7 +140,6 @@ const Form = ({ match, memberType, questionPreview }) => {
             {formatedQuestions.map((catItems, catIndex, catArray) =>
               catItems.map((pagesItems, pageIndex, pageArray) => (
                 <FormPage
-                  questionPreview={questionPreview}
                   questions={pagesItems}
                   isFirst={pageIndex === 0 && catIndex === 0}
                   isLast={

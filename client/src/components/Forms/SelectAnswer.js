@@ -33,18 +33,46 @@ export default function SelectAnswer({
     }
   }, [])
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+    const itemClicked = (text, index) => {
+        setSelectedItem(text)
+        setShowList(!showList)
+        selectedAnswer(text,answers[0]?._id,answers[0]?.points)
     }
   }, [handleClickOutside])
 
-  const itemClicked = (text, index) => {
-    setSelectedItem(text)
-    setShowList(!showList)
-    selectedAnswer(text)
-  }
+    const listItem = (text, index) => (
+        <li
+            id="listbox-item-0"
+            role="option"
+            onClick={() => itemClicked(text, index)}
+            className="text-gray-900 cursor-default hover:bg-fblue hover:text-white select-none relative py-2 pl-3 pr-9 border-gray-300 border-b"
+        >
+            <div className="flex items-center ">
+                <span className="ml-3 block font-normal  break-word">
+                    {text}
+                </span>
+            </div>
+        </li>
+    )
+    // console.log(selectValidation)
+    return (
+        <div className="flex flex-col md:flex-row">
+            <div className="w-9/12 md:w-5/12">
+                <div className="mt-1 relative">
+                    <button
+                        type="button"
+                        ref={selectButton}
+                        onClick={() => setShowList(!showList)}
+                        className={
+                            'relative w-full bg-white mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm md:text-lg ' +
+                            (selectValidation ? 'border-gray' : 'border-fred')
+                        }
+                    >
+                        <span className="flex items-center">
+                            <span className="ml-3 block truncate">
+                                {selectedItem ? selectedItem : 'Select Item'}
+                            </span>
+                        </span>
 
   const listItem = (text, index) => (
     <li
