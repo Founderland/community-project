@@ -9,13 +9,15 @@ function AnswersProvider({ children }) {
     const [submit, setSubmit] = useState(false)
     const [next, setNext] = useState(false)
     const [prev, setPrev] = useState(false)
-
+    let totalscore = 0;
     const answerHandler = (inputValue) => {
         answers[inputValue.id] = inputValue.value
-         const id = inputValue.id
+        const id = inputValue.id
         const answer = inputValue.value
-        const answer_id=inputValue.answer_id
-        const object = { question_id: `${id}`,answer_id: `${answer_id}`,answer_value: `${answer}` }
+        const answer_id = inputValue.answer_id
+        const score = inputValue.score
+        totalscore=totalscore+inputValue.score
+        const object = { question_id: `${id}`,answer_id: `${answer_id}`,answer_value: `${answer}`, score:`${score}` }
         answers.push(object)
         setAnswers([...answers])
     }
@@ -33,23 +35,28 @@ function AnswersProvider({ children }) {
     useEffect(() => {
   
         console.log(answers)
-        if (submit && answers.length > 0) {
-            //    axios({
-            //     url:'/api/form/founder/response',
-            //     method: 'post',
-            //     data: answerValue
-            //   })
-
-         axios.post("http://localhost:3001/api/form/founder/response", JSON.stringify(answers))
-            
+        if (answers.length > 0) {
+            let total=0
+            for (let i = 0; i < answers.length; i++) {
+                if (answers[i].score !== "") {
+                    console.log(answers[i].score)
+                    total += parseInt(answers[i].score) 
+                }        
+                }
+        // const total=answers.map(item=>parseInt(item.score)).reduce((prev,curr)=>prev+curr,0)
+      console.log("total",total)
+     axios.post("/api/form/founder/response", { applicantName:answers[0].answer_value,totalScore:total,answerData:answers })
+        //axios.post("/api/form/founder/response", { data: JSON.stringify(answers) })
         .then((result) => {
-        console.log(result)
+            console.log(result)
+            setAnswers([])
         })
         .catch((e) => {
           console.log(e)
         })
-    }
-    }, [answers,submit])
+        }
+     
+    }, [answers])
 
 
     return (

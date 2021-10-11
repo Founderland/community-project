@@ -42,7 +42,7 @@ export default function SelectAnswer({
     const itemClicked = (text, index) => {
         setSelectedItem(text)
         setShowList(!showList)
-        selectedAnswer(text,answers[0]?._id)
+        selectedAnswer(text,answers[0]?._id,answers[0]?.points)
     }
 
     const listItem = (text, index) => (

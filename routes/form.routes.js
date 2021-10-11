@@ -11,8 +11,8 @@ formRouter.post('/founder/add', foundersFormController.addNew)
 formRouter.get('/founder/questions', foundersFormController.findAll)
 //ADD USER RESPONSE
 formRouter.post('/founder/response', foundersFormController.addResponse)
-
-   
+//GET USER RESPONSE
+formRouter.get('/founder/response', foundersFormController.findAllResponse)
 
 // INVESTORS
 
@@ -25,7 +25,7 @@ formRouter.get('/investor/questions', investorsForm.findAll)
 
 //ADD QUESTIONS TO FORM
 formRouter.post('/ally/add', alliesForm.addNew)
-//GET ALL QUESTIONS
+//GET ALL QUESTIONS 
 formRouter.get('/ally/questions', alliesForm.findAll)
 
 module.exports = formRouter

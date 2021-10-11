@@ -44,9 +44,9 @@ const FormPage = (props) => {
         const questionType = questions.filter(
             (item) => item.type === 'choice' || item.type === 'list'
         )
-        // console.log(questionType.length)
-       console.log(prev)
-        if (questionType.length === selected.length || prev) {
+         console.log("questionType",questionType.length)
+       console.log("selected",selected.length)
+        if (questionType.length <= selected.length || prev) {
             props.nextStep()
             setSelected([])
             prevHandler(false)

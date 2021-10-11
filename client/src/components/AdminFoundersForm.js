@@ -494,7 +494,7 @@ const AdminFoundersForm = () => {
                     ideal: true,
                     points: 10,
                     _id: '61546f77b0051cba07c4e184',
-                },
+                                                   },
                 {
                     answer: 'no',
                     ideal: false,

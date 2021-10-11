@@ -12,7 +12,7 @@ const Question = ({
     selectedAnswer,
     selectValidation,
 }) => {
-    const [answerData, setAnswerData] = useState({id:_id,value: "", answer_id:""},   )
+    const [answerData, setAnswerData] = useState({id:_id,value: "", answer_id:"",score:""},   )
 
     const { submit, answerHandler } = useContext(AnswersContext)
 
@@ -22,9 +22,9 @@ const Question = ({
         }
     }, [submit])
 
-    const selectedDisplay = (answer,index) => {
+    const selectedDisplay = (answer,id,score) => {
         selectedAnswer(answer)
-      setAnswerData({ id: _id, value: answer, answer_id:index})
+      setAnswerData({ id: _id, value: answer,answer_id:id,score:score})
     }
 
     return (
@@ -43,7 +43,8 @@ const Question = ({
                             setAnswerData({
                                 id: _id,
                                 value: e.target.value,
-                                answer_id:answers[0]?._id       
+                                answer_id: answers[0]?._id,
+                                score:''
                             })
                         }
                     />

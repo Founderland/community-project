@@ -14,26 +14,26 @@ const Thankyou = () => {
                     <div className="flex flex-col max-w-xs  md:max-w-full  justify-evenly justify-evenly">
                         <div className="text-right flex justify-end pt-8 pr-6 md:pl-24 md:py-10 md:justify-start">
                             <img
-                                className="md:w-56 w-20"
+                                className="xl:w-64 2xl:w-72 md:w-56 w-20 " 
                                 src={arrow}
                                 alt="Logo"
                             />
                         </div>
                         <div className="w-full text-hanson  pr-6  text-right md:text-left py-10 md:py-5 md:pl-24 ">
-                            <h1 className="text-5xl md:text-7xl">
+                            <h1 className="text-5xl md:text-6xl lg:text-7 xl:lg:text-7  2xl:text-9xl">
                                 {' '}
                                 THANK YOU{' '}
                             </h1>
                         </div>
                         <div className="w-full text-grotesk pr-6 text-right md:text-left  md:px-24">
-                            <h1 className="text-lg md:text-2xl  lg:text-2xl">
+                            <h1 className="text-lg md:text-2xl  lg:text-2xl xl:text-4xl">
                                 Thanks for showing interest in our growing
                                 community! We will be in touch within a few
                                 weeks.
                             </h1>
                         </div>
                         <div className="flex justify-start pl-24 py-10 mt-4 pr-6 md:mt-10">
-                            <button class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono ">
+                            <button class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono md:text-lg xl:text-2xl ">
                                 RETURN TO HOMEPAGE
                             </button>
                         </div>
@@ -41,13 +41,13 @@ const Thankyou = () => {
 
                     <div className="hidden bg-black items-center justify-center md:flex sm:w-4/12 md:w-2/12 xl:w-1/12">
                         <img
-                            className="md:h-3/4 md:object-fit"
+                            className="md:h-3/4  md:object-fit "
                             src={logoLgWhite}
                             alt="Logo"
                         />
                     </div>
 
-                    <div className="max-w-20 w-20  self-end md:w-2/12 lg:w-2/12 xl:w-1/12 relative">
+                    <div className="max-w-20 w-20  self-end md:w-2/12 lg:w-2/12 relative">
                         <img
                             className="md:w-full md:object-fit"
                             src={symbolVerticalBig}
