@@ -32,7 +32,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
     return () => {
       setDataToDisplay([])
     }
-  }, [offset])
+  }, [offset, data])
   return (
     <div className="w-full px-2">
       <p className="text-mono">{title}</p>
