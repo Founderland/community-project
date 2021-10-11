@@ -2,7 +2,6 @@ import Answer from './Answer'
 
 const AnswerList = ({ answersList, setAnswersList, memberType }) => {
   const handleAnswerChange = (i, updated) => {
-    console.log(i)
     const updatedList = answersList.map((item, index) =>
       index === i ? { ...item, ...updated } : item
     )
@@ -10,9 +9,8 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
   }
 
   const handleDelete = (i) => {
-    const updatedList = [...answersList]
-    updatedList.splice(i, 1)
-    console.log(updatedList, 'upLIST')
+    const updatedList = [...answersList].filter((item, index) => index !== i)
+
     setAnswersList([...updatedList])
   }
 

@@ -1,9 +1,12 @@
+import { useRef } from 'react'
+
 const AddAnswer = ({
   setNewAnswer,
   newAnswer,
   handleNewAnswer,
   memberType,
 }) => {
+  const addField = useRef()
   return (
     <>
       <div className=" flex flex-col w-full lg:w-3/6 xl:w-3/6 text-mono py-5   items-between justify-between lg:flex-row xl:justify-start lg:items-center">
@@ -18,6 +21,7 @@ const AddAnswer = ({
           id="newAnswer"
           className="p-3 border-solid  shadow-md lg:w-2/3 xl:w-full rounded-lg"
           placeholder="New answer"
+          ref={addField}
           value={newAnswer.answer}
           onChange={(e) => {
             const value = e.target.value.trimStart()
@@ -79,7 +83,7 @@ const AddAnswer = ({
           <button
             type="button"
             className="p-4 bg-fblue text-white lg:w-2/6 rounded-lg"
-            onClick={handleNewAnswer}
+            onClick={() => handleNewAnswer(addField)}
           >
             {' '}
             Add

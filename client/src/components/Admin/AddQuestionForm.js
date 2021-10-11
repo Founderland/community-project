@@ -31,10 +31,12 @@ const AddQuestionForm = () => {
   const [isError, setIsError] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
 
-  const handleNewAnswer = (e) => {
+  const handleNewAnswer = (addField) => {
     setAnswersList((pre) =>
       pre.length > 0 ? [...pre, newAnswer] : [newAnswer]
     )
+    addField.current.focus()
+    // console.log(addField)
     // restoring default values
     setNewAnswer(defaultAnswer)
   }
@@ -243,7 +245,6 @@ const AddQuestionForm = () => {
                 memberType={memberType}
               />
             )}
-            {console.log(answersList, 'ANSWERLIST')}
           </div>
           <div></div>
           <div className=" flex flex-row w-full items-center justify-center">
