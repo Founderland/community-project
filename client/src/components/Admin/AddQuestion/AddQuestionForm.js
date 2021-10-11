@@ -1,39 +1,44 @@
 import { useState } from 'react'
 import axios from 'axios'
-import AddNewAnswer from './AddNewAnswer'
-import NewQuestionResponse from './NewQuestionResponse'
-import FormPreview from './FormPreview'
+import AnswerSection from './AnswerSection'
+import NewQuestionResponse from '../NewQuestionResponse'
+import FormPreview from '../FormPreview'
 import { useParams } from 'react-router'
+import { EyeIcon } from '@heroicons/react/outline'
 
-const AddQuestionForm = () => {
-  const { memberType } = useParams()
+const defaultQuestion = {
+  category: 'About You',
+  question: '',
+  type: 'open',
+  rank: 'Not Important - just for info/further context',
+  answers: [],
+  categoryPage: 1,
+  mandatory: true,
+}
+const defaultAnswer = {
+  answer: '',
+  points: 0,
+  ideal: false,
+}
 
-  const defaultQuestion = {
-    category: 'About You',
-    question: '',
-    type: 'open',
-    rank: 'Not Important - just for info/further context',
-    answers: [],
-    categoryPage: 1,
-    mandatory: true,
-  }
+const AddQuestionForm = ({ memberType }) => {
+  // const { memberType } = useParams()
+  // console.log(memberType)
+
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
-
   const [answersList, setAnswersList] = useState([])
-  const defaultAnswer = {
-    answer: '',
-    points: 0,
-    ideal: false,
-  }
+
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
   const [isSuccessful, setIsSuccessfull] = useState(false)
   const [isError, setIsError] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
 
-  const handleNewAnswer = (e) => {
+  const handleNewAnswer = (addField) => {
     setAnswersList((pre) =>
       pre.length > 0 ? [...pre, newAnswer] : [newAnswer]
     )
+    addField.current.focus()
+    // console.log(addField)
     // restoring default values
     setNewAnswer(defaultAnswer)
   }
@@ -45,7 +50,6 @@ const AddQuestionForm = () => {
       delete newQuestion.rank
       newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
     }
-    console.log(newQuestion)
     axios
       .post(`/api/form/${memberType}/add`, newQuestion)
       .then((result) => {
@@ -70,14 +74,14 @@ const AddQuestionForm = () => {
 
   return (
     <div className=" h-full w-full flex flex-col justify-start items-stretch text-xl shadow-xl ">
-      <div className=" flex flex-col justify-center items-center bg-white p-4 rounded-lg">
+      <div className=" lg:h-screen flex flex-col justify-center items-center bg-white p-4 rounded-lg">
         <NewQuestionResponse isSuccessful={isSuccessful} isError={isError} />
-        <h1 className="text-grotesk font-bold p-3">Add new Questions</h1>
+        <h1 className="font-bold p-3">Add new Questions</h1>
         <div className="h-full w-full px-5">
-          <div className="  text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
+          <div className=" py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
               HtmlFor="newQuestion"
-              className=" w-full font-bold text-grotesk lg:w-1/6  mb-5 lg:m-0 "
+              className=" w-full font-bold lg:w-1/6  mb-5 lg:m-0 "
             >
               Question
             </label>
@@ -99,10 +103,10 @@ const AddQuestionForm = () => {
           </div>
           <div className="flex flex-col items-start lg:flex-wrap lg:flex-row lg:justify-start lg:justify-between lg:items-center ">
             <div className="w-full flex justify-between xl:justify-start xl:w-full">
-              <div className=" w-2/3 lg:w-1/2 xl:w-4/5 text-mono py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center xl:justify-start">
+              <div className=" w-2/3 lg:w-1/2 xl:w-4/5  py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center xl:justify-start">
                 <label
                   HtmlFor="newQuestion"
-                  className=" w-full text-grotesk font-bold lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0"
+                  className=" w-full font-bold lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0"
                 >
                   Category
                 </label>
@@ -124,10 +128,10 @@ const AddQuestionForm = () => {
                   <option value="Tell us more">Tell Us More</option>
                 </select>
               </div>
-              <div className="  w-1/4 lg:w-1/4 xl:w-1/3 text-mono py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center">
+              <div className="  w-1/4 lg:w-1/4 xl:w-1/3  py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center">
                 <label
                   HtmlFor="newQuestion"
-                  className=" w-full  text-grotesk font-bold lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center"
+                  className=" w-full  font-bold lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center"
                 >
                   Category Page
                 </label>
@@ -150,13 +154,13 @@ const AddQuestionForm = () => {
                 </select>
               </div>
             </div>
-            <div className="w-full  text-mono py-5  flex flex-col items-between lg:flex-row lg:items-center justify-between ">
+            <div className="w-full   py-5  flex flex-col items-between lg:flex-row lg:items-center justify-between ">
               {/* Hiding Rank for non founder memebers */}
               {memberType === 'founder' && (
                 <>
                   <label
                     HtmlFor="rank"
-                    className="text-grotesk font-bold lg:w-1/6  mb-5 lg:mb-0  "
+                    className="font-bold lg:w-1/6  mb-5 lg:mb-0  "
                   >
                     Rank
                   </label>
@@ -189,11 +193,11 @@ const AddQuestionForm = () => {
                 </>
               )}
             </div>
-            <div className="w-full  text-mono py-5  flex flex-row  items-start lg:items-center justify-between lg:flex-row xl:justify-start ">
+            <div className="w-full   py-5  flex flex-row  items-start lg:items-center justify-between lg:flex-row xl:justify-start ">
               <div className="flex flex-col lg:flex-row lg:items-center xl:justify-between w-2/4">
                 <label
                   HtmlFor="newQuestion"
-                  className="text-grotesk font-bold lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 "
+                  className="font-bold lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 "
                 >
                   Type of answer
                 </label>
@@ -215,7 +219,7 @@ const AddQuestionForm = () => {
                 </select>
               </div>
               <div className="flex flex-col lg:flex-row justify-start md:justify-evenly xl:justify-center items-center w-2/4 ">
-                <label className=" text-grotesk font-bold text-center mb-9 lg:w-2/6 lg:mb-0 lg:ml-5">
+                <label className=" font-bold text-center mb-9 lg:w-2/6 lg:mb-0 lg:ml-5">
                   Mandatory{' '}
                 </label>
                 <input
@@ -232,9 +236,11 @@ const AddQuestionForm = () => {
               </div>
             </div>
           </div>
-          <div className="text-mono py-5 flex flex-col flex-wrap  xl:flex-nowrap lg:flex-row items-center justify-between">
+          <div className=" py-5 flex flex-col flex-wrap  xl:flex-nowrap lg:flex-row items-center justify-between">
             {questionInfo.type !== 'open' && (
-              <AddNewAnswer
+              <AnswerSection
+                answersList={answersList}
+                setAnswersList={setAnswersList}
                 setNewAnswer={setNewAnswer}
                 newAnswer={newAnswer}
                 handleNewAnswer={handleNewAnswer}
@@ -242,18 +248,18 @@ const AddQuestionForm = () => {
               />
             )}
           </div>
-          <div className=" flex flex-row w-full items-center justify-center">
+          <div className=" m-auto flex flex-row w-full lg:w-1/2 items-center justify-around">
             <button
               type="button"
-              className="flex p-4 bg-white text-fblue rounded-lg "
+              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-flime  "
               onClick={() => setShowPreview(true)}
             >
-              {' '}
               Preview
+              {<EyeIcon className="w-7 h-7 ml-2" />}
             </button>
             <button
               type="button"
-              className="p-4 bg-fblue text-white text-grotesk font-bold rounded-lg "
+              className="p-4 bg-fblue text-white font-bold rounded-lg transition-colors ease-in-out duration-500 hover:bg-flime  hover:text-fblue "
               onClick={handleSubmit}
             >
               {' '}
