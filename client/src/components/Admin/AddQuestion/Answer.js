@@ -24,7 +24,7 @@ const Answer = ({
 
   return (
     <div
-      className={`flex flex-col lg:flex-row text-center lg:flex  justify-between items-center w-full bg-gray-200 py-3 px-5 ${
+      className={`flex flex-col xl:flex-row text-center justify-between items-center w-full bg-gray-200 py-3 px-5 ${
         disabled ? style.disabledDiv : style.enabledDiv
       }`}
     >
@@ -48,11 +48,21 @@ const Answer = ({
           }}
         />
       </div>
-      <div className="w-full flex flex-wrap md:flex-nowrap items-center justify-between">
-        <label className="my-2 lg:mx-3 ">Score:</label>
+      <div
+        className={`w-full flex flex-wrap md:flex-nowrap items-center  ${
+          memberType !== 'founder'
+            ? 'justify-center lg:justify-end'
+            : 'justify-between '
+        }`}
+      >
+        <label
+          className={`my-2 lg:mx-3 ${memberType !== 'founder' && 'hidden'}`}
+        >
+          Score:
+        </label>
         <input
           type="number"
-          className={`w-1/2 md:w-1/4 my-2  ${
+          className={`w-1/4 lg:w-1/4 my-2  ${
             memberType !== 'founder' && 'hidden'
           } ${disabled ? style.disabledInput : style.enabledInput}`}
           disabled={disabled}
@@ -64,10 +74,14 @@ const Answer = ({
             })
           }}
         />
-        <label className="my-2 lg:mx-3 ">Ideal</label>
+        <label
+          className={`my-2 lg:mx-3 ${memberType !== 'founder' && 'hidden'}`}
+        >
+          Ideal
+        </label>
         <input
           type="checkbox"
-          className={`w-1/2 lg:w-1/4 xl:w-1/6 w-5 h-5 my-2  ${
+          className={`w-1/4 lg:w-1/4 xl:w-1/6 w-5 h-5 my-2  ${
             memberType !== 'founder' && 'hidden'
           } ${disabled ? style.disabledInput : style.enabledInput}`}
           disabled={disabled}

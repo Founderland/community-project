@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import ListWidget from './ListWidget'
+import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/outline'
+import { useHistory } from 'react-router'
+import AdminContext from '../../contexts/Admin'
+import AddQuestionForm from './AddQuestion/AddQuestionForm'
 
-const AdminFoundersForm = () => {
+const QuestionsList = ({ memberType }) => {
+  let history = useHistory()
+  const { view, views } = useContext(AdminContext)
+  const [showList, setShowList] = useState(true)
   const [listData, setListData] = useState({ data: [], header: [] })
   //    {
   //     header: [
@@ -528,7 +535,7 @@ const AdminFoundersForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get('/api/form/founder/questions')
+        const result = await axios.get(`/api/form/${memberType}/questions`)
         if (result.data)
           setListData({
             header: [
@@ -541,7 +548,15 @@ const AdminFoundersForm = () => {
               {
                 title: 'Type',
                 key: 'type',
-                style: 'text-left hidden md:table-cell items-center',
+                style: 'text-left hidden xl:table-cell items-center',
+              },
+              {
+                title: 'Rank',
+                key: 'rank',
+                style:
+                  memberType === 'founder'
+                    ? 'text-left hidden xl:table-cell items-center'
+                    : 'hidden',
               },
               { title: 'Actions', key: '-', style: 'text-center' },
             ],
@@ -549,9 +564,9 @@ const AdminFoundersForm = () => {
             colSize: [
               <colgroup>
                 <col style={{ width: '40vw' }} />
-                <col style={{ width: '20vw' }} />
-                <col style={{ width: '20vw' }} className="hidden md:flex" />
-                <col style={{ width: '20vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '10vw' }} />
               </colgroup>,
             ],
           })
@@ -560,19 +575,36 @@ const AdminFoundersForm = () => {
       }
     }
     fetchData()
-  }, [])
+  }, [memberType, view])
 
   return (
-    <div className="w-full">
-      <ListWidget
-        title="Founders questions list"
-        data={listData}
-        showing={10}
-        colSize={listData.colSize}
-        cellAlignment={'justify-start'}
-      />
+    <div className="w-full flex flex-col ">
+      <div className=" flex justify-between items-center mx-2">
+        <div className={!showList && 'hidden'}>Question List</div>
+        <div
+          onClick={() => setShowList(!showList)}
+          className=" flex justify-center items-center space-around w-1/2 md:w-auto py-3 px-2 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
+        >
+          {showList ? (
+            <PlusIcon className="w-5 h-5 mx-2" />
+          ) : (
+            <ArrowLeftIcon className="w-5 h-5 mx-2" />
+          )}
+          {showList ? 'Add new' : 'Back'}
+        </div>
+      </div>
+      {showList ? (
+        <ListWidget
+          data={listData}
+          showing={10}
+          colSize={listData.colSize}
+          cellAlignment={'justify-start'}
+        />
+      ) : (
+        <AddQuestionForm memberType={memberType} />
+      )}
     </div>
   )
 }
 
-export default AdminFoundersForm
+export default QuestionsList

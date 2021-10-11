@@ -67,8 +67,8 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
                           <div className={`flex items-center ${cellAlignment}`}>
                             <span
                               className={
-                                styles[item[header.key].toLowerCase()]
-                                  ? styles[item[header.key].toLowerCase()]
+                                styles[item[header.key]?.toLowerCase()]
+                                  ? styles[item[header.key]?.toLowerCase()]
                                   : ''
                               }
                             >
