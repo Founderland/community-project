@@ -1,16 +1,12 @@
 import StepWizard from "react-step-wizard"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import FormPage from "./Forms/FormPage"
 import symbolsVertical from "../assets/images/symbol_vertical_big.png"
 import whiteLogo from "../assets/images/twoLinesWhite.svg"
 import CategoryItem from "./Forms/CategoryItem"
 import symbolsHorizontal from "../assets/images/SymbolsHorizontal.png"
 import { AnswersContext } from "../contexts/AnswersProvider"
-
-import { useContext } from "react"
-
-import { useContext } from "react"
 
 const Form = ({ match, memberType, questionPreview }) => {
   const { submit } = useContext(AnswersContext)
@@ -19,7 +15,7 @@ const Form = ({ match, memberType, questionPreview }) => {
   // const { memberType } = match.params;
 
   const [questions, setQuestions] = useState([])
-  const [activeStep, setactiveStep] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
 
   const [categoryNames, setCategoryNames] = useState([])
   const [pagesInCategory, setPagesInCategory] = useState([])
@@ -113,7 +109,7 @@ const Form = ({ match, memberType, questionPreview }) => {
       {/* setactiveStep(res.activeStep) */}
       <StepWizard
         initialStep={1}
-        onStepChange={(res) => getActiveStep(res.activeStep)}
+        onStepChange={(res) => setActiveStep(res.activeStep)}
         className="h-screen md:w-8/12 mb-8"
       >
         {formatedQuestions.map((catItems, catIndex, catArray) =>
@@ -142,7 +138,7 @@ const Form = ({ match, memberType, questionPreview }) => {
           {/* setactiveStep(res.activeStep) */}
           <StepWizard
             initialStep={1}
-            onStepChange={(res) => getActiveStep(res.activeStep)}
+            onStepChange={(res) => setActiveStep(res.activeStep)}
             className="h-screen md:w-8/12 mb-8"
           >
             {formatedQuestions.map((catItems, catIndex, catArray) =>

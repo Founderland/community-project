@@ -30,7 +30,12 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
     setPageCount(Math.ceil(data.data.length / perPage))
+
+    return () => {
+      setDataToDisplay([])
+    }
   }, [data, offset])
+
   return (
     <div className="w-full px-2 ">
       <p className="text-mono">{title}</p>

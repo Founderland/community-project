@@ -10,6 +10,7 @@ import AdminContext from "../../contexts/Admin"
 const Notifications = () => {
   let bell = false
   const { notifications } = useContext(AdminContext)
+  console.log(notifications)
   if (notifications.length) {
     bell = true
   }

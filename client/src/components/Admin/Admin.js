@@ -35,13 +35,16 @@ const Admin = () => {
   useEffect(() => {
     if (token) {
       var decode = jwt.decode(localStorage.authToken)
-      setUser({
-        id: decode.id,
-        firstName: decode.firstName,
-        lastName: decode.lastName,
-        avatar: decode.avatar,
-        role: decode.role,
-      })
+      console.log(decode)
+      if (decode.id && decode.role) {
+        setUser({
+          id: decode.id,
+          firstName: decode.firstName,
+          lastName: decode.lastName,
+          avatar: decode.avatar,
+          role: decode.role,
+        })
+      }
     }
   }, [])
 
