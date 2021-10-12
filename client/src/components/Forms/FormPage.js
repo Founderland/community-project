@@ -1,11 +1,11 @@
-import Question from './Question'
-import smallLogo from '../../assets/images/smallLogo.svg'
+import Question from "./Question"
+import smallLogo from "../../assets/images/smallLogo.svg"
 
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom"
 
-import { useState, useContext } from 'react'
-import { AnswersContext } from '../../contexts/AnswersProvider'
-import gif from '../../assets/images/loadingGif.gif'
+import { useState, useContext } from "react"
+import { AnswersContext } from "../../contexts/AnswersProvider"
+import gif from "../../assets/images/loadingGif.gif"
 
 const FormPage = (props) => {
   const { questions, isFirst, isLast } = props
@@ -31,7 +31,7 @@ const FormPage = (props) => {
 
   const previous = () => {
     submitHandler(false)
-    console.log('previous')
+    console.log("previous")
     props.previousStep()
     prevHandler(true)
   }
@@ -43,10 +43,10 @@ const FormPage = (props) => {
     e.preventDefault()
     // console.log(questions)
     const questionType = questions.filter(
-      (item) => item.type === 'choice' || item.type === 'list'
+      (item) => item.type === "choice" || item.type === "list"
     )
-    console.log('questionType', questionType.length)
-    console.log('selected', selected.length)
+    console.log("questionType", questionType.length)
+    console.log("selected", selected.length)
     if (
       questionType.length <= selected.length ||
       prev ||
@@ -74,7 +74,6 @@ const FormPage = (props) => {
         <div classname="absolute w-screen h-screen ">
           <img src={gif} alt="gif" />
           <p className="text-4xl font-monserrat font-semibold m-10">
-            {' '}
             You Form is getting Submitted !!
           </p>
         </div>
@@ -84,21 +83,21 @@ const FormPage = (props) => {
         <div
           className={
             !gify
-              ? 'max-h-screen w-screen md:w-full flex justify-center flex-col overflow-y-scroll md:overflow-hidden '
-              : 'hidden'
+              ? "max-h-screen w-screen md:w-full flex justify-center flex-col overflow-y-scroll md:overflow-hidden "
+              : "hidden"
           }
         >
           <div className=" flex flex-col justify-between  p-10 h-screen">
             <div className="flex  justify-between md:justify-end mb-7">
               <div className="md:hidden mt-3">
-                {' '}
-                <img src={smallLogo} alt="logo" className="w-20 pr-5" />{' '}
+                {" "}
+                <img src={smallLogo} alt="logo" className="w-20 pr-5" />{" "}
               </div>
 
               <div className=" ">
                 {/* md:max-w-xs md:pl-24 */}
                 <h2 className=" hidden md:flex md:mt-5 text-mono font-semibold md:text-xl lg:text-xl xl:text-2xl md:tracking-wider">
-                  DISRUPTING THE PIPELINE FOR INVESTORS{' '}
+                  DISRUPTING THE PIPELINE FOR INVESTORS{" "}
                 </h2>
               </div>
             </div>
@@ -107,10 +106,10 @@ const FormPage = (props) => {
               {questions.map((question, i) => (
                 <Question
                   key={i}
-                  questionPreview={props.questionPreview}
                   {...question}
                   selectedAnswer={selectedAnswer}
                   selectValidation={selectValidation}
+                  questionPreview={props.questionPreview}
                 />
               ))}
             </div>
@@ -126,16 +125,17 @@ const FormPage = (props) => {
               )}
               <button
                 type="submit"
+                disabled={isLast && props.questionPreview}
                 className={
-                  'py-2 px-4  xl:py-4 float-right focus:ring-offset-white text-white text-mono w-2/5 md:w-1/3 xl:w-1/4 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ' +
+                  "py-2 px-4  xl:py-4 float-right focus:ring-offset-white text-white text-mono w-2/5 md:w-1/3 xl:w-1/4 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 " +
                   (isLast
-                    ? ' bg-black  hover:bg-black focus:ring-black'
-                    : 'bg-fblue hover:bg-fblue-dark focus:ring-fblue') +
-                  (isLast && props.questionPreview && ' hidden')
+                    ? " bg-black  hover:bg-black focus:ring-black"
+                    : "bg-fblue hover:bg-fblue-dark focus:ring-fblue") +
+                  (isLast && props.questionPreview && " opacity-30")
                 }
                 onClick={isLast ? submit : nextClicked}
               >
-                {isLast ? 'Submit' : 'next'}
+                {isLast ? "Submit" : "next"}
               </button>
             </div>
           </div>

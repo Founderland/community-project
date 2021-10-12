@@ -1,14 +1,14 @@
-import StepWizard from 'react-step-wizard'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import FormPage from './Forms/FormPage'
-import symbolsVertical from '../assets/images/symbol_vertical_big.png'
-import whiteLogo from '../assets/images/twoLinesWhite.svg'
-import CategoryItem from './Forms/CategoryItem'
-import symbolsHorizontal from '../assets/images/SymbolsHorizontal.png'
-import { AnswersContext } from '../contexts/AnswersProvider'
+import StepWizard from "react-step-wizard"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import FormPage from "./Forms/FormPage"
+import symbolsVertical from "../assets/images/symbol_vertical_big.png"
+import whiteLogo from "../assets/images/twoLinesWhite.svg"
+import CategoryItem from "./Forms/CategoryItem"
+import symbolsHorizontal from "../assets/images/SymbolsHorizontal.png"
+import { AnswersContext } from "../contexts/AnswersProvider"
 
-import { useContext } from 'react'
+import { useContext } from "react"
 
 const Form = ({ match, memberType, questionPreview }) => {
   const { submit } = useContext(AnswersContext)
@@ -24,7 +24,7 @@ const Form = ({ match, memberType, questionPreview }) => {
   const [categoryNames, setCategoryNames] = useState([])
   const [pagesInCategory, setPagesInCategory] = useState([])
   const [formatedQuestions, setFormatedQuestions] = useState([])
-
+  console.log(questionPreview)
   useEffect(() => {
     axios
       .get(`/api/form/${memberType}/questions`)
@@ -107,8 +107,8 @@ const Form = ({ match, memberType, questionPreview }) => {
       <div
         className={
           !submit
-            ? 'h-3/4 w-full flex items-center justify-center pl-8'
-            : 'hidden'
+            ? "h-3/4 w-full flex items-center justify-center pl-8"
+            : "hidden"
         }
       >
         <ul>

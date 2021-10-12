@@ -1,32 +1,44 @@
-import { useState } from 'react'
-import axios from 'axios'
-import AnswerSection from './AnswerSection'
-import NewQuestionResponse from '../NewQuestionResponse'
-import FormPreview from '../FormPreview'
-import { useParams } from 'react-router'
-import { EyeIcon } from '@heroicons/react/outline'
+import { useState } from "react"
+import axios from "axios"
+import AnswerSection from "./AnswerSection"
+import NewQuestionResponse from "../NewQuestionResponse"
+import FormPreview from "./FormPreview"
+import { useParams } from "react-router"
+import { EyeIcon } from "@heroicons/react/outline"
+import ListOption from "../ListOption"
 
 const defaultQuestion = {
-  category: 'About You',
-  question: '',
-  type: 'open',
-  rank: 'Not Important - just for info/further context',
+  category: "About You",
+  question: "",
+  type: "open",
+  rank: "Not Important - just for info/further context",
   answers: [],
   categoryPage: 1,
   mandatory: true,
 }
 const defaultAnswer = {
-  answer: '',
+  answer: "",
   points: 0,
   ideal: false,
 }
 
-const AddQuestionForm = ({ memberType }) => {
+const categories = [
+  { name: "About You", value: "About You" },
+  {
+    name: "About Your Business",
+    value: "About Your Business",
+  },
+  { name: "Tell Us More", value: "Tell Us More" },
+]
+
+const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
   // const { memberType } = useParams()
   // console.log(memberType)
 
-  const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
-  const [answersList, setAnswersList] = useState([])
+  const [questionInfo, setQuestionInfo] = useState(
+    question ? question : defaultQuestion
+  )
+  const [answersList, setAnswersList] = useState(answers ? answers : [])
 
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
   const [isSuccessful, setIsSuccessfull] = useState(false)
@@ -46,7 +58,7 @@ const AddQuestionForm = ({ memberType }) => {
   const handleSubmit = () => {
     let newQuestion = { ...questionInfo, answers: answersList }
     // Deleting unnecessary fields for non founders
-    if (memberType !== 'founder') {
+    if (memberType !== "founder") {
       delete newQuestion.rank
       newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
     }
@@ -72,24 +84,33 @@ const AddQuestionForm = ({ memberType }) => {
     setAnswersList([])
   }
 
+  const setListOption = (value) => {
+    setQuestionInfo({
+      ...questionInfo,
+      category: value,
+    })
+  }
+
   return (
     <div className=" h-full w-full flex flex-col justify-start items-stretch text-xl shadow-xl ">
       <div className=" lg:h-screen flex flex-col justify-center items-center bg-white p-4 rounded-lg">
         <NewQuestionResponse isSuccessful={isSuccessful} isError={isError} />
-        <h1 className="font-bold p-3">Add new Questions</h1>
-        <div className="h-full w-full px-5">
-          <div className=" py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
+        <h1 className="font-bold p-3">
+          {functionality === "edit" ? "Edit" : "Add new"} Questions
+        </h1>
+        <div className="h-full w-full md:px-5">
+          <div className=" py-5 flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
               HtmlFor="newQuestion"
-              className=" w-full font-bold lg:w-1/6  mb-5 lg:m-0 "
+              className=" w-full  font-bold lg:w-1/6  mb-5 lg:m-0 "
             >
               Question
             </label>
-            <input
+            <textarea
               type="text"
               id="newQuestion"
               name="newQuestion"
-              className="p-3  shadow-md w-full lg:w-5/6 xl:w-4/6 rounded-lg"
+              className="p-3 outline-none resize-none shadow-md w-full lg:w-5/6  rounded-lg"
               placeholder="New question"
               value={questionInfo.question}
               onChange={(e) => {
@@ -110,23 +131,11 @@ const AddQuestionForm = ({ memberType }) => {
                 >
                   Category
                 </label>
-                <select
-                  id="category"
-                  className="p-3 bg-white w-auto shadow-md w-full lg:w-2/3 xl:w-4/5 rounded-lg"
-                  value={questionInfo.category}
-                  onChange={(e) =>
-                    setQuestionInfo({
-                      ...questionInfo,
-                      category: e.target.value,
-                    })
-                  }
-                >
-                  <option value="About You">About you</option>
-                  <option value="About Your Business">
-                    About Your Business
-                  </option>
-                  <option value="Tell us more">Tell Us More</option>
-                </select>
+                <ListOption
+                  options={categories}
+                  choice={questionInfo.category}
+                  setChoice={setListOption}
+                />
               </div>
               <div className="  w-1/4 lg:w-1/4 xl:w-1/3  py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center">
                 <label
@@ -156,7 +165,7 @@ const AddQuestionForm = ({ memberType }) => {
             </div>
             <div className="w-full   py-5  flex flex-col items-between lg:flex-row lg:items-center justify-between ">
               {/* Hiding Rank for non founder memebers */}
-              {memberType === 'founder' && (
+              {memberType === "founder" && (
                 <>
                   <label
                     HtmlFor="rank"
@@ -183,11 +192,11 @@ const AddQuestionForm = ({ memberType }) => {
                       Vital - Deal Maker or Breaker
                     </option>
                     <option value="Very Important - variable is scrutinized">
-                      {' '}
-                      Very Important - variable is scrutinized{' '}
+                      {" "}
+                      Very Important - variable is scrutinized{" "}
                     </option>
                     <option value="Moderately Important - potentially a determining factor">
-                      Moderately Important - potentially a determining factor{' '}
+                      Moderately Important - potentially a determining factor{" "}
                     </option>
                   </select>
                 </>
@@ -220,7 +229,7 @@ const AddQuestionForm = ({ memberType }) => {
               </div>
               <div className="flex flex-col lg:flex-row justify-start md:justify-evenly xl:justify-center items-center w-2/4 ">
                 <label className=" font-bold text-center mb-9 lg:w-2/6 lg:mb-0 lg:ml-5">
-                  Mandatory{' '}
+                  Mandatory{" "}
                 </label>
                 <input
                   type="checkbox"
@@ -237,7 +246,7 @@ const AddQuestionForm = ({ memberType }) => {
             </div>
           </div>
           <div className=" py-5 flex flex-col flex-wrap  xl:flex-nowrap lg:flex-row items-center justify-between">
-            {questionInfo.type !== 'open' && (
+            {questionInfo.type !== "open" && (
               <AnswerSection
                 answersList={answersList}
                 setAnswersList={setAnswersList}
@@ -251,7 +260,7 @@ const AddQuestionForm = ({ memberType }) => {
           <div className=" m-auto flex flex-row w-full lg:w-1/2 items-center justify-around">
             <button
               type="button"
-              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-flime  "
+              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-white  "
               onClick={() => setShowPreview(true)}
             >
               Preview
@@ -262,7 +271,7 @@ const AddQuestionForm = ({ memberType }) => {
               className="p-4 bg-fblue text-white font-bold rounded-lg transition-colors ease-in-out duration-500 hover:bg-flime  hover:text-fblue "
               onClick={handleSubmit}
             >
-              {' '}
+              {" "}
               Submit
             </button>
           </div>

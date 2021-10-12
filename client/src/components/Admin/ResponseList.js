@@ -1,9 +1,9 @@
-import { useEffect, useState, useContext } from 'react'
-import axios from 'axios'
-import ListWidget from './ListWidget'
-import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/outline'
-import { useHistory } from 'react-router'
-import AdminContext from '../../contexts/Admin'
+import { useEffect, useState, useContext } from "react"
+import axios from "axios"
+import ListWidget from "./ListWidget"
+import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/outline"
+import { useHistory } from "react-router"
+import AdminContext from "../../contexts/Admin"
 // import AddQuestionForm from './AddQuestion/AddQuestionForm'
 
 const ResponseList = () => {
@@ -78,8 +78,8 @@ const ResponseList = () => {
             )}
             {showList ? 'Add new' : 'Back'}
           </div> */}
-        </div>
-        {/* {showList ? (
+      </div>
+      {/* {showList ? (
           <ListWidget
             data={listData}
             showing={10}
@@ -89,18 +89,14 @@ const ResponseList = () => {
         ) : (
           <AddQuestionForm memberType={memberType} />
          )} */}
-         <ListWidget
-            data={listData}
-            showing={10}
-            colSize={listData.colSize}
-            cellAlignment={'justify-start'}
-          />
+      <ListWidget
+        data={listData}
+        showing={10}
+        colSize={listData.colSize}
+        cellAlignment={"justify-start"}
+      />
+    </div>
+  )
+}
 
-
-      </div>
-    )
-  }
-  
-  export default ResponseList
-
-  
+export default ResponseList

@@ -4,8 +4,8 @@ import React, {
   useContext,
   useState,
   useCallback,
-} from 'react'
-import { AnswersContext } from '../../contexts/AnswersProvider'
+} from "react"
+import { AnswersContext } from "../../contexts/AnswersProvider"
 
 export default function SelectAnswer({
   answers,
@@ -13,7 +13,7 @@ export default function SelectAnswer({
   selectValidation,
 }) {
   const [showList, setShowList] = useState(false)
-  const [selectedItem, setSelectedItem] = useState('')
+  const [selectedItem, setSelectedItem] = useState("")
   const panelResultElement = useRef()
   const selectButton = useRef()
 
@@ -33,9 +33,9 @@ export default function SelectAnswer({
   }, [])
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [handleClickOutside])
 
@@ -67,13 +67,13 @@ export default function SelectAnswer({
             ref={selectButton}
             onClick={() => setShowList(!showList)}
             className={
-              'relative w-full bg-white mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm md:text-lg ' +
-              (selectValidation ? 'border-gray' : 'border-fred')
+              "relative w-full bg-white mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm md:text-lg " +
+              (selectValidation ? "border-gray" : "border-fred")
             }
           >
             <span className="flex items-center">
               <span className="ml-3 block truncate">
-                {selectedItem ? selectedItem : 'Select Item'}
+                {selectedItem ? selectedItem : "Select Item"}
               </span>
             </span>
 
@@ -113,7 +113,7 @@ export default function SelectAnswer({
         </div>
       </div>
       <div className="flex md:ml-5 mt-4 md:mt-0">
-        {selectedItem === ' other' && (
+        {selectedItem === " other" && (
           <input
             type="text"
             className="flex-1 appearance-none text-sm md:text-md border  border-gray-400 px-4  d:px-4 bg-white text-gray-700 placeholder-gray-400  text-base focus:outline-none focus:ring-2 focus:ring-fblue-light focus:border-transparent"

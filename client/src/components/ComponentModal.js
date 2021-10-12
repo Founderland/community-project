@@ -1,13 +1,16 @@
-import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useContext } from "react"
+import { Dialog, Transition } from "@headlessui/react"
+import AdminContext from "../contexts/Admin"
+import InfoModal from "./InfoModal"
 
-const ComponentModal = ({ children, add, setAdd }) => {
+const ComponentModal = ({ children }) => {
+  const { cModal, setCModal } = useContext(AdminContext)
   return (
-    <Transition appear show={add} as={Fragment}>
+    <Transition appear show={cModal} as={Fragment}>
       <Dialog
         as="div"
-        onClose={() => setAdd(true)}
-        className="fixed z-10 inset-0 overflow-y-auto"
+        onClose={() => setCModal(false)}
+        className="fixed z-10 inset-0 overflow-y-auto "
       >
         <div className="flex justify-center items-center h-screen">
           <Transition.Child
@@ -35,6 +38,7 @@ const ComponentModal = ({ children, add, setAdd }) => {
             </div>
           </Transition.Child>
         </div>
+        <InfoModal />
       </Dialog>
     </Transition>
   )

@@ -1,32 +1,27 @@
-import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useContext } from 'react'
-import { UserIcon } from '@heroicons/react/solid'
-import UserContext from '../../contexts/User'
-import axios from 'axios'
-import AdminContext from '../../contexts/Admin'
-
-const logoutURL = 'api/auth/log-out'
+import { Menu, Transition } from "@headlessui/react"
+import { Fragment, useContext } from "react"
+import { UserIcon } from "@heroicons/react/solid"
+import AdminContext from "../../contexts/Admin"
 
 const ProfileMenu = () => {
-  const { user, setUser } = useContext(UserContext)
-  const { setView } = useContext(AdminContext)
-  const logout = () => {
-    axios
-      .post(logoutURL)
-      .then((res) => setUser(null))
-      .catch((err) => console.log(err))
+  const { user, setView, logout } = useContext(AdminContext)
+
+  const avatarInitials = () => {
+    let initials =
+      user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()
+    return initials
   }
   return (
     <Menu as="div" className="relative">
-      <Menu.Button className="flex items-center space-x-3 relative focus:outline-none">
-        <h2 className="text-gray-800 text-bold text-sm hidden sm:block">
-          {user.name}
+      <Menu.Button className="group flex items-center space-x-3 relative focus:outline-none">
+        <h2 className="text-gray-800 text-bold text-sm lg:text-lg hidden sm:block">
+          {user.firstName + " " + user.lastName}
         </h2>
-        <img
-          className="h-9 w-9 rounded-full border-2 border-fblue object-cover"
-          src={user.avatar}
-          alt={user.name}
-        />
+        <span
+          className={`flex items-center justify-center text-mono text-lg lg:text-2xl tracking-wide w-10 h-10 lg:w-14 lg:h-14 rounded-full border-2 group-hover:border-fblue ${user.avatar}`}
+        >
+          {avatarInitials()}
+        </span>
       </Menu.Button>
       <Transition
         as={Fragment}
