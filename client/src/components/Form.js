@@ -10,13 +10,15 @@ import { AnswersContext } from '../contexts/AnswersProvider'
 
 import { useContext } from 'react'
 
-const Form = ({ match }) => {
+const Form = ({match,memberType, questionPreview }) => {
 
     const { submit } = useContext(AnswersContext)
     // console.log(match);
     // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
     // const { memberType } = match.params;
-
+    if (match?.params.memberType) {
+        memberType = match.params.memberType
+      }
     const [questions, setQuestions] = useState([])
     const [activeStep, setactiveStep] = useState(0)
 
@@ -26,9 +28,15 @@ const Form = ({ match }) => {
 
     useEffect(() => {
         axios
-            .get('/api/form/founder/questions')
+            .get(`/api/form/${memberType}/questions`)
             .then((res) => {
-                setQuestions(res.data)
+                if (questionPreview) {
+                    const data = res.data
+                    data.push(questionPreview)
+                    setQuestions(data)
+                  } else {
+                    setQuestions(res.data)
+                  }
             })
             .catch((err) => {
                 console.log(err)
@@ -147,6 +155,7 @@ const Form = ({ match }) => {
                         {formatedQuestions.map((catItems, catIndex, catArray) =>
                             catItems.map((pagesItems, pageIndex, pageArray) => (
                                 <FormPage
+                                    questionPreview={questionPreview}
                                     questions={pagesItems}
                                     isFirst={pageIndex === 0 && catIndex === 0}
                                     isLast={

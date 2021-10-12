@@ -46,7 +46,7 @@ const FormPage = (props) => {
         )
          console.log("questionType",questionType.length)
        console.log("selected",selected.length)
-        if (questionType.length <= selected.length || prev) {
+        if (questionType.length <= selected.length || prev || props.questionPreview) {
             props.nextStep()
             setSelected([])
             prevHandler(false)
@@ -97,6 +97,7 @@ const FormPage = (props) => {
                             {questions.map((question, i) => (
                                 <Question
                                     key={i}
+                                    questionPreview={props.questionPreview}
                                     {...question}
                                     selectedAnswer={selectedAnswer}
                                     selectValidation={selectValidation}
@@ -119,7 +120,7 @@ const FormPage = (props) => {
                                     'py-2 px-4  xl:py-4 float-right focus:ring-offset-white text-white text-mono w-2/5 md:w-1/3 xl:w-1/4 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ' +
                                     (isLast
                                         ? ' bg-black  hover:bg-black focus:ring-black'
-                                        : 'bg-fblue hover:bg-fblue-dark focus:ring-fblue')
+                                        : 'bg-fblue hover:bg-fblue-dark focus:ring-fblue') + (isLast && props.questionPreview && ' hidden')
                                 }
                                 onClick={isLast ? submit : nextClicked}
                             >
