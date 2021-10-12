@@ -6,7 +6,8 @@ import AnswersProvider from "./contexts/AnswersProvider"
 import Homepage from "./components/Homepage.js"
 import Admin from "./components/Admin/Admin"
 import FounderResponse from "./components/Forms/FounderResponse"
-import QuestionDetails from "./components/Admin/QuestionDetails"
+import ResponseList from "./components/Admin/ResponseList"
+// import AddQuestionForm from './components/Admin/AddQuestionForm'
 
 function App() {
   return (
@@ -21,8 +22,10 @@ function App() {
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/admin" component={Admin} />
-        <Route exact path="/foundersrespone" component={FounderResponse} />
-        <Route exact path="/question" component={QuestionDetails} />
+        {/* <Route exact path="/foundersrespone" component={FounderResponse} /> */}
+        <Route exact path="/foundersrespone" component={ResponseList} />
+
+        {/* <Route exact path="/admin/:memberType/addQuestion" component={AddQuestionForm } /> */}
       </Router>
     </AnswersProvider>
   )
