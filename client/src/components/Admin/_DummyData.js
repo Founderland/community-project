@@ -38,9 +38,9 @@ const listData = {
     {
       title: 'Role',
       key: 'role',
-      style: 'py-3 px-6 text-left whitespace-nowrap',
+      style: 'py-3 px-6 text-center whitespace-nowrap',
     },
-    { title: 'Name', key: 'name', style: 'text-left' },
+    { title: 'Name', key: 'name', style: 'text-center' },
     {
       title: 'Reviewed By',
       key: 'reviews',

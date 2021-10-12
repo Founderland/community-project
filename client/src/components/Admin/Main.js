@@ -7,9 +7,9 @@ import AdminContext from '../../contexts/Admin'
 const views = [
   'Dashboard',
   'New Applicants',
-  'Founders Form',
-  'Investors Form',
-  'Allies Form',
+  'Founder Form',
+  'Investor Form',
+  'Ally Form',
   'Settings',
   'Profile',
 ]

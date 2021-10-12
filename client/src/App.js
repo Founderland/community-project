@@ -6,7 +6,7 @@ import AnswersProvider from './contexts/AnswersProvider'
 import Homepage from './components/Homepage.js'
 import Admin from './components/Admin/Admin'
 import FounderResponse from './components/Forms/FounderResponse'
-import AddQuestionForm from './components/Admin/AddQuestionForm'
+// import AddQuestionForm from './components/Admin/AddQuestionForm'
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/admin" component={Admin} />
         <Route exact path="/foundersrespone" component={FounderResponse} />
-        <Route exact path="/admin/:memberType/addQuestion" component={AddQuestionForm } />
+        {/* <Route exact path="/admin/:memberType/addQuestion" component={AddQuestionForm } /> */}
         
       </Router>
     </AnswersProvider>

@@ -1,18 +1,18 @@
 const formRouter = require('express').Router()
-const foundersFormController = require('../controllers/foundersForm')
+const foundersForm = require('../controllers/foundersFormController')
 const investorsForm = require('../controllers/investorsFormController')
 const alliesForm = require('../controllers/alliesFormController')
 
 // FOUNDERS
 
 //ADD QUESTIONS TO FORM
-formRouter.post('/founder/add', foundersFormController.addNew)
+formRouter.post('/founder/add', foundersForm.addNew)
 //GET ALL QUESTIONS
-formRouter.get('/founder/questions', foundersFormController.findAll)
+formRouter.get('/founder/questions', foundersForm.findAll)
 //ADD USER RESPONSE
-formRouter.post('/founder/response', foundersFormController.addResponse)
+formRouter.post('/founder/response', foundersForm.addResponse)
 //GET USER RESPONSE
-formRouter.get('/founder/response', foundersFormController.findAllResponse)
+formRouter.get('/founder/response', foundersForm.findAllResponse)
 
 // INVESTORS
 
