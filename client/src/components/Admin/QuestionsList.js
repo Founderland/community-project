@@ -565,7 +565,7 @@ const QuestionsList = ({ memberType }) => {
               <colgroup>
                 <col style={{ width: '40vw' }} />
                 <col style={{ width: '10vw' }} />
-                <col style={{ width: '10vw' }} />
+                <col style={{ width: '8vw' }} />
               </colgroup>,
             ],
           })
