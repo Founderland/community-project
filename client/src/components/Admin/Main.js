@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import Menu from './Menu'
-import Content from './Content'
-import Header from './Header'
-import AdminContext from '../../contexts/Admin'
+import { useContext, useState } from "react"
+import Menu from "./Menu"
+import Content from "./Content"
+import Header from "./Header"
+import AdminContext from "../../contexts/Admin"
 
 const views = [
-  'Dashboard',
-  'New Applicants',
-  'Founders Form',
-  'Investors Form',
-  'Allies Form',
-  'Settings',
-  'Profile',
+  "Dashboard",
+  "New Applicants",
+  "Founder Form",
+  "Investor Form",
+  "Ally Form",
+  "Settings",
+  "Profile",
 ]
 
 const Main = ({ setLogged }) => {
@@ -24,39 +24,24 @@ const Main = ({ setLogged }) => {
     setMenuToggle(!menuToggle)
   }
   return (
-    <AdminContext.Provider
-      value={{
-        menuToggle,
-        setMenuToggle,
-        view,
-        setView,
-        changeView,
-        views,
-        modalMessage,
-        setModalMessage,
-        modal,
-        setModal,
-      }}
-    >
+    <div>
       <div>
-        <div>
-          <div className="flex h-screen font-roboto">
-            {/* Dark background when mobile menu showing */}
-            <div
-              className={`${
-                menuToggle ? 'block ' : 'hidden '
-              }fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden`}
-              onClick={() => setMenuToggle(false)}
-            ></div>
-            <Menu />
-            <div className="flex-1 flex flex-col overflow-hidden">
-              <Header />
-              <Content />
-            </div>
+        <div className="flex h-screen font-roboto">
+          {/* Dark background when mobile menu showing */}
+          <div
+            className={`${
+              menuToggle ? "block " : "hidden "
+            }fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden`}
+            onClick={() => setMenuToggle(false)}
+          ></div>
+          <Menu />
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <Header />
+            <Content />
           </div>
         </div>
       </div>
-    </AdminContext.Provider>
+    </div>
   )
 }
 
