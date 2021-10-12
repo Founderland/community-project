@@ -8,9 +8,9 @@ import jwt from "jsonwebtoken"
 const views = [
   "Dashboard",
   "New Applicants",
-  "Founders Form",
-  "Investors Form",
-  "Allies Form",
+  "Founder Form",
+  "Investor Form",
+  "Ally Form",
   "Settings",
   "Profile",
 ]
@@ -35,13 +35,15 @@ const Admin = () => {
   useEffect(() => {
     if (token) {
       var decode = jwt.decode(localStorage.authToken)
-      setUser({
-        id: decode.id,
-        firstName: decode.firstName,
-        lastName: decode.lastName,
-        avatar: decode.avatar,
-        role: decode.role,
-      })
+      if (decode.id && decode.role) {
+        setUser({
+          id: decode.id,
+          firstName: decode.firstName,
+          lastName: decode.lastName,
+          avatar: decode.avatar,
+          role: decode.role,
+        })
+      }
     }
   }, [])
 

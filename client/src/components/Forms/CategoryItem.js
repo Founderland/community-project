@@ -2,9 +2,12 @@ import React from 'react'
 import ActiveDot from './ActiveDot'
 // import "./CategoryItem.css"
 
+
 export default function CategoryItem({ text, isActive }) {
+    
+
     return (
-        <div className="relative flex items-center py-2">
+        <div className= "relative flex items-center py-2" >
             {isActive ? (
                 <ActiveDot />
             ) : (
