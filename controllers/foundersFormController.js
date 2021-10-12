@@ -74,9 +74,9 @@ console.log(answerData,"DATA")
 const findAllResponse = async (req, res) => {
 
   try {
-    const result = await FoundersResponse.find({}).populate({ path: 'question_id', select:['question','category','type']})
+    const result = await FoundersResponse.find({}).populate({ path:'answerData.question_id', select:['question','category','type']})
 
-    console.log(result)
+    // console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
