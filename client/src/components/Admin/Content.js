@@ -4,6 +4,7 @@ import QuestionsList from './QuestionsList'
 import Dashboard from './Dashboard'
 import Profile from './Profile'
 import Settings from './Settings'
+import ResponseList from './ResponseList'
 
 const Content = () => {
   const { view, views } = useContext(AdminContext)
@@ -17,9 +18,9 @@ const Content = () => {
               memberType={views[view].toLowerCase().split(' ')[0]}
             />
           )}
-          {/* {view === 'Investors Form' && (
-            <AddQuestionForm memberType={'investor'} />
-          )} */}
+          {view === 'New Applicants' && (
+            <ResponseList/>
+          )}
           {views[view] === 'Profile' && <Profile />}
           {views[view] === 'Settings' && <Settings />}
         </div>

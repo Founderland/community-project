@@ -1,6 +1,20 @@
+import axios from 'axios'
 import React from 'react'
 
 export default function FounderResponse() {
+
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(`/api/form/founder/response`)
+      if (result.data) {
+        console.log("RESPONSE RESULT", result.data)
+      }
+    }
+      catch(e){
+        console.log(e)
+      }
+    }
+    fetchData() 
    return (
       <div>
         <table class="table-fixed border w-screen border-solid">
