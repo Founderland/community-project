@@ -1,22 +1,11 @@
 import { Menu, Transition } from "@headlessui/react"
 import { Fragment, useContext } from "react"
 import { UserIcon } from "@heroicons/react/solid"
-import axios from "axios"
 import AdminContext from "../../contexts/Admin"
 
-const logoutURL = "api/auth/log-out"
-
 const ProfileMenu = () => {
-  const { user, setUser, setView } = useContext(AdminContext)
-  const logout = () => {
-    axios
-      .post(logoutURL)
-      .then((res) => {
-        setUser(null)
-        setView(0)
-      })
-      .catch((err) => console.log(err))
-  }
+  const { user, setView, logout } = useContext(AdminContext)
+
   const avatarInitials = () => {
     let initials =
       user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()

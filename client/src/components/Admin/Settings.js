@@ -19,13 +19,19 @@ const Settings = ({ tab }) => {
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(0)
   const [task, setTask] = useState(null)
-  const { user, setIModal, setModalMessage, setCModal } =
+  const { user, setIModal, setModalMessage, setCModal, token } =
     useContext(AdminContext)
 
   //Get all registered Users and set the result as data
   useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
     axios
-      .get(usersAPI)
+      .get(usersAPI, config)
       .then((res) => {
         let result = {
           header: [

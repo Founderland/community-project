@@ -1,7 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Login from "./Login"
 import Main from "./Main"
+import InfoModal from "../InfoModal"
 import AdminContext from "../../contexts/Admin"
+import jwt from "jsonwebtoken"
 
 const views = [
   "Dashboard",
@@ -14,6 +16,7 @@ const views = [
 ]
 
 const Admin = () => {
+  const [token] = useState(localStorage.authToken)
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
   const [view, setView] = useState(0)
@@ -29,11 +32,27 @@ const Admin = () => {
     { icon: "pending", text: "4 founders applicants pending approval" },
   ])
 
+  useEffect(() => {
+    if (token) {
+      var decode = jwt.decode(localStorage.authToken)
+      setUser({
+        id: decode.id,
+        firstName: decode.firstName,
+        lastName: decode.lastName,
+        avatar: decode.avatar,
+        role: decode.role,
+      })
+    }
+  }, [])
+
+  const logout = () => {
+    localStorage.authToken = ""
+    setUser(null)
+  }
   const changeView = (view) => {
     setView(view)
     setMenuToggle(!menuToggle)
   }
-
   return (
     <AdminContext.Provider
       value={{
@@ -53,8 +72,11 @@ const Admin = () => {
         setCModal,
         notifications,
         setNotifications,
+        logout,
+        token,
       }}
     >
+      <InfoModal />
       {user ? <Main /> : <Login />}
     </AdminContext.Provider>
   )
