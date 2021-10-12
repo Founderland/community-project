@@ -13,7 +13,12 @@ const Question = ({
   selectValidation,
   questionPreview,
 }) => {
-  const [answerData, setAnswerData] = useState({})
+  const [answerData, setAnswerData] = useState({
+    id: _id,
+    value: '',
+    answer_id: '',
+    score: '',
+  })
 
   const { submit, answerHandler } = useContext(AnswersContext)
 
@@ -23,10 +28,11 @@ const Question = ({
     }
   }, [submit])
 
-  const selectedDisplay = (answer) => {
+  const selectedDisplay = (answer, id, score) => {
     selectedAnswer(answer)
-    setAnswerData({ id: _id, value: answer })
+    setAnswerData({ id: _id, value: answer, answer_id: id, score: score })
   }
+
   return (
     <div className="p-2 text-grotesk text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl mt-1 xl:mt-5">
       <label className=" ">{question}</label>
@@ -43,12 +49,13 @@ const Question = ({
               setAnswerData({
                 id: _id,
                 value: e.target.value,
+                answer_id: answers[0]?._id,
+                score: '',
               })
             }
           />
         ) : (
           <SelectAnswer
-            questionPreview={questionPreview}
             answers={answers}
             selectedAnswer={selectedDisplay}
             selectValidation={selectValidation}
