@@ -30,7 +30,10 @@ const Thankyou = () => {
               </h1>
             </div>
             <div className="flex justify-start pl-24 py-10 mt-4 pr-6 md:mt-10">
-              <Link class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono md:text-lg xl:text-2xl ">
+              <Link
+                to="/"
+                class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono md:text-lg xl:text-2xl "
+              >
                 RETURN TO HOMEPAGE
               </Link>
             </div>

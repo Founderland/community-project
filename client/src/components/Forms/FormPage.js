@@ -109,6 +109,7 @@ const FormPage = (props) => {
                   {...question}
                   selectedAnswer={selectedAnswer}
                   selectValidation={selectValidation}
+                  questionPreview={props.questionPreview}
                 />
               ))}
             </div>
