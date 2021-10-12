@@ -7,6 +7,7 @@ import Homepage from "./components/Homepage.js"
 import Admin from "./components/Admin/Admin"
 import FounderResponse from "./components/Forms/FounderResponse"
 import ResponseList from "./components/Admin/ResponseList"
+import Community from "./components/Community/Community"
 // import AddQuestionForm from './components/Admin/AddQuestionForm'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           path="/join-our-community"
           component={ApplicantsDispatcher}
         />
+        <Route exact path="/community" component={Community} />
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/admin" component={Admin} />
