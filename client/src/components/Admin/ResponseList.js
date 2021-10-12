@@ -16,28 +16,30 @@ const ResponseList = () => {
       const fetchData = async () => {
         try {
           const result = await axios.get(`/api/form/founder/response`)
-           if (result.data)
-             console.log("RESPONSE RESULT",result.data)
+          console.log("RESPONSE RESULT", result.data) 
+           if (result.data) {
+            console.log("RESPONSE RESULT", result.data) 
+            }
+              
+           
             setListData({
               header: [
                 {
                   title: 'UserName',
-                  key: 'question',
+                  key: 'applicantName',
                   style: 'py-3 px-6 text-left ',
                 },
-                { title: 'Category', key: 'category', style: 'text-left' },
-                {
-                  title: 'Location',
-                  key: 'type',
-                  style: 'text-left hidden xl:table-cell items-center',
-                },
+               //  { title: 'Category', key: 'category', style: 'text-left' },
+               //  {
+               //    title: 'Location',
+               //    key: 'type',
+               //    style: 'text-left hidden xl:table-cell items-center',
+               //  },
                 {
                   title: 'Score',
-                  key: 'rank',
+                  key: 'totalScore',
                   style:
-                  //   memberType === 'founder'?
-                       'text-left hidden xl:table-cell items-center'
-                     //  : 'hidden',
+                       'text-left'
                 },
                 { title: 'Actions', key: '-', style: 'text-center' },
               ],
@@ -48,6 +50,7 @@ const ResponseList = () => {
                   <col style={{ width: '10vw' }} />
                   <col style={{ width: '10vw' }} />
                   <col style={{ width: '10vw' }} />
+                  <col style={{ width: 'auto' }} />
                 </colgroup>,
               ],
             })
@@ -56,7 +59,7 @@ const ResponseList = () => {
         }
       }
       fetchData()
-   }, [memberType, view])
+   }, [ view])
   
    return (
       //  <div> Founders Response</div>

@@ -18,7 +18,7 @@ const Content = () => {
               memberType={views[view].toLowerCase().split(' ')[0]}
             />
           )}
-          {view === 'New Applicants' && (
+          {views[view] === 'New Applicants' && (
             <ResponseList/>
           )}
           {views[view] === 'Profile' && <Profile />}
