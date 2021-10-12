@@ -1,11 +1,11 @@
-import { useState } from "react"
-import axios from "axios"
-import AnswerSection from "./AnswerSection"
-import NewQuestionResponse from "../NewQuestionResponse"
-import FormPreview from "./FormPreview"
-import { useParams } from "react-router"
-import { EyeIcon } from "@heroicons/react/outline"
-import ListOption from "../ListOption"
+import { useState } from "react";
+import axios from "axios";
+import AnswerSection from "./AnswerSection";
+import NewQuestionResponse from "../NewQuestionResponse";
+import FormPreview from "./FormPreview";
+import { useParams } from "react-router";
+import { EyeIcon } from "@heroicons/react/outline";
+import ListOption from "../ListOption";
 
 const defaultQuestion = {
   category: "About You",
@@ -15,12 +15,12 @@ const defaultQuestion = {
   answers: [],
   categoryPage: 1,
   mandatory: true,
-}
+};
 const defaultAnswer = {
   answer: "",
   points: 0,
   ideal: false,
-}
+};
 
 const categories = [
   { name: "About You", value: "About You" },
@@ -29,7 +29,7 @@ const categories = [
     value: "About Your Business",
   },
   { name: "Tell Us More", value: "Tell Us More" },
-]
+];
 
 const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
   // const { memberType } = useParams()
@@ -37,88 +37,85 @@ const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
 
   const [questionInfo, setQuestionInfo] = useState(
     question ? question : defaultQuestion
-  )
-  const [answersList, setAnswersList] = useState(answers ? answers : [])
+  );
+  const [answersList, setAnswersList] = useState(answers ? answers : []);
 
-  const [newAnswer, setNewAnswer] = useState(defaultAnswer)
-  const [isSuccessful, setIsSuccessfull] = useState(false)
-  const [isError, setIsError] = useState(false)
-  const [showPreview, setShowPreview] = useState(false)
+  const [newAnswer, setNewAnswer] = useState(defaultAnswer);
+  const [isSuccessful, setIsSuccessfull] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
-  const handleNewAnswer = (addField) => {
+  const handleNewAnswer = () => {
     setAnswersList((pre) =>
       pre.length > 0 ? [...pre, newAnswer] : [newAnswer]
-    )
-    addField.current.focus()
-    // console.log(addField)
+    );
     // restoring default values
-    setNewAnswer(defaultAnswer)
-  }
+    setNewAnswer(defaultAnswer);
+  };
 
   const handleSubmit = () => {
-    let newQuestion = { ...questionInfo, answers: answersList }
+    let newQuestion = { ...questionInfo, answers: answersList };
     // Deleting unnecessary fields for non founders
     if (memberType !== "founder") {
-      delete newQuestion.rank
-      newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
+      delete newQuestion.rank;
+      newQuestion.answers.forEach((i) => delete i.points && delete i.ideal);
     }
     axios
       .post(`/api/form/${memberType}/add`, newQuestion)
       .then((result) => {
-        setIsSuccessfull(true)
+        setIsSuccessfull(true);
         setTimeout(() => {
-          setIsSuccessfull(false)
-        }, 7000)
+          setIsSuccessfull(false);
+        }, 7000);
       })
       .catch((e) => {
-        console.log(e)
-        setIsError(true)
+        console.log(e);
+        setIsError(true);
         setTimeout(() => {
-          setIsError(false)
-        }, 7000)
-      })
+          setIsError(false);
+        }, 7000);
+      });
 
     // restoring default values
-    setQuestionInfo(defaultQuestion)
+    setQuestionInfo(defaultQuestion);
     // emptying answers list
-    setAnswersList([])
-  }
+    setAnswersList([]);
+  };
 
   const setListOption = (value) => {
     setQuestionInfo({
       ...questionInfo,
       category: value,
-    })
-  }
+    });
+  };
 
   return (
-    <div className=" h-full w-full flex flex-col justify-start items-stretch text-xl shadow-xl ">
-      <div className=" lg:h-screen flex flex-col justify-center items-center bg-white p-4 rounded-lg">
+    <div className=" h-screen w-full flex flex-col justify-start items-stretch text-xl shadow-xl py-4">
+      <div className="flex flex-col justify-center items-center bg-white p-4  ">
         <NewQuestionResponse isSuccessful={isSuccessful} isError={isError} />
         <h1 className="font-bold p-3">
           {functionality === "edit" ? "Edit" : "Add new"} Questions
         </h1>
-        <div className="h-full w-full md:px-5">
+        <div className="h-screen w-full md:px-5">
           <div className=" py-5 flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
               HtmlFor="newQuestion"
-              className=" w-full  font-bold lg:w-1/6  mb-5 lg:m-0 "
-            >
+              className=" w-full  font-bold lg:w-1/6  mb-5 lg:m-0 ">
               Question
             </label>
             <textarea
               type="text"
               id="newQuestion"
               name="newQuestion"
-              className="p-3 outline-none resize-none shadow-md w-full lg:w-5/6  rounded-lg"
+              className="p-3 outline-none resize-none shadow-md w-full lg:w-5/6   "
               placeholder="New question"
               value={questionInfo.question}
               onChange={(e) => {
-                const value = e.target.value.trimStart()
+                const value = e.target.value.trimStart();
                 setQuestionInfo({
                   ...questionInfo,
                   question: value.replace(value[0], value[0]?.toUpperCase()),
-                })
+                });
               }}
             />
           </div>
@@ -127,8 +124,7 @@ const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
               <div className=" w-2/3 lg:w-1/2 xl:w-4/5  py-5  flex flex-col items-between justify-between lg:flex-row lg:justify-between lg:items-center xl:justify-start">
                 <label
                   HtmlFor="newQuestion"
-                  className=" w-full font-bold lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0"
-                >
+                  className=" w-full font-bold lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0">
                   Category
                 </label>
                 <ListOption
@@ -140,21 +136,19 @@ const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
               <div className="  w-1/4 lg:w-1/4 xl:w-1/3  py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center">
                 <label
                   HtmlFor="newQuestion"
-                  className=" w-full  font-bold lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center"
-                >
+                  className=" w-full  font-bold lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center">
                   Category Page
                 </label>
                 <select
                   id="category"
-                  className="p-3 bg-white w-auto shadow-md w-full lg:w-1/3 xl:1/6 rounded-lg"
+                  className="p-3 bg-white w-auto shadow-md w-full lg:w-1/3 xl:1/6  "
                   value={questionInfo.categoryPage}
                   onChange={(e) =>
                     setQuestionInfo({
                       ...questionInfo,
                       categoryPage: Number(e.target.value),
                     })
-                  }
-                >
+                  }>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -169,22 +163,20 @@ const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
                 <>
                   <label
                     HtmlFor="rank"
-                    className="font-bold lg:w-1/6  mb-5 lg:mb-0  "
-                  >
+                    className="font-bold lg:w-1/6  mb-5 lg:mb-0  ">
                     Rank
                   </label>
 
                   <select
                     id="rank"
-                    className="p-3 w-auto bg-white shadow-md lg:w-5/6 rounded-lg"
+                    className="p-3 w-auto bg-white shadow-md lg:w-5/6  "
                     value={questionInfo.rank}
                     onChange={(e) =>
                       setQuestionInfo({
                         ...questionInfo,
                         rank: e.target.value,
                       })
-                    }
-                  >
+                    }>
                     <option value="Not Important - just for info/further context">
                       Not Important - just for info/further context
                     </option>
@@ -206,21 +198,19 @@ const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
               <div className="flex flex-col lg:flex-row lg:items-center xl:justify-between w-2/4">
                 <label
                   HtmlFor="newQuestion"
-                  className="font-bold lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 "
-                >
+                  className="font-bold lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 ">
                   Type of answer
                 </label>
                 <select
                   id="answerType"
-                  className="p-3  bg-white w-auto shadow-md lg:w-2/3 xl:w-4/6 rounded-lg"
+                  className="p-3  bg-white w-auto shadow-md lg:w-2/3 xl:w-4/6  "
                   value={questionInfo.type}
                   onChange={(e) =>
                     setQuestionInfo({
                       ...questionInfo,
                       type: e.target.value,
                     })
-                  }
-                >
+                  }>
                   <option value="open">Open</option>
                   <option value="list">Dropdown list</option>
                   <option value="choice"> Single Choice </option>
@@ -260,17 +250,15 @@ const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
           <div className=" m-auto flex flex-row w-full lg:w-1/2 items-center justify-around">
             <button
               type="button"
-              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-white  "
-              onClick={() => setShowPreview(true)}
-            >
+              className="flex p-4 bg-flime text-fblue   transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-white  "
+              onClick={() => setShowPreview(true)}>
               Preview
               {<EyeIcon className="w-7 h-7 ml-2" />}
             </button>
             <button
               type="button"
-              className="p-4 bg-fblue text-white font-bold rounded-lg transition-colors ease-in-out duration-500 hover:bg-flime  hover:text-fblue "
-              onClick={handleSubmit}
-            >
+              className="p-4 bg-fblue text-white font-bold   transition-colors ease-in-out duration-500 hover:bg-flime  hover:text-fblue "
+              onClick={handleSubmit}>
               {" "}
               Submit
             </button>
@@ -285,7 +273,7 @@ const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default AddQuestionForm
+export default AddQuestionForm;
