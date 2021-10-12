@@ -47,7 +47,11 @@ const FormPage = (props) => {
     )
     console.log("questionType", questionType.length)
     console.log("selected", selected.length)
-    if (questionType.length <= selected.length || prev) {
+    if (
+      questionType.length <= selected.length ||
+      prev ||
+      props.questionPreview
+    ) {
       props.nextStep()
       setSelected([])
       prevHandler(false)
@@ -70,7 +74,6 @@ const FormPage = (props) => {
         <div classname="absolute w-screen h-screen ">
           <img src={gif} alt="gif" />
           <p className="text-4xl font-monserrat font-semibold m-10">
-            {" "}
             You Form is getting Submitted !!
           </p>
         </div>
@@ -121,11 +124,13 @@ const FormPage = (props) => {
               )}
               <button
                 type="submit"
+                disabled={isLast && props.questionPreview}
                 className={
                   "py-2 px-4  xl:py-4 float-right focus:ring-offset-white text-white text-mono w-2/5 md:w-1/3 xl:w-1/4 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 " +
                   (isLast
                     ? " bg-black  hover:bg-black focus:ring-black"
-                    : "bg-fblue hover:bg-fblue-dark focus:ring-fblue")
+                    : "bg-fblue hover:bg-fblue-dark focus:ring-fblue") +
+                  (isLast && props.questionPreview && " opacity-30")
                 }
                 onClick={isLast ? submit : nextClicked}
               >

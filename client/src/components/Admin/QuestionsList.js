@@ -542,7 +542,7 @@ const QuestionsList = ({ memberType }) => {
               {
                 title: 'Question',
                 key: 'question',
-                style: 'py-3 px-6 text-left ',
+                style: 'p-3 text-left ',
               },
               { title: 'Category', key: 'category', style: 'text-left' },
               {
@@ -558,15 +558,14 @@ const QuestionsList = ({ memberType }) => {
                     ? 'text-left hidden xl:table-cell items-center'
                     : 'hidden',
               },
-              { title: 'Actions', key: '-', style: 'text-center' },
+              { title: 'Actions', key: '-', style: '  text-center' },
             ],
             data: result.data,
             colSize: [
               <colgroup>
                 <col style={{ width: '40vw' }} />
                 <col style={{ width: '10vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '10vw' }} />
+                <col style={{ width: '8vw' }} />
               </colgroup>,
             ],
           })
@@ -578,17 +577,17 @@ const QuestionsList = ({ memberType }) => {
   }, [memberType, view])
 
   return (
-    <div className="w-full flex flex-col ">
-      <div className=" flex justify-between items-center mx-2">
-        <div className={!showList && 'hidden'}>Question List</div>
+    <div className="w-full flex flex-col text-xl ">
+      <div className=" flex justify-between items-center mx-2 ">
+        <div className={!showList && 'hidden'}>Questions List</div>
         <div
           onClick={() => setShowList(!showList)}
-          className=" flex justify-center items-center space-around w-1/2 md:w-auto py-3 px-2 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
+          className=" flex justify-center items-center space-around text-lg w-1/2 md:w-auto py-3  px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
         >
           {showList ? (
-            <PlusIcon className="w-5 h-5 mx-2" />
+            <PlusIcon className="w-5 h-5 mr-3 " />
           ) : (
-            <ArrowLeftIcon className="w-5 h-5 mx-2" />
+            <ArrowLeftIcon className="w-5 h-5 mr-3 " />
           )}
           {showList ? 'Add new' : 'Back'}
         </div>

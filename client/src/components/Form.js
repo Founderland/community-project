@@ -10,7 +10,9 @@ import { AnswersContext } from "../contexts/AnswersProvider"
 
 import { useContext } from "react"
 
-const Form = ({ match }) => {
+import { useContext } from "react"
+
+const Form = ({ match, memberType, questionPreview }) => {
   const { submit } = useContext(AnswersContext)
   // console.log(match);
   // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
@@ -27,7 +29,13 @@ const Form = ({ match }) => {
     axios
       .get("/api/form/founder/questions")
       .then((res) => {
-        setQuestions(res.data)
+        if (questionPreview) {
+          const data = res.data
+          data.push(questionPreview)
+          setQuestions(data)
+        } else {
+          setQuestions(res.data)
+        }
       })
       .catch((err) => {
         console.log(err)

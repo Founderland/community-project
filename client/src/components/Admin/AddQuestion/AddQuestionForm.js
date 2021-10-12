@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import AnswerSection from './AnswerSection'
 import NewQuestionResponse from '../NewQuestionResponse'
-import FormPreview from '../FormPreview'
+import FormPreview from './FormPreview'
 import { useParams } from 'react-router'
 import { EyeIcon } from '@heroicons/react/outline'
 
@@ -21,12 +21,14 @@ const defaultAnswer = {
   ideal: false,
 }
 
-const AddQuestionForm = ({ memberType }) => {
+const AddQuestionForm = ({ question, answers, memberType, functionality }) => {
   // const { memberType } = useParams()
   // console.log(memberType)
 
-  const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
-  const [answersList, setAnswersList] = useState([])
+  const [questionInfo, setQuestionInfo] = useState(
+    question ? question : defaultQuestion
+  )
+  const [answersList, setAnswersList] = useState(answers ? answers : [])
 
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
   const [isSuccessful, setIsSuccessfull] = useState(false)
@@ -76,20 +78,22 @@ const AddQuestionForm = ({ memberType }) => {
     <div className=" h-full w-full flex flex-col justify-start items-stretch text-xl shadow-xl ">
       <div className=" lg:h-screen flex flex-col justify-center items-center bg-white p-4 rounded-lg">
         <NewQuestionResponse isSuccessful={isSuccessful} isError={isError} />
-        <h1 className="font-bold p-3">Add new Questions</h1>
-        <div className="h-full w-full px-5">
-          <div className=" py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
+        <h1 className="font-bold p-3">
+          {functionality === 'edit' ? 'Edit' : 'Add new'} Questions
+        </h1>
+        <div className="h-full w-full md:px-5">
+          <div className=" py-5 flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
               HtmlFor="newQuestion"
-              className=" w-full font-bold lg:w-1/6  mb-5 lg:m-0 "
+              className=" w-full  font-bold lg:w-1/6  mb-5 lg:m-0 "
             >
               Question
             </label>
-            <input
+            <textarea
               type="text"
               id="newQuestion"
               name="newQuestion"
-              className="p-3  shadow-md w-full lg:w-5/6 xl:w-4/6 rounded-lg"
+              className="p-3 outline-none resize-none shadow-md w-full lg:w-5/6  rounded-lg"
               placeholder="New question"
               value={questionInfo.question}
               onChange={(e) => {
@@ -251,7 +255,7 @@ const AddQuestionForm = ({ memberType }) => {
           <div className=" m-auto flex flex-row w-full lg:w-1/2 items-center justify-around">
             <button
               type="button"
-              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-flime  "
+              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-white  "
               onClick={() => setShowPreview(true)}
             >
               Preview

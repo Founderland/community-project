@@ -1,6 +1,7 @@
 import { PencilAltIcon, EyeIcon } from "@heroicons/react/outline"
 import { useState, useEffect } from "react"
 import ReactPaginate from "react-paginate"
+import Cells from "./Cells"
 
 const styles = {
   new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
@@ -31,7 +32,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
     setPageCount(Math.ceil(data.data.length / perPage))
   }, [data, offset])
   return (
-    <div className="w-full px-2">
+    <div className="w-full px-2 ">
       <p className="text-mono">{title}</p>
       <div className="bg-white shadow-md my-4 overflow-auto">
         <table className="min-w-max w-full table-auto">
@@ -39,63 +40,22 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
               {data.header.map((header) => (
-                <th key={header.title} className={`py-3 px-5 ${header.style}`}>
+                <th key={header.title} className={`py-3 px-4 ${header.style}`}>
                   {header.title}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="text-gray-600 text-sm font-light">
+          <tbody className="text-gray-600 text-sm font-light text-lg">
             {dataToDisplay?.length ? (
-              dataToDisplay.map((item) => {
-                const cells = data.header.map((header) => {
-                  if (header.key !== "-") {
-                    if (Array.isArray(item[header.key])) {
-                      return (
-                        <td className={`py-3 px-5 ${header.style}`}>
-                          <div className={`flex items-center ${cellAlignment}`}>
-                            <span className="">array</span>
-                          </div>
-                        </td>
-                      )
-                    } else {
-                      return (
-                        <td className={`py-3 px-5 ${header.style}`}>
-                          <div className={`flex items-center ${cellAlignment}`}>
-                            <span
-                              className={
-                                styles[item[header.key]?.toLowerCase()]
-                                  ? styles[item[header.key]?.toLowerCase()]
-                                  : ""
-                              }
-                            >
-                              {item[header.key]}
-                            </span>
-                          </div>
-                        </td>
-                      )
-                    }
-                  } else {
-                    return (
-                      <td className="py-3 px-5 text-center">
-                        <div className="flex justify-center">
-                          <button className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125">
-                            <PencilAltIcon className="w-4" />
-                          </button>
-                          <button className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125">
-                            <EyeIcon className="w-4" />
-                          </button>
-                        </div>
-                      </td>
-                    )
-                  }
-                })
-                return (
-                  <tr className="border-b border-gray-200 hover:bg-gray-100">
-                    {cells}
-                  </tr>
-                )
-              })
+              dataToDisplay.map((item) => (
+                <Cells
+                  data={data}
+                  item={item}
+                  styles={styles}
+                  cellAlignment={cellAlignment}
+                />
+              ))
             ) : (
               <tr className="border-b border-gray-200 hover:bg-gray-100">
                 <td
