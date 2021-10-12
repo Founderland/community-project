@@ -1,10 +1,10 @@
-import { useEffect, useState, useContext } from 'react'
-import axios from 'axios'
-import ListWidget from './ListWidget'
-import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/outline'
-import { useHistory } from 'react-router'
-import AdminContext from '../../contexts/Admin'
-import AddQuestionForm from './AddQuestion/AddQuestionForm'
+import { useEffect, useState, useContext } from "react"
+import axios from "axios"
+import ListWidget from "./ListWidget"
+import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/outline"
+import { useHistory } from "react-router"
+import AdminContext from "../../contexts/Admin"
+import AddQuestionForm from "./AddQuestion/AddQuestionForm"
 
 const QuestionsList = ({ memberType }) => {
   let history = useHistory()
@@ -540,32 +540,32 @@ const QuestionsList = ({ memberType }) => {
           setListData({
             header: [
               {
-                title: 'Question',
-                key: 'question',
-                style: 'p-3 text-left ',
+                title: "Question",
+                key: "question",
+                style: "p-3 text-left ",
               },
-              { title: 'Category', key: 'category', style: 'text-left' },
+              { title: "Category", key: "category", style: "text-left" },
               {
-                title: 'Type',
-                key: 'type',
-                style: 'text-left hidden xl:table-cell items-center',
+                title: "Type",
+                key: "type",
+                style: "text-left hidden xl:table-cell items-center",
               },
               {
-                title: 'Rank',
-                key: 'rank',
+                title: "Rank",
+                key: "rank",
                 style:
-                  memberType === 'founder'
-                    ? 'text-left hidden xl:table-cell items-center'
-                    : 'hidden',
+                  memberType === "founder"
+                    ? "text-left hidden xl:table-cell items-center"
+                    : "hidden",
               },
-              { title: 'Actions', key: '-', style: '  text-center' },
+              { title: "Actions", key: "-", style: "  text-center" },
             ],
             data: result.data,
             colSize: [
               <colgroup>
-                <col style={{ width: '40vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '8vw' }} />
+                <col style={{ width: "40vw" }} />
+                <col style={{ width: "10vw" }} />
+                <col style={{ width: "8vw" }} />
               </colgroup>,
             ],
           })
@@ -579,7 +579,7 @@ const QuestionsList = ({ memberType }) => {
   return (
     <div className="w-full flex flex-col text-xl ">
       <div className=" flex justify-between items-center mx-2 ">
-        <div className={!showList && 'hidden'}>Questions List</div>
+        <div className={!showList && "hidden"}>Questions List</div>
         <div
           onClick={() => setShowList(!showList)}
           className=" flex justify-center items-center space-around text-lg w-1/2 md:w-auto py-3  px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
@@ -589,7 +589,7 @@ const QuestionsList = ({ memberType }) => {
           ) : (
             <ArrowLeftIcon className="w-5 h-5 mr-3 " />
           )}
-          {showList ? 'Add new' : 'Back'}
+          {showList ? "Add new" : "Back"}
         </div>
       </div>
       {showList ? (
@@ -597,7 +597,7 @@ const QuestionsList = ({ memberType }) => {
           data={listData}
           showing={10}
           colSize={listData.colSize}
-          cellAlignment={'justify-start'}
+          cellAlignment={"justify-start"}
         />
       ) : (
         <AddQuestionForm memberType={memberType} />
