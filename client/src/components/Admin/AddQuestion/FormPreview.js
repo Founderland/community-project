@@ -1,16 +1,10 @@
 import { XCircleIcon } from '@heroicons/react/outline'
-import Form from '../Form'
+import Form from '../../Form'
 
-const FormPreview = ({
-  questionInfo,
-  answersList,
-  setShowPreview,
-  memberType,
-  questionPreview,
-}) => {
+const FormPreview = ({ setShowPreview, memberType, questionPreview }) => {
   return (
     <div
-      className="fixed h-full w-full bg-white top-0 left-0 z-40
+      className="fixed h-full w-full bg-white top-0 left-0 z-50 overflow-hidden
         "
     >
       <div

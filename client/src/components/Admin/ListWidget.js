@@ -34,7 +34,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
     }
   }, [offset, data])
   return (
-    <div className="w-full px-2">
+    <div className="w-full px-2 ">
       <p className="text-mono">{title}</p>
       <div className="bg-white shadow-md my-4 overflow-auto">
         <table className="min-w-max w-full table-auto">
@@ -42,13 +42,13 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
               {data.header.map((header) => (
-                <th key={header.title} className={`py-3 px-5 ${header.style}`}>
+                <th key={header.title} className={`py-3 px-4 ${header.style}`}>
                   {header.title}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="text-gray-600 text-sm font-light">
+          <tbody className="text-gray-600 text-sm font-light text-lg">
             {dataToDisplay?.length ? (
               dataToDisplay.map((item) => {
                 const cells = data.header.map((header) => {
@@ -63,7 +63,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
                       )
                     } else {
                       return (
-                        <td className={`py-3 px-5 ${header.style}`}>
+                        <td className={` ${header.style}`}>
                           <div className={`flex items-center ${cellAlignment}`}>
                             <span
                               className={
@@ -80,7 +80,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
                     }
                   } else {
                     return (
-                      <td className="py-3 px-5 text-center">
+                      <td className="py-3 px-3 text-center">
                         <div className="flex justify-center">
                           <button className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125">
                             <PencilAltIcon className="w-4" />

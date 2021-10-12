@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import AnswerSection from './AnswerSection'
 import NewQuestionResponse from '../NewQuestionResponse'
-import FormPreview from '../FormPreview'
+import FormPreview from './FormPreview'
 import { useParams } from 'react-router'
 import { EyeIcon } from '@heroicons/react/outline'
 
@@ -251,7 +251,7 @@ const AddQuestionForm = ({ memberType }) => {
           <div className=" m-auto flex flex-row w-full lg:w-1/2 items-center justify-around">
             <button
               type="button"
-              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-flime  "
+              className="flex p-4 bg-flime text-fblue rounded-lg transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-white  "
               onClick={() => setShowPreview(true)}
             >
               Preview
