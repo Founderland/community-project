@@ -31,6 +31,8 @@ const Admin = () => {
     { icon: "user", text: "15 founders applicants pending review" },
     { icon: "pending", text: "4 founders applicants pending approval" },
   ])
+  const [selectedItem, setSelectedItem] = useState(null)
+  const [memberType, setMemberType] = useState("")
 
   useEffect(() => {
     if (token) {
@@ -76,8 +78,11 @@ const Admin = () => {
         setNotifications,
         logout,
         token,
-      }}
-    >
+        selectedItem,
+        setSelectedItem,
+        memberType,
+        setMemberType,
+      }}>
       <InfoModal />
       {user ? <Main /> : <Login />}
     </AdminContext.Provider>
