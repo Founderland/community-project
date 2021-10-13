@@ -3,7 +3,7 @@ import UserContext from "../../contexts/User"
 
 const Content = () => {
   const { views, view } = useContext(UserContext)
-  return views[view]
+  return <div className="p-4">{views[view]}</div>
 }
 
 export default Content

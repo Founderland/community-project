@@ -6,16 +6,17 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/outline"
 import { useContext } from "react"
-import { button } from "react-router-dom"
 import UserContext from "../../contexts/User"
 import Notifications from "./Notifications"
 import ProfileMenu from "./ProfileMenu"
+import { ReactComponent as SmallLogo } from "../../assets/small.svg"
 
 const Header = () => {
   const { view, views, setView } = useContext(UserContext)
   return (
     <div className="flex w-full bg-white shadow-lg p-3">
       <div className="flex flex-grow items-center space-x-4 lg:space-x-0">
+        <SmallLogo className="h-10 text-white bg-black fill-current" />
         <h1 className="md:hidden text-lg sm:text-xl font-medium text-mono text-gray-800">
           {views[view].toUpperCase()}
         </h1>
