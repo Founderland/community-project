@@ -84,7 +84,7 @@ const QuestionsList = () => {
           showing={10}
           colSize={listData.colSize}
           cellAlignment={"justify-start"}
-          button1={<PencilAltIcon className='w-4' />}
+          button1={<PencilAltIcon className='w-8' />}
           setShowList={() => setShowList(false)}
         />
       ) : (

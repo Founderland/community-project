@@ -4,7 +4,7 @@ import AnswerSection from "./AnswerSection"
 import NewQuestionResponse from "../NewQuestionResponse"
 import FormPreview from "./FormPreview"
 import { useParams } from "react-router"
-import { EyeIcon } from "@heroicons/react/outline"
+import { EyeIcon, TrashIcon } from "@heroicons/react/outline"
 import ListOption from "../ListOption"
 import AdminContext from "../../../contexts/Admin"
 
@@ -43,6 +43,7 @@ const AddQuestionForm = ({ functionality }) => {
   const [isSuccessful, setIsSuccessfull] = useState(false)
   const [isError, setIsError] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const [message, setMessage] = useState("")
 
   const handleNewAnswer = () => {
     setAnswersList((pre) =>
@@ -63,12 +64,14 @@ const AddQuestionForm = ({ functionality }) => {
     axios({
       method: functionality === "edit" ? "PUT" : "POST",
       baseURL: `/api/form/${memberType}`,
-      url: functionality === "edit" ? question._id : "add",
+      url: functionality === "edit" ? "/edit" : "/add",
       data: newQuestion,
     })
       // .post(`/api/form/${memberType}/add`, newQuestion)
       .then((result) => {
+        console.log(result)
         setIsSuccessfull(true)
+        setMessage(result.data.message)
         setTimeout(() => {
           setIsSuccessfull(false)
         }, 7000)
@@ -81,10 +84,29 @@ const AddQuestionForm = ({ functionality }) => {
         }, 7000)
       })
 
-    // restoring default values
-    setQuestionInfo(defaultQuestion)
-    // emptying answers list
-    setAnswersList([])
+    if (functionality !== "edit") {
+      // restoring default values
+      setQuestionInfo(defaultQuestion)
+      // emptying answers list
+      setAnswersList([])
+    }
+  }
+
+  const handleDelete = () => {
+    axios
+      .delete(`/api/form/${memberType}/delete/${question._id}`)
+      .then((result) => {
+        console.log(result)
+        setIsSuccessfull(true)
+        setMessage(result.data.message)
+      })
+      .catch((e) => {
+        console.log(e)
+        setIsError(true)
+        setTimeout(() => {
+          setIsError(false)
+        }, 7000)
+      })
   }
 
   const setListOption = (value) => {
@@ -97,7 +119,11 @@ const AddQuestionForm = ({ functionality }) => {
   return (
     <div className=' h-screen w-full flex flex-col justify-start items-stretch text-xl shadow-xl py-4'>
       <div className='flex flex-col justify-center items-center bg-white p-4  '>
-        <NewQuestionResponse isSuccessful={isSuccessful} isError={isError} />
+        <NewQuestionResponse
+          isSuccessful={isSuccessful}
+          isError={isError}
+          message={message}
+        />
         <h1 className='font-bold p-3'>
           {functionality === "edit" ? "Edit" : "Add new"} Question
         </h1>
@@ -252,20 +278,32 @@ const AddQuestionForm = ({ functionality }) => {
               />
             )}
           </div>
-          <div className=' m-auto flex flex-row w-full lg:w-1/2 items-center justify-around'>
+          <div className=' flex flex-row w-full flex-wrap items-center justify-around mt-5'>
             <button
               type='button'
-              className='flex p-4 bg-flime text-fblue   transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-white  '
+              className=' flex justify-center items-center w-1/2 md:w-1/4 xl:w-1/6 items-center font-bold  p-4 bg-flime text-fblue  transition-colors ease-in-out duration-500 hover:bg-fblue  hover:text-white  '
               onClick={() => setShowPreview(true)}>
               Preview
-              {<EyeIcon className='w-7 h-7 ml-2' />}
+              {<EyeIcon className='w-6 h-6 ml-2' />}
             </button>
             <button
               type='button'
-              className='p-4 bg-fblue text-white font-bold   transition-colors ease-in-out duration-500 hover:bg-flime  hover:text-fblue '
+              className='p-4 w-1/2 md:w-1/4 xl:w-1/6 bg-fblue text-white font-bold   transition-colors ease-in-out duration-500 hover:bg-flime  hover:text-fblue '
               onClick={handleSubmit}>
               {" "}
               Submit
+            </button>
+            <button
+              type='button'
+              className={
+                functionality
+                  ? `flex justify-center items-center p-4 w-1/2 md:w-1/4 xl:w-1/6 bg-black text-white font-bold  transition-colors ease-in-out duration-500 hover:bg-fred-dark mt-10 md:mt-0 `
+                  : "hidden"
+              }
+              onClick={handleDelete}>
+              {" "}
+              Delete
+              {<TrashIcon className='w-6 h-6 ml-2' />}
             </button>
           </div>
         </div>

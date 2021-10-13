@@ -9,6 +9,11 @@ const alliesForm = require("../controllers/alliesFormController")
 formRouter.post("/founder/add", foundersForm.addNew)
 //GET ALL QUESTIONS
 formRouter.get("/founder/questions", foundersForm.findAll)
+//EDIT QUESTION OR ANSWER
+formRouter.put("/founder/edit", foundersForm.editQuestion)
+//DELETE QUESTION
+formRouter.delete("/founder/delete/:question_id", foundersForm.deleteQuestion)
+
 //ADD USER RESPONSE
 formRouter.post("/founder/response", foundersForm.addResponse)
 //GET USER RESPONSE
@@ -20,6 +25,10 @@ formRouter.get("/founder/response", foundersForm.findAllResponse)
 formRouter.post("/investor/add", investorsForm.addNew)
 //GET ALL QUESTIONS
 formRouter.get("/investor/questions", investorsForm.findAll)
+//EDIT QUESTION + ANSWER
+formRouter.put("/investor/edit", investorsForm.editQuestion)
+//DELETE QUESTION
+formRouter.delete("/investor/delete/:question_id", investorsForm.deleteQuestion)
 
 // ALLIES
 
@@ -27,5 +36,9 @@ formRouter.get("/investor/questions", investorsForm.findAll)
 formRouter.post("/ally/add", alliesForm.addNew)
 //GET ALL QUESTIONS
 formRouter.get("/ally/questions", alliesForm.findAll)
+//EDIT QUESTION + ANSWER
+formRouter.put("/ally/edit", alliesForm.editQuestion)
+//DELETE QUESTION
+formRouter.delete("/ally/delete/:question_id", alliesForm.deleteQuestion)
 
 module.exports = formRouter
