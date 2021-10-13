@@ -1,5 +1,9 @@
+import { useContext } from "react"
+import UserContext from "../../contexts/User"
+
 const Content = () => {
-  return "hey"
+  const { views, view } = useContext(UserContext)
+  return views[view]
 }
 
 export default Content

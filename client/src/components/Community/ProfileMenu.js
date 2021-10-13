@@ -1,6 +1,5 @@
 import { Menu, Transition } from "@headlessui/react"
 import { Fragment, useContext } from "react"
-import { UserIcon } from "@heroicons/react/solid"
 import UserContext from "../../contexts/User"
 
 const ProfileMenu = () => {
@@ -35,12 +34,28 @@ const ProfileMenu = () => {
         <Menu.Items className="absolute w-40 bg-white overflow-hidden shadow-xl right-0">
           <Menu.Item
             as="button"
-            className="flex items-center w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
+            className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
+            onClick={() => setView(2)}
+          >
+            My Events
+          </Menu.Item>
+          <Menu.Item
+            as="button"
+            className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
+            onClick={() => setView(5)}
+          >
+            Profile
+          </Menu.Item>
+          <Menu.Item
+            as="button"
+            className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
             onClick={() => setView(6)}
           >
-            <UserIcon className="w-6" />
-            <p className="ml-4">Profile</p>
+            Settings
           </Menu.Item>
+          <div className="flex items-center justify-between">
+            <span className="border-b w-full"></span>
+          </div>
           <Menu.Item
             as="button"
             className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-fred hover:text-white"

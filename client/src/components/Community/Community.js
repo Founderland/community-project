@@ -5,13 +5,13 @@ import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
 
 const views = [
-  "Dashboard",
-  "New Applicants",
-  "Founder Form",
-  "Investor Form",
-  "Ally Form",
-  "Settings",
-  "Profile",
+  "newsfeed",
+  "community",
+  "events",
+  "ressources",
+  "inbox",
+  "profile",
+  "settings",
 ]
 
 const Community = () => {
