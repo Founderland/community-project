@@ -31,7 +31,7 @@ const ProfileMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute w-40 bg-white overflow-hidden shadow-xl right-0">
+        <Menu.Items className="absolute outline-none w-40 bg-white overflow-hidden shadow-xl right-0">
           <Menu.Item
             as="button"
             className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
