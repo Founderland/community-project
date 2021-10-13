@@ -64,19 +64,19 @@ const QuestionsList = () => {
     <div className='w-full flex flex-col text-xl '>
       <div className=' flex justify-between items-center mx-2 '>
         <div className={!showList && "hidden"}>Questions List</div>
-        <div
+        <button
           onClick={() => {
             setShowList(!showList)
             setSelectedItem(null)
           }}
-          className=' flex justify-center items-center space-around text-lg w-1/2 md:w-auto py-3  px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black'>
+          className=' flex justify-center items-center text-lg w-1/2 md:w-auto py-3 px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black'>
           {showList && !selectedItem ? (
             <PlusIcon className='w-5 h-5 mr-3 ' />
           ) : (
             <ArrowLeftIcon className='w-5 h-5 mr-3 ' />
           )}
           {showList && !selectedItem ? "Add new" : "Back"}
-        </div>
+        </button>
       </div>
       {showList ? (
         <ListWidget

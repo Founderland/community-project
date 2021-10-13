@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import axios from "axios"
 import AnswerSection from "./AnswerSection"
 import NewQuestionResponse from "../NewQuestionResponse"
@@ -32,6 +32,39 @@ const categories = [
   { name: "Tell Us More", value: "Tell Us More" },
 ]
 
+const ranks = [
+  {
+    name: "Not Important - just for info/further context",
+    value: "Not Important - just for info/further context",
+  },
+  {
+    name: "Vital - Deal Maker or Breaker",
+    value: "Vital - Deal Maker or Breaker",
+  },
+  {
+    name: "Very Important - variable is scrutinized",
+    value: "Very Important - variable is scrutinized",
+  },
+  {
+    name: "Moderately Important - potentially a determining factor",
+    value: "Moderately Important - potentially a determining factor",
+  },
+]
+const types = [
+  {
+    name: "Open",
+    value: "open",
+  },
+  {
+    name: "Single Choice",
+    value: "choice",
+  },
+  {
+    name: "Multiple Selection",
+    value: "multiple",
+  },
+]
+
 const AddQuestionForm = ({ functionality }) => {
   const { selectedItem: question, memberType } = useContext(AdminContext)
   const answers = question?.answers || null
@@ -44,6 +77,7 @@ const AddQuestionForm = ({ functionality }) => {
   const [isError, setIsError] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const [message, setMessage] = useState("")
+  const mainDiv = useRef()
 
   const handleNewAnswer = () => {
     setAnswersList((pre) =>
@@ -54,6 +88,8 @@ const AddQuestionForm = ({ functionality }) => {
   }
 
   const handleSubmit = () => {
+    mainDiv.current.scrollIntoView()
+
     let newQuestion = { ...questionInfo, answers: answersList }
     // Deleting unnecessary fields for non founders
     if (memberType !== "founder") {
@@ -77,7 +113,7 @@ const AddQuestionForm = ({ functionality }) => {
         }, 7000)
       })
       .catch((e) => {
-        console.log(e)
+        setMessage(e.response.data.message)
         setIsError(true)
         setTimeout(() => {
           setIsError(false)
@@ -93,15 +129,22 @@ const AddQuestionForm = ({ functionality }) => {
   }
 
   const handleDelete = () => {
+    mainDiv.current.scrollIntoView()
+
     axios
       .delete(`/api/form/${memberType}/delete/${question._id}`)
       .then((result) => {
-        console.log(result)
         setIsSuccessfull(true)
         setMessage(result.data.message)
+        setQuestionInfo(defaultQuestion)
+        setAnswersList([])
+        setTimeout(() => {
+          setIsSuccessfull(false)
+        }, 7000)
       })
       .catch((e) => {
-        console.log(e)
+        setMessage(e.response.data.message)
+        setIsError(true)
         setIsError(true)
         setTimeout(() => {
           setIsError(false)
@@ -109,15 +152,10 @@ const AddQuestionForm = ({ functionality }) => {
       })
   }
 
-  const setListOption = (value) => {
-    setQuestionInfo({
-      ...questionInfo,
-      category: value,
-    })
-  }
-
   return (
-    <div className=' h-screen w-full flex flex-col justify-start items-stretch text-xl shadow-xl py-4'>
+    <div
+      ref={mainDiv}
+      className=' h-screen w-full flex flex-col justify-start items-stretch text-xl shadow-xl py-4'>
       <div className='flex flex-col justify-center items-center bg-white p-4  '>
         <NewQuestionResponse
           isSuccessful={isSuccessful}
@@ -138,7 +176,7 @@ const AddQuestionForm = ({ functionality }) => {
               type='text'
               id='newQuestion'
               name='newQuestion'
-              className='p-3 outline-none resize-none shadow-md w-full lg:w-5/6   '
+              className='p-3 align-middle outline-none resize-none shadow-md w-full lg:w-5/6   '
               placeholder='New question'
               value={questionInfo.question}
               onChange={(e) => {
@@ -158,11 +196,17 @@ const AddQuestionForm = ({ functionality }) => {
                   className=' w-full font-bold lg:w-1/3 xl:w-1/4 mb-5  lg:mb-0'>
                   Category
                 </label>
-                {/* <ListOption
+                <ListOption
                   options={categories}
+                  style={"lg:w-2/3 xl:w-3/4"}
                   choice={questionInfo.category}
-                  setChoice={setListOption}
-                /> */}
+                  setChoice={(value) => {
+                    setQuestionInfo({
+                      ...questionInfo,
+                      category: value,
+                    })
+                  }}
+                />
               </div>
               <div className='  w-1/4 lg:w-1/4 xl:w-1/3  py-5  flex flex-col items-between justify-between lg:flex-row xl:justify-center lg:items-center'>
                 <label
@@ -170,25 +214,26 @@ const AddQuestionForm = ({ functionality }) => {
                   className=' w-full  font-bold lg:w-3/4 xl:w-3/6 mb-5 lg:mb-0  xl:mx-2 lg:text-center'>
                   Category Page
                 </label>
-                <select
-                  id='category'
-                  className='p-3 bg-white w-auto shadow-md w-full lg:w-1/3 xl:1/6  '
-                  value={questionInfo.categoryPage}
-                  onChange={(e) =>
+                <ListOption
+                  options={[
+                    { name: "1", value: 1 },
+                    { name: "2", value: 2 },
+                    { name: "3", value: 3 },
+                    { name: "4", value: 4 },
+                    { name: "5", value: 5 },
+                  ]}
+                  style={"w-full"}
+                  choice={questionInfo.categoryPage}
+                  setChoice={(value) =>
                     setQuestionInfo({
                       ...questionInfo,
-                      categoryPage: Number(e.target.value),
+                      categoryPage: Number(value),
                     })
-                  }>
-                  <option value='1'>1</option>
-                  <option value='2'>2</option>
-                  <option value='3'>3</option>
-                  <option value='4'>4</option>
-                  <option value='5'>5</option>
-                </select>
+                  }
+                />
               </div>
             </div>
-            <div className='w-full   py-5  flex flex-col items-between lg:flex-row lg:items-center justify-between '>
+            <div className='w-full   py-5  flex flex-col items-between lg:flex-row lg:items-center justify-start '>
               {/* Hiding Rank for non founder memebers */}
               {memberType === "founder" && (
                 <>
@@ -197,56 +242,38 @@ const AddQuestionForm = ({ functionality }) => {
                     className='font-bold lg:w-1/6  mb-5 lg:mb-0  '>
                     Rank
                   </label>
-
-                  <select
-                    id='rank'
-                    className='p-3 w-auto bg-white shadow-md lg:w-5/6  '
-                    value={questionInfo.rank}
-                    onChange={(e) =>
+                  <ListOption
+                    options={ranks}
+                    style={" w-full lg:w-3/6 "}
+                    choice={questionInfo.rank}
+                    setChoice={(value) => {
                       setQuestionInfo({
                         ...questionInfo,
-                        rank: e.target.value,
+                        rank: value,
                       })
-                    }>
-                    <option value='Not Important - just for info/further context'>
-                      Not Important - just for info/further context
-                    </option>
-                    <option value='Vital - Deal Maker or Breaker'>
-                      Vital - Deal Maker or Breaker
-                    </option>
-                    <option value='Very Important - variable is scrutinized'>
-                      {" "}
-                      Very Important - variable is scrutinized{" "}
-                    </option>
-                    <option value='Moderately Important - potentially a determining factor'>
-                      Moderately Important - potentially a determining factor{" "}
-                    </option>
-                  </select>
+                    }}
+                  />
                 </>
               )}
             </div>
             <div className='w-full   py-5  flex flex-row  items-start lg:items-center justify-between lg:flex-row xl:justify-start '>
-              <div className='flex flex-col lg:flex-row lg:items-center xl:justify-between w-2/4'>
+              <div className='flex flex-col lg:flex-row lg:items-center xl:justify-start w-2/4'>
                 <label
                   HtmlFor='newQuestion'
-                  className='font-bold lg:w-1/3 xl:w-1/6 mb-5   lg:mb-0 '>
+                  className='font-bold lg:w-1/3  mb-5   lg:mb-0 '>
                   Type of answer
                 </label>
-                <select
-                  id='answerType'
-                  className='p-3  bg-white w-auto shadow-md lg:w-2/3 xl:w-4/6  '
-                  value={questionInfo.type}
-                  onChange={(e) =>
+                <ListOption
+                  options={types}
+                  style={" w-full lg:w-2/3  "}
+                  choice={questionInfo.type}
+                  setChoice={(value) => {
                     setQuestionInfo({
                       ...questionInfo,
-                      type: e.target.value,
+                      type: value,
                     })
-                  }>
-                  <option value='open'>Open</option>
-                  <option value='list'>Dropdown list</option>
-                  <option value='choice'> Single Choice </option>
-                  <option value='multiple'>Multiple selections </option>
-                </select>
+                  }}
+                />
               </div>
               <div className='flex flex-col lg:flex-row justify-start md:justify-evenly xl:justify-center items-center w-2/4 '>
                 <label className=' font-bold text-center mb-9 lg:w-2/6 lg:mb-0 lg:ml-5'>

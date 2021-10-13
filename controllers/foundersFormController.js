@@ -40,13 +40,19 @@ const findAll = async (req, res) => {
 // Edit existing question + answer
 const editQuestion = async (req, res) => {
   const { _id: question_id } = req.body
-  console.log(question_id)
   try {
     const updated = await FoundersForm.findByIdAndUpdate(question_id, req.body)
-
+    if (!updated) await Promise.reject("NOT_FOUND")
     res.json({ message: "Update successful" })
   } catch (e) {
-    res.status(500).json({ message: "Sorry something went wrong" })
+    if (e === "NOT_FOUND") {
+      res.status(404).send({
+        message:
+          "The question you're trying to update is no longer in the database",
+      })
+    } else {
+      res.status(500).json({ message: "Sorry something went wrong" })
+    }
   }
 }
 
@@ -54,10 +60,14 @@ const deleteQuestion = async (req, res) => {
   const { question_id } = req.params
   try {
     const deleted = await FoundersForm.findByIdAndDelete(question_id)
-
+    if (!deleted) await Promise.reject("NOT_FOUND")
     res.json({ message: "Question deleted successfully" })
   } catch (e) {
-    res.status(500).json({ message: "Sorry something went wrong" })
+    if (e === "NOT_FOUND") {
+      res.status(404).json({ message: "Question no longer in the database" })
+    } else {
+      res.status(500).json({ message: "Sorry something went wrong" })
+    }
   }
 }
 // Add Founders Response
