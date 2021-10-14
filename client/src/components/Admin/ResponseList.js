@@ -4,97 +4,164 @@ import ListWidget from "./ListWidget"
 import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/outline"
 import { useHistory } from "react-router"
 import AdminContext from "../../contexts/Admin"
+import { AnswersContext } from "../../contexts/AnswersProvider"
+import ResponseWidget from "./ResponseWidget"
 // import AddQuestionForm from './AddQuestion/AddQuestionForm'
 
 const ResponseList = () => {
   let history = useHistory()
-  const { view } = useContext(AdminContext)
-//   const [showList, setShowList] = useState(true)
-   const [listData, setListData] = useState({ data: [], header: [] })
-   
-   useEffect(() => {
+  const { view  } = useContext(AdminContext)
+  const { viewButton , viewId, buttonClicked} = useContext(AnswersContext);
+  const [listData, setListData] = useState({ data: [], header: [] })
+  const [answerData, setAnswerData] = useState({ data: [], header: [] })
+  viewButton===true && console.log("VIEWID",viewId)
+  
+  useEffect(() => {
       const fetchData = async () => {
         try {
           const result = await axios.get(`/api/form/founder/response`)
-          console.log("RESPONSE RESULT", result.data) 
-           if (result.data) {
-            console.log("RESPONSE RESULT", result.data) 
-            }
+
+          const userData = result.data.map((item => {
               
+            const questionLocation = item.answerData.find(x => x.question === "City,Country" || x.question === "Location")
+            const questionEmail = item.answerData.find(x => x.question === "email")
+            console.log("item", item)
+            const location = questionLocation.answer_value;
+            const email = questionEmail.answer_value;
+              
+            return { ...item, userLocation: location, userEmail: email }
+             
+
+
+          }))
+
+          
+          console.log(userData)
            
-            setListData({
-              header: [
-                {
-                  title: 'UserName',
-                  key: 'applicantName',
-                  style: 'py-3 px-6 text-left ',
-                },
-               //  { title: 'Category', key: 'category', style: 'text-left' },
-               //  {
-               //    title: 'Location',
-               //    key: 'type',
-               //    style: 'text-left hidden xl:table-cell items-center',
-               //  },
-                {
-                  title: 'Score',
-                  key: 'totalScore',
-                  style:
-                       'text-left'
-                },
-                { title: 'Actions', key: '-', style: 'text-center' },
-              ],
-              data: result.data,
-              colSize: [
-                <colgroup>
-                  <col style={{ width: '40vw' }} />
-                  <col style={{ width: '10vw' }} />
-                  <col style={{ width: '10vw' }} />
-                  <col style={{ width: '10vw' }} />
-                  <col style={{ width: 'auto' }} />
-                </colgroup>,
-              ],
-            })
+          setListData({
+            header: [
+              {
+                title: 'UserName',
+                key: 'applicantName',
+                style: 'py-3 px-6 text-left ',
+              },
+              { title: 'Email', key: 'userEmail', style: 'text-left' },
+              {
+                title: 'Location',
+                key: 'userLocation',
+                style: 'text-left hidden xl:table-cell items-center',
+              },
+              {
+                title: 'Score',
+                key: 'totalScore',
+                style: 'text-left'
+              },
+              { title: 'More Info', key: '-', style: 'text-center' },
+            ],
+            data: userData,
+            colSize: [
+              <colgroup>
+                <col style={{ width: '30vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '10vw' }} />
+                <col style={{ width: '10vw' }} />
+              </colgroup>,
+            ],
+          })
         } catch (e) {
           console.log(e)
         }
-      }
+    }
+    if (!viewButton) {
       fetchData()
-   }, [ view])
+    }
+   }, [view, viewButton])
+  
+  
+  useEffect(() => {
+
+    if (viewButton) {
+      const answerData = viewId.answerData.map(answer => {
+        console.log("answer", answer)
+        return {
+          answer_id: answer.answer_id,
+          answer_value: answer.answer_value,
+          question_category: answer.category,
+          question_value: answer.question,
+          question_type: answer.type,
+          question_id: answer._id,
+          answer_score: answer.score,
+          answer_rank: answer.rank
+          }
+      })
+
+      setAnswerData({
+        header: [
+          {
+            title: 'Question',
+            key: 'question_value',
+            style: 'py-3 px-6 text-left ',
+          },
+          {
+            title: 'Answer',
+            key: 'answer_value',
+            style: 'text-left'
+          },
+          {
+            title: 'Category',
+            key: 'question_category',
+            style: 'text-left hidden xl:table-cell items-center',
+          },
+          {
+            title: 'Score',
+            key: 'answer_score',
+            style: 'text-left'
+          },
+          {
+            title: 'Rank',
+            key: 'answer_rank',
+            style: 'text-left'
+          }
+        ],
+         data: answerData ,
+        colSize: [
+          <colgroup>
+            <col style={{ width: '20vw' }} />
+            <col style={{ width: '20vw' }} />
+            <col style={{ width: '10vw' }} />
+            <col style={{ width: '10vw' }} />
+            <col style={{ width: '10vw' }} />
+          </colgroup>,
+        ],
+      })   
+
+    }
+ 
+  }, [viewId, viewButton])
+  
+  
   
    return (
-      //  <div> Founders Response</div>
+     
       <div className="w-full flex flex-col ">
          <div className=" flex justify-between items-center mx-2">
-         {/* <div className=  {!showList && 'hidden'}  >Founders Response</div> */}
+
           <div className= " ">Founders Response</div>
-          {/* <div
-            onClick={() => setShowList(!showList)}
-            className=" flex justify-center items-center space-around w-1/2 md:w-auto py-3 px-2 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
-          >
-            {showList ? (
-              <PlusIcon className="w-5 h-5 mx-2" />
-            ) : (
-              <ArrowLeftIcon className="w-5 h-5 mx-2" />
-            )}
-            {showList ? 'Add new' : 'Back'}
-          </div> */}
+         {viewButton && <div
+           onClick={() => buttonClicked(!viewButton)}
+           className=" flex justify-center items-center space-around text-lg w-1/2 md:w-auto py-3  px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
+         >
+           <ArrowLeftIcon className="w-5 h-5 mr-3 " />
+           Back
+         </div>}
       </div>
-      {/* {showList ? (
-          <ListWidget
-            data={listData}
+          <ResponseWidget
+            data={viewButton? answerData: listData}
             showing={10}
-            colSize={listData.colSize}
+            colSize={viewButton? answerData.colSize: listData.colSize}
             cellAlignment={'justify-start'}
-          />
-        ) : (
-          <AddQuestionForm memberType={memberType} />
-         )} */}
-      <ListWidget
-        data={listData}
-        showing={10}
-        colSize={listData.colSize}
-        cellAlignment={"justify-start"}
-      />
+          /> 
     </div>
   )
 }

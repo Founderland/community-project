@@ -39,28 +39,29 @@ export default function SelectAnswer({
     }
   }, [handleClickOutside])
 
-  const itemClicked = (text, index) => {
-    setSelectedItem(text)
+  const itemClicked = (item, index) => {
+    // console.log("ITEM",item)
+    setSelectedItem(item.answer)
     setShowList(!showList)
-    selectedAnswer(text, answers[0]?._id, answers[0]?.points)
+    selectedAnswer(item.answer, item._id, item.points)
   }
 
-  const listItem = (text, index) => (
+  const listItem = (item, index) => (
     <li
       id="listbox-item-0"
       role="option"
-      onClick={() => itemClicked(text, index)}
+      onClick={() => itemClicked(item, index)}
       className="text-gray-900 cursor-default hover:bg-fblue hover:text-white select-none relative py-2 pl-3 pr-9 border-gray-300 border-b"
     >
       <div className="flex items-center ">
-        <span className="ml-3 block font-normal  break-word">{text}</span>
+        <span className="ml-3 block font-normal  break-word">{item.answer}</span>
       </div>
     </li>
   )
   // console.log(selectValidation)
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="w-9/12 md:w-5/12">
+      <div className="w-11/12 md:w-3/5">
         <div className="mt-1 relative">
           <button
             type="button"
@@ -106,7 +107,7 @@ export default function SelectAnswer({
                 aria-activedescendant="listbox-item-3"
                 className="max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm md:text-md xl:text-lg"
               >
-                {answers.map((item, index) => listItem(item.answer, index))}
+                {answers.map((item, index) => listItem(item, index))}
               </ul>
             </div>
           )}

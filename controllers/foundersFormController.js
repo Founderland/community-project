@@ -40,7 +40,7 @@ const findAll = async (req, res) => {
 
 const addResponse = async (req, res) => {
   const {applicantName,totalScore,answerData} = req.body
-console.log(answerData,"DATA")
+
   try {
   //  data.map(async (item) => {
     const newFoundersResponse = await FoundersResponse.create({ applicantName,totalScore,answerData })
@@ -74,7 +74,8 @@ console.log(answerData,"DATA")
 const findAllResponse = async (req, res) => {
 
   try {
-    const result = await FoundersResponse.find({}).populate({ path:'answerData.question_id', select:['question','category','type']})
+    const result = await FoundersResponse.find({})
+      // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
 
     // console.log(result)
     res.status(200).json(result)

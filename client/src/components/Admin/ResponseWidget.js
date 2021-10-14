@@ -2,6 +2,7 @@ import { PencilAltIcon, EyeIcon } from "@heroicons/react/outline"
 import { useState, useEffect } from "react"
 import ReactPaginate from "react-paginate"
 import Cells from "./Cells"
+import ResponseCells from "./ResponseCells"
 
 const styles = {
   new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
@@ -15,7 +16,7 @@ const styles = {
   user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
-const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
+const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
@@ -54,7 +55,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
           <tbody className="text-gray-600 text-sm font-light text-lg">
             {dataToDisplay?.length ? (
               dataToDisplay.map((item) => (
-                <Cells
+                <ResponseCells
                   data={data}
                   item={item}
                   styles={styles}
@@ -120,4 +121,4 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
   )
 }
 
-export default ListWidget
+export default ResponseWidget

@@ -6,7 +6,10 @@ const foundersResponseSchema = new mongoose.Schema({
   answerData:
     [
       {
-        question_id: { type: mongoose.Schema.Types.ObjectId, ref:'FounderForm', required: true },
+        question_id: { type: mongoose.Schema.Types.ObjectId, ref: 'FounderForm', required: true },
+        question: { type: String, },
+        rank: { type: String, },
+        category: { type: String, },
         answer_id: { type: String, },
         answer_value: { type: String, },
         score: { type: String, },

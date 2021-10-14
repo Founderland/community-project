@@ -1,12 +1,20 @@
 import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline";
 import { useContext, useState } from "react";
 import { AnswersContext } from "../../contexts/AnswersProvider";
+import TestFile from "./TestFile";
 
 
-const Cells = ({ data, item, styles, cellAlignment }) => {
- 
+const ResponseCells = ({ data, item, styles, cellAlignment }) => {
+  const { buttonClicked, viewIdHandler } = useContext(AnswersContext);
+
+  const clickHandler = () => {
+     buttonClicked(true);
+     viewIdHandler(item);
+   };
+   
   return (
-
+     <>
+      
         <tr className="border-b border-gray-200 hover:bg-gray-100">
           {data.header.map((header) => {
             if (header.key !== "-") {
@@ -22,7 +30,7 @@ const Cells = ({ data, item, styles, cellAlignment }) => {
                 return (
                   <td className={` ${header.style}`}>
                     <div className={`flex items-center px-2 ${cellAlignment}`}>
-                      {console.log(item[header.key])}
+                      {/* {console.log(item[header.key])} */}
                       <span
                         className={
                           typeof item[header.key] == "string" &&
@@ -41,12 +49,12 @@ const Cells = ({ data, item, styles, cellAlignment }) => {
               return (
                 <td className="py-3 px-3 text-center">
                   <div className="flex justify-center">
-                    {/* <button
-                  //   onClick={()=>}
+                    <button
+                    onClick={clickHandler}
                   className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
                 >
                   <PencilAltIcon className="w-4" />
-                </button> */}
+                </button>
                     <button
             
                       className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
@@ -59,9 +67,10 @@ const Cells = ({ data, item, styles, cellAlignment }) => {
             }
           })}
         </tr>
-      
   
+      </>
+   
   );
 };
 
-export default Cells;
+export default ResponseCells;
