@@ -65,7 +65,7 @@ const types = [
   },
 ]
 
-const AddQuestionForm = ({ functionality }) => {
+const FormHandler = ({ functionality }) => {
   const { selectedItem: question, memberType } = useContext(AdminContext)
   const answers = question?.answers || null
 
@@ -346,4 +346,4 @@ const AddQuestionForm = ({ functionality }) => {
   )
 }
 
-export default AddQuestionForm
+export default FormHandler

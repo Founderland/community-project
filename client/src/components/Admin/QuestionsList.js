@@ -7,7 +7,7 @@ import {
   PlusIcon,
 } from "@heroicons/react/outline"
 import AdminContext from "../../contexts/Admin"
-import AddQuestionForm from "./AddQuestion/AddQuestionForm"
+import FormHandler from "./FormHandler/FormHandler"
 
 const QuestionsList = () => {
   const { memberType, selectedItem, setSelectedItem } = useContext(AdminContext)
@@ -88,7 +88,7 @@ const QuestionsList = () => {
           setShowList={() => setShowList(false)}
         />
       ) : (
-        <AddQuestionForm functionality={selectedItem && "edit"} />
+        <FormHandler functionality={selectedItem && "edit"} />
       )}
     </div>
   )
