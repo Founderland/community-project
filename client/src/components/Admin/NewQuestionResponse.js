@@ -20,7 +20,9 @@ const NewQuestionResponse = ({ isSuccessful, isError, message }) => {
             : `hidden`
         }>
         <ErrorIcon />
-        <h1 className='px-3'>{message}</h1>
+        <h1 className='px-3'>
+          {message ? message : "Sorry something went wrong"}
+        </h1>
       </div>
     </>
   )

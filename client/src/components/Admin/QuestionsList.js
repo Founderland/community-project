@@ -12,7 +12,37 @@ import FormHandler from "./FormHandler/FormHandler"
 const QuestionsList = () => {
   const { memberType, selectedItem, setSelectedItem } = useContext(AdminContext)
   const [showList, setShowList] = useState(true)
-  const [listData, setListData] = useState({ data: [], header: [] })
+  const [listData, setListData] = useState({
+    header: [
+      {
+        title: "Question",
+        key: "question",
+        style: "p-3 text-left ",
+      },
+      { title: "Category", key: "category", style: "text-left" },
+      {
+        title: "Type",
+        key: "type",
+        style: "text-left hidden xl:table-cell items-center",
+      },
+      {
+        title: "Rank",
+        key: "rank",
+        style:
+          memberType === "founder"
+            ? "text-left hidden xl:table-cell items-center"
+            : "hidden",
+      },
+      { title: "Actions", key: "-", style: "  text-center" },
+    ],
+    colSize: [
+      <colgroup>
+        <col style={{ width: "40vw" }} />
+        <col style={{ width: "10vw" }} />
+        <col style={{ width: "8vw" }} />
+      </colgroup>,
+    ],
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,36 +51,8 @@ const QuestionsList = () => {
         if (typeof result.data === "string") return
         if (result.data)
           setListData({
-            header: [
-              {
-                title: "Question",
-                key: "question",
-                style: "p-3 text-left ",
-              },
-              { title: "Category", key: "category", style: "text-left" },
-              {
-                title: "Type",
-                key: "type",
-                style: "text-left hidden xl:table-cell items-center",
-              },
-              {
-                title: "Rank",
-                key: "rank",
-                style:
-                  memberType === "founder"
-                    ? "text-left hidden xl:table-cell items-center"
-                    : "hidden",
-              },
-              { title: "Actions", key: "-", style: "  text-center" },
-            ],
+            ...listData,
             data: result.data,
-            colSize: [
-              <colgroup>
-                <col style={{ width: "40vw" }} />
-                <col style={{ width: "10vw" }} />
-                <col style={{ width: "8vw" }} />
-              </colgroup>,
-            ],
           })
       } catch (e) {
         console.log(e)
@@ -78,17 +80,17 @@ const QuestionsList = () => {
           {showList && !selectedItem ? "Add new" : "Back"}
         </button>
       </div>
-      {showList ? (
+      {showList && listData.data ? (
         <ListWidget
           data={listData}
           showing={10}
           colSize={listData.colSize}
           cellAlignment={"justify-start"}
           button1={<PencilAltIcon className='w-8' />}
-          setShowList={() => setShowList(false)}
+          setShowList={setShowList}
         />
       ) : (
-        <FormHandler functionality={selectedItem && "edit"} />
+        <FormHandler edit setShowList={setShowList} />
       )}
     </div>
   )

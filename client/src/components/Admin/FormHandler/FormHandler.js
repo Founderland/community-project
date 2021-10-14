@@ -65,7 +65,7 @@ const types = [
   },
 ]
 
-const FormHandler = ({ functionality }) => {
+const FormHandler = ({ edit, setShowList }) => {
   const { selectedItem: question, memberType } = useContext(AdminContext)
   const answers = question?.answers || null
 
@@ -98,9 +98,9 @@ const FormHandler = ({ functionality }) => {
     }
 
     axios({
-      method: functionality === "edit" ? "PUT" : "POST",
+      method: edit ? "PUT" : "POST",
       baseURL: `/api/form/${memberType}`,
-      url: functionality === "edit" ? "/edit" : "/add",
+      url: edit ? "/edit" : "/add",
       data: newQuestion,
     })
       // .post(`/api/form/${memberType}/add`, newQuestion)
@@ -110,17 +110,17 @@ const FormHandler = ({ functionality }) => {
         setMessage(result.data.message)
         setTimeout(() => {
           setIsSuccessfull(false)
-        }, 7000)
+        }, 5000)
       })
       .catch((e) => {
         setMessage(e.response.data.message)
         setIsError(true)
         setTimeout(() => {
           setIsError(false)
-        }, 7000)
+        }, 5000)
       })
 
-    if (functionality !== "edit") {
+    if (!edit) {
       // restoring default values
       setQuestionInfo(defaultQuestion)
       // emptying answers list
@@ -140,15 +140,15 @@ const FormHandler = ({ functionality }) => {
         setAnswersList([])
         setTimeout(() => {
           setIsSuccessfull(false)
-        }, 7000)
+          setShowList(true)
+        }, 5000)
       })
       .catch((e) => {
         setMessage(e.response.data.message)
         setIsError(true)
-        setIsError(true)
         setTimeout(() => {
           setIsError(false)
-        }, 7000)
+        }, 5000)
       })
   }
 
@@ -162,9 +162,7 @@ const FormHandler = ({ functionality }) => {
           isError={isError}
           message={message}
         />
-        <h1 className='font-bold p-3'>
-          {functionality === "edit" ? "Edit" : "Add new"} Question
-        </h1>
+        <h1 className='font-bold p-3'>{edit ? "Edit" : "Add new"} Question</h1>
         <div className='h-screen w-full md:px-5'>
           <div className=' py-5 flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center '>
             <label
@@ -323,7 +321,7 @@ const FormHandler = ({ functionality }) => {
             <button
               type='button'
               className={
-                functionality
+                edit
                   ? `flex justify-center items-center p-4 w-1/2 md:w-1/4 xl:w-1/6 bg-black text-white font-bold  transition-colors ease-in-out duration-500 hover:bg-fred-dark mt-10 md:mt-0 `
                   : "hidden"
               }
