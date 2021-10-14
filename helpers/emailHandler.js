@@ -1,9 +1,12 @@
+require("dotenv").config()
 const jwt = require("jsonwebtoken")
 const nodemailer = require("nodemailer")
 const hbs = require("nodemailer-express-handlebars")
 
 //Send the connect email template
 const sendConnectEmail = (data) => {
+  console.log("sending email")
+
   const { email, _id, firstName, lastName } = data
 
   const token = jwt.sign(
@@ -168,7 +171,7 @@ const sendResetEmail = (data) => {
       email,
       _id,
     },
-    process.env.JWT_KEY,
+    process.env.JWT_SECRET,
     {
       expiresIn: "10m",
     }
