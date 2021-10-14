@@ -1,4 +1,3 @@
-import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline"
 import { useContext, useEffect } from "react"
 import AdminContext from "../../contexts/Admin"
 

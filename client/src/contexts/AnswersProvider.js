@@ -9,16 +9,23 @@ function AnswersProvider({ children }) {
   const [submit, setSubmit] = useState(false)
   const [next, setNext] = useState(false)
   const [prev, setPrev] = useState(false)
+  const [viewButton, setViewButton] = useState(false)
+  const[viewId,setViewId]=useState({})
+
   let totalscore = 0
   const answerHandler = (inputValue) => {
     answers[inputValue.id] = inputValue.value
     const id = inputValue.id
+
     const answer = inputValue.value
     const answer_id = inputValue.answer_id
     const score = inputValue.score
     totalscore = totalscore + inputValue.score
     const object = {
       question_id: `${id}`,
+      question: inputValue.question,
+      rank: inputValue.rank,
+      category:inputValue.category,
       answer_id: `${answer_id}`,
       answer_value: `${answer}`,
       score: `${score}`,
@@ -35,6 +42,15 @@ function AnswersProvider({ children }) {
   }
   const prevHandler = (value) => {
     setPrev(value)
+  }
+  // For view button in Cells file
+  const buttonClicked = (value) => {
+    setViewButton(value)
+  }
+  
+  // For getting the particular item that is clicked
+  const viewIdHandler = (value) => {
+    setViewId(value)
   }
 
   useEffect(() => {
@@ -77,6 +93,10 @@ function AnswersProvider({ children }) {
         next: next,
         prev: prev,
         prevHandler: prevHandler,
+        buttonClicked: buttonClicked,
+        viewButton: viewButton,
+        viewIdHandler: viewIdHandler,
+        viewId:viewId  
       }}
     >
       {children}

@@ -22,6 +22,7 @@ const Form = ({ match, memberType, questionPreview }) => {
   const [categoryNames, setCategoryNames] = useState([])
   const [pagesInCategory, setPagesInCategory] = useState([])
   const [formatedQuestions, setFormatedQuestions] = useState([])
+
   useEffect(() => {
     axios
       .get(`/api/form/${memberType}/questions`)

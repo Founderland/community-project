@@ -13,28 +13,8 @@ const QuestionsList = () => {
   const { memberType, selectedItem, setSelectedItem } = useContext(AdminContext)
   const [showList, setShowList] = useState(true)
   const [listData, setListData] = useState({
-    header: [
-      {
-        title: "Question",
-        key: "question",
-        style: "p-3 text-left ",
-      },
-      { title: "Category", key: "category", style: "text-left" },
-      {
-        title: "Type",
-        key: "type",
-        style: "text-left hidden xl:table-cell items-center",
-      },
-      {
-        title: "Rank",
-        key: "rank",
-        style:
-          memberType === "founder"
-            ? "text-left hidden xl:table-cell items-center"
-            : "hidden",
-      },
-      { title: "Actions", key: "-", style: "  text-center" },
-    ],
+    data: [],
+    header: [],
     colSize: [
       <colgroup>
         <col style={{ width: "40vw" }} />
@@ -52,6 +32,28 @@ const QuestionsList = () => {
         if (result.data)
           setListData({
             ...listData,
+            header: [
+              {
+                title: "Question",
+                key: "question",
+                style: "p-3 text-left ",
+              },
+              { title: "Category", key: "category", style: "text-left" },
+              {
+                title: "Type",
+                key: "type",
+                style: "text-left hidden xl:table-cell items-center",
+              },
+              {
+                title: "Rank",
+                key: "rank",
+                style:
+                  memberType === "founder"
+                    ? "text-left hidden xl:table-cell items-center"
+                    : "hidden",
+              },
+              { title: "Actions", key: "-", style: "  text-center" },
+            ],
             data: result.data,
           })
       } catch (e) {
@@ -80,7 +82,7 @@ const QuestionsList = () => {
           {showList && !selectedItem ? "Add new" : "Back"}
         </button>
       </div>
-      {showList && listData.data ? (
+      {showList ? (
         <ListWidget
           data={listData}
           showing={10}
@@ -90,7 +92,7 @@ const QuestionsList = () => {
           setShowList={setShowList}
         />
       ) : (
-        <FormHandler edit setShowList={setShowList} />
+        <FormHandler edit={selectedItem && true} setShowList={setShowList} />
       )}
     </div>
   )
