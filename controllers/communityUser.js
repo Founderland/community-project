@@ -68,7 +68,7 @@ const confirmUser = async (req, res, next) => {
       await Promise.reject("VALIDATION_FAILED")
     }
     const decoded = jwt.verify(registrationToken, process.env.JWT_KEY)
-    req.userData = decoded
+    if (!decoded.id) req.userData = decoded
 
     const user = await CommunityUser.findOne({ registrationToken })
     if (!user) await Promise.reject("INVALID_TOKEN")
