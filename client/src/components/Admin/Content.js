@@ -7,11 +7,15 @@ import Settings from "./Settings"
 import ResponseList from "./ResponseList"
 
 const Content = () => {
-  const { view, views, setMemberType } = useContext(AdminContext)
+  const { view, views, setMemberType, setApplicantType } =
+    useContext(AdminContext)
 
   useEffect(() => {
     if (views[view].includes("Form")) {
       setMemberType(views[view].toLowerCase().split(" ")[0])
+    }
+    if (views[view].includes("Applicants")) {
+      setApplicantType(views[view].split(" ")[0])
     }
   }, [view])
 
@@ -21,7 +25,7 @@ const Content = () => {
         <div className='flex justify-center h-screen'>
           {views[view] === "Dashboard" && <Dashboard />}
           {views[view].includes("Form") && <QuestionsList />}
-          {views[view] === "New Applicants" && <ResponseList />}
+          {views[view].includes("Applicants") && <ResponseList />}
           {views[view] === "Profile" && <Profile />}
           {views[view] === "Settings" && <Settings />}
         </div>
