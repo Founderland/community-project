@@ -8,13 +8,15 @@ import jwt from "jsonwebtoken"
 const views = [
   "Dashboard",
   "New Applicants",
+  "Approved Applicants",
+  "Rejected Applicants",
+  "Pending Applicants",
   "Founder Form",
   "Investor Form",
   "Ally Form",
   "Settings",
   "Profile",
 ]
-
 const Admin = () => {
   const [token] = useState(localStorage.authToken)
   const [user, setUser] = useState(null)
@@ -31,6 +33,9 @@ const Admin = () => {
     { icon: "user", text: "15 founders applicants pending review" },
     { icon: "pending", text: "4 founders applicants pending approval" },
   ])
+  const [selectedItem, setSelectedItem] = useState(null)
+  const [memberType, setMemberType] = useState("")
+  const [applicantType, setApplicantType] = useState("")
 
   useEffect(() => {
     if (token) {
@@ -76,8 +81,13 @@ const Admin = () => {
         setNotifications,
         logout,
         token,
-      }}
-    >
+        selectedItem,
+        setSelectedItem,
+        memberType,
+        setMemberType,
+        applicantType,
+        setApplicantType,
+      }}>
       <InfoModal />
       {user ? <Main /> : <Login />}
     </AdminContext.Provider>
