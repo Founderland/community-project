@@ -21,10 +21,10 @@ const Members = ({ tab }) => {
   }
 
   return (
-    <div className="flex flex-col w-full bg-white">
+    <div className="flex flex-col w-full bg-white  outline-none">
       {/* Tabs for Navigation */}
       <Tab.Group defaultIndex={tab}>
-        <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg">
+        <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">
           <Tab
             className={({ selected }) =>
               classNames(
@@ -62,7 +62,7 @@ const Members = ({ tab }) => {
             Allies
           </Tab>
         </Tab.List>
-        <div className="w-full border mt-0 border-t border-5 border-black"></div>
+        <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
         <Tab.Panels className="mt-6 bg-white outline-none">
           <Tab.Panel classname="p-3 outline-none ">
             <div className="w-full px-4 outline-none">
@@ -76,7 +76,7 @@ const Members = ({ tab }) => {
               </button>
             </div>
           </Tab.Panel>
-          <Tab.Panel>
+          <Tab.Panel classname="p-3 outline-none ">
             <div className="w-full px-4 outline-none">
               <MembersList reload={reload} role="investor" />
               <button
@@ -88,7 +88,7 @@ const Members = ({ tab }) => {
               </button>
             </div>
           </Tab.Panel>
-          <Tab.Panel>
+          <Tab.Panel classname="p-3 outline-none ">
             <div className="w-full px-4 outline-none">
               <MembersList reload={reload} role="ally" />
               <button
