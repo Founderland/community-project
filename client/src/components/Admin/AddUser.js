@@ -34,7 +34,8 @@ const AddUser = ({ reload, setReload }) => {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [role, setRole] = useState("sadmin")
   const [saving, setSaving] = useState(false)
-  const { setCModal, setIModal, setModalMessage } = useContext(AdminContext)
+  const { setCModal, setIModal, setModalMessage, token } =
+    useContext(AdminContext)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -52,8 +53,14 @@ const AddUser = ({ reload, setReload }) => {
         })
         setSaving(false)
       } else {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
         axios
-          .post(addUserURL, data)
+          .post(addUserURL, data, config)
           .then((res) => {
             if (res.data.success) {
               setSaving(false)

@@ -4,21 +4,13 @@ const nodemailer = require("nodemailer")
 const hbs = require("nodemailer-express-handlebars")
 
 //Send the connect email template
-const sendConnectEmail = (data) => {
+const sendConnectEmail = async (req, res, next) => {
+  console.log(next.toString())
   console.log("sending email")
-
-  const { email, _id, firstName, lastName } = data
-
-  const token = jwt.sign(
-    {
-      email,
-      _id,
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "5d",
-    }
-  )
+  const { email, _id, firstName, lastName } = req.newMember
+  const token = jwt.sign({ email, _id }, process.env.JWT_SECRET, {
+    expiresIn: "5d",
+  })
 
   // config for mailserver and mail
   const config = {
@@ -60,10 +52,16 @@ const sendConnectEmail = (data) => {
     )
 
     // send mail using transporter
-    await transporter.sendMail(mail)
+    return await transporter.sendMail(mail)
   }
 
-  sendMail(config).catch((err) => console.log(err))
+  const result = await sendMail(config)
+  try {
+    console.log(result)
+    return next()
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const sendRejected = (data) => {
@@ -221,4 +219,11 @@ const sendResetEmail = (data) => {
   }
 
   sendMail(config).catch((err) => console.log(err))
+}
+
+module.exports = {
+  sendConnectEmail,
+  sendThankYou,
+  sendRejected,
+  sendResetEmail,
 }

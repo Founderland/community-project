@@ -25,8 +25,14 @@ const AddMember = ({ reload, setReload, role }) => {
     connect: false,
   })
   const [saving, setSaving] = useState(false)
-  const { setCModal, setIModal, setModalMessage } = useContext(AdminContext)
-
+  const { setCModal, setIModal, setModalMessage, token } =
+    useContext(AdminContext)
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
   }
@@ -35,7 +41,7 @@ const AddMember = ({ reload, setReload, role }) => {
     if (data.email && checkEmail()) {
       if (data.firstName.length > 1 && data.lastName.length > 1) {
         axios
-          .post(addMemberURL, data)
+          .post(addMemberURL, data, config)
           .then((res) => {
             if (res.data.success) {
               setSaving(false)
@@ -44,13 +50,21 @@ const AddMember = ({ reload, setReload, role }) => {
             }
           })
           .catch((err) => {
-            setModalMessage({
-              icon: "cross",
-              title: "Database Error",
-              message: err.message,
-            })
+            if (err?.response.status === 403) {
+              setModalMessage({
+                icon: "info",
+                title: "Validation Error",
+                message: err.response.data.message,
+              })
+            } else {
+              setModalMessage({
+                icon: "cross",
+                title: "Database Error",
+                message: "Sorry, something went wrong",
+              })
+            }
             setIModal(true)
-            console.log(err)
+            setSaving(false)
           })
       } else {
         setIModal(true)

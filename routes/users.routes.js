@@ -1,6 +1,7 @@
 const UserRouter = require("express").Router()
 const userController = require("../controllers/user")
 const memberController = require("../controllers/member")
+const { sendConnectEmail } = require("../helpers/emailHandler")
 const passport = require("passport")
 
 const {
@@ -14,11 +15,20 @@ UserRouter.get(
   passport.authenticate("jwt", { session: false }),
   userController.findAll
 )
-UserRouter.post("/add", registerValidation, userController.addUser)
+UserRouter.post(
+  "/add",
+  passport.authenticate("jwt", { session: false }),
+  registerValidation,
+  userController.addUser
+)
+//ADMIN-COMMUNITY
 UserRouter.post(
   "/community/add",
+  passport.authenticate("jwt", { session: false }),
   registerCommunityValidation,
-  memberController.addUser
+  memberController.addMember,
+  sendConnectEmail,
+  memberController.updateNotified
 )
 UserRouter.get(
   "/community/:role",
@@ -26,6 +36,6 @@ UserRouter.get(
   memberController.findAll
 )
 
-//COMMUNITY
+//COMMUNITY PROFILES
 
 module.exports = UserRouter

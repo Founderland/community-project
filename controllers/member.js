@@ -4,10 +4,10 @@ const { generateHashedPassword, calculateToken } = require("../helpers/user")
 
 const findAll = async (req, res) => {
   const { role } = req.params
-  const users = await Member.find({ role: role })
-  if (users) {
+  const members = await Member.find({ role: role })
+  if (members) {
     res.status(200).json({
-      data: users,
+      data: members,
     })
   } else {
     res.status(500).json({
@@ -16,32 +16,51 @@ const findAll = async (req, res) => {
   }
 }
 
-const addUser = async (req, res, next) => {
+const addMember = async (req, res, next) => {
   const errorsAfterValidation = validationResult(req)
-  const { firstName, lastName, email, role, applicationId } = req.body
+  const {
+    firstName,
+    lastName,
+    title,
+    email,
+    city,
+    country,
+    role,
+    connect,
+    applicationId,
+  } = req.body
   try {
     if (!errorsAfterValidation.isEmpty()) {
-      await Promise.reject("VALIDATION_FAILED")
+      throw new Error("VALIDATION_FAILED")
     }
-    const user = await Member.findOne({ email })
-    if (user) await Promise.reject("USER_EXISTS_ALREADY")
-    const data = {
+    const existing = await Member.findOne({ email })
+    if (existing) throw new Error("USER_EXISTS_ALREADY")
+    let data = {
       firstName,
       lastName,
+      title,
       email,
-      applicationId,
+      city,
+      country,
       role,
+      applicationId,
     }
-    const newUser = await Member.create(data)
-    if (newUser) res.status(200).json({ success: 1, message: "User saved" })
-    else await Promise.reject("DATABASE_ERROR")
+    const newMember = await Member.create(data)
+    if (newMember) {
+      req.newMember = newMember
+      if (connect) {
+        return next()
+      } else {
+        res.status(200).json({ success: 1, message: "User saved" })
+      }
+    } else throw new Error("DATABASE_ERROR")
   } catch (e) {
-    if (e === "USER_EXISTS_ALREADY") {
+    if (e.message === "USER_EXISTS_ALREADY") {
       res.status(403).json({
         error: 403,
         message: "Email already registered",
       })
-    } else if (e === "VALIDATION_FAILED") {
+    } else if (e.message === "VALIDATION_FAILED") {
       res.status(400).json({
         error: 400,
         message: errorsAfterValidation.mapped(),
@@ -119,8 +138,27 @@ const confirmUser = async (req, res, next) => {
   }
 }
 
+const updateNotified = async (req, res) => {
+  const { _id } = req.newMember
+  const date = Date.now()
+  const update = await Member.findOneAndUpdate(
+    { _id },
+    { notified: date },
+    { new: true }
+  )
+  console.log(update)
+  if (update) {
+    res.status(200).json({ success: 1, message: "User notified" })
+  } else {
+    res
+      .status(500)
+      .json({ error: 1, message: "User notified but database not updated" })
+  }
+}
+
 module.exports = {
   findAll,
-  addUser,
+  addMember,
   confirmUser,
+  updateNotified,
 }

@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["Founder", "Investor", "Ally"],
+    enum: ["founder", "investor", "ally"],
     required: true,
     default: "Ally",
   },
