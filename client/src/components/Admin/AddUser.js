@@ -62,7 +62,11 @@ const AddUser = ({ reload, setReload }) => {
             }
           })
           .catch((err) => {
-            setModalMessage({ icon: "", title: "", message: err.message })
+            setModalMessage({
+              icon: "cross",
+              title: "Database Error",
+              message: err.message,
+            })
             setIModal(true)
             console.log(err)
           })

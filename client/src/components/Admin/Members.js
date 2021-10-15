@@ -4,6 +4,7 @@ import { UserAddIcon } from "@heroicons/react/outline"
 import AdminContext from "../../contexts/Admin"
 import ComponentModal from "../ComponentModal"
 import MembersList from "./MembersList"
+import AddMember from "./AddMember"
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ")
@@ -27,8 +28,7 @@ const Members = ({ tab }) => {
           <Tab
             className={({ selected }) =>
               classNames(
-                "w-full py-1 text-mono tracking-wide font-medium ",
-                "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-40",
+                "w-full py-1 text-mono tracking-wide font-medium outline-none",
                 selected
                   ? "font-bold bg-white shadow"
                   : "text-white hover:bg-white hover:bg-opacity-20"
@@ -40,8 +40,7 @@ const Members = ({ tab }) => {
           <Tab
             className={({ selected }) =>
               classNames(
-                "w-full py-1 text-mono tracking-wide font-medium",
-                "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
+                "w-full py-1 text-mono tracking-wide font-medium outline-none",
                 selected
                   ? "font-bold bg-white shadow"
                   : "text-white hover:bg-white hover:bg-opacity-20"
@@ -53,8 +52,7 @@ const Members = ({ tab }) => {
           <Tab
             className={({ selected }) =>
               classNames(
-                "w-full py-1 text-mono tracking-wide font-medium",
-                "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
+                "w-full py-1 text-mono tracking-wide font-medium outline-none",
                 selected
                   ? "font-bold bg-white shadow"
                   : "text-white hover:bg-white hover:bg-opacity-20"
@@ -65,13 +63,13 @@ const Members = ({ tab }) => {
           </Tab>
         </Tab.List>
         <div className="w-full border mt-0 border-t border-5 border-black"></div>
-        <Tab.Panels className="mt-6 bg-white">
-          <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
-            <div className="w-full px-4">
+        <Tab.Panels className="mt-6 bg-white outline-none">
+          <Tab.Panel classname="p-3 outline-none ">
+            <div className="w-full px-4 outline-none">
               <MembersList reload={reload} role="founder" />
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                onClick={() => handleTask("addFounder")}
+                onClick={() => handleTask("founder")}
               >
                 <UserAddIcon className="h-5 w-5" />
                 <p className="text-mono text-sm">Add Founder</p>
@@ -79,11 +77,11 @@ const Members = ({ tab }) => {
             </div>
           </Tab.Panel>
           <Tab.Panel>
-            <div className="w-full px-4">
+            <div className="w-full px-4 outline-none">
               <MembersList reload={reload} role="investor" />
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                onClick={() => handleTask("addInvestor")}
+                onClick={() => handleTask("investor")}
               >
                 <UserAddIcon className="h-5 w-5" />
                 <p className="text-mono text-sm">Add Investor</p>
@@ -91,11 +89,11 @@ const Members = ({ tab }) => {
             </div>
           </Tab.Panel>
           <Tab.Panel>
-            <div className="w-full px-4">
+            <div className="w-full px-4 outline-none">
               <MembersList reload={reload} role="ally" />
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                onClick={() => handleTask("addAlly")}
+                onClick={() => handleTask("ally")}
               >
                 <UserAddIcon className="h-5 w-5" />
                 <p className="text-mono text-sm">Add Ally</p>
@@ -105,7 +103,9 @@ const Members = ({ tab }) => {
         </Tab.Panels>
       </Tab.Group>
       {/* Data to display */}
-      <ComponentModal></ComponentModal>
+      <ComponentModal>
+        <AddMember role={task} reload={reload} setReload={setReload} />
+      </ComponentModal>
     </div>
   )
 }
