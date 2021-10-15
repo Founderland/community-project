@@ -36,7 +36,7 @@ const Community = () => {
         })
       }
     }
-  }, [])
+  }, [token])
 
   const logout = () => {
     localStorage.authToken = ""
