@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
 const authenticateUser = async (username, password, done) => {
+  //NEEDS TO BE ADAPTED TO CHECK BOTH ON COMMUNITY AND ADMIN
   try {
     // Check that user exists by email
     const user = await User.findOne({ email: username })
@@ -18,8 +19,14 @@ const authenticateUser = async (username, password, done) => {
   }
 }
 
+const isAuthorized = () => {
+  //CHECK TOKEN FROM BOTH COMMUNITY AND ADMIN
+}
+
 const authorizeUser = (req, res) => {
+  //CAN BE USED TO PROVIDED TOKENS BOTH TO COMMUNITY AND ADMIN - BUT PAYLOAD MIGHT BE DIFFERENT
   if (req.user.id) {
+    //MAKE A DIFFERENTE PAYLOAD FOR COMMUNITY
     const payload = {
       id: req.user._id,
       firstName: req.user.firstName,
@@ -27,6 +34,7 @@ const authorizeUser = (req, res) => {
       avatar: req.user.avatar,
       role: req.user.role,
     }
+
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
     })

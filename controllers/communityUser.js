@@ -3,11 +3,17 @@ const CommunityUser = require("../models/CommunityUser")
 const { generateHashedPassword, calculateToken } = require("../helpers/user")
 
 const findAll = async (req, res) => {
-  const users = await CommunityUser.find({})
-  if (users)
+  const { role } = req.params
+  const users = await CommunityUser.find({ role: role })
+  if (users) {
     res.status(200).json({
       data: users,
     })
+  } else {
+    res.status(500).json({
+      message: "Sorry, something went wrong",
+    })
+  }
 }
 
 const addUser = async (req, res, next) => {
@@ -24,7 +30,6 @@ const addUser = async (req, res, next) => {
       lastName,
       email,
       applicationId,
-      registrationToken: calculateToken(email),
       role,
     }
     const newUser = await CommunityUser.create(data)
@@ -80,7 +85,6 @@ const confirmUser = async (req, res, next) => {
       geoLocation,
       photo,
       password: generateHashedPassword(password),
-      registrationToken: "",
       confirmed: Date.now,
       lastUpdate: Date.now,
       about,
@@ -88,6 +92,7 @@ const confirmUser = async (req, res, next) => {
     const updateUser = await CommunityUser.findOneAndUpdate({}, data, {
       new: true,
     })
+    //AFTER IT COMPLETES; IT NEEDS TO AUTHORIZE USER
     if (updateUser) res.status(200).json({ success: 1, message: "User saved" })
   } catch (e) {
     if (e === "USER_EXISTS_ALREADY") {

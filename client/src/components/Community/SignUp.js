@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 import { ReactComponent as LogoLines } from "../../assets/line.svg"
 import { ReactComponent as SmallLogo } from "../../assets/small.svg"
 
-const signUpURL = "/api/auth/userlogin"
+const signUpURL = "/api/auth/signup"
 
 const SignUp = () => {
   let history = useHistory()
@@ -26,15 +26,19 @@ const SignUp = () => {
 
   //Get token from URL
   useEffect(() => {
-    const decode = jwt.decode(token)
+    const jwtDecoded = jwt.decode(token)
     //Get data from token and fetch DB data
-    if (decode?.email) {
+    if (jwtDecoded?.email) {
       //check if token is expired or load the data
       const now = Date.now() / 1000
-      const expiry = decode.iat + decode.exp
+      const expiry = jwtDecoded.iat + jwtDecoded.exp
       if (now < expiry) {
-        setError("valid token " + now + " - " + expiry)
+        //VALID TOKEN
+        //GET THE REGISTERED DATA BASED ON THE ID OR EMAIL
+        //DISPLAY IT ON THE FORM
+        //RESULT DATA UPDATES STATES WITH PREREGISTERED DATA
       } else {
+        //OOPS
         setError("Invalid Token")
       }
     } else {
@@ -45,7 +49,7 @@ const SignUp = () => {
   //submit form
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const loginData = {
+    const registerData = {
       firstName,
       lastName,
       title,
@@ -65,7 +69,7 @@ const SignUp = () => {
       }
       try {
         //receive new login token and forward to community app
-        const { data } = await axios.post(signUpURL, loginData, config)
+        const { data } = await axios.post(signUpURL, registerData, config)
         if (data.access_token) {
           localStorage.setItem("authToken", data.access_token)
           //redirect to community
