@@ -59,7 +59,7 @@ const ResponseList = () => {
             (x) => x.question === "email" || x.question === "Email"
           )
           console.log("item", item)
-          const location = questionLocation.answer_value
+          const location = questionLocation?.answer_value
           const email = questionEmail?.answer_value
 
           return {
