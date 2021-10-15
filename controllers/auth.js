@@ -1,5 +1,6 @@
 require("dotenv").config()
 const User = require("../models/User")
+const CommunityUser = require("../models/CommunityUser")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
@@ -12,29 +13,67 @@ const authenticateUser = async (username, password, done) => {
       delete user.hashedPassword
       done(null, user, { message: "Successful" })
     } else {
-      done(null, false, { message: "Wrong Credentials" })
+      user = await CommunityUser.findOne({ email: username })
+      if (user && (await bcrypt.compare(password, user.hashedPassword))) {
+        delete user.hashedPassword
+        done(null, user, { message: "Successful" })
+      } else {
+        done(null, false, { message: "Wrong Credentials" })
+      }
     }
   } catch (err) {
     done(null, false, { message: "Database Error" })
   }
 }
 
-const isAuthorized = () => {
+const isAuthorized = (payload, done) => {
   //CHECK TOKEN FROM BOTH COMMUNITY AND ADMIN
+  User.findOne({ id: payload.id, email: payload.email }, (err, user) => {
+    if (err) {
+      return done(err, false)
+    }
+    if (user) {
+      return done(null, user)
+    } else {
+      CommunityUser.findOne(
+        { id: payload.id, email: payload.email },
+        (err, user) => {
+          if (err) {
+            return done(err, false)
+          }
+          if (user) {
+            return done(null, user)
+          } else {
+            return done(null, false)
+          }
+        }
+      )
+    }
+  })
 }
 
 const authorizeUser = (req, res) => {
   //CAN BE USED TO PROVIDED TOKENS BOTH TO COMMUNITY AND ADMIN - BUT PAYLOAD MIGHT BE DIFFERENT
   if (req.user.id) {
+    let payload = {}
     //MAKE A DIFFERENTE PAYLOAD FOR COMMUNITY
-    const payload = {
-      id: req.user._id,
-      firstName: req.user.firstName,
-      lastName: req.user.lastName,
-      avatar: req.user.avatar,
-      role: req.user.role,
+    if (req.user.avatar) {
+      payload = {
+        id: req.user._id,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        avatar: req.user.avatar,
+        role: req.user.role,
+        email: req.user.email,
+      }
+    } else {
+      payload = {
+        id: req.user._id,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+      }
     }
-
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
     })
@@ -48,4 +87,4 @@ const authorizeUser = (req, res) => {
   }
 }
 
-module.exports = { authenticateUser, authorizeUser }
+module.exports = { authenticateUser, isAuthorized, authorizeUser }

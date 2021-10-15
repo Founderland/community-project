@@ -4,7 +4,7 @@ const LocalStrategy = require("passport-local").Strategy
 const JwtStrategy = require("passport-jwt").Strategy
 const ExtractJwt = require("passport-jwt").ExtractJwt
 const User = require("../models/User")
-const { authenticateUser } = require("../controllers/auth")
+const { authenticateUser, isAuthorized } = require("../controllers/auth")
 
 const passportMiddleware = (app) => {
   passport.serializeUser((user, done) => {
@@ -40,18 +40,7 @@ const passportMiddleware = (app) => {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: process.env.JWT_SECRET,
       },
-      function (payload, done) {
-        User.findOne({ id: payload.id }, function (err, user) {
-          if (err) {
-            return done(err, false)
-          }
-          if (user) {
-            return done(null, user)
-          } else {
-            return done(null, false)
-          }
-        })
-      }
+      isAuthorized
     )
   )
   app.use(passport.initialize())
