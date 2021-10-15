@@ -18,6 +18,25 @@ const ResponseList = () => {
 
   // create copy ?
 
+  const getTimeDifference = (DateToCompare) => {
+    const today = Date.now()
+    const compareDate = Date.parse(DateToCompare)
+    let timeDifference = (today - compareDate) / 1000 / 60 / 60
+    console.log(timeDifference)
+    if (timeDifference >= 24) {
+      timeDifference = parseInt((timeDifference /= 24)) + " d ago"
+      timeDifference = parseInt(timeDifference)
+    } else if (timeDifference < 24 && timeDifference > 0.99) {
+      timeDifference = Math.round(timeDifference) + " h ago"
+    } else {
+      timeDifference = parseInt((timeDifference *= 60)) + " m ago"
+      if (timeDifference === "0 m ago") {
+        timeDifference = "now"
+      }
+    }
+    return timeDifference
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,7 +59,7 @@ const ResponseList = () => {
             (x) => x.question === "email" || x.question === "Email"
           )
           console.log("item", item)
-          const location = questionLocation.answer_value
+          const location = questionLocation?.answer_value
           const email = questionEmail?.answer_value
 
           return {
@@ -48,10 +67,9 @@ const ResponseList = () => {
             applicantName: `${firstName} ${lastName}`,
             userLocation: location,
             userEmail: email,
+            submitted: getTimeDifference(item.submissionDate),
           }
         })
-
-        console.log(userData)
 
         setListData({
           header: [
@@ -60,11 +78,20 @@ const ResponseList = () => {
               key: "applicantName",
               style: "py-3 px-6 text-left ",
             },
-            { title: "Email", key: "userEmail", style: "text-left" },
+            {
+              title: "Email",
+              key: "userEmail",
+              style: "hidden md:table-cell text-left",
+            },
             {
               title: "Location",
               key: "userLocation",
-              style: "text-left hidden xl:table-cell items-center",
+              style: "text-left hidden lg:table-cell items-center",
+            },
+            {
+              title: "Submitted",
+              key: "submitted",
+              style: "text-left hidden md:table-cell items-center",
             },
             {
               title: "Score",
@@ -76,11 +103,11 @@ const ResponseList = () => {
           data: userData,
           colSize: [
             <colgroup>
-              <col style={{ width: "30vw" }} />
-              <col style={{ width: "10vw" }} />
-              <col style={{ width: "10vw" }} />
-              <col style={{ width: "10vw" }} />
-              <col style={{ width: "10vw" }} />
+              {/* <col style={{ width: "10vw" }} />
+              <col style={{ width: "15vw" }} />
+              <col style={{ width: "15vw" }} />
+
+              <col style={{ width: "10vw" }} /> */}
             </colgroup>,
           ],
         })
