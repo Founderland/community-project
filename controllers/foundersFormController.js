@@ -128,7 +128,9 @@ const findAllResponse = async (req, res) => {
 const findResponsesByStatus = async (req, res) => {
   const { status } = req.params
   try {
-    const result = await FoundersResponse.find({ status: status })
+    const result = await FoundersResponse.find({ status: status }).sort({
+      totalScore: "desc", //order responses by score
+    })
     // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
 
     // console.log(result)
