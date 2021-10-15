@@ -5,7 +5,7 @@ import { ReactComponent as LogoLines } from "../../assets/line.svg"
 import { ReactComponent as SmallLogo } from "../../assets/small.svg"
 import UserContext from "../../contexts/User"
 
-const loginURL = "/api/auth/userlogin"
+const loginURL = "/api/auth/login"
 
 const Login = () => {
   const { setUser } = useContext(UserContext)
@@ -29,29 +29,24 @@ const Login = () => {
         if (data.access_token) {
           localStorage.setItem("authToken", data.access_token)
           var decode = jwt.decode(data.access_token)
-          setUser({
-            id: decode.id,
-            firstName: decode.firstName,
-            lastName: decode.lastName,
-            avatar: decode.avatar,
-          })
+          if (decode.avatar) {
+            throw new Error("401")
+          } else {
+            setUser({
+              id: decode.id,
+              firstName: decode.firstName,
+              lastName: decode.lastName,
+              avatar: decode.avatar,
+            })
+          }
         } else {
           setLoading(false)
-          setUser({
-            id: 1,
-            firstName: "Victor",
-            lastName: "Isidoro",
-            avatar: "bg-gradient-to-t from-pink-300 to-pink-500",
-          })
-          throw new Error({
-            response: { status: 500, message: "Sorry, something went wrong" },
-          })
+          throw new Error("401")
         }
       } catch (err) {
-        console.log(err.response)
         setLoading(false)
         setError(
-          err?.response?.status === 401
+          err.message === "401" || err.response.status === 401
             ? "Wrong credentials"
             : "Sorry, something went wrong"
         )

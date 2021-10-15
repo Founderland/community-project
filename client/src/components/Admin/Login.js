@@ -28,17 +28,21 @@ const AdminLogin = () => {
         const { data } = await axios.post(loginURL, loginData, config)
         localStorage.setItem("authToken", data.access_token)
         var decode = jwt.decode(data.access_token)
-        setUser({
-          id: decode.id,
-          firstName: decode.firstName,
-          lastName: decode.lastName,
-          avatar: decode.avatar,
-          role: decode.role,
-        })
+        if (decode.avatar) {
+          setUser({
+            id: decode.id,
+            firstName: decode.firstName,
+            lastName: decode.lastName,
+            avatar: decode.avatar,
+            role: decode.role,
+          })
+        } else {
+          throw new Error("401")
+        }
       } catch (err) {
         setLoading(false)
         setError(
-          err.response.status === 401
+          err.response.status === 401 || err.message === "401"
             ? "Wrong credentials"
             : "Sorry, something went wrong"
         )
