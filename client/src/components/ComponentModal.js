@@ -10,7 +10,7 @@ const ComponentModal = ({ children }) => {
       <Dialog
         as="div"
         onClose={() => setCModal(false)}
-        className="fixed z-10 inset-0 overflow-y-auto "
+        className="fixed z-10 inset-1 overflow-auto h-screen"
       >
         <div className="flex justify-center items-center h-screen">
           <Transition.Child
@@ -33,7 +33,7 @@ const ComponentModal = ({ children }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-80"
           >
-            <div className="relative p-2 w-full md:w-5/6 lg:w-1/2">
+            <div className="relative p-2 w-full md:w-5/6 lg:w-1/2 mt-28 sm:mt-0">
               {children}
             </div>
           </Transition.Child>

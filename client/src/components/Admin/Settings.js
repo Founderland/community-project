@@ -7,6 +7,7 @@ import ListWidget from "./ListWidget"
 import Loading from "../Loading"
 import ComponentModal from "../ComponentModal"
 import AddUser from "./AddUser"
+import moment from "moment"
 
 const usersAPI = "/api/users/all"
 
@@ -39,10 +40,15 @@ const Settings = ({ tab }) => {
             { title: " ", key: "lastName", style: "" },
             { title: "Email", key: "email", style: "" },
             { title: "Role", key: "role", style: "sm:block hidden" },
-            { title: "Added on", key: "dateCreated", style: "sm:block hidden" },
+            { title: "Added on", key: "dateCreated", style: "" },
             { title: "Actions", key: "-", style: "" },
           ],
         }
+        res.data.data.forEach((element) => {
+          element.dateCreated = moment(element.dateCreated).format(
+            "DD/M/YYYY hh:mm"
+          )
+        })
         result = { ...result, ...res.data }
         setData(result)
         setLoading(false)

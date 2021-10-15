@@ -16,7 +16,16 @@ const styles = {
   user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
-const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
+const ListWidget = ({
+  title,
+  data,
+  showing,
+  colSize,
+  cellAlignment,
+  button1,
+  button2,
+  setShowList,
+}) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
@@ -59,6 +68,9 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
                   item={item}
                   styles={styles}
                   cellAlignment={cellAlignment}
+                  button1={button1}
+                  button2={button2 || null}
+                  setShowList={setShowList}
                 />
               ))
             ) : (

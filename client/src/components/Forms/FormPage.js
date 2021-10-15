@@ -25,7 +25,9 @@ const FormPage = (props) => {
       let path = `/thankyou`
       history.push(path)
       setGify(false)
+      submitHandler(false)
     }, 4000)
+
     return () => clearTimeout(timer)
   }
 
@@ -45,8 +47,8 @@ const FormPage = (props) => {
     const questionType = questions.filter(
       (item) => item.type === "choice" || item.type === "list"
     )
-    console.log("questionType", questionType.length)
-    console.log("selected", selected.length)
+    // console.log("questionType", questionType.length)
+    // console.log("selected", selected.length)
     if (
       questionType.length <= selected.length ||
       prev ||
@@ -65,7 +67,7 @@ const FormPage = (props) => {
     selected.push(answer)
     setSelected([...selected])
     // setAnswerData({ id: _id, value: answer })
-    console.log(answer)
+    // console.log(answer)
   }
 
   return (

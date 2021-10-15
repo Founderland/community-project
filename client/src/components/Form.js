@@ -12,9 +12,7 @@ import { useContext } from "react"
 
 const Form = ({ match, memberType, questionPreview }) => {
   const { submit } = useContext(AnswersContext)
-  // console.log(match);
-  // memberType is grabbed from the parameter specified on the ApplicantsDispatcher Link and can be either : founder, investor, ally or newsletter.
-  // const { memberType } = match.params;
+
   if (match?.params.memberType) {
     memberType = match.params.memberType
   }
@@ -24,18 +22,24 @@ const Form = ({ match, memberType, questionPreview }) => {
   const [categoryNames, setCategoryNames] = useState([])
   const [pagesInCategory, setPagesInCategory] = useState([])
   const [formatedQuestions, setFormatedQuestions] = useState([])
-  console.log(questionPreview)
+
   useEffect(() => {
     axios
       .get(`/api/form/${memberType}/questions`)
       .then((res) => {
+        const { data } = res
         if (questionPreview) {
-          const data = res.data
-          data.push(questionPreview)
-          setQuestions(data)
-        } else {
-          setQuestions(res.data)
+          // when editing existing questions we replace the original one with the preview
+          const foundIndex = data.findIndex(
+            (item) => item._id === questionPreview._id
+          )
+          if (foundIndex >= 0) {
+            data.splice(foundIndex, 1, questionPreview)
+          } else {
+            data.push(questionPreview)
+          }
         }
+        setQuestions(data)
       })
       .catch((err) => {
         console.log(err)
@@ -103,43 +107,42 @@ const Form = ({ match, memberType, questionPreview }) => {
   }
 
   const WizardNav = ({ activeStep }) => (
-    <div className=" hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12">
+    <div className=' hidden md:flex flex-col  h-screen  items-center bg-fblue z-10  text-white md:w-3/12'>
       <div
         className={
           !submit
             ? "h-3/4 w-full flex items-center justify-center pl-8"
             : "hidden"
-        }
-      >
+        }>
         <ul>
           {categoryNames.map((item, index) => (
             <CategoryItem text={item} isActive={activeStep === index} />
           ))}
         </ul>
       </div>
-      <div className="h-1/4 w-2/3 flex items-center">
-        <img className="text-fpink" src={whiteLogo} alt="logo" />
+      <div className='h-1/4 w-2/3 flex items-center'>
+        <img className='text-fpink' src={whiteLogo} alt='logo' />
       </div>
     </div>
   )
 
   const Symbols = () => (
     <>
-      <div className="hidden md:w-1/12 md:flex md:justify-end">
-        <img src={symbolsVertical} alt="symbols" />
+      <div className='hidden md:w-1/12 md:flex md:justify-end'>
+        <img src={symbolsVertical} alt='symbols' />
       </div>
-      <div className="md:hidden h-12 items-end fixed bottom-0 z-10">
+      <div className='md:hidden h-12 items-end fixed bottom-0 z-10'>
         <img
           src={symbolsHorizontal}
-          alt="logo"
-          className="h-full object-cover object-left"
+          alt='logo'
+          className='h-full object-cover object-left'
         />
       </div>
     </>
   )
 
   return (
-    <div className=" m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden">
+    <div className=' m-0 flex flex-row-reverse w-screen items-end h-screen overflow-hidden'>
       <Symbols />
       {questions && (
         <>
@@ -147,8 +150,7 @@ const Form = ({ match, memberType, questionPreview }) => {
           <StepWizard
             initialStep={1}
             onStepChange={(res) => getActiveStep(res.activeStep)}
-            className="h-screen md:w-8/12 mb-8"
-          >
+            className='h-screen md:w-8/12 mb-8'>
             {formatedQuestions.map((catItems, catIndex, catArray) =>
               catItems.map((pagesItems, pageIndex, pageArray) => (
                 <FormPage
