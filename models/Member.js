@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  confirmed: { type: Date },
+  confirmed: { type: Date, default: null },
   lastUpdate: { type: Date },
   about: {
     type: String,

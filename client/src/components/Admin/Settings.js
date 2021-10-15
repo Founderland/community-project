@@ -44,9 +44,7 @@ const Settings = ({ tab }) => {
             { title: "Actions", key: "-", style: "" },
           ],
         }
-        console.log(res.data)
         res.data.data.forEach((element) => {
-          console.log(element.dateCreated)
           element.dateCreated = moment(element.dateCreated).format(
             "DD/M/YYYY hh:mm"
           )
