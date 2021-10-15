@@ -14,10 +14,13 @@ formRouter.put("/founder/edit", foundersForm.editQuestion)
 //DELETE QUESTION
 formRouter.delete("/founder/delete/:question_id", foundersForm.deleteQuestion)
 
-//ADD USER RESPONSE
+//ADD APPLICANTS RESPONSE
 formRouter.post("/founder/response", foundersForm.addResponse)
-//GET USER RESPONSE
+//GET APPLICANTS RESPONSE
 formRouter.get("/founder/response", foundersForm.findAllResponse)
+
+//GET APPLICANTS RESPONSE BY STATUS ["New", "Pending", "Approved", "Rejected"]
+formRouter.get("/founder/response/:status", foundersForm.findResponsesByStatus)
 
 // INVESTORS
 

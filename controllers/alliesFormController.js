@@ -53,8 +53,13 @@ const deleteQuestion = async (req, res) => {
 }
 
 const findAll = async (req, res) => {
-  const result = await AlliesForm.find({})
-  res.status(200).json(result)
+  try {
+    const result = await AlliesForm.find({}).sort("category")
+    res.status(200).json(result)
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({ message: "Sorry something went wrong" })
+  }
 }
 
 module.exports = {

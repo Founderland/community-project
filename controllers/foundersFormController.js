@@ -33,8 +33,13 @@ const addNew = async (req, res) => {
 }
 
 const findAll = async (req, res) => {
-  const result = await FoundersForm.find({})
-  res.status(200).json(result)
+  try {
+    const result = await FoundersForm.find({}).sort("category")
+    res.status(200).json(result)
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({ message: "Sorry something went wrong" })
+  }
 }
 
 // Edit existing question + answer
@@ -73,12 +78,13 @@ const deleteQuestion = async (req, res) => {
 // Add Founders Response
 
 const addResponse = async (req, res) => {
-  const { applicantName, totalScore, answerData } = req.body
-
+  const { firstName, lastName, totalScore, answerData } = req.body
+  console.log(answerData)
   try {
     //  data.map(async (item) => {
     const newFoundersResponse = await FoundersResponse.create({
-      applicantName,
+      firstName,
+      lastName,
       totalScore,
       answerData,
     })
@@ -119,6 +125,19 @@ const findAllResponse = async (req, res) => {
   }
 }
 
+const findResponsesByStatus = async (req, res) => {
+  const { status } = req.params
+  try {
+    const result = await FoundersResponse.find({ status: status })
+    // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
+
+    // console.log(result)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   addNew,
   findAll,
@@ -126,4 +145,5 @@ module.exports = {
   findAllResponse,
   editQuestion,
   deleteQuestion,
+  findResponsesByStatus,
 }
