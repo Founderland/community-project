@@ -1,23 +1,62 @@
 import axios from "axios"
-import { useContext, useState } from "react"
+import { useEffect, useState } from "react"
+import { useParams, useHistory } from "react-router-dom"
+
 import jwt from "jsonwebtoken"
 import { ReactComponent as LogoLines } from "../../assets/line.svg"
 import { ReactComponent as SmallLogo } from "../../assets/small.svg"
-import UserContext from "../../contexts/User"
 
-const loginURL = "/api/auth/userlogin"
+const signUpURL = "/api/auth/userlogin"
 
-const Login = () => {
-  const { setUser } = useContext(UserContext)
-  const [email, setEmail] = useState("")
+const SignUp = () => {
+  let history = useHistory()
+  const { token } = useParams()
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [title, setTitle] = useState("")
+  const [city, setCity] = useState("")
+  const [geoLocation, setGeoLocation] = useState("")
+  const [about, setAbout] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [photo, setPhoto] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
+  //Get token from URL
+  useEffect(() => {
+    const decode = jwt.decode(token)
+    //Get data from token and fetch DB data
+    if (decode?.email) {
+      //check if token is expired or load the data
+      const now = Date.now() / 1000
+      const expiry = decode.iat + decode.exp
+      if (now < expiry) {
+        setError("valid token " + now + " - " + expiry)
+      } else {
+        setError("Invalid Token")
+      }
+    } else {
+      setError("Invalid Token")
+    }
+  }, [token])
+
+  //submit form
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const loginData = { email, password }
-    if (email.length && password.length) {
+    const loginData = {
+      firstName,
+      lastName,
+      title,
+      city,
+      geoLocation,
+      about,
+      password,
+      confirmPassword,
+      photo,
+    }
+    if (password.length && confirmPassword.length) {
       setLoading(true)
       const config = {
         header: {
@@ -25,34 +64,23 @@ const Login = () => {
         },
       }
       try {
-        const { data } = await axios.post(loginURL, loginData, config)
+        //receive new login token and forward to community app
+        const { data } = await axios.post(signUpURL, loginData, config)
         if (data.access_token) {
           localStorage.setItem("authToken", data.access_token)
-          var decode = jwt.decode(data.access_token)
-          setUser({
-            id: decode.id,
-            firstName: decode.firstName,
-            lastName: decode.lastName,
-            avatar: decode.avatar,
-          })
+          //redirect to community
+          history.push("/community")
         } else {
           setLoading(false)
-          setUser({
-            id: 1,
-            firstName: "Victor",
-            lastName: "Isidoro",
-            avatar: "bg-gradient-to-t from-pink-300 to-pink-500",
-          })
           throw new Error({
             response: { status: 500, message: "Sorry, something went wrong" },
           })
         }
       } catch (err) {
-        console.log(err.response)
         setLoading(false)
         setError(
           err?.response?.status === 401
-            ? "Wrong credentials"
+            ? "Invalid token"
             : "Sorry, something went wrong"
         )
         setTimeout(() => {
@@ -60,13 +88,15 @@ const Login = () => {
         }, 5000)
       }
     } else {
-      setError("Please fill in your details")
+      setError("Please fill in all required fields")
       setTimeout(() => {
         setError("")
       }, 6000)
     }
   }
-  return (
+
+  //Render form with data from database
+  return showForm ? (
     <div className="flex h-screen justify-center items-center w-full ">
       <div className="flex bg-white md:w-2/3 xl:w-1/2">
         <div className="relative hidden md:block md:w-1/2 bg-fred">
@@ -88,11 +118,7 @@ const Login = () => {
               <label className="text-grotesk block text-sm font-bold mb-2">
                 email
               </label>
-              <input
-                className="border border-gray-300 py-2 px-4 block w-full appearance-none"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <input className="border border-gray-300 py-2 px-4 block w-full appearance-none" />
             </div>
             <div className="mt-4">
               <label className="text-grotesk block text-sm font-bold mb-2">
@@ -133,7 +159,9 @@ const Login = () => {
         </div>
       </div>
     </div>
+  ) : (
+    `Nothing to show yet - ${error}`
   )
 }
 
-export default Login
+export default SignUp

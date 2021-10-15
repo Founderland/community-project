@@ -8,6 +8,7 @@ import Admin from "./components/Admin/Admin"
 import FounderResponse from "./components/Forms/FounderResponse"
 import ResponseList from "./components/Admin/ResponseList"
 import Community from "./components/Community/Community"
+import SignUp from "./components/Community/SignUp"
 // import AddQuestionForm from './components/Admin/AddQuestionForm'
 
 function App() {
@@ -21,12 +22,12 @@ function App() {
           component={ApplicantsDispatcher}
         />
         <Route exact path="/community" component={Community} />
+        <Route exact path="/signup/:token" component={SignUp} />
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/admin" component={Admin} />
         {/* <Route exact path="/foundersrespone" component={FounderResponse} /> */}
         <Route exact path="/foundersrespone" component={ResponseList} />
-
         {/* <Route exact path="/admin/:memberType/addQuestion" component={AddQuestionForm } /> */}
       </Router>
     </AnswersProvider>

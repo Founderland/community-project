@@ -17,16 +17,15 @@ const views = [
 const Community = () => {
   const [token] = useState(localStorage.authToken)
   const [user, setUser] = useState(null)
-  const [menuToggle, setMenuToggle] = useState(false)
   const [view, setView] = useState(0)
   const [notifications, setNotifications] = useState([
-    { icon: "love", text: "Sasmith liked your post" },
+    { icon: "love", text: "Sasmitha liked your post" },
     { icon: "anot", text: "Salvo wants to connect with you" },
   ])
 
   useEffect(() => {
     if (token) {
-      var decode = jwt.decode(localStorage.authToken)
+      var decode = jwt.decode(token)
       if (decode?.id && decode?.role) {
         setUser({
           id: decode.id,
@@ -45,15 +44,12 @@ const Community = () => {
   }
   const changeView = (view) => {
     setView(view)
-    setMenuToggle(!menuToggle)
   }
   return (
     <UserContext.Provider
       value={{
-        menuToggle,
         user,
         setUser,
-        setMenuToggle,
         view,
         setView,
         changeView,

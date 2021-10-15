@@ -52,7 +52,6 @@ const UserSchema = new mongoose.Schema({
   following: [{ type: mongoose.Schema.ObjectId, ref: "CommunityUser" }],
   followers: [{ type: mongoose.Schema.ObjectId, ref: "CommunityUser" }],
   applicationId: { type: mongoose.Schema.ObjectId },
-  registrationToken: { type: String },
 })
 
 const CommunityUser = mongoose.model("CommunityUser", userSchema)
