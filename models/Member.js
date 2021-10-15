@@ -53,11 +53,12 @@ const userSchema = new mongoose.Schema({
     data: Buffer,
     contentType: String,
   },
-  following: [{ type: mongoose.Schema.ObjectId, ref: "CommunityUser" }],
-  followers: [{ type: mongoose.Schema.ObjectId, ref: "CommunityUser" }],
+  following: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
+  followers: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
   applicationId: { type: mongoose.Schema.ObjectId },
+  notified: { type: Date, default: null },
 })
 
-const CommunityUser = mongoose.model("CommunityUser", userSchema)
+const Member = mongoose.model("Member", userSchema)
 
-module.exports = CommunityUser
+module.exports = Member

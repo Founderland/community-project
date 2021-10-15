@@ -1,6 +1,6 @@
 require("dotenv").config()
 const User = require("../models/User")
-const CommunityUser = require("../models/CommunityUser")
+const Member = require("../models/Member")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
@@ -13,7 +13,7 @@ const authenticateUser = async (username, password, done) => {
       delete user.hashedPassword
       done(null, user, { message: "Successful" })
     } else {
-      user = await CommunityUser.findOne({ email: username })
+      user = await Member.findOne({ email: username })
       if (user && (await bcrypt.compare(password, user.hashedPassword))) {
         delete user.hashedPassword
         done(null, user, { message: "Successful" })
@@ -35,20 +35,17 @@ const isAuthorized = (payload, done) => {
     if (user) {
       return done(null, user)
     } else {
-      CommunityUser.findOne(
-        { id: payload.id, email: payload.email },
-        (err, user) => {
-          console.log(err)
-          if (err) {
-            return done(err, false)
-          }
-          if (user) {
-            return done(null, user)
-          } else {
-            return done(null, false)
-          }
+      Member.findOne({ id: payload.id, email: payload.email }, (err, user) => {
+        console.log(err)
+        if (err) {
+          return done(err, false)
         }
-      )
+        if (user) {
+          return done(null, user)
+        } else {
+          return done(null, false)
+        }
+      })
     }
   })
 }

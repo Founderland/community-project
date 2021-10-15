@@ -1,10 +1,10 @@
 const { validationResult } = require("express-validator")
-const CommunityUser = require("../models/CommunityUser")
+const Member = require("../models/Member")
 const { generateHashedPassword, calculateToken } = require("../helpers/user")
 
 const findAll = async (req, res) => {
   const { role } = req.params
-  const users = await CommunityUser.find({ role: role })
+  const users = await Member.find({ role: role })
   if (users) {
     res.status(200).json({
       data: users,
@@ -23,7 +23,7 @@ const addUser = async (req, res, next) => {
     if (!errorsAfterValidation.isEmpty()) {
       await Promise.reject("VALIDATION_FAILED")
     }
-    const user = await CommunityUser.findOne({ email })
+    const user = await Member.findOne({ email })
     if (user) await Promise.reject("USER_EXISTS_ALREADY")
     const data = {
       firstName,
@@ -32,7 +32,7 @@ const addUser = async (req, res, next) => {
       applicationId,
       role,
     }
-    const newUser = await CommunityUser.create(data)
+    const newUser = await Member.create(data)
     if (newUser) res.status(200).json({ success: 1, message: "User saved" })
     else await Promise.reject("DATABASE_ERROR")
   } catch (e) {
@@ -75,7 +75,7 @@ const confirmUser = async (req, res, next) => {
     const decoded = jwt.verify(registrationToken, process.env.JWT_KEY)
     if (!decoded.id) req.userData = decoded
 
-    const user = await CommunityUser.findOne({ registrationToken })
+    const user = await Member.findOne({ registrationToken })
     if (!user) await Promise.reject("INVALID_TOKEN")
     const data = {
       firstName,
@@ -89,7 +89,7 @@ const confirmUser = async (req, res, next) => {
       lastUpdate: Date.now,
       about,
     }
-    const updateUser = await CommunityUser.findOneAndUpdate({}, data, {
+    const updateUser = await Member.findOneAndUpdate({}, data, {
       new: true,
     })
     //AFTER IT COMPLETES; IT NEEDS TO AUTHORIZE USER

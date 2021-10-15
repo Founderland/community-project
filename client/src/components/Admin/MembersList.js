@@ -8,7 +8,7 @@ const MembersList = ({ role, reload }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const { setModalMessage, setIModal, token } = useContext(AdminContext)
-  const communityUsersAPI = "/api/users/community/"
+  const membersAPI = "/api/users/community/"
 
   //FOUNDERS
   useEffect(() => {
@@ -19,7 +19,7 @@ const MembersList = ({ role, reload }) => {
       },
     }
     axios
-      .get(communityUsersAPI + role, config)
+      .get(membersAPI + role, config)
       .then((res) => {
         const header = {
           header: [

@@ -1,12 +1,12 @@
 require("dotenv").config()
-const CommunityUser = require("../models/CommunityUser")
+const Member = require("../models/Member")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
 const authenticateUser = async (username, password, done) => {
   try {
     // Check that user exists by email
-    const user = await CommunityUser.findOne({ email: username })
+    const user = await Member.findOne({ email: username })
     if (user && (await bcrypt.compare(password, user.hashedPassword))) {
       delete user.hashedPassword
       done(null, user, { message: "Successful" })

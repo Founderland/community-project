@@ -1,6 +1,6 @@
 const UserRouter = require("express").Router()
 const userController = require("../controllers/user")
-const communityUserController = require("../controllers/communityUser")
+const memberController = require("../controllers/member")
 const passport = require("passport")
 
 const {
@@ -18,12 +18,12 @@ UserRouter.post("/add", registerValidation, userController.addUser)
 UserRouter.post(
   "/community/add",
   registerCommunityValidation,
-  communityUserController.addUser
+  memberController.addUser
 )
 UserRouter.get(
   "/community/:role",
   passport.authenticate("jwt", { session: false }),
-  communityUserController.findAll
+  memberController.findAll
 )
 
 //COMMUNITY
