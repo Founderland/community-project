@@ -38,6 +38,7 @@ const isAuthorized = (payload, done) => {
       CommunityUser.findOne(
         { id: payload.id, email: payload.email },
         (err, user) => {
+          console.log(err)
           if (err) {
             return done(err, false)
           }
