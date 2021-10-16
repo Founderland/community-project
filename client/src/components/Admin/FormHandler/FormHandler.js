@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import axios from "axios"
 import AnswerSection from "./AnswerSection"
 import NewQuestionResponse from "../NewQuestionResponse"
@@ -66,7 +66,11 @@ const types = [
 ]
 
 const FormHandler = ({ edit, setShowList }) => {
-  const { selectedItem: question, memberType } = useContext(AdminContext)
+  const {
+    selectedItem: question,
+    setSelectedItem,
+    memberType,
+  } = useContext(AdminContext)
   const answers = question?.answers || null
 
   const [questionInfo, setQuestionInfo] = useState(question || defaultQuestion)
@@ -103,9 +107,7 @@ const FormHandler = ({ edit, setShowList }) => {
       url: edit ? "/edit" : "/add",
       data: newQuestion,
     })
-      // .post(`/api/form/${memberType}/add`, newQuestion)
       .then((result) => {
-        console.log(result)
         setIsSuccessfull(true)
         setMessage(result.data.message)
         setTimeout(() => {
@@ -141,7 +143,7 @@ const FormHandler = ({ edit, setShowList }) => {
         setTimeout(() => {
           setIsSuccessfull(false)
           setShowList(true)
-        }, 5000)
+        }, 3000)
       })
       .catch((e) => {
         setMessage(e.response.data.message)
@@ -151,6 +153,10 @@ const FormHandler = ({ edit, setShowList }) => {
         }, 5000)
       })
   }
+
+  useEffect(() => {
+    return () => question && setSelectedItem(null)
+  }, [memberType])
 
   return (
     <div

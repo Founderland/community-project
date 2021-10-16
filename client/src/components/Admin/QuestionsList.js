@@ -61,7 +61,10 @@ const QuestionsList = () => {
       }
     }
     fetchData()
-    // setShowList(true);
+    console.log(showList)
+    // if (!showList) setShowList(true)
+
+    // if (selectedItem) setSelectedItem(false)
   }, [memberType, showList])
 
   return (
@@ -74,12 +77,12 @@ const QuestionsList = () => {
             setSelectedItem(null)
           }}
           className=' flex justify-center items-center text-lg w-1/2 md:w-auto py-3 px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black'>
-          {showList && !selectedItem ? (
+          {showList ? (
             <PlusIcon className='w-5 h-5 mr-3 ' />
           ) : (
             <ArrowLeftIcon className='w-5 h-5 mr-3 ' />
           )}
-          {showList && !selectedItem ? "Add new" : "Back"}
+          {showList ? "Add new" : "Back"}
         </button>
       </div>
       {showList ? (
@@ -92,7 +95,7 @@ const QuestionsList = () => {
           setShowList={setShowList}
         />
       ) : (
-        <FormHandler edit={selectedItem && true} setShowList={setShowList} />
+        <FormHandler edit={selectedItem} setShowList={setShowList} />
       )}
     </div>
   )

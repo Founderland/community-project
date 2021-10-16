@@ -38,7 +38,6 @@ const ListWidget = ({
   useEffect(() => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
-    console.log(slice)
     setPageCount(Math.ceil(data.data.length / perPage))
 
     return () => {
