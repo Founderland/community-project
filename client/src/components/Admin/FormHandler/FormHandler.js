@@ -1,12 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import axios from "axios"
 import AnswerSection from "./AnswerSection"
-import NewQuestionResponse from "../NewQuestionResponse"
 import FormPreview from "./FormPreview"
-import { useParams } from "react-router"
 import { EyeIcon, TrashIcon } from "@heroicons/react/outline"
 import ListOption from "../ListOption"
 import AdminContext from "../../../contexts/Admin"
+import SubmitResponse from "./SubmitResponse"
 
 const defaultQuestion = {
   category: "About You",
@@ -163,7 +162,7 @@ const FormHandler = ({ edit, setShowList }) => {
       ref={mainDiv}
       className=' h-screen w-full flex flex-col justify-start items-stretch text-xl shadow-xl py-4'>
       <div className='flex flex-col justify-center items-center bg-white p-4  '>
-        <NewQuestionResponse
+        <SubmitResponse
           isSuccessful={isSuccessful}
           isError={isError}
           message={message}

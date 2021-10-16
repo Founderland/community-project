@@ -61,10 +61,6 @@ const QuestionsList = () => {
       }
     }
     fetchData()
-    console.log(showList)
-    // if (!showList) setShowList(true)
-
-    // if (selectedItem) setSelectedItem(false)
   }, [memberType, showList])
 
   return (
