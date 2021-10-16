@@ -50,9 +50,9 @@ const Question = ({
     <div className='p-2 text-grotesk text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl mt-1 xl:mt-5'>
       <label className=' '>{question}</label>
       <div className=''>
-        {type === "open" || question === "email" ? (
+        {type === "open" || question === "Email" ? (
           <input
-            required={!questionPreview || mandatory ? true : false}
+            required={questionPreview ? false : mandatory}
             type={question === "Email" ? "email" : "text"}
             className='flex-1 md:text-lg xl:text-xl appearance-none border border-gray-300 w-11/12 md:w-3/5 mt-1 xl:mt-3 px-2 py-1 md:py-2 md:px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fblue-light focus:border-transparent'
             name='firstname'

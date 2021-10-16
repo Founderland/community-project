@@ -8,10 +8,12 @@ import {
 } from "@heroicons/react/outline"
 import AdminContext from "../../contexts/Admin"
 import FormHandler from "./FormHandler/FormHandler"
+import Loading from "../Loading"
 
 const QuestionsList = () => {
   const { memberType, selectedItem, setSelectedItem } = useContext(AdminContext)
   const [showList, setShowList] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [listData, setListData] = useState({
     data: [],
     header: [],
@@ -28,6 +30,7 @@ const QuestionsList = () => {
     const fetchData = async () => {
       try {
         const result = await axios.get(`/api/form/${memberType}/questions`)
+        if (result) setIsLoading(false)
         if (typeof result.data === "string") return
         if (result.data)
           setListData({
@@ -58,10 +61,17 @@ const QuestionsList = () => {
           })
       } catch (e) {
         console.log(e)
+        setIsLoading(false)
       }
     }
     fetchData()
+
+    // return () => setIsLoading(true)
   }, [memberType, showList])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <div className='w-full flex flex-col text-xl '>

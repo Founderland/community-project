@@ -6,6 +6,7 @@ import { useHistory } from "react-router"
 import AdminContext from "../../contexts/Admin"
 import { AnswersContext } from "../../contexts/AnswersProvider"
 import ResponseWidget from "./ResponseWidget"
+import Loading from "../Loading"
 // import AddQuestionForm from './AddQuestion/AddQuestionForm'
 
 const ResponseList = () => {
@@ -15,17 +16,14 @@ const ResponseList = () => {
   const [listData, setListData] = useState({ data: [], header: [] })
   const [answerData, setAnswerData] = useState({ data: [], header: [] })
   viewButton === true && console.log("VIEWID", viewId)
-
-  // create copy ?
+  const [isLoading, setIsLoading] = useState(true)
 
   const getTimeDifference = (DateToCompare) => {
     const today = Date.now()
     const compareDate = Date.parse(DateToCompare)
     let timeDifference = (today - compareDate) / 1000 / 60 / 60
-    console.log(timeDifference)
     if (timeDifference >= 24) {
       timeDifference = parseInt((timeDifference /= 24)) + " d ago"
-      timeDifference = parseInt(timeDifference)
     } else if (timeDifference < 24 && timeDifference > 0.99) {
       timeDifference = Math.round(timeDifference) + " h ago"
     } else {
@@ -43,6 +41,10 @@ const ResponseList = () => {
         const result = await axios.get(
           `/api/form/founder/response/${applicantType}`
         )
+        console.log(result, "result")
+        if (result) {
+          setIsLoading(false)
+        }
 
         const userData = result.data.map((item) => {
           // Getting first and last name
@@ -58,7 +60,6 @@ const ResponseList = () => {
           const questionEmail = item.answerData.find(
             (x) => x.question === "email" || x.question === "Email"
           )
-          console.log("item", item)
           const location = questionLocation?.answer_value
           const email = questionEmail?.answer_value
 
@@ -113,8 +114,10 @@ const ResponseList = () => {
         })
       } catch (e) {
         console.log(e)
+        setIsLoading(false)
       }
     }
+
     if (!viewButton && applicantType) {
       fetchData()
     }
@@ -176,7 +179,12 @@ const ResponseList = () => {
         ],
       })
     }
+    console.log(viewId, "answerData")
   }, [viewId, viewButton])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <div className='w-full flex flex-col '>
