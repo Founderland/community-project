@@ -26,7 +26,7 @@ const authenticateUser = async (username, password, done) => {
   }
 }
 
-const isAuthorized = (payload, done) => {
+const isAuthorized = async (payload, done) => {
   //CHECK TOKEN FROM BOTH COMMUNITY AND ADMIN
   User.findOne({ id: payload.id, email: payload.email }, (err, user) => {
     if (err) {
@@ -50,7 +50,7 @@ const isAuthorized = (payload, done) => {
   })
 }
 
-const authorizeUser = (req, res) => {
+const authorizeUser = async (req, res) => {
   //CAN BE USED TO PROVIDED TOKENS BOTH TO COMMUNITY AND ADMIN - BUT PAYLOAD MIGHT BE DIFFERENT
   if (req.user.id) {
     let payload = {}
