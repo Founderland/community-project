@@ -9,7 +9,7 @@ const ListOption = ({ options, choice, setChoice, style }) => {
         {/* className='p-3 bg-white w-auto shadow-md w-full lg:w-1/3 xl:1/6 ' */}
         <Listbox.Button className='relative w-full py-2 pl-3 pr-10 text-left bg-white shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm '>
           <span className='block truncate text-lg'>
-            {options.filter((item) => item.value === choice)[0].name}
+            {options.filter((item) => item.value === choice)[0]?.name}
           </span>
           <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
             <ChevronDownIcon
