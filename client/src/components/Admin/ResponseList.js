@@ -115,7 +115,7 @@ const ResponseList = () => {
         console.log(e)
       }
     }
-    if (!viewButton) {
+    if (!viewButton && applicantType) {
       fetchData()
     }
   }, [viewButton, applicantType])
