@@ -19,6 +19,7 @@ const MembersList = ({ role, reload }) => {
         "Content-Type": "application/json",
       },
     }
+    console.log(config)
     axios
       .get(membersAPI + role, config)
       .then((res) => {
