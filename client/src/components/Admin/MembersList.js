@@ -19,7 +19,6 @@ const MembersList = ({ role, reload }) => {
         "Content-Type": "application/json",
       },
     }
-    console.log(config)
     axios
       .get(membersAPI + role, config)
       .then((res) => {
@@ -36,11 +35,9 @@ const MembersList = ({ role, reload }) => {
         }
         const data = res.data
         data.data.forEach((element) => {
-          console.log(element)
           if (element.created) {
             element.created = moment(element.created).format("DD/M/YYYY hh:mm")
           }
-
           if (element.notified) {
             element.notified = moment(element.notified).format(
               "DD/M/YYYY hh:mm"
@@ -56,7 +53,6 @@ const MembersList = ({ role, reload }) => {
         setLoading(false)
       })
       .catch((err) => {
-        console.log(err)
         setModalMessage({
           icon: "info",
           title: "Error loading the database set",

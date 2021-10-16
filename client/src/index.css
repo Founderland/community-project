@@ -4,17 +4,18 @@
 
 body {
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .text-grotesk {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 .text-mono {
-  font-family: 'Space Mono', monospace;
-
+  font-family: "Space Mono", monospace;
 }
 
 .text-hanson {
-  font-family: 'Hanson';
+  font-family: "Hanson";
 }
