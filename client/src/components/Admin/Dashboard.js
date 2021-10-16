@@ -1,5 +1,5 @@
 import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline"
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useMemo } from "react"
 import axios from "axios"
 import AdminContext from "../../contexts/Admin"
 import ChartWidget from "./ChartWidget"
@@ -10,35 +10,38 @@ const membersAPI = "/api/users/community/"
 
 const AdminDashboard = () => {
   const { token } = useContext(AdminContext)
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  }
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  }, [token])
+
   const [foundersWidget, setFoundersWidget] = useState({})
   const [loadingF, setLoadingF] = useState(true)
   const [investorsWidget, setInvestorsWidget] = useState({})
   const [loadingI, setLoadingI] = useState(true)
   const [alliesWidget, setAlliesWidget] = useState({})
   const [loadingA, setLoadingA] = useState(true)
-  const [widgetData, setWidgetData] = useState({
-    approvedWidget: {},
-    rejectedWidget: {},
-    pendingApplicants: {},
-    membersChart: {},
-    newApplicants: {},
-  })
-  const [loading, setLoading] = useState({
-    foundersWidget: true,
-    investorsWidget: true,
-    alliesWidget: true,
-    approvedWidget: true,
-    rejectedWidget: true,
-    pendingApplicants: true,
-    membersChart: true,
-    newApplicants: true,
-  })
+  // const [widgetData, setWidgetData] = useState({
+  //   approvedWidget: {},
+  //   rejectedWidget: {},
+  //   pendingApplicants: {},
+  //   membersChart: {},
+  //   newApplicants: {},
+  // })
+  // const [loading, setLoading] = useState({
+  //   foundersWidget: true,
+  //   investorsWidget: true,
+  //   alliesWidget: true,
+  //   approvedWidget: true,
+  //   rejectedWidget: true,
+  //   pendingApplicants: true,
+  //   membersChart: true,
+  //   newApplicants: true,
+  // })
 
   //GET FOUNDERS COUNT
   useEffect(() => {
@@ -54,7 +57,7 @@ const AdminDashboard = () => {
         setLoadingF(false)
       })
       .catch((err) => {})
-  }, [])
+  }, [config])
   //GET INVESTORS COUNT
   useEffect(() => {
     axios
@@ -69,7 +72,7 @@ const AdminDashboard = () => {
         setLoadingI(false)
       })
       .catch((err) => {})
-  }, [])
+  }, [config])
   //GET ALLIES COUNT
   useEffect(() => {
     axios
@@ -84,9 +87,7 @@ const AdminDashboard = () => {
         setLoadingA(false)
       })
       .catch((err) => {})
-  }, [])
-  console.log(loading)
-  console.log(widgetData)
+  }, [config])
   return (
     <div className="flex flex-col w-full px-3">
       <div className=" md:flex w-full">

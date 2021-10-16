@@ -1,4 +1,3 @@
-import { PencilAltIcon, EyeIcon } from "@heroicons/react/outline"
 import { useState, useEffect } from "react"
 import ReactPaginate from "react-paginate"
 import Cells from "./Cells"
@@ -43,7 +42,7 @@ const ListWidget = ({
     return () => {
       setDataToDisplay([])
     }
-  }, [data, offset])
+  }, [data, offset, perPage])
 
   return (
     <div className="w-full px-2 ">
