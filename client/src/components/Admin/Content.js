@@ -18,7 +18,7 @@ const Content = () => {
     if (views[view].name.includes("Applicants")) {
       setApplicantType(views[view].name.split(" ")[0])
     }
-  }, [view])
+  }, [view, views, setApplicantType, setMemberType])
 
   return (
     <main className="overflow-x-hidden">

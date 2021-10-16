@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useMemo } from "react"
 import AdminContext from "../../contexts/Admin"
 import ListWidget from "./ListWidget"
 import Loading from "../Loading"
@@ -9,16 +9,18 @@ const MembersList = ({ role, reload }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const { setModalMessage, setIModal, token } = useContext(AdminContext)
-  const membersAPI = "/api/users/community/"
-
-  //FOUNDERS
-  useEffect(() => {
-    const config = {
+  const config = useMemo(() => {
+    return {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     }
+  }, [token])
+  const membersAPI = "/api/users/community/"
+
+  //FETCH DATA
+  useEffect(() => {
     axios
       .get(membersAPI + role, config)
       .then((res) => {
@@ -60,7 +62,7 @@ const MembersList = ({ role, reload }) => {
         })
         setIModal(true)
       })
-  }, [reload])
+  }, [reload, role, setIModal, setModalMessage, config])
 
   return loading ? (
     <Loading />

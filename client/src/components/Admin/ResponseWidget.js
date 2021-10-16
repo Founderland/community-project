@@ -1,14 +1,13 @@
-import { PencilAltIcon, EyeIcon } from "@heroicons/react/outline"
 import { useState, useEffect } from "react"
 import ReactPaginate from "react-paginate"
-import Cells from "./Cells"
 import ResponseCells from "./ResponseCells"
 
 const styles = {
   new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
   pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
   reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
-  founder: "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
+  founder:
+    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
   investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
   ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
   sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
@@ -35,10 +34,10 @@ const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
     return () => {
       setDataToDisplay([])
     }
-  }, [data, offset])
+  }, [data, offset, perPage])
 
   return (
-  <div className="w-full px-2 ">
+    <div className="w-full px-2 ">
       <p className="text-mono">{title}</p>
       <div className="bg-white shadow-md my-4 overflow-auto">
         <table className="min-w-max w-full table-auto">

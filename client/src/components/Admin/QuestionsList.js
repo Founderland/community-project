@@ -61,22 +61,23 @@ const QuestionsList = () => {
       }
     }
     fetchData()
-  }, [memberType, showList])
+  }, [memberType, showList, listData])
 
   return (
-    <div className='w-full flex flex-col text-xl '>
-      <div className=' flex justify-between items-center mx-2 '>
+    <div className="w-full flex flex-col text-xl ">
+      <div className=" flex justify-between items-center mx-2 ">
         <div className={!showList && "hidden"}>Questions List</div>
         <button
           onClick={() => {
             setShowList(!showList)
             setSelectedItem(null)
           }}
-          className=' flex justify-center items-center text-lg w-1/2 md:w-auto py-3 px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black'>
+          className=" flex justify-center items-center text-lg w-1/2 md:w-auto py-3 px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
+        >
           {showList ? (
-            <PlusIcon className='w-5 h-5 mr-3 ' />
+            <PlusIcon className="w-5 h-5 mr-3 " />
           ) : (
-            <ArrowLeftIcon className='w-5 h-5 mr-3 ' />
+            <ArrowLeftIcon className="w-5 h-5 mr-3 " />
           )}
           {showList ? "Add new" : "Back"}
         </button>
@@ -87,7 +88,7 @@ const QuestionsList = () => {
           showing={10}
           colSize={listData.colSize}
           cellAlignment={"justify-start"}
-          button1={<PencilAltIcon className='w-8' />}
+          button1={<PencilAltIcon className="w-8" />}
           setShowList={setShowList}
         />
       ) : (

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, useMemo } from "react"
 import { Tab } from "@headlessui/react"
 import { UserAddIcon } from "@heroicons/react/outline"
 import axios from "axios"
@@ -22,15 +22,17 @@ const Settings = ({ tab }) => {
   const [task, setTask] = useState(null)
   const { user, setIModal, setModalMessage, setCModal, token } =
     useContext(AdminContext)
-
-  //Get all registered Users and set the result as data
-  useEffect(() => {
-    const config = {
+  const config = useMemo(() => {
+    return {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     }
+  }, [token])
+
+  //Get all registered Users and set the result as data
+  useEffect(() => {
     axios
       .get(usersAPI, config)
       .then((res) => {
@@ -61,7 +63,7 @@ const Settings = ({ tab }) => {
         })
         setIModal(true)
       })
-  }, [reload])
+  }, [reload, setIModal, setModalMessage, config])
 
   const handleTask = (task) => {
     setTask(task)
