@@ -1,7 +1,7 @@
 import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline";
 import { useContext, useState } from "react";
-import { AnswersContext } from "../../contexts/AnswersProvider";
-import TestFile from "./TestFile";
+import { AnswersContext } from "../../../contexts/AnswersProvider";
+import TestFile from "../TestFile";
 
 
 const ResponseCells = ({ data, item, styles, cellAlignment }) => {

@@ -1,8 +1,7 @@
 import { PencilAltIcon, EyeIcon } from "@heroicons/react/outline"
 import { useState, useEffect } from "react"
 import ReactPaginate from "react-paginate"
-import Cells from "./Cells"
-import ResponseCells from "./ResponseCells"
+
 
 const styles = {
   new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
@@ -16,7 +15,7 @@ const styles = {
   user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
-const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
+const QuestionsResponse = ({ title, data, showing, colSize, cellAlignment }) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
@@ -25,7 +24,13 @@ const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
     const selectedPage = e.selected
     setOffset(selectedPage)
   }
-
+  // useEffect(() => {
+  //   setDataToDisplay(data)
+  //   return () => {
+  //          setDataToDisplay([])
+  //       }
+  // }, [data, offset])
+    
   useEffect(() => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
@@ -55,12 +60,59 @@ const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
           <tbody className="text-gray-600 text-sm font-light text-lg">
             {dataToDisplay?.length ? (
               dataToDisplay.map((item) => (
-                <ResponseCells
-                  data={data}
-                  item={item}
-                  styles={styles}
-                  cellAlignment={cellAlignment}
-                />
+               <tr className="border-b border-gray-200 hover:bg-gray-100">
+               {data.header.map((header) => {
+                 if (header.key !== "-") {
+                   if (Array.isArray(item[header.key])) {
+                     return (
+                       <td className={`py-3 px-5 ${header.style}`}>
+                         <div className={`flex items-center px-2 ${cellAlignment}`}>
+                           <span className="">array</span>
+                         </div>
+                       </td>
+                     );
+                   } else {
+                     return (
+                       <td className={` ${header.style}`}>
+                         <div className={`flex items-center px-2 ${cellAlignment}`}>
+                           {/* {console.log(item[header.key])} */}
+                           <span
+                             className={
+                               typeof item[header.key] == "string" &&
+                               (styles[item[header.key]?.toLowerCase()]
+                                 ? styles[item[header.key]?.toLowerCase()]
+                                 : "")
+                             }
+                           >
+                             {item[header.key]}
+                           </span>
+                         </div>
+                       </td>
+                     );
+                   }
+                 } else {
+                   return (
+                     <td className="py-3 px-3 text-center">
+                       <div className="flex justify-center">
+                         <button
+                        //  onClick={clickHandler}
+                       className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
+                     >
+                       <PencilAltIcon className="w-4" />
+                     </button>
+                         <button
+                 
+                           className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
+                         >
+                           <EyeIcon className="w-4" />
+                         </button>
+                       </div>
+                     </td>
+                   );
+                 }
+               })}
+             </tr>
+       
               ))
             ) : (
               <tr className="border-b border-gray-200 hover:bg-gray-100">
@@ -78,7 +130,7 @@ const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
             )}
           </tbody>
         </table>
-        {data.data.length > perPage && (
+        {/* {data.data.length > perPage && (
           <div className="border-b min-w-max w-full border-gray-200">
             <div className="flex items-center justify-center">
               <ReactPaginate
@@ -115,10 +167,10 @@ const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
               />
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   )
 }
 
-export default ResponseWidget
+export default QuestionsResponse

@@ -6,7 +6,7 @@ import AnswersProvider from "./contexts/AnswersProvider"
 import Homepage from "./components/Homepage.js"
 import Admin from "./components/Admin/Admin"
 import FounderResponse from "./components/Forms/FounderResponse"
-import ResponseList from "./components/Admin/ResponseList"
+import ResponseList from "./components/Admin/Applicant Response/ResponseList"
 // import AddQuestionForm from './components/Admin/AddQuestionForm'
 
 function App() {

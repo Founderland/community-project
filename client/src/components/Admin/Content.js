@@ -4,7 +4,7 @@ import QuestionsList from "./QuestionsList"
 import Dashboard from "./Dashboard"
 import Profile from "./Profile"
 import Settings from "./Settings"
-import ResponseList from "./ResponseList"
+import ResponseList from "./Applicant Response/ResponseList"
 
 const Content = () => {
   const { view, views } = useContext(AdminContext)

@@ -64,6 +64,7 @@ function AnswersProvider({ children }) {
       }
       // const total=answers.map(item=>parseInt(item.score)).reduce((prev,curr)=>prev+curr,0)
       console.log("total", total)
+      console.log("total", answers)
       axios
         .post("/api/form/founder/response", {
           applicantName: answers[0].answer_value,

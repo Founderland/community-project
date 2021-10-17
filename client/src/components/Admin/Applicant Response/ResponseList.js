@@ -1,10 +1,12 @@
 import { useEffect, useState, useContext } from "react"
 import axios from "axios"
-import ListWidget from "./ListWidget"
+import ListWidget from "../ListWidget"
 import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/outline"
 import { useHistory } from "react-router"
-import AdminContext from "../../contexts/Admin"
-import { AnswersContext } from "../../contexts/AnswersProvider"
+import AdminContext from "../../../contexts/Admin"
+import { AnswersContext } from "../../../contexts/AnswersProvider"
+// import ResponseWidget from "../ResponseWidget"
+import QuestionsResponse from "./QuestionsResponse"
 import ResponseWidget from "./ResponseWidget"
 // import AddQuestionForm from './AddQuestion/AddQuestionForm'
 
@@ -24,7 +26,7 @@ const ResponseList = () => {
           const userData = result.data.map((item => {
               
             const questionLocation = item.answerData.find(x => x.question === "City,Country" || x.question === "Location")
-            const questionEmail = item.answerData.find(x => x.question === "email")
+            const questionEmail = item.answerData.find(x => x.question === "email"||x.question === "Email")
             console.log("item", item)
             const location = questionLocation.answer_value;
             const email = questionEmail.answer_value;
@@ -158,7 +160,7 @@ const ResponseList = () => {
       </div>
           <ResponseWidget
             data={viewButton? answerData: listData}
-            showing={10}
+            // showing={10}
             colSize={viewButton? answerData.colSize: listData.colSize}
             cellAlignment={'justify-start'}
           /> 
