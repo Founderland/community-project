@@ -48,10 +48,6 @@ const AdminDashboard = () => {
     //   membersChart: true,
     //   newApplicants: true,
     // })
-    //SCROLL BACK UP ON MENU CHANGE
-    useEffect(() => {
-        window.scrollTo({ behavior: "smooth", top: "0px" });
-    }, [view]);
 
     //GET FOUNDERS COUNT
     useEffect(() => {
