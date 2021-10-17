@@ -10,7 +10,7 @@ function AnswersProvider({ children }) {
   const [next, setNext] = useState(false)
   const [prev, setPrev] = useState(false)
   const [viewButton, setViewButton] = useState(false)
-  const[viewId,setViewId]=useState({})
+  const [viewId, setViewId] = useState({})
 
   let totalscore = 0
   const answerHandler = (inputValue) => {
@@ -21,14 +21,20 @@ function AnswersProvider({ children }) {
     const answer_id = inputValue.answer_id
     const score = inputValue.score
     totalscore = totalscore + inputValue.score
-    const object = {
+    let object = {
       question_id: `${id}`,
       question: inputValue.question,
       rank: inputValue.rank,
-      category:inputValue.category,
-      answer_id: `${answer_id}`,
+      category: inputValue.category,
       answer_value: `${answer}`,
       score: `${score}`,
+    }
+    // adding answer_id only if it exists
+    if (answer_id?.length > 0) {
+      object = {
+        ...object,
+        answer_id: answer_id,
+      }
     }
     answers.push(object)
     setAnswers([...answers])
@@ -47,7 +53,7 @@ function AnswersProvider({ children }) {
   const buttonClicked = (value) => {
     setViewButton(value)
   }
-  
+
   // For getting the particular item that is clicked
   const viewIdHandler = (value) => {
     setViewId(value)
@@ -67,7 +73,8 @@ function AnswersProvider({ children }) {
       console.log("total", answers)
       axios
         .post("/api/form/founder/response", {
-          applicantName: answers[0].answer_value,
+          firstName: answers[0].answer_value,
+          lastName: answers[1].answer_value,
           totalScore: total,
           answerData: answers,
         })
@@ -97,9 +104,8 @@ function AnswersProvider({ children }) {
         buttonClicked: buttonClicked,
         viewButton: viewButton,
         viewIdHandler: viewIdHandler,
-        viewId:viewId  
-      }}
-    >
+        viewId: viewId,
+      }}>
       {children}
     </AnswersContext.Provider>
   )

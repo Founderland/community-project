@@ -7,7 +7,8 @@ const styles = {
   new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
   pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
   reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
-  founder: "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
+  founder:
+    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
   investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
   ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
   sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
@@ -15,7 +16,16 @@ const styles = {
   user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
-const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
+const ListWidget = ({
+  title,
+  data,
+  showing,
+  colSize,
+  cellAlignment,
+  button1,
+  button2,
+  setShowList,
+}) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
@@ -28,7 +38,6 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
   useEffect(() => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
-    console.log(slice)
     setPageCount(Math.ceil(data.data.length / perPage))
 
     return () => {
@@ -37,7 +46,7 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
   }, [data, offset])
 
   return (
-  <div className="w-full px-2 ">
+    <div className="w-full px-2 ">
       <p className="text-mono">{title}</p>
       <div className="bg-white shadow-md my-4 overflow-auto">
         <table className="min-w-max w-full table-auto">
@@ -59,6 +68,9 @@ const ListWidget = ({ title, data, showing, colSize, cellAlignment }) => {
                   item={item}
                   styles={styles}
                   cellAlignment={cellAlignment}
+                  button1={button1}
+                  button2={button2 || null}
+                  setShowList={setShowList}
                 />
               ))
             ) : (

@@ -1,26 +1,40 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 const foundersResponseSchema = new mongoose.Schema({
-  applicantName: { type: String },
+  firstName: { type: String },
+  lastName: { type: String },
   totalScore: { type: Number },
-  answerData:
-    [
-      {
-        question_id: { type: mongoose.Schema.Types.ObjectId, ref: 'FounderForm', required: true },
-        question: { type: String, },
-        rank: { type: String, },
-        category: { type: String, },
-        answer_id: { type: String, },
-        answer_value: { type: String, },
-        score: { type: String, },
-      }
-    ]
-
-});
+  submissionDate: { type: Date, default: Date.now(), required: true },
+  evaluatedOn: { type: Date },
+  status: {
+    type: String,
+    enum: ["New", "Pending", "Approved", "Rejected"],
+    default: "New",
+    required: true,
+  },
+  answerData: [
+    {
+      question_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FounderForm",
+        required: true,
+      },
+      question: { type: String },
+      rank: { type: String },
+      category: { type: String },
+      answer_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FounderForm",
+      },
+      answer_value: { type: String },
+      score: { type: String },
+    },
+  ],
+})
 
 const FoundersFormResponse = mongoose.model(
   "FoundersFormResponse",
   foundersResponseSchema
-);
+)
 
-module.exports = FoundersFormResponse;
+module.exports = FoundersFormResponse

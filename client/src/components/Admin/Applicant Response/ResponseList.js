@@ -12,79 +12,119 @@ import ResponseWidget from "./ResponseWidget"
 
 const ResponseList = () => {
   let history = useHistory()
-  const { view  } = useContext(AdminContext)
-  const { viewButton , viewId, buttonClicked} = useContext(AnswersContext);
+  const { view, views, applicantType } = useContext(AdminContext)
+  const { viewButton, viewId, buttonClicked } = useContext(AnswersContext)
   const [listData, setListData] = useState({ data: [], header: [] })
   const [answerData, setAnswerData] = useState({ data: [], header: [] })
-  viewButton===true && console.log("VIEWID",viewId)
-  
-  useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const result = await axios.get(`/api/form/founder/response`)
+  viewButton === true && console.log("VIEWID", viewId)
 
-          const userData = result.data.map((item => {
-              
-            const questionLocation = item.answerData.find(x => x.question === "City,Country" || x.question === "Location")
-            const questionEmail = item.answerData.find(x => x.question === "email"||x.question === "Email")
-            console.log("item", item)
-            const location = questionLocation.answer_value;
-            const email = questionEmail.answer_value;
-              
-            return { ...item, userLocation: location, userEmail: email }
-             
+  // create copy ?
 
-
-          }))
-
-          
-          console.log(userData)
-           
-          setListData({
-            header: [
-              {
-                title: 'UserName',
-                key: 'applicantName',
-                style: 'py-3 px-6 text-left ',
-              },
-              { title: 'Email', key: 'userEmail', style: 'text-left' },
-              {
-                title: 'Location',
-                key: 'userLocation',
-                style: 'text-left hidden xl:table-cell items-center',
-              },
-              {
-                title: 'Score',
-                key: 'totalScore',
-                style: 'text-left'
-              },
-              { title: 'More Info', key: '-', style: 'text-center' },
-            ],
-            data: userData,
-            colSize: [
-              <colgroup>
-                <col style={{ width: '30vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '10vw' }} />
-                <col style={{ width: '10vw' }} />
-              </colgroup>,
-            ],
-          })
-        } catch (e) {
-          console.log(e)
-        }
+  const getTimeDifference = (DateToCompare) => {
+    const today = Date.now()
+    const compareDate = Date.parse(DateToCompare)
+    let timeDifference = (today - compareDate) / 1000 / 60 / 60
+    console.log(timeDifference)
+    if (timeDifference >= 24) {
+      timeDifference = parseInt((timeDifference /= 24)) + " d ago"
+      timeDifference = parseInt(timeDifference)
+    } else if (timeDifference < 24 && timeDifference > 0.99) {
+      timeDifference = Math.round(timeDifference) + " h ago"
+    } else {
+      timeDifference = parseInt((timeDifference *= 60)) + " m ago"
+      if (timeDifference === "0 m ago") {
+        timeDifference = "now"
+      }
     }
-    if (!viewButton) {
+    return timeDifference
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(
+          `/api/form/founder/response/${applicantType}`
+        )
+
+        const userData = result.data.map((item) => {
+          // Getting first and last name
+          const firstName = item.answerData.find(
+            (x) => x.question === "First name"
+          )?.answer_value
+          const lastName = item.answerData.find(
+            (x) => x.question === "Last name"
+          )?.answer_value
+          const questionLocation = item.answerData.find(
+            (x) => x.question === "City,Country" || x.question === "Location"
+          )
+          const questionEmail = item.answerData.find(
+            (x) => x.question === "email" || x.question === "Email"
+          )
+          console.log("item", item)
+          const location = questionLocation?.answer_value
+          const email = questionEmail?.answer_value
+
+          return {
+            ...item,
+            applicantName: `${firstName} ${lastName}`,
+            userLocation: location,
+            userEmail: email,
+            submitted: getTimeDifference(item.submissionDate),
+          }
+        })
+
+        setListData({
+          header: [
+            {
+              title: "UserName",
+              key: "applicantName",
+              style: "py-3 px-6 text-left ",
+            },
+            {
+              title: "Email",
+              key: "userEmail",
+              style: "hidden md:table-cell text-left",
+            },
+            {
+              title: "Location",
+              key: "userLocation",
+              style: "text-left hidden lg:table-cell items-center",
+            },
+            {
+              title: "Submitted",
+              key: "submitted",
+              style: "text-left hidden md:table-cell items-center",
+            },
+            {
+              title: "Score",
+              key: "totalScore",
+              style: "text-left",
+            },
+            { title: "More Info", key: "-", style: "text-center" },
+          ],
+          data: userData,
+          colSize: [
+            <colgroup>
+              {/* <col style={{ width: "10vw" }} />
+              <col style={{ width: "15vw" }} />
+              <col style={{ width: "15vw" }} />
+
+              <col style={{ width: "10vw" }} /> */}
+            </colgroup>,
+          ],
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    if (!viewButton && applicantType) {
       fetchData()
     }
-   }, [view, viewButton])
-  
-  
-  useEffect(() => {
+  }, [viewButton, applicantType])
 
+  useEffect(() => {
     if (viewButton) {
-      const answerData = viewId.answerData.map(answer => {
+      const answerData = viewId.answerData.map((answer) => {
         console.log("answer", answer)
         return {
           answer_id: answer.answer_id,
@@ -94,76 +134,71 @@ const ResponseList = () => {
           question_type: answer.type,
           question_id: answer._id,
           answer_score: answer.score,
-          answer_rank: answer.rank
-          }
+          answer_rank: answer.rank,
+        }
       })
 
       setAnswerData({
         header: [
           {
-            title: 'Question',
-            key: 'question_value',
-            style: 'py-3 px-6 text-left ',
+            title: "Question",
+            key: "question_value",
+            style: "py-3 px-6 text-left ",
           },
           {
-            title: 'Answer',
-            key: 'answer_value',
-            style: 'text-left'
+            title: "Answer",
+            key: "answer_value",
+            style: "text-left",
           },
           {
-            title: 'Category',
-            key: 'question_category',
-            style: 'text-left hidden xl:table-cell items-center',
+            title: "Category",
+            key: "question_category",
+            style: "text-left hidden xl:table-cell items-center",
           },
           {
-            title: 'Score',
-            key: 'answer_score',
-            style: 'text-left'
+            title: "Score",
+            key: "answer_score",
+            style: "text-left",
           },
           {
-            title: 'Rank',
-            key: 'answer_rank',
-            style: 'text-left'
-          }
+            title: "Rank",
+            key: "answer_rank",
+            style: "text-left",
+          },
         ],
-         data: answerData ,
+        data: answerData,
         colSize: [
           <colgroup>
-            <col style={{ width: '20vw' }} />
-            <col style={{ width: '20vw' }} />
-            <col style={{ width: '10vw' }} />
-            <col style={{ width: '10vw' }} />
-            <col style={{ width: '10vw' }} />
+            <col style={{ width: "20vw" }} />
+            <col style={{ width: "20vw" }} />
+            <col style={{ width: "10vw" }} />
+            <col style={{ width: "10vw" }} />
+            <col style={{ width: "10vw" }} />
           </colgroup>,
         ],
-      })   
-
+      })
     }
- 
   }, [viewId, viewButton])
-  
-  
-  
-   return (
-     
-      <div className="w-full flex flex-col ">
-         <div className=" flex justify-between items-center mx-2">
 
-          <div className= " ">Founders Response</div>
-         {viewButton && <div
-           onClick={() => buttonClicked(!viewButton)}
-           className=" flex justify-center items-center space-around text-lg w-1/2 md:w-auto py-3  px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black"
-         >
-           <ArrowLeftIcon className="w-5 h-5 mr-3 " />
-           Back
-         </div>}
+  return (
+    <div className='w-full flex flex-col '>
+      <div className=' flex justify-between items-center mx-2'>
+        <div className=' '>Founders Response</div>
+        {viewButton && (
+          <div
+            onClick={() => buttonClicked(!viewButton)}
+            className=' flex justify-center items-center space-around text-lg w-1/2 md:w-auto py-3  px-5 text-mono font-bold bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-xs text-white hover:text-black'>
+            <ArrowLeftIcon className='w-5 h-5 mr-3 ' />
+            Back
+          </div>
+        )}
       </div>
-          <ResponseWidget
-            data={viewButton? answerData: listData}
-            // showing={10}
-            colSize={viewButton? answerData.colSize: listData.colSize}
-            cellAlignment={'justify-start'}
-          /> 
+      <ResponseWidget
+        data={viewButton ? answerData : listData}
+        showing={10}
+        colSize={viewButton ? answerData.colSize : listData.colSize}
+        cellAlignment={"justify-start"}
+      />
     </div>
   )
 }
