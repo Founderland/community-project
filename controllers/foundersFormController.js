@@ -140,6 +140,24 @@ const findResponsesByStatus = async (req, res) => {
   }
 }
 
+const updateStatus = async (req, res) => {
+  const { status, id } = req.params
+  try {
+    const result = await FoundersResponse.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true }
+    )
+
+    // console.log(result)
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   addNew,
   findAll,
@@ -148,4 +166,5 @@ module.exports = {
   editQuestion,
   deleteQuestion,
   findResponsesByStatus,
+  updateStatus,
 }

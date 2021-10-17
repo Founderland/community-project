@@ -2,6 +2,7 @@ const formRouter = require("express").Router()
 const foundersForm = require("../controllers/foundersFormController")
 const investorsForm = require("../controllers/investorsFormController")
 const alliesForm = require("../controllers/alliesFormController")
+const FounderForm = require("../models/FoundersForm")
 
 // FOUNDERS
 
@@ -21,6 +22,8 @@ formRouter.get("/founder/response", foundersForm.findAllResponse)
 
 //GET APPLICANTS RESPONSE BY STATUS ["New", "Pending", "Approved", "Rejected"]
 formRouter.get("/founder/response/:status", foundersForm.findResponsesByStatus)
+
+formRouter.put("/founder/response/:status/:id", foundersForm.updateStatus)
 
 // INVESTORS
 
