@@ -6,7 +6,7 @@ import AnswersProvider from "./contexts/AnswersProvider"
 import Homepage from "./components/Homepage.js"
 import Admin from "./components/Admin/Admin"
 // import FounderResponse from "./components/Forms/FounderResponse"
-import ResponseList from "./components/Admin/Applicant Response/ResponseList"
+// import ResponseList from "./components/Admin/Applicant Response/ResponseList"
 import Community from "./components/Community/Community"
 import SignUp from "./components/Community/SignUp"
 
@@ -28,9 +28,8 @@ function App() {
         <Route exact path="/thankyou" component={Thankyou} />
         <Route exact path="/admin" component={Admin} />
         {/* <Route exact path="/foundersrespone" component={FounderResponse} /> */}
-        <Route exact path="/foundersrespone" component={ResponseList} />
+        {/* <Route exact path="/foundersrespone" component={ResponseList} /> */}
         {/* <Route exact path="/admin/:memberType/addQuestion" component={AddQuestionForm } /> */}
-        
       </Router>
     </AnswersProvider>
   )
