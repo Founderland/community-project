@@ -70,8 +70,9 @@ function AnswersProvider({ children }) {
       }
       // const total=answers.map(item=>parseInt(item.score)).reduce((prev,curr)=>prev+curr,0)
       console.log("total", total)
+      console.log("total", answers)
       axios
-        .post("/api/form/founder/response", {
+        .post("/api/founder/response", {
           firstName: answers[0].answer_value,
           lastName: answers[1].answer_value,
           totalScore: total,
@@ -104,6 +105,7 @@ function AnswersProvider({ children }) {
         viewButton: viewButton,
         viewIdHandler: viewIdHandler,
         viewId: viewId,
+        setViewButton:setViewButton
       }}>
       {children}
     </AnswersContext.Provider>

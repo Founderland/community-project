@@ -1,7 +1,6 @@
 import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline"
 import { useContext } from "react"
-import { AnswersContext } from "../../contexts/AnswersProvider"
-// import TestFile from "./TestFile";
+import { AnswersContext } from "../../../contexts/AnswersProvider"
 
 const ResponseCells = ({ data, item, styles, cellAlignment }) => {
   const { buttonClicked, viewIdHandler } = useContext(AnswersContext)
