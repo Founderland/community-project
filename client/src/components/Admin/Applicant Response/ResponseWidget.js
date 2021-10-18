@@ -20,6 +20,7 @@ const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
   const [pageCount, setPageCount] = useState(0)
+
   const handlePageClick = (e) => {
     const selectedPage = e.selected
     setOffset(selectedPage)
