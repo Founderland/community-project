@@ -19,9 +19,11 @@ const AdminHeader = () => {
         </button>
         <div>
           <h1 className="text-lg sm:text-2xl font-medium text-mono text-gray-800">
-            {views[view].categories
+            {!views[view].categories
+              ? views[view].name
+              : category !== "id"
               ? views[view].categories[category].name
-              : views[view].name}
+              : category}
           </h1>
         </div>
       </div>

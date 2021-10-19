@@ -4,14 +4,14 @@ import QuestionsList from "./QuestionsList"
 import Dashboard from "./Dashboard"
 import Ressources from "./Ressources"
 import Settings from "./Settings"
-import ResponseList from "./Applicant Response/ResponseList"
+import Applicants from "./Applicants/Applicants"
 import Members from "./Members"
 import { useParams } from "react-router"
 
 const Content = () => {
-  let { view, category } = useParams()
+  let { view } = useParams()
 
-  const { views, selectTab, setMemberType, setApplicantType } =
+  const { views, selectTab, setMemberType, setStatus } =
     useContext(AdminContext)
   //SCROLL BACK UP ON MENU CHANGE
   useEffect(() => {
@@ -23,18 +23,18 @@ const Content = () => {
       setMemberType(views[view].name.toLowerCase().split(" ")[0])
     }
     if (views[view].name.includes("Applicants")) {
-      setApplicantType(views[view].name.split(" ")[0])
+      setStatus(views[view].name.split(" ")[0])
     }
-  }, [view, views, setApplicantType, setMemberType])
+  }, [view])
   return (
     <main className="overflow-x-hidden">
       <div className="items-center mx-auto md:px-4 py-2">
         <div className="flex justify-center h-screen">
           {view === "dashboard" && <Dashboard />}
-          {view === "ressources" && <Ressources />}
+          {view === "ressources" && <Ressources tab={selectTab} />}
           {view === "members" && <Members />}
           {view.includes("Form") && <QuestionsList />}
-          {view === "applicants" && <ResponseList applicantType={category} />}
+          {view === "applicants" && <Applicants tab={selectTab} />}
           {view === "settings" && <Settings tab={selectTab} />}
         </div>
       </div>

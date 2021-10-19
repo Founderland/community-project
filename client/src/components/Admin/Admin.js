@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, useRouteMatch } from "react-router-dom"
 import Login from "./Login"
 import Main from "./Main"
 import InfoModal from "../InfoModal"
@@ -25,7 +25,7 @@ const views = {
 }
 const Admin = () => {
   const history = useHistory()
-
+  const path = useRouteMatch()
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
@@ -43,7 +43,7 @@ const Admin = () => {
   ])
   const [selectedItem, setSelectedItem] = useState(null)
   const [memberType, setMemberType] = useState("")
-  const [applicantType, setApplicantType] = useState("")
+  const [status, setStatus] = useState("")
 
   useEffect(() => {
     if (localStorage.authToken) {
@@ -57,7 +57,7 @@ const Admin = () => {
           avatar: decode.avatar,
           role: decode.role,
         })
-        history.push("/admin/dashboard")
+        if (path === "/admin") history.push("/admin/dashboard")
       }
     }
   }, [])
@@ -92,8 +92,8 @@ const Admin = () => {
         setSelectedItem,
         memberType,
         setMemberType,
-        applicantType,
-        setApplicantType,
+        status,
+        setStatus,
       }}
     >
       <InfoModal />

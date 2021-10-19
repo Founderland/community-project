@@ -76,6 +76,7 @@ function AnswersProvider({ children }) {
           firstName: answers[0].answer_value,
           lastName: answers[1].answer_value,
           totalScore: total,
+          role: "founder",
           answerData: answers,
         })
         //axios.post("/api/form/founder/response", { data: JSON.stringify(answers) })
@@ -105,8 +106,9 @@ function AnswersProvider({ children }) {
         viewButton: viewButton,
         viewIdHandler: viewIdHandler,
         viewId: viewId,
-        setViewButton:setViewButton
-      }}>
+        setViewButton: setViewButton,
+      }}
+    >
       {children}
     </AnswersContext.Provider>
   )

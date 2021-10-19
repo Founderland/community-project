@@ -1,14 +1,11 @@
-const founderRouter = require("./responses.routes")
-const investorRouter = require("./investor.routes")
+const responseRouter = require("./responses.routes")
 const formRouter = require("./form.routes")
 const userRouter = require("./users.routes")
 const authRouter = require("./auth.routes")
 
 const setupRoutes = (app) => {
   //FOUNDERS
-  app.use("/api/founder", founderRouter)
-  //INVESTORS
-  // app.use("/api/investor", investorRouter)
+  app.use("/api/founder", responseRouter)
   //USERS
   app.use("/api/users", userRouter)
   // FOUNDER-FORM

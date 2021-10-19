@@ -1,5 +1,5 @@
 // const FounderApplicant = require('../models/FounderApplicant')
-const FoundersResponse = require("../models/FoundersFormResponse")
+const Response = require("../models/Response")
 
 // Add Founders Response
 
@@ -7,7 +7,7 @@ const addResponse = async (req, res) => {
   const { firstName, lastName, totalScore, answerData } = req.body
   try {
     //  data.map(async (item) => {
-    const newFoundersResponse = await FoundersResponse.create({
+    const newResponse = await Response.create({
       firstName,
       lastName,
       totalScore,
@@ -20,7 +20,7 @@ const addResponse = async (req, res) => {
     //   // score : `${item.score}`
     // }
 
-    if (!newFoundersResponse) {
+    if (!newResponse) {
       await Promise.reject("founder response error") //reject promise with error
     }
     // })
@@ -40,7 +40,7 @@ const addResponse = async (req, res) => {
 
 const findAllResponse = async (req, res) => {
   try {
-    const result = await FoundersResponse.find({})
+    const result = await Response.find({})
     // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
 
     // console.log(result)
@@ -54,7 +54,7 @@ const findAllResponse = async (req, res) => {
 const updateStatus = async (req, res) => {
   const { status, id } = req.params
   try {
-    const result = await FoundersResponse.findByIdAndUpdate(
+    const result = await Response.findByIdAndUpdate(
       id,
       {
         status: status,
@@ -71,15 +71,26 @@ const updateStatus = async (req, res) => {
 }
 
 const findResponsesByStatus = async (req, res) => {
-  const { status } = req.params
+  const { status, role } = req.params
+  console.log(status, role)
   try {
-    const result = await FoundersResponse.find({ status: status }).sort({
-      totalScore: "desc", //order responses by score
-    })
-    // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
+    if (status && role) {
+      const result = await Response.find({ status, role }).sort({
+        totalScore: "desc", //order responses by score
+      })
+      // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
 
-    // console.log(result)
-    res.status(200).json(result)
+      // console.log(result)
+      res.status(200).json(result)
+    } else {
+      const result = await Response.find({ status }).sort({
+        totalScore: "desc", //order responses by score
+      })
+      // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
+
+      // console.log(result)
+      res.status(200).json(result)
+    }
   } catch (error) {
     console.log(error)
   }
@@ -88,7 +99,7 @@ const findResponsesByStatus = async (req, res) => {
 const editResponse = async (req, res) => {
   const { id, score } = req.params
   try {
-    const updated = await FoundersResponse.findByIdAndUpdate(id, {
+    const updated = await Response.findByIdAndUpdate(id, {
       totalScore: score,
     })
     if (!updated) await Promise.reject("NOT_FOUND")
