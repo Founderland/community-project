@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import AdminContext from "../../contexts/Admin"
+import AdminContext from "../../../contexts/Admin"
 
 const Cells = ({
   data,

@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useState } from "react"
 import { Tab } from "@headlessui/react"
-
 import ApplicantsList from "./ApplicantsList"
 
 const Applicants = ({ status, tab }) => {

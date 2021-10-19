@@ -1,6 +1,6 @@
 import { Fragment, useContext } from "react"
 import { Dialog, Transition } from "@headlessui/react"
-import AdminContext from "../contexts/Admin"
+import AdminContext from "../../../contexts/Admin"
 import InfoModal from "./InfoModal"
 
 const ComponentModal = ({ children }) => {

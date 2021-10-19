@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useHistory, useRouteMatch } from "react-router-dom"
 import Login from "./Login"
 import Main from "./Main"
-import InfoModal from "../InfoModal"
+import InfoModal from "./Widgets/InfoModal"
 import AdminContext from "../../contexts/Admin"
 import jwt from "jsonwebtoken"
 

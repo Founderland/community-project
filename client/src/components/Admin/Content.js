@@ -1,11 +1,10 @@
 import { useContext, useEffect } from "react"
 import AdminContext from "../../contexts/Admin"
-import QuestionsList from "./QuestionsList"
 import Dashboard from "./Dashboard"
-import Ressources from "./Ressources"
-import Settings from "./Settings"
+import Ressources from "./Ressources/Ressources"
+import Settings from "./Settings/Settings"
 import Applicants from "./Applicants/Applicants"
-import Members from "./Members"
+import Members from "./Members/Members"
 import { useParams } from "react-router"
 
 const Content = () => {
@@ -33,7 +32,6 @@ const Content = () => {
           {view === "dashboard" && <Dashboard />}
           {view === "ressources" && <Ressources tab={selectTab} />}
           {view === "members" && <Members />}
-          {view.includes("Form") && <QuestionsList />}
           {view === "applicants" && <Applicants tab={selectTab} />}
           {view === "settings" && <Settings tab={selectTab} />}
         </div>

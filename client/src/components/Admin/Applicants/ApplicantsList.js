@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext, useMemo } from "react"
 import { useRef } from "react"
-
 import { useParams } from "react-router-dom"
 import AdminContext from "../../../contexts/Admin"
 import ResponseWidget from "./ResponseWidget"
-import Loading from "../../Loading"
+import Loading from "../Widgets/Loading"
 import axios from "axios"
 import moment from "moment"
 import { AnswersContext } from "../../../contexts/AnswersProvider"

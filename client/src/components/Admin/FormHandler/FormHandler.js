@@ -3,7 +3,7 @@ import axios from "axios"
 import AnswerSection from "./AnswerSection"
 import FormPreview from "./FormPreview"
 import { EyeIcon, TrashIcon } from "@heroicons/react/outline"
-import ListOption from "../ListOption"
+import ListOption from "../Widgets/ListOption"
 import AdminContext from "../../../contexts/Admin"
 import SubmitResponse from "./SubmitResponse"
 
