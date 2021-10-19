@@ -3,7 +3,7 @@ import Content from "./Content"
 import Header from "./Header"
 import { Switch, Route, useRouteMatch } from "react-router"
 
-const Main = ({ setLogged }) => {
+const Main = () => {
   const { path } = useRouteMatch()
   return (
     <Switch>

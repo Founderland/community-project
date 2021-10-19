@@ -5,6 +5,7 @@ import Main from "./Main"
 import InfoModal from "../InfoModal"
 import AdminContext from "../../contexts/Admin"
 import jwt from "jsonwebtoken"
+import { useRouteMatch } from "react-router"
 
 const views = {
   dashboard: { icon: "home", name: "Dashboard" },
@@ -25,6 +26,8 @@ const views = {
 }
 const Admin = () => {
   const history = useHistory()
+  const { path } = useRouteMatch()
+
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
@@ -56,6 +59,7 @@ const Admin = () => {
           avatar: decode.avatar,
           role: decode.role,
         })
+        history.push("/admin/dashboard")
       }
     }
   }, [])
@@ -65,6 +69,7 @@ const Admin = () => {
     setUser(null)
     history.push("/admin")
   }
+
   const changeView = (view) => {
     setView(view)
     setMenuToggle(!menuToggle)

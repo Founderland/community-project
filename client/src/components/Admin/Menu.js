@@ -38,7 +38,6 @@ const Menu = () => {
     useContext(AdminContext)
 
   const getCategories = (view) => {
-    console.log(category)
     return Object.keys(views[view].categories).map((key) => (
       <Link
         to={`/admin/${view}/${key}`}
