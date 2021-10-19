@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useContext, useState } from "react"
+import { useHistory } from "react-router-dom"
 import jwt from "jsonwebtoken"
 import { ReactComponent as LogoLines } from "../../assets/line.svg"
 import { ReactComponent as SmallLogo } from "../../assets/small.svg"
@@ -8,6 +9,7 @@ import AdminContext from "../../contexts/Admin"
 const loginURL = "/api/auth/login"
 
 const AdminLogin = () => {
+  const history = useHistory()
   const { setUser } = useContext(AdminContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -36,6 +38,7 @@ const AdminLogin = () => {
             avatar: decode.avatar,
             role: decode.role,
           })
+          history.push("/admin/dashboard")
         } else {
           throw new Error("401")
         }

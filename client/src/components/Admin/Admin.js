@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import Login from "./Login"
 import Main from "./Main"
 import InfoModal from "../InfoModal"
@@ -23,6 +24,7 @@ const views = {
   settings: { icon: "set", name: "Settings" },
 }
 const Admin = () => {
+  const history = useHistory()
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
@@ -61,6 +63,7 @@ const Admin = () => {
   const logout = () => {
     localStorage.authToken = ""
     setUser(null)
+    history.push("/admin")
   }
   const changeView = (view) => {
     setView(view)
