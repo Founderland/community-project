@@ -1,1 +1,0 @@
-//To manipulate allies response

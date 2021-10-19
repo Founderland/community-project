@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const foundersResponseSchema = new mongoose.Schema({
+const responseSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   totalScore: { type: Number },
@@ -8,8 +8,14 @@ const foundersResponseSchema = new mongoose.Schema({
   evaluatedOn: { type: Date },
   status: {
     type: String,
-    enum: ["New", "Pending", "Approved", "Rejected"],
-    default: "New",
+    enum: ["new", "pending", "approved", "rejected"],
+    default: "new",
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ["founder", "investor", "ally", "newsletter"],
+    default: "founder",
     required: true,
   },
   answerData: [
@@ -32,9 +38,6 @@ const foundersResponseSchema = new mongoose.Schema({
   ],
 })
 
-const FoundersFormResponse = mongoose.model(
-  "FoundersFormResponse",
-  foundersResponseSchema
-)
+const Response = mongoose.model("Response", responseSchema)
 
-module.exports = FoundersFormResponse
+module.exports = Response

@@ -15,8 +15,6 @@ formRouter.put("/founder/edit", foundersForm.editQuestion)
 //DELETE QUESTION
 formRouter.delete("/founder/delete/:question_id", foundersForm.deleteQuestion)
 
-
-
 // INVESTORS
 
 //ADD QUESTIONS TO FORM

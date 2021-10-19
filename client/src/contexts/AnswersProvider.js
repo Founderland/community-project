@@ -72,10 +72,11 @@ function AnswersProvider({ children }) {
       console.log("total", total)
       console.log("total", answers)
       axios
-        .post("/api/founder/response", {
+        .post("/api/applicants/response", {
           firstName: answers[0].answer_value,
           lastName: answers[1].answer_value,
           totalScore: total,
+          role: "founder",
           answerData: answers,
         })
         //axios.post("/api/form/founder/response", { data: JSON.stringify(answers) })
@@ -105,8 +106,9 @@ function AnswersProvider({ children }) {
         viewButton: viewButton,
         viewIdHandler: viewIdHandler,
         viewId: viewId,
-        setViewButton:setViewButton
-      }}>
+        setViewButton: setViewButton,
+      }}
+    >
       {children}
     </AnswersContext.Provider>
   )

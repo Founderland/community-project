@@ -1,6 +1,6 @@
 const { response } = require("express")
 const FoundersForm = require("../models/FoundersForm")
-const FoundersResponse = require("../models/FoundersFormResponse")
+const Response = require("../models/Response")
 
 const addNew = async (req, res) => {
   const { category, question, rank, type, answers, categoryPage, mandatory } =
@@ -75,11 +75,9 @@ const deleteQuestion = async (req, res) => {
   }
 }
 
-
 module.exports = {
   addNew,
   findAll,
   editQuestion,
   deleteQuestion,
-
 }

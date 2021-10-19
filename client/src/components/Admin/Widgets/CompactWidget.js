@@ -1,4 +1,4 @@
-import Loading from "../Loading"
+import Loading from "./Loading"
 
 const CompactWidget = ({ data, loading }) => {
   let style = "text-green-500"

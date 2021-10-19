@@ -1,14 +1,16 @@
 import { useContext, useEffect } from "react"
 import AdminContext from "../../contexts/Admin"
-import QuestionsList from "./QuestionsList"
 import Dashboard from "./Dashboard"
-import Profile from "./Profile"
-import Settings from "./Settings"
-import ResponseList from "./Applicant Response/ResponseList"
-import Members from "./Members"
+import Ressources from "./Ressources/Ressources"
+import Settings from "./Settings/Settings"
+import Applicants from "./Applicants/Applicants"
+import Members from "./Members/Members"
+import { useParams } from "react-router"
 
 const Content = () => {
-  const { view, views, setMemberType, setApplicantType } =
+  let { view } = useParams()
+
+  const { views, selectTab, setMemberType, setStatus } =
     useContext(AdminContext)
   //SCROLL BACK UP ON MENU CHANGE
   useEffect(() => {
@@ -20,22 +22,16 @@ const Content = () => {
       setMemberType(views[view].name.toLowerCase().split(" ")[0])
     }
     if (views[view].name.includes("Applicants")) {
-      setApplicantType(views[view].name.split(" ")[0])
+      setStatus(views[view].name.split(" ")[0])
     }
-  }, [view, views, setApplicantType, setMemberType])
-
+  }, [view])
   return (
-    <main className="overflow-x-hidden">
-      <div className="items-center mx-auto md:px-4 py-2">
-        <div className="flex justify-center h-screen">
-          {views[view].name === "Dashboard" && <Dashboard />}
-          {views[view].name === "Members" && <Members />}
-          {views[view].name.includes("Form") && <QuestionsList />}
-          {views[view].name.includes("Applicants") && <ResponseList />}
-          {views[view].name === "Profile" && <Profile />}
-          {views[view].name === "Settings" && <Settings />}
-        </div>
-      </div>
+    <main className="overflow-x-hidden w-full h-screen items-center mx-auto md:px-4 py-2 justify-center">
+      {view === "dashboard" && <Dashboard />}
+      {view === "ressources" && <Ressources tab={selectTab} />}
+      {view === "members" && <Members />}
+      {view === "applicants" && <Applicants tab={selectTab} />}
+      {view === "settings" && <Settings tab={selectTab} />}
     </main>
   )
 }

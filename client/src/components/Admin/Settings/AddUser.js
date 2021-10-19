@@ -2,8 +2,8 @@ import { Popover } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import { useState, useContext } from "react"
-import AdminContext from "../../contexts/Admin"
-import ListOption from "./ListOption"
+import AdminContext from "../../../contexts/Admin"
+import ListOption from "../Widgets/ListOption"
 
 const avatarColors = [
   "bg-gradient-to-t from-red-300 to-red-500 bg-cover",

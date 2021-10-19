@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState, useContext } from "react"
-import AdminContext from "../../contexts/Admin"
-import ListOption from "./ListOption"
+import AdminContext from "../../../contexts/Admin"
+import ListOption from "../Widgets/ListOption"
 import { Switch } from "@headlessui/react"
 import { CheckIcon } from "@heroicons/react/outline"
 
