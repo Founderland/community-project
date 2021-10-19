@@ -6,7 +6,7 @@ import ProfileMenu from "./ProfileMenu"
 import { useParams } from "react-router"
 
 const AdminHeader = () => {
-  let { view } = useParams()
+  let { view, category } = useParams()
   const { views, setMenuToggle } = useContext(AdminContext)
   return (
     <div className="flex justify-between items-center p-6">
@@ -18,8 +18,10 @@ const AdminHeader = () => {
           <MenuIcon className="h-6 w-6" />
         </button>
         <div>
-          <h1 className="text-sm sm:text-2xl font-medium text-mono text-gray-800">
-            {views[view].name}
+          <h1 className="text-lg sm:text-2xl font-medium text-mono text-gray-800">
+            {views[view].categories
+              ? views[view].categories[category].name
+              : views[view].name}
           </h1>
         </div>
       </div>

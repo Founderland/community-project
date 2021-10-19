@@ -7,6 +7,7 @@ import ListWidget from "./ListWidget"
 import Loading from "../Loading"
 import ComponentModal from "../ComponentModal"
 import AddUser from "./AddUser"
+import Profile from "./Profile"
 import moment from "moment"
 
 const usersAPI = "/api/users/all"
@@ -132,7 +133,7 @@ const Settings = ({ tab }) => {
           ) : (
             ""
           )}
-          <Tab.Panel>{!loading && "User Profile"}</Tab.Panel>
+          <Tab.Panel>{!loading && <Profile />}</Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
       {/* Data to display */}
