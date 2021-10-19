@@ -2,11 +2,27 @@ import { useState, useEffect, useContext, useMemo } from "react"
 import { useRef } from "react"
 import { useParams } from "react-router-dom"
 import AdminContext from "../../../contexts/Admin"
-import ResponseWidget from "./ResponseWidget"
 import Loading from "../Widgets/Loading"
 import axios from "axios"
 import moment from "moment"
 import { AnswersContext } from "../../../contexts/AnswersProvider"
+import ListWidget from "../Widgets/ListWidget"
+const styles = {
+  new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
+  pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
+  reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
+  founder:
+    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
+  investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
+  ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  admin: "bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  disabledDiv: "group hover:bg-gray-300",
+  disabledInput: "bg-gray-200 group-hover:bg-gray-300 placeholder-gray-500",
+  enabledDiv: "bg-blue-200 ",
+  enabledInput: "bg-blue-200 placeholder-gray-500",
+}
 
 const ApplicantsList = ({ status, role, reload }) => {
   const [data, setData] = useState([])
@@ -42,12 +58,6 @@ const ApplicantsList = ({ status, role, reload }) => {
     return timeDifference
   }
   const [listData, setListData] = useState({ data: [], header: [] })
-  const styles = {
-    disabledDiv: "group hover:bg-gray-300",
-    disabledInput: "bg-gray-200 group-hover:bg-gray-300 placeholder-gray-500",
-    enabledDiv: "bg-blue-200 ",
-    enabledInput: "bg-blue-200 placeholder-gray-500",
-  }
 
   //FETCH DATA
   useEffect(() => {
@@ -121,7 +131,7 @@ const ApplicantsList = ({ status, role, reload }) => {
               key: "totalScore",
               style: "text-left",
             },
-            { title: "More Info", key: "-", style: "text-center" },
+            { title: "", key: "-", style: "text-center" },
           ],
           data: userData,
           colSize: [<colgroup></colgroup>],
@@ -137,13 +147,12 @@ const ApplicantsList = ({ status, role, reload }) => {
   return loading ? (
     <Loading />
   ) : (
-    <ResponseWidget
+    <ListWidget
       title={""}
       data={listData}
       showing={10}
       colSize={listData.colSize}
-      cellAlignment={"justify-center"}
-      style={styles}
+      styles={styles}
     />
   )
 }

@@ -80,13 +80,7 @@ const MembersList = ({ role, reload }) => {
   return loading ? (
     <Loading />
   ) : (
-    <ListWidget
-      title=""
-      data={data}
-      styles={styles}
-      showing={5}
-      cellAlignment={"justify-start"}
-    />
+    <ListWidget title="" data={data} styles={styles} showing={5} />
   )
 }
 

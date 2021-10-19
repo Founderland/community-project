@@ -123,8 +123,7 @@ const AdminDashboard = () => {
           data={listData}
           showing={5}
           styles={styles}
-          link="admin/applicants/id/"
-          cellAlignment={"justify-center"}
+          link="applicants/id/"
         />
       </div>
       <div className="md:flex w-full justify-around">

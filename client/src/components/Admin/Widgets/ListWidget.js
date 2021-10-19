@@ -3,15 +3,7 @@ import { useState, useEffect } from "react"
 import RowsWidget from "./RowsWidget"
 import Pagination from "./Pagination"
 
-const ListWidget = ({
-  title,
-  data,
-  styles,
-  showing,
-  colSize,
-  cellAlignment,
-  link,
-}) => {
+const ListWidget = ({ title, data, styles, showing, colSize, link }) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
@@ -50,7 +42,6 @@ const ListWidget = ({
                   item={item}
                   styles={styles}
                   link={link}
-                  cellAlignment={cellAlignment}
                 />
               ))
             ) : (
