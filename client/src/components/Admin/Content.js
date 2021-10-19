@@ -2,14 +2,16 @@ import { useContext, useEffect } from "react"
 import AdminContext from "../../contexts/Admin"
 import QuestionsList from "./QuestionsList"
 import Dashboard from "./Dashboard"
-import Profile from "./Profile"
+import Ressources from "./Ressources"
 import Settings from "./Settings"
 import ResponseList from "./Applicant Response/ResponseList"
 import Members from "./Members"
+import { useParams } from "react-router"
 
 const Content = () => {
-  const { view, views, setMemberType, setApplicantType } =
-    useContext(AdminContext)
+  let { view, category, id } = useParams()
+
+  const { views, setMemberType, setApplicantType } = useContext(AdminContext)
   //SCROLL BACK UP ON MENU CHANGE
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -23,17 +25,17 @@ const Content = () => {
       setApplicantType(views[view].name.split(" ")[0])
     }
   }, [view, views, setApplicantType, setMemberType])
-
+  console.log(view, category, id)
   return (
     <main className="overflow-x-hidden">
       <div className="items-center mx-auto md:px-4 py-2">
         <div className="flex justify-center h-screen">
-          {views[view].name === "Dashboard" && <Dashboard />}
-          {views[view].name === "Members" && <Members />}
-          {views[view].name.includes("Form") && <QuestionsList />}
-          {views[view].name.includes("Applicants") && <ResponseList />}
-          {views[view].name === "Profile" && <Profile />}
-          {views[view].name === "Settings" && <Settings />}
+          {view === "dashboard" && <Dashboard />}
+          {view === "ressources" && <Ressources />}
+          {view === "members" && <Members />}
+          {view.includes("Form") && <QuestionsList />}
+          {view.includes("Applicants") && <ResponseList />}
+          {view === "settings" && <Settings />}
         </div>
       </div>
     </main>

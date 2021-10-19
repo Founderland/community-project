@@ -26,7 +26,7 @@ function App() {
         <Route exact path="/signup/:token" component={SignUp} />
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
-        <Route exact path="/admin" component={Admin} />
+        <Route path="/admin" component={Admin} />
         {/* <Route exact path="/foundersrespone" component={FounderResponse} /> */}
         {/* <Route exact path="/foundersrespone" component={ResponseList} /> */}
         {/* <Route exact path="/admin/:memberType/addQuestion" component={AddQuestionForm } /> */}

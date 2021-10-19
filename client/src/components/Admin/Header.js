@@ -3,9 +3,11 @@ import { useContext } from "react"
 import AdminContext from "../../contexts/Admin"
 import Notifications from "./Notifications"
 import ProfileMenu from "./ProfileMenu"
+import { useParams } from "react-router"
 
 const AdminHeader = () => {
-  const { view, views, setMenuToggle } = useContext(AdminContext)
+  let { view } = useParams()
+  const { views, setMenuToggle } = useContext(AdminContext)
   return (
     <div className="flex justify-between items-center p-6">
       <div className="flex items-center space-x-4 lg:space-x-0">

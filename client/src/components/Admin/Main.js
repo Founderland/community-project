@@ -1,31 +1,24 @@
-import { useContext } from "react"
 import Menu from "./Menu"
 import Content from "./Content"
 import Header from "./Header"
-import AdminContext from "../../contexts/Admin"
+import { Switch, Route, useRouteMatch } from "react-router"
 
 const Main = ({ setLogged }) => {
-  const { menuToggle, setMenuToggle } = useContext(AdminContext)
-
+  const { path } = useRouteMatch()
   return (
-    <div>
-      <div>
-        <div className="flex h-screen font-roboto">
-          {/* Dark background when mobile menu showing */}
-          <div
-            className={`${
-              menuToggle ? "block " : "hidden "
-            }fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden`}
-            onClick={() => setMenuToggle(false)}
-          ></div>
-          <Menu />
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <Header />
-            <Content />
+    <Switch>
+      <Route path={`${path}/:view/:category?/:id?`}>
+        <div>
+          <div className="flex h-screen font-roboto">
+            <Menu />
+            <div className="flex-1 flex flex-col overflow-hidden">
+              <Header />
+              <Content />
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Route>
+    </Switch>
   )
 }
 
