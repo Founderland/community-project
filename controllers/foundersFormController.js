@@ -75,11 +75,9 @@ const deleteQuestion = async (req, res) => {
   }
 }
 
-
 module.exports = {
   addNew,
   findAll,
   editQuestion,
   deleteQuestion,
-
 }

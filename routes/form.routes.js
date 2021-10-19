@@ -3,6 +3,7 @@ const foundersForm = require("../controllers/foundersFormController")
 
 const investorsForm = require("../controllers/investorsFormController")
 const alliesForm = require("../controllers/alliesFormController")
+const FounderForm = require("../models/FoundersForm")
 
 // FOUNDERS
 
@@ -16,6 +17,8 @@ formRouter.put("/founder/edit", foundersForm.editQuestion)
 formRouter.delete("/founder/delete/:question_id", foundersForm.deleteQuestion)
 
 
+
+formRouter.put("/founder/response/:status/:id", foundersForm.updateStatus)
 
 // INVESTORS
 
