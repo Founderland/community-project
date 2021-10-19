@@ -41,6 +41,17 @@ const findAll = async (req, res) => {
   }
 }
 
+const findOne = async (req, res) => {
+  const { id } = req.params
+  try {
+    const result = await FoundersForm.findOne({ _id: id })
+    res.status(200).json(result)
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({ message: "Sorry, something went wrong" })
+  }
+}
+
 // Edit existing question + answer
 const editQuestion = async (req, res) => {
   const { _id: question_id } = req.body
@@ -78,6 +89,7 @@ const deleteQuestion = async (req, res) => {
 module.exports = {
   addNew,
   findAll,
+  findOne,
   editQuestion,
   deleteQuestion,
 }

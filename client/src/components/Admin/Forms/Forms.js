@@ -1,23 +1,27 @@
-import { useParams } from "react-router-dom"
 import { useState, useContext } from "react"
+import { useHistory, useParams } from "react-router"
 import { Tab } from "@headlessui/react"
-import ApplicantsList from "./ApplicantsList"
-import Application from "./Application"
+import { PlusIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
+import Question from "./Question"
+import FormsList from "./FormsList"
 
-const Applicants = ({ status }) => {
-  const [reload, setReload] = useState(0)
-  const { selectedTab, setSelectedTab } = useContext(AdminContext)
+const Forms = () => {
+  const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const history = useHistory()
   const { id } = useParams()
+  const [task, setTask] = useState(null)
   const classNames = (...classes) => {
     return classes.filter(Boolean).join(" ")
   }
-  let { category } = useParams()
-  console.log(selectedTab)
+  const handleTask = (task) => {
+    setTask(task)
+    history.push("forms/id/new")
+  }
   return (
     <div className="w-full flex flex-col ">
       {id ? (
-        <Application />
+        <Question task={task} />
       ) : (
         <Tab.Group defaultIndex={selectedTab}>
           <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">
@@ -31,7 +35,7 @@ const Applicants = ({ status }) => {
                 )
               }
             >
-              <p onClick={() => setSelectedTab(1)}>Founders</p>
+              <p onClick={() => setSelectedTab(0)}>Founders</p>
             </Tab>
             <Tab
               className={({ selected }) =>
@@ -55,27 +59,46 @@ const Applicants = ({ status }) => {
                 )
               }
             >
-              <p onClick={() => setSelectedTab(1)}> Allies</p>
+              <p onClick={() => setSelectedTab(2)}>Allies</p>
             </Tab>
           </Tab.List>
           <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
           <Tab.Panels className="mt-6 bg-white outline-none">
             <Tab.Panel className="p-3 outline-none ">
-              <ApplicantsList
-                status={category}
-                role="founder"
-                reload={reload}
-              />
+              <div className="w-full px-4 outline-none">
+                <FormsList role="founder" reload={reload} />
+                <button
+                  className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                  onClick={() => handleTask("founder")}
+                >
+                  <PlusIcon className="h-5 w-5" />
+                  <p className="text-mono text-sm">Add new</p>
+                </button>
+              </div>
             </Tab.Panel>
             <Tab.Panel className="p-3 outline-none ">
-              <ApplicantsList
-                status={category}
-                role="investor"
-                reload={reload}
-              />
+              <div className="w-full px-4 outline-none">
+                <FormsList role="investor" reload={reload} />
+                <button
+                  className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                  onClick={() => handleTask("investor")}
+                >
+                  <PlusIcon className="h-5 w-5" />
+                  <p className="text-mono text-sm">Add new</p>
+                </button>
+              </div>
             </Tab.Panel>
             <Tab.Panel className="p-3 outline-none ">
-              <ApplicantsList status={category} role="ally" reload={reload} />
+              <div className="w-full px-4 outline-none">
+                <FormsList role="ally" reload={reload} />
+                <button
+                  className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                  onClick={() => handleTask("ally")}
+                >
+                  <PlusIcon className="h-5 w-5" />
+                  <p className="text-mono text-sm">Add new</p>
+                </button>
+              </div>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
@@ -84,4 +107,4 @@ const Applicants = ({ status }) => {
   )
 }
 
-export default Applicants
+export default Forms

@@ -29,7 +29,7 @@ const Admin = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
-  const [selectTab, setSelectTab] = useState(0)
+  const [selectedTab, setSelectedTab] = useState(0)
   const [modalMessage, setModalMessage] = useState({
     icon: "",
     title: "",
@@ -76,8 +76,8 @@ const Admin = () => {
         setUser,
         setMenuToggle,
         views,
-        selectTab,
-        setSelectTab,
+        selectedTab,
+        setSelectedTab,
         modalMessage,
         setModalMessage,
         iModal,

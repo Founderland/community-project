@@ -5,7 +5,7 @@ import AdminContext from "../../contexts/Admin"
 import { useHistory } from "react-router"
 
 const ProfileMenu = () => {
-  const { user, setSelectTab, logout } = useContext(AdminContext)
+  const { user, setSelectedTab, logout } = useContext(AdminContext)
   const history = useHistory()
   const avatarInitials = () => {
     let initials =
@@ -13,7 +13,7 @@ const ProfileMenu = () => {
     return initials
   }
   const goToProfile = () => {
-    setSelectTab(1)
+    setSelectedTab(1)
     history.push("/admin/settings")
   }
   return (
