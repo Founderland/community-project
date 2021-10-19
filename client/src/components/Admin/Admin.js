@@ -25,7 +25,7 @@ const views = {
 }
 const Admin = () => {
   const history = useHistory()
-  const path = useRouteMatch()
+  const { path } = useRouteMatch()
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
