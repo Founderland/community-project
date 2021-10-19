@@ -5,6 +5,19 @@ import Loading from "../Widgets/Loading"
 import axios from "axios"
 import moment from "moment"
 
+const styles = {
+  new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
+  pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
+  reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
+  founder:
+    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
+  investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
+  ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  admin: "bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
+}
+
 const MembersList = ({ role, reload }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -26,13 +39,13 @@ const MembersList = ({ role, reload }) => {
       .then((res) => {
         const header = {
           header: [
-            { title: "Name", key: "firstName", style: "" },
-            { title: " ", key: "lastName", style: "" },
-            { title: "Email", key: "email", style: "" },
-            { title: "Added on", key: "created", style: "" },
-            { title: "Notified on", key: "notified", style: "" },
-            { title: "Signed up on", key: "confirmed", style: "" },
-            { title: "Actions", key: "-", style: "" },
+            { title: "Name", key: "firstName", style: "text-right" },
+            { title: " ", key: "lastName", style: "text-left" },
+            { title: "Email", key: "email", style: "text-center" },
+            { title: "Added on", key: "created", style: "text-center" },
+            { title: "Notified on", key: "notified", style: "text-center" },
+            { title: "Signed up on", key: "confirmed", style: "text-center" },
+            { title: "", key: "-", style: "text-center" },
           ],
         }
         const data = res.data
@@ -68,10 +81,11 @@ const MembersList = ({ role, reload }) => {
     <Loading />
   ) : (
     <ListWidget
-      title={"current registered " + role}
+      title=""
       data={data}
+      styles={styles}
       showing={5}
-      cellAlignment={"justify-center"}
+      cellAlignment={"justify-start"}
     />
   )
 }

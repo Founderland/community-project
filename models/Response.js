@@ -14,7 +14,7 @@ const responseSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["founder", "investor", "ally"],
+    enum: ["founder", "investor", "ally", "newsletter"],
     default: "founder",
     required: true,
   },

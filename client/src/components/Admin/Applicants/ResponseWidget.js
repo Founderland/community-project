@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import ReactPaginate from "react-paginate"
+import Pagination from "../Widgets/Pagination"
 import ResponseCells from "./ResponseCells"
 
 const styles = {
@@ -81,38 +82,7 @@ const ResponseWidget = ({ title, data, showing, colSize, cellAlignment }) => {
         {data.data.length > perPage && (
           <div className="border-b min-w-max w-full border-gray-200">
             <div className="flex items-center justify-center">
-              <ReactPaginate
-                previousLabel={"<"}
-                previousClassName={
-                  "w-8 mr-1 flex justify-center items-center cursor-pointer text-lg"
-                }
-                previousLinkClassName={"outline-none hover:text-fblue"}
-                nextLabel={">"}
-                nextClassName={
-                  "w-8 mr-1 flex justify-center items-center cursor-pointer text-lg"
-                }
-                nextLinkClassName={"outline-none hover:text-fblue"}
-                breakLabel={"..."}
-                breakClassName={
-                  "w-8 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-150 ease-in border-t-2 border-transparent"
-                }
-                disabledClassName={"text-gray-100"}
-                pageCount={pageCount}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={4}
-                onPageChange={handlePageClick}
-                containerClassName={
-                  "my-1 flex py-1 list-none outline-none text-mono"
-                }
-                pageClassName={
-                  "w-8 px-1 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-100 ease-in border-t-2 border-transparent hover:border-fred"
-                }
-                pageLinkClassName={"outline-none"}
-                activeClassName={
-                  "w-8 md:flex justify-center items-center hidden cursor-pointer leading-5 transition duration-100 ease-in border-t-2 border-fblue"
-                }
-                activeLinkClassName={"outline-none"}
-              />
+              <Pagination />
             </div>
           </div>
         )}

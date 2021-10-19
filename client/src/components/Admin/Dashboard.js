@@ -13,6 +13,18 @@ import {
   members,
 } from "../_DummyData"
 const membersAPI = "/api/users/community/"
+const styles = {
+  new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
+  pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
+  reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
+  founder:
+    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
+  investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
+  ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  admin: "bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
+}
 
 const AdminDashboard = () => {
   const { view, token } = useContext(AdminContext)
@@ -110,9 +122,9 @@ const AdminDashboard = () => {
           title="Pending Final Review"
           data={listData}
           showing={5}
+          styles={styles}
+          link="admin/applicants/id/"
           cellAlignment={"justify-center"}
-          button1={<PencilAltIcon className="w-5" />}
-          button2={<EyeIcon className="w-5" />}
         />
       </div>
       <div className="md:flex w-full justify-around">

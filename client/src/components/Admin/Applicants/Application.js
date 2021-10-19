@@ -6,6 +6,32 @@ import {
 } from "@heroicons/react/outline"
 
 const Submission = () => {
+  const [answerData, setAnswerData] = useState({ data: [], header: [] })
+  const { viewButton, viewId, setViewButton, buttonClicked } =
+    useContext(AnswersContext)
+
+  useEffect(() => {
+    if (viewButton) {
+      const answerList = viewId?.answerData.map((answer) => {
+        // console.log("answer", answer);
+        return {
+          answer_id: answer.answer_id,
+          answer_value: answer.answer_value,
+          question_category: answer.category,
+          question_value: answer.question,
+          question_type: answer.type,
+          question_id: answer._id,
+          answer_score: answer.score,
+          answer_rank: answer.rank,
+        }
+      })
+
+      setAnswerData({
+        answerList: answerList,
+        total_score: viewId.totalScore,
+      })
+    }
+  }, [viewId, viewButton])
   const approveApplicant = async (e) => {
     try {
       const approved = await axios.put(

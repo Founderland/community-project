@@ -10,10 +10,8 @@ import { AnswersContext } from "../../../contexts/AnswersProvider"
 
 const ApplicantsList = ({ status, role, reload }) => {
   const [data, setData] = useState([])
-  const [answerData, setAnswerData] = useState({ data: [], header: [] })
-
   const [loading, setLoading] = useState(true)
-  const { setModalMessage, setIModal, token } = useContext(AdminContext)
+  const { token } = useContext(AdminContext)
   let { category } = useParams()
 
   const config = useMemo(() => {
@@ -25,8 +23,6 @@ const ApplicantsList = ({ status, role, reload }) => {
     }
   }, [token])
   const applicantsURL = "/api/founder/response/"
-  const { viewButton, viewId, setViewButton, buttonClicked } =
-    useContext(AnswersContext)
 
   const getTimeDifference = (DateToCompare) => {
     const today = Date.now()
@@ -46,8 +42,7 @@ const ApplicantsList = ({ status, role, reload }) => {
     return timeDifference
   }
   const [listData, setListData] = useState({ data: [], header: [] })
-
-  const style = {
+  const styles = {
     disabledDiv: "group hover:bg-gray-300",
     disabledInput: "bg-gray-200 group-hover:bg-gray-300 placeholder-gray-500",
     enabledDiv: "bg-blue-200 ",
@@ -129,63 +124,26 @@ const ApplicantsList = ({ status, role, reload }) => {
             { title: "More Info", key: "-", style: "text-center" },
           ],
           data: userData,
-          colSize: [
-            <colgroup>
-              {/* <col style={{ width: "10vw" }} />
-                  <col style={{ width: "15vw" }} />
-                  <col style={{ width: "15vw" }} />
-    
-                  <col style={{ width: "10vw" }} /> */}
-            </colgroup>,
-          ],
+          colSize: [<colgroup></colgroup>],
         })
         setLoading(false)
       } catch (e) {
         console.log(e)
       }
     }
-    if (!viewButton && status) {
-      fetchData()
-    }
-  }, [reload])
-
-  useEffect(() => {
-    if (viewButton) {
-      setViewButton(false)
-    }
-  }, [status])
-
-  useEffect(() => {
-    if (viewButton) {
-      const answerList = viewId?.answerData.map((answer) => {
-        // console.log("answer", answer);
-        return {
-          answer_id: answer.answer_id,
-          answer_value: answer.answer_value,
-          question_category: answer.category,
-          question_value: answer.question,
-          question_type: answer.type,
-          question_id: answer._id,
-          answer_score: answer.score,
-          answer_rank: answer.rank,
-        }
-      })
-
-      setAnswerData({
-        answerList: answerList,
-        total_score: viewId.totalScore,
-      })
-    }
-  }, [viewId, viewButton])
+    fetchData()
+  }, [category])
 
   return loading ? (
     <Loading />
   ) : (
     <ResponseWidget
+      title={""}
       data={listData}
       showing={10}
       colSize={listData.colSize}
-      cellAlignment={"justify-start"}
+      cellAlignment={"justify-center"}
+      style={styles}
     />
   )
 }
