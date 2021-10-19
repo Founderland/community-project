@@ -102,7 +102,7 @@ const ApplicantsList = ({ status, role, reload }) => {
         setListData({
           header: [
             {
-              title: "UserName",
+              title: "Name",
               key: "applicantName",
               style: "py-3 px-6 text-left ",
             },
@@ -147,50 +147,7 @@ const ApplicantsList = ({ status, role, reload }) => {
     if (!viewButton && status) {
       fetchData()
     }
-  }, [viewButton, status])
-  //   useEffect(() => {
-  //     axios
-  //       .get(membersAPI + role, config)
-  //       .then((res) => {
-  //         const header = {
-  //           header: [
-  //             { title: "Name", key: "firstName", style: "" },
-  //             { title: " ", key: "lastName", style: "" },
-  //             { title: "Email", key: "email", style: "" },
-  //             { title: "Added on", key: "created", style: "" },
-  //             { title: "Notified on", key: "notified", style: "" },
-  //             { title: "Signed up on", key: "confirmed", style: "" },
-  //             { title: "Actions", key: "-", style: "" },
-  //           ],
-  //         }
-  //         const data = res.data
-  //         data.data.forEach((element) => {
-  //           if (element.created) {
-  //             element.created = moment(element.created).format("DD/M/YYYY hh:mm")
-  //           }
-  //           if (element.notified) {
-  //             element.notified = moment(element.notified).format(
-  //               "DD/M/YYYY hh:mm"
-  //             )
-  //           }
-  //           if (element.confirmed) {
-  //             element.confirmed = moment(element.confirmed).format(
-  //               "DD/M/YYYY hh:mm"
-  //             )
-  //           }
-  //         })
-  //         setData({ ...header, ...data })
-  //         setLoading(false)
-  //       })
-  //       .catch((err) => {
-  //         setModalMessage({
-  //           icon: "info",
-  //           title: "Error loading the database set",
-  //           message: "Sorry, something went wrong",
-  //         })
-  //         setIModal(true)
-  //       })
-  //   }, [reload, role, setIModal, setModalMessage, config])
+  }, [reload])
 
   useEffect(() => {
     if (viewButton) {
