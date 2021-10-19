@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom"
 
 const RowsWidget = ({ headers, item, styles, link }) => {
   const { view } = useParams()
-  console.log(`${view}/id/${item._id}`)
   return (
     <tr className="border-b border-gray-200 hover:bg-gray-100">
       {headers.map((header) => {

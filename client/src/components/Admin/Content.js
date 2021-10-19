@@ -26,16 +26,12 @@ const Content = () => {
     }
   }, [view])
   return (
-    <main className="overflow-x-hidden">
-      <div className="items-center mx-auto md:px-4 py-2">
-        <div className="flex justify-center h-screen">
-          {view === "dashboard" && <Dashboard />}
-          {view === "ressources" && <Ressources tab={selectTab} />}
-          {view === "members" && <Members />}
-          {view === "applicants" && <Applicants tab={selectTab} />}
-          {view === "settings" && <Settings tab={selectTab} />}
-        </div>
-      </div>
+    <main className="overflow-x-hidden w-full h-screen items-center mx-auto md:px-4 py-2 justify-center">
+      {view === "dashboard" && <Dashboard />}
+      {view === "ressources" && <Ressources tab={selectTab} />}
+      {view === "members" && <Members />}
+      {view === "applicants" && <Applicants tab={selectTab} />}
+      {view === "settings" && <Settings tab={selectTab} />}
     </main>
   )
 }

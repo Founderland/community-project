@@ -5,7 +5,7 @@ const authRouter = require("./auth.routes")
 
 const setupRoutes = (app) => {
   //FOUNDERS
-  app.use("/api/founder", responseRouter)
+  app.use("/api/applicants", responseRouter)
   //USERS
   app.use("/api/users", userRouter)
   // FOUNDER-FORM

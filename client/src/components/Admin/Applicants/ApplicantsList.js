@@ -38,7 +38,7 @@ const ApplicantsList = ({ status, role, reload }) => {
       },
     }
   }, [token])
-  const applicantsURL = "/api/founder/response/"
+  const applicantsURL = "/api/applicants/response/"
 
   const getTimeDifference = (DateToCompare) => {
     const today = Date.now()

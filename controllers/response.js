@@ -37,13 +37,9 @@ const addResponse = async (req, res) => {
 }
 
 // Find Founders Response
-
 const findAllResponse = async (req, res) => {
   try {
     const result = await Response.find({})
-    // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
-
-    // console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
@@ -62,8 +58,6 @@ const updateStatus = async (req, res) => {
       },
       { new: true }
     )
-
-    // console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
@@ -72,7 +66,6 @@ const updateStatus = async (req, res) => {
 
 const findResponsesByStatus = async (req, res) => {
   const { status, role } = req.params
-  console.log(status, role)
   try {
     if (status && role) {
       const result = await Response.find({ status, role }).sort({
@@ -91,6 +84,17 @@ const findResponsesByStatus = async (req, res) => {
       // console.log(result)
       res.status(200).json(result)
     }
+  } catch (error) {
+    console.log(error)
+  }
+}
+const findResponseById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const result = await Response.findOne({ _id: id }).sort({
+      totalScore: "desc", //order responses by score
+    })
+    res.status(200).json(result)
   } catch (error) {
     console.log(error)
   }
@@ -122,4 +126,5 @@ module.exports = {
   findResponsesByStatus,
   updateStatus,
   editResponse,
+  findResponseById,
 }

@@ -9,6 +9,8 @@ responseRouter.get("/response", Response.findAllResponse)
 responseRouter.put("/response/:id/:score", Response.editResponse)
 
 //GET APPLICANTS RESPONSE BY STATUS ["New", "Pending", "Approved", "Rejected"]
+responseRouter.get("/response/:id", Response.findResponseById)
+
 responseRouter.get("/response/:status/:role", Response.findResponsesByStatus)
 
 responseRouter.put("/response/:status/:id", Response.updateStatus)

@@ -14,7 +14,7 @@ const Members = ({ tab }) => {
   const [reload, setReload] = useState(0)
   const [task, setTask] = useState(null)
   const { setCModal } = useContext(AdminContext)
-
+  console.log(tab)
   const handleTask = (task) => {
     setTask(task)
     setCModal(true)

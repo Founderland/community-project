@@ -72,7 +72,7 @@ function AnswersProvider({ children }) {
       console.log("total", total)
       console.log("total", answers)
       axios
-        .post("/api/founder/response", {
+        .post("/api/applicants/response", {
           firstName: answers[0].answer_value,
           lastName: answers[1].answer_value,
           totalScore: total,

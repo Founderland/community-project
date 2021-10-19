@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import { useState } from "react"
 import { Tab } from "@headlessui/react"
 import ApplicantsList from "./ApplicantsList"
+import Application from "./Application"
 
 const Applicants = ({ status, tab }) => {
   const [reload, setReload] = useState(0)
@@ -14,7 +15,7 @@ const Applicants = ({ status, tab }) => {
   return (
     <div className="w-full flex flex-col ">
       {id ? (
-        id
+        <Application />
       ) : (
         <Tab.Group defaultIndex={tab}>
           <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">
