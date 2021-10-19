@@ -11,7 +11,8 @@ import { useParams } from "react-router"
 const Content = () => {
   let { view, category, id } = useParams()
 
-  const { views, setMemberType, setApplicantType } = useContext(AdminContext)
+  const { views, selectTab, setMemberType, setApplicantType } =
+    useContext(AdminContext)
   //SCROLL BACK UP ON MENU CHANGE
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -35,7 +36,7 @@ const Content = () => {
           {view === "members" && <Members />}
           {view.includes("Form") && <QuestionsList />}
           {view.includes("Applicants") && <ResponseList />}
-          {view === "settings" && <Settings />}
+          {view === "settings" && <Settings tab={selectTab} />}
         </div>
       </div>
     </main>

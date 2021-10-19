@@ -19,7 +19,6 @@ import AdminContext from "../../contexts/Admin"
 import { Link, useParams } from "react-router-dom"
 
 const Menu = () => {
-  const active = ""
   const icons = {
     home: <HomeIcon className="h-6 w-6" />,
     textdoc: <DocumentTextIcon className="h-6 w-6" />,
@@ -34,8 +33,7 @@ const Menu = () => {
     emojihappy: <EmojiHappyIcon className="h-6 w-6 group-hover:text-flime" />,
   }
   const { view, category } = useParams()
-  const { views, changeView, setMenuToggle, menuToggle } =
-    useContext(AdminContext)
+  const { views, setMenuToggle, menuToggle } = useContext(AdminContext)
 
   const getCategories = (view) => {
     return Object.keys(views[view].categories).map((key) => (

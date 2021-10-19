@@ -29,7 +29,7 @@ const Admin = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
-  const [view, setView] = useState(0)
+  const [selectTab, setSelectTab] = useState(null)
   const [modalMessage, setModalMessage] = useState({
     icon: "",
     title: "",
@@ -68,10 +68,6 @@ const Admin = () => {
     history.push("/admin")
   }
 
-  const changeView = (view) => {
-    setView(view)
-    setMenuToggle(!menuToggle)
-  }
   return (
     <AdminContext.Provider
       value={{
@@ -79,10 +75,9 @@ const Admin = () => {
         user,
         setUser,
         setMenuToggle,
-        view,
-        setView,
-        changeView,
         views,
+        selectTab,
+        setSelectTab,
         modalMessage,
         setModalMessage,
         iModal,
