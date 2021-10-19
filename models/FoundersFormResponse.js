@@ -8,8 +8,8 @@ const foundersResponseSchema = new mongoose.Schema({
   evaluatedOn: { type: Date },
   status: {
     type: String,
-    enum: ["New", "Pending", "Approved", "Rejected"],
-    default: "New",
+    enum: ["new", "pending", "approved", "rejected"],
+    default: "new",
     required: true,
   },
   answerData: [

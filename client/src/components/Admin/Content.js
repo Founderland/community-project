@@ -9,7 +9,7 @@ import Members from "./Members"
 import { useParams } from "react-router"
 
 const Content = () => {
-  let { view, category, id } = useParams()
+  let { view, category } = useParams()
 
   const { views, selectTab, setMemberType, setApplicantType } =
     useContext(AdminContext)
@@ -26,7 +26,6 @@ const Content = () => {
       setApplicantType(views[view].name.split(" ")[0])
     }
   }, [view, views, setApplicantType, setMemberType])
-  console.log(view, category, id)
   return (
     <main className="overflow-x-hidden">
       <div className="items-center mx-auto md:px-4 py-2">
@@ -35,7 +34,7 @@ const Content = () => {
           {view === "ressources" && <Ressources />}
           {view === "members" && <Members />}
           {view.includes("Form") && <QuestionsList />}
-          {view.includes("Applicants") && <ResponseList />}
+          {view === "applicants" && <ResponseList applicantType={category} />}
           {view === "settings" && <Settings tab={selectTab} />}
         </div>
       </div>
