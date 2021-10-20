@@ -7,7 +7,7 @@ const Main = () => {
   const { path } = useRouteMatch()
   return (
     <Switch>
-      <Route path={`${path}/:view/:category?/:id?`}>
+      <Route exact path={`${path}/:view/:category?/:id?/`}>
         <div>
           <div className="flex h-screen font-roboto">
             <Menu />

@@ -18,7 +18,6 @@ const findAll = async (req, res) => {
 
 const findMember = async (req, res) => {
   const { _id } = req.user
-
   const profile = await Member.findOne({ _id })
   if (profile) {
     res.status(200).json({
@@ -165,7 +164,6 @@ const updateNotified = async (req, res) => {
     { notified: date },
     { new: true }
   )
-  console.log(update)
   if (update) {
     res.status(200).json({ success: 1, message: "User notified" })
   } else {

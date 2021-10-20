@@ -1,4 +1,4 @@
-import ListOption from "../Admin/ListOption"
+import ListOption from "../Admin/Widgets/ListOption"
 import { ReactComponent as LogoLines } from "../../assets/line.svg"
 import banner from "../../assets/images/banner_black.png"
 
@@ -75,14 +75,14 @@ const FirstStep = ({ data, setData, nextStep }) => {
   ]
   return (
     <>
-      <div className='h-full  w-screen flex flex-col justify-start items-center '>
-        <div className=' flex flex-col justify-between h-full w-screen xl:w-2/3  md:h-5/6 bg-white  p-3'>
-          <div className='text-grotesk lg:text-3xl  '>
+      <div className="h-full  w-screen flex flex-col justify-start items-center ">
+        <div className=" flex flex-col justify-between h-full w-screen xl:w-2/3  md:h-5/6 bg-white  p-3">
+          <div className="text-grotesk lg:text-3xl  ">
             We'are thrilled to have you on board! Please fill out the following
             fields with your informations in order to proceed.
           </div>
-          <div className=' h-full md:h-screen xl:h-full  '>
-            <form className='flex flex-wrap h-4/6 justify-center items-center md:px-5 text-grotesk font-bold'>
+          <div className=" h-full md:h-screen xl:h-full  ">
+            <form className="flex flex-wrap h-4/6 justify-center items-center md:px-5 text-grotesk font-bold">
               {/* <div className=' flex w-full  justify-center items-center p-4 '>
           <div className='bg-gray-300 rounded-full overflow-hidden bg-gray-300'>
             <UserIcon className='h-12 w-12 md:w-auto md:h-auto xl:w-1/4 xl:h-1/4' />
@@ -103,13 +103,13 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 </button>
               </div> */}
 
-              <div className='w-full md:w-1/2 xl:w-1/3 p-4 '>
+              <div className="w-full md:w-1/2 xl:w-1/3 p-4 ">
                 <label>First name</label>
                 <input
-                  type='text'
-                  className='w-full p-3 bg-gray-50 shadow-lg '
+                  type="text"
+                  className="w-full p-3 bg-gray-50 shadow-lg "
                   required={true}
-                  placeholder='First name'
+                  placeholder="First name"
                   defaultValue={data.firstName}
                   onChange={(e) =>
                     setData({ ...data, firstName: e.target.value })
@@ -117,66 +117,66 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 />
               </div>
 
-              <div className='w-full md:w-1/2 xl:w-1/3 p-4 '>
+              <div className="w-full md:w-1/2 xl:w-1/3 p-4 ">
                 <label>Last name</label>
                 <input
-                  type='text'
-                  className='w-full p-3 bg-gray-50 shadow-lg'
+                  type="text"
+                  className="w-full p-3 bg-gray-50 shadow-lg"
                   required={true}
-                  placeholder='Last name'
+                  placeholder="Last name"
                   defaultValue={data.lastName}
                   onChange={(e) =>
                     setData({ ...data, lastName: e.target.value })
                   }
                 />
               </div>
-              <div className='w-full md:w-1/3 p-4 '>
+              <div className="w-full md:w-1/3 p-4 ">
                 <label>Title</label>
                 <input
-                  type='text'
-                  className='w-full p-3 bg-gray-50 shadow-lg'
+                  type="text"
+                  className="w-full p-3 bg-gray-50 shadow-lg"
                   required={true}
-                  placeholder='Title'
+                  placeholder="Title"
                   defaultValue={data.title}
                   onChange={(e) => setData({ ...data, title: e.target.value })}
                 />
               </div>
-              <div className='w-full md:w-1/3 p-4 '>
+              <div className="w-full md:w-1/3 p-4 ">
                 <label>Country</label>
                 <input
-                  type='text'
-                  className='w-full p-3 bg-gray-50 shadow-lg'
+                  type="text"
+                  className="w-full p-3 bg-gray-50 shadow-lg"
                   required={true}
-                  placeholder='Country'
+                  placeholder="Country"
                   onChange={(e) =>
                     setData({ ...data, country: e.target.value })
                   }
                 />
               </div>
-              <div className='w-full md:w-1/3 p-4 '>
+              <div className="w-full md:w-1/3 p-4 ">
                 <label>City</label>
                 <input
-                  type='text'
-                  className='w-full p-3 bg-gray-50 shadow-lg'
+                  type="text"
+                  className="w-full p-3 bg-gray-50 shadow-lg"
                   required={true}
-                  placeholder='City'
+                  placeholder="City"
                   onChange={(e) => setData({ ...data, city: e.target.value })}
                 />
               </div>
 
-              <div className='w-full   p-4  '>
+              <div className="w-full   p-4  ">
                 <label>Bio</label>
                 <textarea
-                  type='text'
-                  className='w-full p-3 bg-gray-50 shadow-lg'
+                  type="text"
+                  className="w-full p-3 bg-gray-50 shadow-lg"
                   required={true}
                   value={data.about}
-                  placeholder='About you (max 3 sentences)'
+                  placeholder="About you (max 3 sentences)"
                   onChange={(e) => setData({ ...data, about: e.target.value })}
                 />
               </div>
 
-              <div className='w-full md:w-2/3 p-4'>
+              <div className="w-full md:w-2/3 p-4">
                 <label>Business area</label>
                 <ListOption
                   options={businessAreas}
@@ -192,7 +192,7 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 />
                 <div>
                   <input
-                    type='text'
+                    type="text"
                     className={
                       data.businessArea === "Other" ||
                       !isSelectionIncluded(businessAreas)
@@ -211,14 +211,14 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 </div>
               </div>
 
-              <div className='w-full  flex flex-wrap justify-center items-center'>
-                <div className='w-full  h-full p-4 '>
+              <div className="w-full  flex flex-wrap justify-center items-center">
+                <div className="w-full  h-full p-4 ">
                   <label>Email address</label>
                   <input
-                    type='email'
-                    className='w-full p-3 bg-gray-50 shadow-lg'
+                    type="email"
+                    className="w-full p-3 bg-gray-50 shadow-lg"
                     required={true}
-                    placeholder='Enter email'
+                    placeholder="Enter email"
                     defaultValue={data.email}
                     onChange={(e) =>
                       setData({ ...data, email: e.target.value })
@@ -226,25 +226,25 @@ const FirstStep = ({ data, setData, nextStep }) => {
                   />
                 </div>
 
-                <div className='w-full  md:w-1/2 p-4  '>
+                <div className="w-full  md:w-1/2 p-4  ">
                   <label>Password</label>
                   <input
-                    type='password'
-                    className='w-full p-3 bg-gray-50 shadow-lg'
+                    type="password"
+                    className="w-full p-3 bg-gray-50 shadow-lg"
                     required={true}
-                    placeholder='Enter password'
+                    placeholder="Enter password"
                     onChange={(e) =>
                       setData({ ...data, password: e.target.value })
                     }
                   />
                 </div>
-                <div className='w-full  md:w-1/2 p-4  '>
+                <div className="w-full  md:w-1/2 p-4  ">
                   <label>Confirm Password</label>
                   <input
-                    type='password'
-                    className='w-full p-3 bg-gray-50 shadow-lg'
+                    type="password"
+                    className="w-full p-3 bg-gray-50 shadow-lg"
                     required={true}
-                    placeholder='Enter password again'
+                    placeholder="Enter password again"
                     onChange={(e) =>
                       setData({
                         ...data,
@@ -255,11 +255,12 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 </div>
               </div>
 
-              <div className='w-full flex justify-end pt-10'>
+              <div className="w-full flex justify-end pt-10">
                 <button
-                  type='button'
-                  className='p-5 bg-fblue font-bold text-lg text-white shadow-lg '
-                  onClick={() => nextStep()}>
+                  type="button"
+                  className="p-5 bg-fblue font-bold text-lg text-white shadow-lg "
+                  onClick={() => nextStep()}
+                >
                   Next
                 </button>
               </div>
