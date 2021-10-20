@@ -1,4 +1,4 @@
-import Answer from './Answer'
+import Answer from "./Answer"
 
 const AnswerList = ({ answersList, setAnswersList, memberType }) => {
   const handleAnswerChange = (i, updated) => {
@@ -13,7 +13,7 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
 
     setAnswersList([...updatedList])
   }
-
+  console.log(answersList)
   return (
     <>
       {answersList?.map((answer, i) => {

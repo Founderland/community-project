@@ -1,17 +1,18 @@
-const founderRouter = require("express").Router()
-const founderResponse = require('../controllers/founderResponse')
+const responseRouter = require("express").Router()
+const Response = require("../controllers/response")
 
 //ADD APPLICANTS RESPONSE
-founderRouter.post("/response", founderResponse.addResponse)
+responseRouter.post("/response", Response.addResponse)
 //GET APPLICANTS RESPONSE
-founderRouter.get("/response", founderResponse.findAllResponse)
+responseRouter.get("/response", Response.findAllResponse)
 //EDIT  APPLICANTS RESPONSE
-founderRouter.put("/response/:id/:score", founderResponse.editResponse)
+responseRouter.put("/response/:id/:score", Response.editResponse)
 
 //GET APPLICANTS RESPONSE BY STATUS ["New", "Pending", "Approved", "Rejected"]
-founderRouter.get("/response/:status", founderResponse.findResponsesByStatus)
+responseRouter.get("/response/:id", Response.findResponseById)
 
-founderRouter.put("/response/:status/:id", founderResponse.updateStatus)
+responseRouter.get("/response/:status/:role", Response.findResponsesByStatus)
 
+responseRouter.put("/response/:status/:id", Response.updateStatus)
 
-module.exports = founderRouter
+module.exports = responseRouter

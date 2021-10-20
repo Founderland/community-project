@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, useRouteMatch } from "react-router-dom"
 import Login from "./Login"
 import Main from "./Main"
-import InfoModal from "../InfoModal"
+import InfoModal from "./Widgets/InfoModal"
 import AdminContext from "../../contexts/Admin"
 import jwt from "jsonwebtoken"
 
@@ -25,10 +25,11 @@ const views = {
 }
 const Admin = () => {
   const history = useHistory()
+  const { path } = useRouteMatch()
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
-  const [view, setView] = useState(0)
+  const [selectedTab, setSelectedTab] = useState(0)
   const [modalMessage, setModalMessage] = useState({
     icon: "",
     title: "",
@@ -42,7 +43,7 @@ const Admin = () => {
   ])
   const [selectedItem, setSelectedItem] = useState(null)
   const [memberType, setMemberType] = useState("")
-  const [applicantType, setApplicantType] = useState("")
+  const [status, setStatus] = useState("")
 
   useEffect(() => {
     if (localStorage.authToken) {
@@ -56,6 +57,7 @@ const Admin = () => {
           avatar: decode.avatar,
           role: decode.role,
         })
+        if (path === "/admin") history.push("/admin/dashboard")
       }
     }
   }, [])
@@ -65,10 +67,7 @@ const Admin = () => {
     setUser(null)
     history.push("/admin")
   }
-  const changeView = (view) => {
-    setView(view)
-    setMenuToggle(!menuToggle)
-  }
+
   return (
     <AdminContext.Provider
       value={{
@@ -76,10 +75,9 @@ const Admin = () => {
         user,
         setUser,
         setMenuToggle,
-        view,
-        setView,
-        changeView,
         views,
+        selectedTab,
+        setSelectedTab,
         modalMessage,
         setModalMessage,
         iModal,
@@ -94,8 +92,8 @@ const Admin = () => {
         setSelectedItem,
         memberType,
         setMemberType,
-        applicantType,
-        setApplicantType,
+        status,
+        setStatus,
       }}
     >
       <InfoModal />

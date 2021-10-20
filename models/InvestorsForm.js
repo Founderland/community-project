@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-// const Investor = require("./InvestorApplicant");
 
 const investorsFormSchema = new mongoose.Schema({
   category: { type: String, required: true },

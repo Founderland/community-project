@@ -5,7 +5,7 @@ import {
   ClipboardCheckIcon,
   BellIcon,
 } from "@heroicons/react/outline"
-import AdminContext from "../../contexts/Admin"
+import AdminContext from "../../../contexts/Admin"
 
 const Notifications = () => {
   let bell = false

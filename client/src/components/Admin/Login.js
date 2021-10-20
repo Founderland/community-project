@@ -63,7 +63,7 @@ const AdminLogin = () => {
   return (
     <div className="flex h-screen justify-center items-center w-full ">
       <div className="flex bg-white shadow-lg md:w-2/3 xl:w-1/2">
-        <div className="relative hidden md:block md:w-1/2 bg-fblue">
+        <div className="relative hidden md:block md:w-1/2 bg-black">
           <SmallLogo className="absolute bottom-0 h-20 w-20 text-white fill-current" />
         </div>
         <div className="w-full p-8 md:w-1/2">

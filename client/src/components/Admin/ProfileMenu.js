@@ -2,14 +2,19 @@ import { Menu, Transition } from "@headlessui/react"
 import { Fragment, useContext } from "react"
 import { UserIcon } from "@heroicons/react/solid"
 import AdminContext from "../../contexts/Admin"
+import { useHistory } from "react-router"
 
 const ProfileMenu = () => {
-  const { user, setView, logout } = useContext(AdminContext)
-
+  const { user, setSelectedTab, logout } = useContext(AdminContext)
+  const history = useHistory()
   const avatarInitials = () => {
     let initials =
       user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()
     return initials
+  }
+  const goToProfile = () => {
+    setSelectedTab(1)
+    history.push("/admin/settings")
   }
   return (
     <Menu as="div" className="relative">
@@ -36,7 +41,7 @@ const ProfileMenu = () => {
           <Menu.Item
             as="button"
             className="flex items-center w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
-            onClick={() => setView(6)}
+            onClick={() => goToProfile()}
           >
             <UserIcon className="w-6" />
             <p className="ml-4">Profile</p>

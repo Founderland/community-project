@@ -3,11 +3,11 @@ import Content from "./Content"
 import Header from "./Header"
 import { Switch, Route, useRouteMatch } from "react-router"
 
-const Main = ({ setLogged }) => {
+const Main = () => {
   const { path } = useRouteMatch()
   return (
     <Switch>
-      <Route path={`${path}/:view/:category?/:id?`}>
+      <Route exact path={`${path}/:view/:category?/:id?/`}>
         <div>
           <div className="flex h-screen font-roboto">
             <Menu />

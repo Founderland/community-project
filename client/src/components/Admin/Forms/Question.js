@@ -1,9 +1,10 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState, useMemo } from "react"
+import { useHistory, useParams } from "react-router"
 import axios from "axios"
 import AnswerSection from "./AnswerSection"
 import FormPreview from "./FormPreview"
 import { EyeIcon, TrashIcon } from "@heroicons/react/outline"
-import ListOption from "../ListOption"
+import ListOption from "../Widgets/ListOption"
 import AdminContext from "../../../contexts/Admin"
 import SubmitResponse from "./SubmitResponse"
 
@@ -21,7 +22,6 @@ const defaultAnswer = {
   points: 0,
   ideal: false,
 }
-
 const categories = [
   { name: "About You", value: "About You" },
   {
@@ -30,7 +30,6 @@ const categories = [
   },
   { name: "Tell Us More", value: "Tell Us More" },
 ]
-
 const ranks = [
   {
     name: "Not Important - just for info/further context",
@@ -64,23 +63,47 @@ const types = [
   },
 ]
 
-const FormHandler = ({ edit, setShowList }) => {
-  const {
-    selectedItem: question,
-    setSelectedItem,
-    memberType,
-  } = useContext(AdminContext)
-  const answers = question?.answers || null
+const Question = ({ task }) => {
+  const { id } = useParams()
+  const history = useHistory()
+  const { token, setSelectedTab } = useContext(AdminContext)
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  }, [token])
 
-  const [questionInfo, setQuestionInfo] = useState(question || defaultQuestion)
-  const [answersList, setAnswersList] = useState(answers || [])
-
+  const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
+  const [answersList, setAnswersList] = useState(defaultQuestion.answers || [])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
   const [isSuccessful, setIsSuccessfull] = useState(false)
   const [isError, setIsError] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const [message, setMessage] = useState("")
   const mainDiv = useRef()
+
+  useEffect(() => {
+    if (id !== "new") {
+      const questionURL = `/api/form/${task}/question/${id}`
+      axios
+        .get(questionURL, config)
+        .then((res) => {
+          console.log(res)
+          if (res.data) {
+            setQuestionInfo({ ...res.data })
+            setAnswersList([res.data.answers])
+          } else {
+            setIsError()
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [id])
 
   const handleNewAnswer = () => {
     setAnswersList((pre) =>
@@ -92,26 +115,29 @@ const FormHandler = ({ edit, setShowList }) => {
 
   const handleSubmit = () => {
     mainDiv.current.scrollIntoView()
-
     let newQuestion = { ...questionInfo, answers: answersList }
     // Deleting unnecessary fields for non founders
-    if (memberType !== "founder") {
+    if (task !== "founder") {
       delete newQuestion.rank
       newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
     }
-
     axios({
-      method: edit ? "PUT" : "POST",
-      baseURL: `/api/form/${memberType}`,
-      url: edit ? "/edit" : "/add",
+      method: id !== "new" ? "PUT" : "POST",
+      baseURL: `/api/form/${task}`,
+      url: id !== "new" ? "/edit" : "/add",
       data: newQuestion,
     })
       .then((result) => {
         setIsSuccessfull(true)
         setMessage(result.data.message)
         setTimeout(() => {
-          setIsSuccessfull(false)
-        }, 5000)
+          task === "founder"
+            ? setSelectedTab(0)
+            : task === "investor"
+            ? setSelectedTab(1)
+            : setSelectedTab(2)
+          history.push("forms/")
+        }, 3000)
       })
       .catch((e) => {
         setMessage(e.response.data.message)
@@ -121,7 +147,7 @@ const FormHandler = ({ edit, setShowList }) => {
         }, 5000)
       })
 
-    if (!edit) {
+    if (id === "new") {
       // restoring default values
       setQuestionInfo(defaultQuestion)
       // emptying answers list
@@ -133,16 +159,18 @@ const FormHandler = ({ edit, setShowList }) => {
     mainDiv.current.scrollIntoView()
 
     axios
-      .delete(`/api/form/${memberType}/delete/${question._id}`)
+      .delete(`/api/form/${task}/delete/${questionInfo._id}`)
       .then((result) => {
         setIsSuccessfull(true)
         setMessage(result.data.message)
-        setQuestionInfo(defaultQuestion)
-        setAnswersList([])
         setTimeout(() => {
-          setIsSuccessfull(false)
-          setShowList(true)
-        }, 3000)
+          task === "founder"
+            ? setSelectedTab(0)
+            : task === "investor"
+            ? setSelectedTab(1)
+            : setSelectedTab(2)
+          history.push("/admin/forms")
+        }, 2000)
       })
       .catch((e) => {
         setMessage(e.response.data.message)
@@ -153,9 +181,9 @@ const FormHandler = ({ edit, setShowList }) => {
       })
   }
 
-  useEffect(() => {
-    return () => question && setSelectedItem(null)
-  }, [memberType, question, setSelectedItem])
+  // useEffect(() => {
+  //   return () => question && setSelectedItem(null)
+  // }, [memberType, question, setSelectedItem])
 
   return (
     <div
@@ -168,7 +196,9 @@ const FormHandler = ({ edit, setShowList }) => {
           isError={isError}
           message={message}
         />
-        <h1 className="font-bold p-3">{edit ? "Edit" : "Add new"} Question</h1>
+        <h1 className="font-bold p-3">
+          {id !== "new" ? "Edit" : "Add new"} Question
+        </h1>
         <div className="h-screen w-full md:px-5">
           <div className=" py-5 flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
@@ -242,7 +272,7 @@ const FormHandler = ({ edit, setShowList }) => {
             </div>
             <div className="w-full   py-5  flex flex-col items-between lg:flex-row lg:items-center justify-start ">
               {/* Hiding Rank for non founder memebers */}
-              {memberType === "founder" && (
+              {task === "founder" && (
                 <>
                   <label
                     HtmlFor="rank"
@@ -310,7 +340,7 @@ const FormHandler = ({ edit, setShowList }) => {
                 setNewAnswer={setNewAnswer}
                 newAnswer={newAnswer}
                 handleNewAnswer={handleNewAnswer}
-                memberType={memberType}
+                memberType={task}
               />
             )}
           </div>
@@ -334,7 +364,7 @@ const FormHandler = ({ edit, setShowList }) => {
             <button
               type="button"
               className={
-                edit
+                id !== "new"
                   ? `flex justify-center items-center p-4 w-1/2 md:w-1/4 xl:w-1/6 bg-black text-white font-bold  transition-colors ease-in-out duration-500 hover:bg-fred-dark mt-10 md:mt-0 `
                   : "hidden"
               }
@@ -351,11 +381,11 @@ const FormHandler = ({ edit, setShowList }) => {
         <FormPreview
           questionPreview={{ ...questionInfo, answers: answersList }}
           setShowPreview={setShowPreview}
-          memberType={memberType}
+          memberType={task}
         />
       )}
     </div>
   )
 }
 
-export default FormHandler
+export default Question

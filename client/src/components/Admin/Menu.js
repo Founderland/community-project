@@ -19,7 +19,6 @@ import AdminContext from "../../contexts/Admin"
 import { Link, useParams } from "react-router-dom"
 
 const Menu = () => {
-  const active = ""
   const icons = {
     home: <HomeIcon className="h-6 w-6" />,
     textdoc: <DocumentTextIcon className="h-6 w-6" />,
@@ -30,21 +29,19 @@ const Menu = () => {
     collection: <CollectionIcon className="h-6 w-6" />,
     inboxin: <InboxInIcon className="h-6 w-6" />,
     clipboard: <ClipboardIcon className="h-6 w-6" />,
-    emojisad: <EmojiSadIcon className="h-6 w-6" />,
-    emojihappy: <EmojiHappyIcon className="h-6 w-6" />,
+    emojisad: <EmojiSadIcon className="h-6 w-6 group-hover:text-fred" />,
+    emojihappy: <EmojiHappyIcon className="h-6 w-6 group-hover:text-flime" />,
   }
   const { view, category } = useParams()
-  const { views, changeView, setMenuToggle, menuToggle } =
-    useContext(AdminContext)
+  const { views, setMenuToggle, menuToggle } = useContext(AdminContext)
 
   const getCategories = (view) => {
-    console.log(category)
     return Object.keys(views[view].categories).map((key) => (
       <Link
         to={`/admin/${view}/${key}`}
         onClick={() => setMenuToggle(false)}
-        className={`block border-l-4 text-left py-2.5 pl-6 w-full transition duration-200 hover:bg-fblue-300 flex items-center text-sm ${
-          category === key ? "border-white bg-fblue-300" : "border-transparent"
+        className={`block group border-l-4 text-left py-2.5 pl-6 w-full transition duration-200 hover:bg-fblue-400 flex items-center text-sm ${
+          category === key ? "border-white bg-fblue-400" : "border-transparent"
         } `}
       >
         {icons[views[view].categories[key].icon]}
@@ -62,7 +59,7 @@ const Menu = () => {
         onClick={() => setMenuToggle(false)}
       ></div>
       <div
-        className={`fixed z-30 inset-y-0 left-0 w-60 transition duration-300 transform bg-black overflow-y-auto ${
+        className={`fixed z-30 inset-y-0 left-0 w-60 transition duration-300 transform bg-gray-900 overflow-y-auto ${
           !menuToggle && "-translate-x-full"
         } lg:translate-x-0 lg:static lg:inset-0`}
       >
@@ -74,7 +71,7 @@ const Menu = () => {
                 {({ open }) => (
                   <>
                     <Disclosure.Button
-                      className={`block border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-fblue-700 flex items-center ${
+                      className={` block border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-fblue-700 flex items-center ${
                         view === key
                           ? "border-white bg-fblue-700"
                           : "border-transparent"
@@ -98,7 +95,7 @@ const Menu = () => {
                       leaveFrom="translate-x-0"
                       leaveTo="-translate-x-full"
                     >
-                      <Disclosure.Panel className="text-gray-300">
+                      <Disclosure.Panel className="text-white ">
                         {getCategories(key)}
                       </Disclosure.Panel>
                     </Transition>
