@@ -1,8 +1,9 @@
-import { EyeIcon } from "@heroicons/react/outline"
+import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline"
 import { Link, useParams } from "react-router-dom"
 
 const RowsWidget = ({ headers, item, styles, link }) => {
   const { view } = useParams()
+  console.log(view)
   return (
     <tr className="border-b border-gray-200 hover:bg-gray-100">
       {headers.map((header) => {
@@ -44,7 +45,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
                   to={link ? link + item._id : `/admin/${view}/id/${item._id}`}
                   className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
                 >
-                  <EyeIcon />
+                  {view === "forms" ? <PencilAltIcon /> : <EyeIcon />}
                 </Link>
               </div>
             </td>

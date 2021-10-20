@@ -78,10 +78,13 @@ const Question = ({ role }) => {
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
   const [answersList, setAnswersList] = useState([])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
-  const [isSuccessful, setIsSuccessfull] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const [result, setResult] = useState({
+    success: null,
+    show: false,
+    error: null,
+    message: null,
+  })
   const [showPreview, setShowPreview] = useState(false)
-  const [message, setMessage] = useState("")
   const mainDiv = useRef()
 
   useEffect(() => {
@@ -90,11 +93,16 @@ const Question = ({ role }) => {
       axios
         .get(questionURL, config)
         .then((res) => {
+          console.log(role)
           if (res.data) {
             setQuestionInfo({ ...res.data })
             setAnswersList(res.data.answers)
           } else {
-            setIsError()
+            setResult({ error: 1, show: true, message: "Question not found" })
+            setTimeout(() => {
+              setResult({ ...result, show: false })
+              history.push("/admin/forms")
+            }, 3000)
           }
         })
         .catch((err) => {
@@ -126,75 +134,74 @@ const Question = ({ role }) => {
       data: newQuestion,
     })
       .then((result) => {
-        setIsSuccessfull(true)
-        setMessage(result.data.message)
+        setResult({
+          success: 1,
+          show: true,
+          message: "Question saved.. redirecting",
+        })
         setTimeout(() => {
+          history.push("/admin/forms/")
           role === "founder"
             ? setSelectedTab(0)
             : role === "investor"
             ? setSelectedTab(1)
             : setSelectedTab(2)
-          history.push("forms/")
         }, 3000)
       })
       .catch((e) => {
-        setMessage(e.response.data.message)
-        setIsError(true)
+        setResult({
+          error: 1,
+          show: true,
+          message: "Sorry, something went wrong while saving..",
+        })
         setTimeout(() => {
-          setIsError(false)
+          setResult({ show: false })
         }, 5000)
       })
-
-    if (id === "new") {
-      // restoring default values
-      setQuestionInfo(defaultQuestion)
-      // emptying answers list
-      setAnswersList([])
-    }
   }
 
   const handleDelete = () => {
     mainDiv.current.scrollIntoView()
-
     axios
       .delete(`/api/form/${role}/delete/${questionInfo._id}`)
       .then((result) => {
-        setIsSuccessfull(true)
-        setMessage(result.data.message)
+        setResult({
+          show: true,
+          success: 1,
+          message: "Question deleted.. redirecting",
+        })
         setTimeout(() => {
+          history.push("/admin/forms")
           role === "founder"
             ? setSelectedTab(0)
             : role === "investor"
             ? setSelectedTab(1)
             : setSelectedTab(2)
-          history.push("/admin/forms")
         }, 2000)
       })
       .catch((e) => {
-        setMessage(e.response.data.message)
-        setIsError(true)
+        setResult({
+          error: 1,
+          show: true,
+          message: "Sorry, something went wrong while deleting..",
+        })
         setTimeout(() => {
-          setIsError(false)
+          setResult({ show: false })
         }, 5000)
       })
   }
 
-  console.log(answersList)
   return (
     <div
       ref={mainDiv}
-      className=" h-screen w-full flex flex-col justify-start items-stretch text-xl shadow-xl py-4"
+      className="relative py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6 flex justify-center"
     >
-      <div className="flex flex-col justify-center items-center bg-white p-4  ">
-        <SubmitResponse
-          isSuccessful={isSuccessful}
-          isError={isError}
-          message={message}
-        />
+      <SubmitResponse result={result} />
+      <div className="w-full flex flex-col justify-center items-center bg-white p-4  shadow ">
         <h1 className="font-bold p-3">
           {id !== "new" ? "Edit" : "Add new"} Question
         </h1>
-        <div className="h-screen w-full md:px-5">
+        <div className=" w-full md:px-5">
           <div className=" py-5 flex flex-col items-between justify-between lg:flex-row xl:justify-start lg:items-center ">
             <label
               HtmlFor="newQuestion"
@@ -353,7 +360,6 @@ const Question = ({ role }) => {
               className="p-4 w-1/2 md:w-1/4 xl:w-1/6 bg-fblue text-white font-bold   transition-colors ease-in-out duration-500 hover:bg-flime  hover:text-fblue "
               onClick={handleSubmit}
             >
-              {" "}
               Submit
             </button>
             <button
@@ -365,7 +371,6 @@ const Question = ({ role }) => {
               }
               onClick={handleDelete}
             >
-              {" "}
               Delete
               {<TrashIcon className="w-6 h-6 ml-2" />}
             </button>

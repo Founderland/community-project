@@ -32,7 +32,7 @@ const FormsList = ({ role, reload }) => {
       },
     }
   }, [token])
-  const formsURL = "/api/applicants/response/"
+  const formsURL = `/api/form/${role}/questions`
 
   const [listData, setListData] = useState({
     data: [],
@@ -50,7 +50,7 @@ const FormsList = ({ role, reload }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`/api/form/${role}/questions`, config)
+        const result = await axios.get(formsURL, config)
         if (typeof result.data === "string") return
         if (result.data)
           setListData({

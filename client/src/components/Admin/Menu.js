@@ -33,13 +33,14 @@ const Menu = () => {
     emojihappy: <EmojiHappyIcon className="h-6 w-6 group-hover:text-flime" />,
   }
   const { view, category } = useParams()
-  const { views, setMenuToggle, menuToggle } = useContext(AdminContext)
+  const { views, setMenuToggle, menuToggle, setSelectedTab } =
+    useContext(AdminContext)
 
   const getCategories = (view) => {
     return Object.keys(views[view].categories).map((key) => (
       <Link
         to={`/admin/${view}/${key}`}
-        onClick={() => setMenuToggle(false)}
+        onClick={() => handleMenu()}
         className={`block group border-l-4 text-left py-2.5 pl-6 w-full transition duration-200 hover:bg-fblue-400 flex items-center text-sm ${
           category === key ? "border-white bg-fblue-400" : "border-transparent"
         } `}
@@ -49,6 +50,12 @@ const Menu = () => {
       </Link>
     ))
   }
+
+  const handleMenu = () => {
+    setMenuToggle(false)
+    setSelectedTab(0)
+  }
+
   return (
     <>
       {/* Dark background when mobile menu showing */}
@@ -105,7 +112,7 @@ const Menu = () => {
             ) : (
               <Link
                 to={`/admin/${key}`}
-                onClick={() => setMenuToggle(false)}
+                onClick={() => handleMenu()}
                 className={`block border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-fblue-700 flex items-center ${
                   view === key
                     ? "border-white bg-fblue-700"

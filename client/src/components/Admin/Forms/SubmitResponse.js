@@ -1,33 +1,32 @@
+import { Transition } from "@headlessui/react"
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
 } from "@heroicons/react/outline"
 
-const SubmitResponse = ({ isSuccessful, isError, message }) => {
+const SubmitResponse = ({ result }) => {
   return (
-    <>
-      <div
-        className={
-          isSuccessful
-            ? `flex flex-row w-full justify-start items-center px-5 text-grotesk bg-fblue text-white`
-            : `hidden`
-        }>
-        {/* <SuccessIcon className='w-9' /> */}
-        <CheckCircleIcon className='w-8 text-green-500' />
-        <h1 className='px-3'> {message}</h1>
-      </div>
-      <div
-        className={
-          isError
-            ? `flex  flex-row  w-full  justify-start items-center px-5 text-grotesk bg-fpink-light`
-            : `hidden`
-        }>
-        <ExclamationCircleIcon className='w-8 text-red-500' />
-        <h1 className='px-3'>
-          {message ? message : "Sorry something went wrong"}
-        </h1>
-      </div>
-    </>
+    <Transition
+      show={result.show}
+      enter="transition ease-in-out duration-300 transform"
+      enterFrom="-translate-y-full opacity-0"
+      enterTo="opacity-100 translate-y-0"
+      leave="transition ease-in-out duration-300 transform"
+      leaveFrom="translate-y-0 opacity-100"
+      leaveTo="-translate-y-full opacity-0"
+      className={`font-bold ${
+        result.success
+          ? "bg-green-100 text-green-700 border-green-400 "
+          : "text-red-700 bg-red-100 border-red-400 "
+      } border flex space-x-4 items-center pr-6 text-grotesk px-4 py-3 rounded absolute`}
+    >
+      {result.success ? (
+        <CheckCircleIcon className="w-8" />
+      ) : (
+        <ExclamationCircleIcon className="w-8" />
+      )}
+      <p class="text-sm">{result.message ? result.message : ""}</p>
+    </Transition>
   )
 }
 
