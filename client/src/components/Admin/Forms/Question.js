@@ -202,7 +202,7 @@ const Question = ({ role }) => {
           {id !== "new" ? "Edit" : "Add new"} Question
         </h1>
         <div className=" w-full md:px-5">
-          <div className="w-full mt-4 mb-3 px-2">
+          <div className="w-full mt-4 mb-3 px-3">
             <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
               Question
             </label>
