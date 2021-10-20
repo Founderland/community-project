@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom"
 
 const RowsWidget = ({ headers, item, styles, link }) => {
   const { view } = useParams()
-  console.log(view)
   return (
     <tr className="border-b border-gray-200 hover:bg-gray-100">
       {headers.map((header) => {
@@ -18,29 +17,31 @@ const RowsWidget = ({ headers, item, styles, link }) => {
             )
           } else {
             return (
-              <td>
-                <div className={`px-2 ${header.style}`}>
-                  <span
-                    className={
-                      styles[
-                        String(header.key).replace(/ /g, "")
-                      ]?.toLowerCase()
-                        ? styles[
-                            String(header.key).replace(/ /g, "")
-                          ]?.toLowerCase()
-                        : ""
-                    }
-                  >
-                    {item[header.key]}
-                  </span>
-                </div>
+              <td className={`py-3 px-5 ${header.style}`}>
+                <p
+                  className={
+                    styles[
+                      String(item[header.key])
+                        .replace(/[^a-zA-Z0-9]/g, "")
+                        .toLowerCase()
+                    ]
+                      ? styles[
+                          String(item[header.key])
+                            .replace(/[^a-zA-Z0-9]/g, "")
+                            .toLowerCase()
+                        ]
+                      : ""
+                  }
+                >
+                  {item[header.key]}
+                </p>
               </td>
             )
           }
         } else {
           return (
-            <td className="py-3 px-3 text-center">
-              <div className="flex justify-center">
+            <td className="max-w p-3 text-center">
+              <div className="flex justify-center items-center">
                 <Link
                   to={link ? link + item._id : `/admin/${view}/id/${item._id}`}
                   className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"

@@ -4,20 +4,12 @@ import Loading from "../Widgets/Loading"
 import axios from "axios"
 import ListWidget from "../Widgets/ListWidget"
 const styles = {
-  new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
-  pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
-  reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
-  founder:
-    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
-  investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
-  ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  admin: "bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  disabledDiv: "group hover:bg-gray-300",
-  disabledInput: "bg-gray-200 group-hover:bg-gray-300 placeholder-gray-500",
-  enabledDiv: "bg-blue-200 ",
-  enabledInput: "bg-blue-200 placeholder-gray-500",
+  notimportantjustforinfofurthercontext:
+    "bg-gray-200 text-gray-600 py-1 px-3 rounded-full text-xs text-center w-max flex justify-center items-center",
+  vitaldealmakerorbreaker:
+    "bg-orange-200 text-orange-600 py-1 px-3 rounded-full text-xs text-center w-max flex justify-center items-center",
+  veryimportantvariableisscrutinized:
+    "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs text-center w-max flex justify-center items-center",
 }
 
 const FormsList = ({ role, reload }) => {
@@ -59,27 +51,31 @@ const FormsList = ({ role, reload }) => {
               {
                 title: "Question",
                 key: "question",
-                style: "p-3 text-left text-sm",
+                style: "text-left table-cell text-sm break-normal md:break-all",
               },
               {
                 title: "Category",
                 key: "category",
-                style: "text-left text-md",
+                style: "text-left table-cell text-xs w-20",
               },
               {
                 title: "Type",
                 key: "type",
-                style: "text-left hidden xl:table-cell items-center text-md",
+                style: "text-left hidden md:table-cell text-xs w-20",
               },
               {
                 title: "Rank",
                 key: "rank",
                 style:
                   role === "founder"
-                    ? "text-left hidden xl:table-cell items-center text-sm"
+                    ? "flex justify-center items-center hidden lg:table-cell text-sm w-40"
                     : "hidden",
               },
-              { title: "Actions", key: "-", style: "  text-center" },
+              {
+                title: "Actions",
+                key: "-",
+                style: "text-xs text-center w-20",
+              },
             ],
             data: result.data,
           })
