@@ -10,18 +10,18 @@ const Forms = () => {
   const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
   const history = useHistory()
   const { id } = useParams()
-  const [task, setTask] = useState(null)
+  const [role, setRole] = useState("founder")
   const classNames = (...classes) => {
     return classes.filter(Boolean).join(" ")
   }
-  const handleTask = (task) => {
-    setTask(task)
+  const handleTask = (role) => {
+    setRole(role)
     history.push("forms/id/new")
   }
   return (
     <div className="w-full flex flex-col ">
       {id ? (
-        <Question task={task} />
+        <Question role={role} />
       ) : (
         <Tab.Group defaultIndex={selectedTab}>
           <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">

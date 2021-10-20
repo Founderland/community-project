@@ -63,7 +63,7 @@ const types = [
   },
 ]
 
-const Question = ({ task }) => {
+const Question = ({ role }) => {
   const { id } = useParams()
   const history = useHistory()
   const { token, setSelectedTab } = useContext(AdminContext)
@@ -75,9 +75,8 @@ const Question = ({ task }) => {
       },
     }
   }, [token])
-
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
-  const [answersList, setAnswersList] = useState(defaultQuestion.answers || [])
+  const [answersList, setAnswersList] = useState([])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
   const [isSuccessful, setIsSuccessfull] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -87,14 +86,13 @@ const Question = ({ task }) => {
 
   useEffect(() => {
     if (id !== "new") {
-      const questionURL = `/api/form/${task}/question/${id}`
+      const questionURL = `/api/form/${role}/question/${id}`
       axios
         .get(questionURL, config)
         .then((res) => {
-          console.log(res)
           if (res.data) {
             setQuestionInfo({ ...res.data })
-            setAnswersList([res.data.answers])
+            setAnswersList(res.data.answers)
           } else {
             setIsError()
           }
@@ -117,13 +115,13 @@ const Question = ({ task }) => {
     mainDiv.current.scrollIntoView()
     let newQuestion = { ...questionInfo, answers: answersList }
     // Deleting unnecessary fields for non founders
-    if (task !== "founder") {
+    if (role !== "founder") {
       delete newQuestion.rank
       newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
     }
     axios({
       method: id !== "new" ? "PUT" : "POST",
-      baseURL: `/api/form/${task}`,
+      baseURL: `/api/form/${role}`,
       url: id !== "new" ? "/edit" : "/add",
       data: newQuestion,
     })
@@ -131,9 +129,9 @@ const Question = ({ task }) => {
         setIsSuccessfull(true)
         setMessage(result.data.message)
         setTimeout(() => {
-          task === "founder"
+          role === "founder"
             ? setSelectedTab(0)
-            : task === "investor"
+            : role === "investor"
             ? setSelectedTab(1)
             : setSelectedTab(2)
           history.push("forms/")
@@ -159,14 +157,14 @@ const Question = ({ task }) => {
     mainDiv.current.scrollIntoView()
 
     axios
-      .delete(`/api/form/${task}/delete/${questionInfo._id}`)
+      .delete(`/api/form/${role}/delete/${questionInfo._id}`)
       .then((result) => {
         setIsSuccessfull(true)
         setMessage(result.data.message)
         setTimeout(() => {
-          task === "founder"
+          role === "founder"
             ? setSelectedTab(0)
-            : task === "investor"
+            : role === "investor"
             ? setSelectedTab(1)
             : setSelectedTab(2)
           history.push("/admin/forms")
@@ -181,10 +179,7 @@ const Question = ({ task }) => {
       })
   }
 
-  // useEffect(() => {
-  //   return () => question && setSelectedItem(null)
-  // }, [memberType, question, setSelectedItem])
-
+  console.log(answersList)
   return (
     <div
       ref={mainDiv}
@@ -272,7 +267,7 @@ const Question = ({ task }) => {
             </div>
             <div className="w-full   py-5  flex flex-col items-between lg:flex-row lg:items-center justify-start ">
               {/* Hiding Rank for non founder memebers */}
-              {task === "founder" && (
+              {role === "founder" && (
                 <>
                   <label
                     HtmlFor="rank"
@@ -340,7 +335,7 @@ const Question = ({ task }) => {
                 setNewAnswer={setNewAnswer}
                 newAnswer={newAnswer}
                 handleNewAnswer={handleNewAnswer}
-                memberType={task}
+                memberType={role}
               />
             )}
           </div>
@@ -381,7 +376,7 @@ const Question = ({ task }) => {
         <FormPreview
           questionPreview={{ ...questionInfo, answers: answersList }}
           setShowPreview={setShowPreview}
-          memberType={task}
+          memberType={role}
         />
       )}
     </div>
