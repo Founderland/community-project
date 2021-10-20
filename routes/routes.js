@@ -3,6 +3,7 @@ const investorRouter = require("./investor.routes")
 const formRouter = require("./form.routes")
 const userRouter = require("./users.routes")
 const authRouter = require("./auth.routes")
+const profilePicRouter = require("./profilePic.routes")
 
 const setupRoutes = (app) => {
   //FOUNDERS
@@ -15,6 +16,8 @@ const setupRoutes = (app) => {
   app.use("/api/form", formRouter)
   //Auth
   app.use("/api/auth", authRouter)
+
+  app.use("/api/profile-picture", profilePicRouter)
 }
 
 module.exports = setupRoutes

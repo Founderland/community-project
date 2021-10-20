@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  businessArea: { type: String, trim: true },
   geoLocation: [{ type: Number }],
   email: {
     type: String,
