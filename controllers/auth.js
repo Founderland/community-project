@@ -9,13 +9,13 @@ const authenticateUser = async (username, password, done) => {
   try {
     // Check that user exists by email
     const user = await User.findOne({ email: username })
-    if (user && (await bcrypt.compare(password, user.password))) {
-      delete user.password
+    if (user && (await bcrypt.compare(password, user.hashedPassword))) {
+      delete user.hashedPassword
       done(null, user, { message: "Successful" })
     } else {
       const user = await Member.findOne({ email: username })
-      if (user && (await bcrypt.compare(password, user.password))) {
-        delete user.password
+      if (user && (await bcrypt.compare(password, user.hashedPassword))) {
+        delete user.hashedPassword
         done(null, user, { message: "Successful" })
       } else {
         done(null, false, { message: "Wrong Credentials" })
