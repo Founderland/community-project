@@ -93,15 +93,14 @@ const Settings = () => {
     <div className="flex flex-col w-full">
       {/* Tabs for Navigation */}
       <Tab.Group defaultIndex={selectedTab}>
-        <Tab.List className="flex p-1 space-x-1 bg-fblue max-w-lg">
+        <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none ">
           {user.role === "sadmin" ? (
             <Tab
               className={({ selected }) =>
                 classNames(
-                  "w-full py-1 text-mono tracking-wide font-medium ",
-                  "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-40",
+                  "w-full py-1 text-mono tracking-wide font-medium outline-none",
                   selected
-                    ? "text-fblue bg-white shadow"
+                    ? "font-bold bg-white shadow"
                     : "text-white hover:bg-white hover:bg-opacity-20"
                 )
               }
@@ -114,10 +113,9 @@ const Settings = () => {
           <Tab
             className={({ selected }) =>
               classNames(
-                "w-full py-1 text-mono tracking-wide font-medium",
-                "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
+                "w-full py-1 text-mono tracking-wide font-medium outline-none",
                 selected
-                  ? "text-fblue bg-white shadow"
+                  ? "font-bold bg-white shadow"
                   : "text-white hover:bg-white hover:bg-opacity-20"
               )
             }
@@ -125,15 +123,15 @@ const Settings = () => {
             <p onClick={() => setSelectedTab(0)}>Profile</p>
           </Tab>
         </Tab.List>
-        <div className="w-full border mt-0 border-t border-5 border-fblue"></div>
-        <Tab.Panels className="mt-6">
+        <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
+        <Tab.Panels className="mt-6 bg-white outline-none">
           {user.role === "sadmin" ? (
-            <Tab.Panel classname="p-3 focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60">
+            <Tab.Panel classname="p-3 outline-none">
               {loading && <Loading />}
               {!loading && (
-                <div className="w-full px-4">
+                <div className="w-full px-4 outline-none">
                   <ListWidget
-                    title="Current Registered Users"
+                    title=""
                     data={data}
                     showing={10}
                     styles={styles}
@@ -152,7 +150,9 @@ const Settings = () => {
           ) : (
             ""
           )}
-          <Tab.Panel>{!loading && <Profile />}</Tab.Panel>
+          <Tab.Panel classname="p-3 outline-none">
+            {!loading && <Profile />}
+          </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
       {/* Data to display */}
