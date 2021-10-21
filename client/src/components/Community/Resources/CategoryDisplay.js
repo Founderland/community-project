@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import folder from '../../../assets/images/folder.png'
-import pinkFolder from '../../../assets/images/pinkFolder.png'
+import redFolder from '../../../assets/images/redfolder.png'
 import { CommunityContext } from '../../../contexts/CommunityProvider';
 
 export default function CategoryDisplay(props) {
@@ -13,15 +13,16 @@ export default function CategoryDisplay(props) {
    const { category, categoryHandler } = useContext(CommunityContext)
 
    const categoryClickHandler = () => {
-      categoryHandler(!category)
+      categoryHandler(data.path)
       history.push(data.path);
    }
    return (
       <Link to={`/community/resources/${data.path}`}>
-         <div className="flex mb-14">
-            <img classname=""src={folder} alt="folder" />
+         <div className="flex mb-14" onClick={categoryClickHandler }>
+         
+            {category!==data.path || data.path==="resources" ?  <img classname="" src={folder} alt="folder" /> : <img classname="" src={redFolder} alt="folder" />}
             <div className="flex items-center">
-               <h1 className="text-black text-grotesk  font-semibold text-3xl p-2 "> {data.categoryName}</h1>
+               <h1 className="text-black text-grotesk  font-semibold text-2xl p-2 "> {data.categoryName}</h1>
                </div>
          </div>
          
