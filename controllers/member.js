@@ -135,7 +135,7 @@ const confirmUser = async (req, res, next) => {
       businessArea,
       geoLocation,
       photo,
-      password: generateHashedPassword(password),
+      hashedPassword: generateHashedPassword(password),
       confirmed: Date.now(),
       lastUpdate: Date.now(),
       about,
