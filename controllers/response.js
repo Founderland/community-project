@@ -101,12 +101,36 @@ const findResponseById = async (req, res) => {
 }
 
 const editResponse = async (req, res) => {
-  const { id, score } = req.params
+  const { id } = req.params
   try {
     const updated = await Response.findByIdAndUpdate(id, {
       totalScore: score,
     })
     if (!updated) await Promise.reject("NOT_FOUND")
+    res.json({ message: "Update successful" })
+  } catch (e) {
+    if (e === "NOT_FOUND") {
+      res.status(404).send({
+        message:
+          "The question you're trying to update is no longer in the database",
+      })
+    } else {
+      res.status(500).json({ message: "Sorry something went wrong" })
+    }
+  }
+}
+
+const approveResponse = async (req, res) => {
+  console.log("hey")
+  const { id } = req.params
+  const { data } = req.body
+  console.log(data)
+  try {
+    console.log(data)
+    // const updated = await Response.findByIdAndUpdate(id, {
+    //   totalScore: score,
+    // })
+    // if (!updated) await Promise.reject("NOT_FOUND")
     res.json({ message: "Update successful" })
   } catch (e) {
     if (e === "NOT_FOUND") {
@@ -127,4 +151,5 @@ module.exports = {
   updateStatus,
   editResponse,
   findResponseById,
+  approveResponse,
 }
