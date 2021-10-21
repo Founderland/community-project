@@ -3,99 +3,111 @@ import { useState, useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 
 import { Image, Transformation } from "cloudinary-react"
+import { CheckCircleIcon, CloudUploadIcon } from "@heroicons/react/outline"
 
-const SecondStep = () => {
-  const [fileInputState, setFileInputState] = useState("")
-  const [previewSource, setPreviewSource] = useState()
+const SecondStep = ({ nextStep, previousStep }) => {
+  const [previewSource, setPreviewSource] = useState(null)
+  const [uploadStatus, setuploadStatus] = useState({
+    success: false,
+    message: "",
+  })
 
   const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader()
-
-      reader.onabort = () => console.log("file reading was aborted")
-      reader.onerror = () => console.log("file reading has failed")
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result
-        console.log(binaryStr)
-        setPreviewSource(binaryStr)
-      }
-      reader.readAsArrayBuffer(file)
-    })
+    const reader = new FileReader()
+    reader.readAsDataURL(acceptedFiles[0])
+    reader.onabort = () => console.log("file reading was aborted")
+    reader.onerror = () => console.log("file reading has failed")
+    reader.onloadend = () => {
+      const binaryStr = reader.result
+      console.log(binaryStr)
+      setPreviewSource(binaryStr)
+    }
   }, [])
-  const { getRootProps, getInputProps, inputRef } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
-  //   console.log(acceptedFiles, "ACCEPTED")
-  //   const handleFileInput = () => {
-  //     // console.log(acceptedFiles[0], "ACCEPTED")
-  //     console.log(inputRef.current.files[0])
-  //     // if (!inputRef.current.files[0]) return
-  //     const picture = inputRef.current.files[0]
-  //     previewPicture(picture)
-  //   }
-
-  //   const previewPicture = (picture) => {
-  //     const reader = new FileReader()
-  //     reader.readAsDataURL(picture)
-  //     reader.onloadend = () => {
-  //       setPreviewSource(reader.result)
-  //     }
-  //   }
-
-  const handleSubmitPicture = (e) => {
-    // e.preventDefault()
-    console.log("running", previewSource)
+  const handleSubmitPicture = () => {
     if (!previewSource) return
     uploadImage(previewSource)
   }
 
   const uploadImage = async (base64EncodedImage) => {
-    console.log("uploading pic")
     try {
-      const result = await axios.post("/api/profile-picture/upload", {
+      const result = await axios.post("/api/profile-picture/uploaad", {
         data: base64EncodedImage,
       })
-      console.log(result)
+      setuploadStatus({ success: true, message: result.data.message })
+      setPreviewSource(null)
+      setTimeout(() => {
+        setuploadStatus({
+          success: false,
+          message: "",
+        })
+      }, 3000)
     } catch (e) {
       console.log(e)
+      setuploadStatus({
+        success: false,
+        message: e.response.data.message || "Sorry something went wrong",
+      })
+      setTimeout(() => {
+        setuploadStatus({
+          success: false,
+          message: "",
+        })
+      }, 3000)
     }
   }
   return (
-    <div className='h-screen w-screen flex flex-col justify-start items-center '>
-      <div className=' flex flex-col justify-center  items center h-full w-screen xl:w-2/3 md:h-5/6 bg-white p-3'>
-        {/* <form onSubmit={handleSubmitPicture}>
-          <input
-            type='file'
-            name='image'
-            onChange={handleFileInput}
-            value={fileInputState}
-          />
-          <button type='submit' className='bg-fblue text-white font-bold p-4'>
-            Upload
-          </button>
-        </form> */}
-        <div
-          {...getRootProps({
-            // onDrop: () => handleFileInput(),
-          })}
-          className='h-1/2 flex justify-center items-center border-dashed border-4 border-black-600'>
-          <input
-            {...getInputProps({
-              //   onChange: () => handleFileInput(),
-            })}
-          />
-          <p>Drag 'n' drop some files here, or click to select files</p>
+    <div className='h-screen w-screen flex flex-col justify-around items-center p-5  lg:w-full'>
+      <div className=' flex flex-col justify-center  items-center h-full w-full lg:w-full md:h-4/6 bg-white '>
+        <div>
+          <h1 className='block uppercase text-gray-800 text-md font-bold mb-2'>
+            Upload your profile picture
+          </h1>
         </div>
-        {previewSource && (
-          <img src={previewSource} alt='chosen' className='h-1/3 w-1/3' />
-        )}
+
+        <div className='flex flex-col h-1/2 md:h-full w-full justify-around items-center '>
+          {uploadStatus.success ? (
+            <div className=' w-full md:w-3/4 bg-green-400 flex items-center p-5 font-bold '>
+              <CheckCircleIcon className='w-8 h-8' />
+              {uploadStatus.message}
+            </div>
+          ) : (
+            !uploadStatus.success &&
+            uploadStatus.message && (
+              <div className='w-full md:w-3/4 bg-red-400 flex items-center p-5 font-bold'>
+                <CheckCircleIcon className='w-8 h-8' />
+                {uploadStatus.message}
+              </div>
+            )
+          )}
+          <div
+            {...getRootProps()}
+            className=' h-full md:h-3/4 w-full md:w-3/4 flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-2'>
+            <input {...getInputProps()} />
+
+            {previewSource && (
+              <img
+                src={previewSource}
+                alt='chosen'
+                className='h-3/4 w-full md:w-3/4 p-4 object-scale-down'
+              />
+            )}
+            <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
+              {previewSource
+                ? "Click the Upload button to confrim"
+                : "Drag and drop some files here, or click to select files"}
+            </p>
+          </div>
+        </div>
         <button
           type='button'
           onClick={handleSubmitPicture}
-          className='bg-fblue text-white font-bold p-4'>
-          Upload
+          className=' flex justify-center bg-black text-white font-bold p-3 w-1/2 md:w-1/5 m-4'>
+          Upload <CloudUploadIcon className='w-7 h-7 ml-2' />
         </button>
-        <Image
+
+        {/* <Image
           cloudName='founderland'
           publicId='profile_pictures/zvtphvyq5eb9hdvswyph'
           width='100'
@@ -107,7 +119,22 @@ const SecondStep = () => {
             crop='thumb'
           />
           <Transformation radius='90' />
-        </Image>
+        </Image> */}
+
+        <div className='w-full flex justify-between pt-10'>
+          <button
+            type='button'
+            className='p-5 bg-fblue font-bold text-lg text-white shadow-lg '
+            onClick={() => previousStep()}>
+            Back
+          </button>
+          <button
+            type='button'
+            className='p-5 bg-fblue font-bold text-lg text-white shadow-lg '
+            onClick={() => nextStep()}>
+            Next
+          </button>
+        </div>
       </div>
     </div>
   )

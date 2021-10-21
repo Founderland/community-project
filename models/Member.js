@@ -33,10 +33,10 @@ const userSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, "Valid email address required"],
     required: "Email is required",
   },
-  hashed_password: { type: String },
+  password: { type: String },
   created: {
     type: Date,
-    default: Date.now,
+    default: Date.now(),
   },
   confirmed: { type: Date, default: null },
   lastUpdate: { type: Date },

@@ -15,7 +15,7 @@ const views = [
 ]
 
 const Community = () => {
-  const [token] = useState(localStorage.authToken)
+  const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [view, setView] = useState(0)
   const [notifications, setNotifications] = useState([
@@ -24,14 +24,15 @@ const Community = () => {
   ])
 
   useEffect(() => {
-    if (token) {
-      var decode = jwt.decode(token)
-      if (decode?.id && decode?.role) {
+    if (localStorage.authToken) {
+      setToken(localStorage.authToken)
+      const decode = jwt.decode(localStorage.authToken)
+      if (decode.id && decode.role) {
         setUser({
           id: decode.id,
           firstName: decode.firstName,
           lastName: decode.lastName,
-          avatar: decode.avatar,
+          email: decode.email,
           role: decode.role,
         })
       }
@@ -45,6 +46,7 @@ const Community = () => {
   const changeView = (view) => {
     setView(view)
   }
+  console.log(user)
   return (
     <UserContext.Provider
       value={{
@@ -58,8 +60,7 @@ const Community = () => {
         setNotifications,
         logout,
         token,
-      }}
-    >
+      }}>
       {user ? <Main /> : <Login />}
     </UserContext.Provider>
   )
