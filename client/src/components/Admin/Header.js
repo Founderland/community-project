@@ -38,7 +38,7 @@ const AdminHeader = () => {
         </div>
       </div>
       <div className="flex items-center space-x-8">
-        <Notifications />
+        {/* <Notifications /> */}
         <ProfileMenu />
       </div>
     </div>
