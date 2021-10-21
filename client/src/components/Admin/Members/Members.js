@@ -6,15 +6,13 @@ import ComponentModal from "../Widgets/ComponentModal"
 import MembersList from "./MembersList"
 import AddMember from "./AddMember"
 
-const classNames = (...classes) => {
-  return classes.filter(Boolean).join(" ")
-}
-
-const Members = ({ tab }) => {
+const Members = () => {
   const [reload, setReload] = useState(0)
   const [task, setTask] = useState(null)
-  const { setCModal } = useContext(AdminContext)
-  console.log(tab)
+  const { setCModal, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const classNames = (...classes) => {
+    return classes.filter(Boolean).join(" ")
+  }
   const handleTask = (task) => {
     setTask(task)
     setCModal(true)
@@ -23,7 +21,7 @@ const Members = ({ tab }) => {
   return (
     <div className="flex flex-col w-full bg-white  outline-none">
       {/* Tabs for Navigation */}
-      <Tab.Group defaultIndex={tab}>
+      <Tab.Group defaultIndex={selectedTab}>
         <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">
           <Tab
             className={({ selected }) =>
@@ -35,7 +33,7 @@ const Members = ({ tab }) => {
               )
             }
           >
-            Founders
+            <p onClick={() => setSelectedTab(0)}> Founders</p>
           </Tab>
           <Tab
             className={({ selected }) =>
@@ -47,7 +45,7 @@ const Members = ({ tab }) => {
               )
             }
           >
-            Investors
+            <p onClick={() => setSelectedTab(1)}>Investors</p>
           </Tab>
           <Tab
             className={({ selected }) =>
@@ -59,7 +57,7 @@ const Members = ({ tab }) => {
               )
             }
           >
-            Allies
+            <p onClick={() => setSelectedTab(2)}> Allies</p>
           </Tab>
         </Tab.List>
         <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>

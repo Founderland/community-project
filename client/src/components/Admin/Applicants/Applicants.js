@@ -1,23 +1,25 @@
 import { useParams } from "react-router-dom"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Tab } from "@headlessui/react"
 import ApplicantsList from "./ApplicantsList"
 import Application from "./Application"
+import AdminContext from "../../../contexts/Admin"
 
-const Applicants = ({ status, tab }) => {
+const Applicants = ({ status }) => {
   const [reload, setReload] = useState(0)
+  const { selectedTab, setSelectedTab } = useContext(AdminContext)
   const { id } = useParams()
   const classNames = (...classes) => {
     return classes.filter(Boolean).join(" ")
   }
   let { category } = useParams()
-
+  console.log(selectedTab)
   return (
     <div className="w-full flex flex-col ">
       {id ? (
         <Application />
       ) : (
-        <Tab.Group defaultIndex={tab}>
+        <Tab.Group defaultIndex={selectedTab}>
           <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">
             <Tab
               className={({ selected }) =>
@@ -29,7 +31,7 @@ const Applicants = ({ status, tab }) => {
                 )
               }
             >
-              Founders
+              <p onClick={() => setSelectedTab(1)}>Founders</p>
             </Tab>
             <Tab
               className={({ selected }) =>
@@ -41,7 +43,7 @@ const Applicants = ({ status, tab }) => {
                 )
               }
             >
-              Investors
+              <p onClick={() => setSelectedTab(1)}>Investors</p>
             </Tab>
             <Tab
               className={({ selected }) =>
@@ -53,10 +55,10 @@ const Applicants = ({ status, tab }) => {
                 )
               }
             >
-              Allies
+              <p onClick={() => setSelectedTab(1)}> Allies</p>
             </Tab>
           </Tab.List>
-          {/* <div className=' '>Founders Response</div> */}
+          <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
           <Tab.Panels className="mt-6 bg-white outline-none">
             <Tab.Panel className="p-3 outline-none ">
               <ApplicantsList

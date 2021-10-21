@@ -7,13 +7,7 @@ const Profile = () => {
   return (
     <div className="w-full pt-4">
       <div className="relative bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-        <div className="flex justify-center items-center">
-          <img
-            className="h-20 w-20 rounded-full border-2 border-fblue object-cover absolute -top-20"
-            src={user.avatar}
-            alt={user.name}
-          />
-        </div>
+        <div className="flex justify-center items-center">Avatar</div>
         <div className="-mx-3 md:flex mb-6">
           <div className="md:w-1/2 px-3 mb-6 md:mb-0">
             <label

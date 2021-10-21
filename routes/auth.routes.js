@@ -1,6 +1,7 @@
 const authRouter = require("express").Router()
 const authController = require("../controllers/auth")
 const passport = require("passport")
+const memberController = require("../controllers/member")
 
 // // Route to check if the user is logged in
 // authRouter.get("/verify", isUser, (req, res) => {
@@ -32,6 +33,13 @@ const passport = require("passport")
 authRouter.post(
   "/login",
   passport.authenticate("local", { session: false }),
+  authController.authorizeUser
+)
+
+authRouter.post(
+  "/signup",
+  passport.authenticate("jwt", { session: false }),
+  memberController.confirmUser,
   authController.authorizeUser
 )
 

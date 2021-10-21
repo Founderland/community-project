@@ -101,7 +101,7 @@ const findResponseById = async (req, res) => {
 }
 
 const editResponse = async (req, res) => {
-  const { id, score } = req.params
+  const { id } = req.params
   try {
     const updated = await Response.findByIdAndUpdate(id, {
       totalScore: score,

@@ -56,7 +56,7 @@ const Pagination = ({ pageCount, currentPage, setPage }) => {
             ) : (
               <button
                 onClick={() => setPage(item - 1)}
-                className={`w-10 text-lg text-grotesk justify-center items-center cursor-pointer transition duration-150 ease-in border-t-2 ${
+                className={`w-10 text-lg text-grotesk justify-center items-center cursor-pointer transition duration-150 ease-in border-t-2 hover:text-fred ${
                   currentPage + 1 === item
                     ? "border-fred flex"
                     : "border-transparent md:flex hidden  "

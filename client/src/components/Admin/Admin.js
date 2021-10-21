@@ -25,11 +25,11 @@ const views = {
 }
 const Admin = () => {
   const history = useHistory()
-  const path = useRouteMatch()
+  const { path } = useRouteMatch()
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
-  const [selectTab, setSelectTab] = useState(0)
+  const [selectedTab, setSelectedTab] = useState(0)
   const [modalMessage, setModalMessage] = useState({
     icon: "",
     title: "",
@@ -48,7 +48,7 @@ const Admin = () => {
   useEffect(() => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
-      var decode = jwt.decode(localStorage.authToken)
+      const decode = jwt.decode(localStorage.authToken)
       if (decode.id && decode.role) {
         setUser({
           id: decode.id,
@@ -76,8 +76,8 @@ const Admin = () => {
         setUser,
         setMenuToggle,
         views,
-        selectTab,
-        setSelectTab,
+        selectedTab,
+        setSelectedTab,
         modalMessage,
         setModalMessage,
         iModal,
@@ -94,8 +94,7 @@ const Admin = () => {
         setMemberType,
         status,
         setStatus,
-      }}
-    >
+      }}>
       <InfoModal />
       {user ? <Main /> : <Login />}
     </AdminContext.Provider>

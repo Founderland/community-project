@@ -12,7 +12,7 @@ import {
   applicants,
   members,
 } from "../_DummyData"
-const membersAPI = "/api/users/community/"
+const membersAPI = "/api/users/community/members/"
 const styles = {
   new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
   pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
@@ -69,7 +69,7 @@ const AdminDashboard = () => {
         const data = {
           label: "Founders",
           value: res.data.data.length,
-          change: "4 new",
+          change: "2 new",
         }
         setFoundersWidget(data)
         setLoadingF(false)
@@ -81,6 +81,7 @@ const AdminDashboard = () => {
     axios
       .get(membersAPI + "investor", config)
       .then((res) => {
+        console.log(res)
         const data = {
           label: "Investors",
           value: res.data.data.length,
@@ -113,20 +114,20 @@ const AdminDashboard = () => {
         <CompactWidget loading={loadingI} data={investorsWidget} />
         <CompactWidget loading={loadingA} data={alliesWidget} />
       </div>
-      <div className=" md:flex w-full">
+      <div className=" w-full hidden">
         <CompactWidget data={approved} />
         <CompactWidget data={rejected} />
       </div>
       <div className="md:flex w-full">
         <ListWidget
-          title="Pending Final Review"
+          title="Latest Pending Applicants"
           data={listData}
           showing={5}
           styles={styles}
           link="applicants/id/"
         />
       </div>
-      <div className="md:flex w-full justify-around">
+      <div className="w-full justify-around hidden">
         <div className="h-40 w-1/2">
           <ChartWidget data={members} />
         </div>

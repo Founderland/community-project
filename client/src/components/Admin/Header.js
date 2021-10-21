@@ -7,7 +7,7 @@ import { useParams, useHistory } from "react-router"
 import { ChevronLeftIcon } from "@heroicons/react/outline"
 
 const AdminHeader = () => {
-  let { view, category } = useParams()
+  let { view, category, id } = useParams()
   const { views, setMenuToggle } = useContext(AdminContext)
   const history = useHistory()
   return (
@@ -21,11 +21,7 @@ const AdminHeader = () => {
         </button>
         <div>
           <h1 className="text-lg sm:text-2xl font-medium text-mono text-gray-800">
-            {!views[view].categories ? (
-              views[view].name
-            ) : category !== "id" ? (
-              views[view].categories[category].name
-            ) : (
+            {category === "id" ? (
               <button
                 onClick={() => history.goBack()}
                 className="flex justify-center items-center bg-fblue text-gray-200 px-8 py-2 space-x-2 shadow-lg m-2 transition duration-200 hover:bg-fblue-900 hover:text-white"
@@ -33,12 +29,16 @@ const AdminHeader = () => {
                 <ChevronLeftIcon className="w-4 h-4" />
                 <p className="text-mono text-sm">Back</p>
               </button>
+            ) : !views[view].categories ? (
+              views[view].name
+            ) : (
+              views[view].categories[category].name
             )}
           </h1>
         </div>
       </div>
       <div className="flex items-center space-x-8">
-        <Notifications />
+        {/* <Notifications /> */}
         <ProfileMenu />
       </div>
     </div>
