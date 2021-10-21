@@ -7,9 +7,11 @@ import { ReactComponent as LogoLines } from "../../assets/line.svg"
 import { ReactComponent as SmallLogo } from "../../assets/small.svg"
 import gifLogo from "../../assets/images/Logo-Transform.gif"
 import banner from "../../assets/images/banner_black.png"
+import founder from "../../assets/images/founder-laptop.jpg"
 import StepWizard from "react-step-wizard"
 import FirstStep from "./FirstStep"
 import SecondStep from "./SecondStep"
+import ThirdStep from "./ThirdStep"
 
 const signUpURL = "/api/auth/signup"
 const getProfileURL = "/api/users/community/profile"
@@ -17,11 +19,13 @@ const getProfileURL = "/api/users/community/profile"
 const SignUp = () => {
   let history = useHistory()
   const { token } = useParams()
+  const [firstName, setFirstName] = useState("")
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
     title: "",
     city: "",
+    country: "",
     email: "",
     geoLocation: "",
     about: "",
@@ -82,47 +86,45 @@ const SignUp = () => {
   }, [token])
 
   //submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (data.password.length && data.confirmPassword.length) {
-      setLoading(true)
-      try {
-        //receive new login token and forward to community app
-        const { data } = await axios.post(signUpURL, data, config)
-        if (data.access_token) {
-          localStorage.setItem("authToken", data.access_token)
-          //redirect to community
-          history.push("/community")
-        } else {
-          setLoading(false)
-          throw new Error({
-            response: {
-              status: 500,
-              message: "Sorry, something went wrong",
-            },
-          })
-        }
-      } catch (err) {
+  const handleSubmit = async () => {
+    // e.preventDefault()
+    // if (data.password.length && data.confirmPassword.length) {
+    setLoading(true)
+    try {
+      //receive new login token and forward to community app
+      const { data: res } = await axios.post(signUpURL, data, config)
+      setLoading(false)
+      if (res.access_token) {
+        localStorage.setItem("authToken", res.access_token)
+        //redirect to community
+        history.push("/community")
+      } else {
         setLoading(false)
-        setError(
-          err?.response?.status === 401
-            ? "Invalid token"
-            : "Sorry, something went wrong"
-        )
-        setTimeout(() => {
-          setError("")
-        }, 5000)
+        throw new Error({
+          response: {
+            status: 500,
+            message: "Sorry, something went wrong",
+          },
+        })
       }
-    } else {
-      setError("Please fill in all required fields")
+    } catch (err) {
+      console.log(err.message)
+      setLoading(false)
+      setError(
+        err?.response?.status === 401
+          ? "Invalid token"
+          : "Sorry, something went wrong"
+      )
       setTimeout(() => {
         setError("")
-      }, 6000)
+      }, 5000)
     }
-  }
-
-  const handleChange = (value, where) => {
-    setData({ ...data, [where]: value })
+    // } else {
+    //   setError("Please fill in all required fields")
+    //   setTimeout(() => {
+    //     setError("")
+    //   }, 6000)
+    // }
   }
 
   //Render form with data from database
@@ -132,11 +134,9 @@ const SignUp = () => {
     return (
       <div className='h-screen w-screen flex items-center justify-center'>
         <div className='flex flex-col items-center justify-center w-screen  h-1/4 '>
-          <h1 className='text-grotesk text-xl lg:text-4xl text-center font-bold'>
-            Welcome to the Founderland Community
+          <h1 className='text-hanson text-xl md:text-4xl lg:text-7xl lg:text-4xl text-center w-3/5'>
+            WELCOME TO OUR COMMUNITY
           </h1>
-
-          {/* <LogoLines className='' /> */}
           <img src={gifLogo} alt='founderland logo' />
         </div>
       </div>
@@ -150,20 +150,27 @@ const SignUp = () => {
   //FINISH STEP TO SAVE AND FINAL MESSAGE BEFORE REDIRECT TO COMMUNITY
 
   return (
-    <div className='h-screen'>
-      {/* <div style={{ backgroundImage: banner }} className='w-full h-full'> */}
-
-      {/* </div> */}
-
-      <div className='w-full h-full hidden md:flex flex-col justify-end items-start h-full  w-full  md:h-1/6 xl:h-1/4 md:bg-banner bg-cover bg-no-repeat bg-top  '></div>
-      <LogoLines className=' md:hidden' />
-      <StepWizard
-        initialStep={1}
-        // onStepChange={(res) => getActiveStep(res.activeStep)}
-        className=' '>
-        <FirstStep data={data} setData={setData} />
-        <SecondStep />
+    <div className='h-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
+      <LogoLines className='w-full h-1/5 lg:hidden' />
+      <div className='hidden lg:flex h-full w-1/3 z-30'>
+        <img
+          src={founder}
+          className='h-full w-full object-cover filter blur-sm '
+        />
+      </div>
+      <StepWizard initialStep={1} className='h-3/5 w-full lg:h-full w-2/3 p-3'>
+        <FirstStep data={data} setData={setData} className='overflow-hidden' />
+        <SecondStep data={data} setData={setData} />
+        <ThirdStep data={data} setData={setData} handleSubmit={handleSubmit} />
       </StepWizard>
+
+      {/* {/* <div className=''>
+        <img
+          src={banner}
+          // style={{ height: "250px" }}
+          alt='founderland banner'
+          className=' w-full md:h-1/2 object-scale-down md:object-cover object-bottom md:object-top'></img>
+      </div> */}
     </div>
   )
   // !showForm ? (

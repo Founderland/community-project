@@ -9,13 +9,13 @@ const authenticateUser = async (username, password, done) => {
   try {
     // Check that user exists by email
     const user = await User.findOne({ email: username })
-    if (user && (await bcrypt.compare(password, user.hashedPassword))) {
-      delete user.hashedPassword
+    if (user && (await bcrypt.compare(password, user.password))) {
+      delete user.password
       done(null, user, { message: "Successful" })
     } else {
-      user = await Member.findOne({ email: username })
-      if (user && (await bcrypt.compare(password, user.hashedPassword))) {
-        delete user.hashedPassword
+      const user = await Member.findOne({ email: username })
+      if (user && (await bcrypt.compare(password, user.password))) {
+        delete user.password
         done(null, user, { message: "Successful" })
       } else {
         done(null, false, { message: "Wrong Credentials" })
@@ -51,7 +51,8 @@ const isAuthorized = async (payload, done) => {
 
 const authorizeUser = async (req, res) => {
   //CAN BE USED TO PROVIDED TOKENS BOTH TO COMMUNITY AND ADMIN - BUT PAYLOAD MIGHT BE DIFFERENT
-  if (req.user.id) {
+
+  if (req.user._id) {
     let payload = {}
     //MAKE A DIFFERENTE PAYLOAD FOR COMMUNITY
     if (req.user.avatar) {
@@ -69,6 +70,7 @@ const authorizeUser = async (req, res) => {
         firstName: req.user.firstName,
         lastName: req.user.lastName,
         email: req.user.email,
+        role: req.user.role,
       }
     }
     const token = jwt.sign(payload, process.env.JWT_SECRET, {

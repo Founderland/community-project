@@ -48,7 +48,7 @@ const Admin = () => {
   useEffect(() => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
-      var decode = jwt.decode(localStorage.authToken)
+      const decode = jwt.decode(localStorage.authToken)
       if (decode.id && decode.role) {
         setUser({
           id: decode.id,
@@ -94,8 +94,7 @@ const Admin = () => {
         setMemberType,
         status,
         setStatus,
-      }}
-    >
+      }}>
       <InfoModal />
       {user ? <Main /> : <Login />}
     </AdminContext.Provider>

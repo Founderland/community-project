@@ -1,8 +1,10 @@
+require("dotenv").config()
 const { validationResult } = require("express-validator")
 const Member = require("../models/Member")
 const Response = require("../models/Response")
 
 const { generateHashedPassword, calculateToken } = require("../helpers/user")
+const jwt = require("jsonwebtoken")
 
 const findAll = async (req, res) => {
   const { role } = req.params
@@ -40,7 +42,6 @@ const addMember = async (req, res, next) => {
     lastName,
     title,
     email,
-    businessArea,
     city,
     country,
     role,
@@ -58,7 +59,6 @@ const addMember = async (req, res, next) => {
       lastName,
       title,
       email,
-      businessArea,
       city,
       country,
       role,
@@ -121,18 +121,12 @@ const confirmUser = async (req, res, next) => {
     businessArea,
     geoLocation,
     photo,
-    registrationToken,
     about,
   } = req.body
   try {
     if (!errorsAfterValidation.isEmpty()) {
       await Promise.reject("VALIDATION_FAILED")
     }
-    const decoded = jwt.verify(registrationToken, process.env.JWT_KEY)
-    if (!decoded.id) req.userData = decoded
-
-    const user = await Member.findOne({ registrationToken })
-    if (!user) await Promise.reject("INVALID_TOKEN")
     const data = {
       firstName,
       lastName,
@@ -142,16 +136,23 @@ const confirmUser = async (req, res, next) => {
       geoLocation,
       photo,
       password: generateHashedPassword(password),
-      confirmed: Date.now,
-      lastUpdate: Date.now,
+      confirmed: Date.now(),
+      lastUpdate: Date.now(),
       about,
     }
-    const updateUser = await Member.findOneAndUpdate({}, data, {
-      new: true,
-    })
+    const updateUser = await Member.findOneAndUpdate(
+      { _id: req.user.id },
+      data,
+      {
+        new: true,
+      }
+    )
     //AFTER IT COMPLETES; IT NEEDS TO AUTHORIZE USER
-    if (updateUser) res.status(200).json({ success: 1, message: "User saved" })
+    if (!updateUser) await Promise.reject("UPDATE_FAILED")
+
+    return next()
   } catch (e) {
+    console.log(e)
     if (e === "USER_EXISTS_ALREADY") {
       res.status(403).json({
         error: 403,
@@ -166,6 +167,11 @@ const confirmUser = async (req, res, next) => {
       res.status(401).json({
         error: 401,
         message: "Unauthorized, invalid token",
+      })
+    } else if (e === "UPDATE_FAILED") {
+      res.status(400).json({
+        error: 400,
+        message: "User update failed",
       })
     } else {
       res.status(500).json({
