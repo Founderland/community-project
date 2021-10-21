@@ -12,6 +12,11 @@ const responseSchema = new mongoose.Schema({
     default: "new",
     required: true,
   },
+  memberId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Members",
+    default: null,
+  },
   role: {
     type: String,
     enum: ["founder", "investor", "ally", "newsletter"],

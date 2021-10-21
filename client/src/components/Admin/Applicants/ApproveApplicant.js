@@ -1,14 +1,24 @@
 import axios from "axios"
 import { useState, useContext } from "react"
+import { useHistory } from "react-router-dom"
 import AdminContext from "../../../contexts/Admin"
 import { Switch } from "@headlessui/react"
 import { CheckIcon } from "@heroicons/react/outline"
+import Banner from "../Widgets/Banner"
 
 const approveURL = "/api/applicants/response/approve/"
 
 const ApproveApplicant = ({ data, reload, setReload, role }) => {
   const [saving, setSaving] = useState(false)
   const [notify, setNotify] = useState(false)
+  const history = useHistory()
+
+  const [result, setResult] = useState({
+    success: null,
+    show: false,
+    error: null,
+    message: null,
+  })
   const { setCModal, token } = useContext(AdminContext)
   const config = {
     headers: {
@@ -21,26 +31,70 @@ const ApproveApplicant = ({ data, reload, setReload, role }) => {
   }
   const save = async () => {
     setSaving(true)
-    data.data.status = "approved"
-    console.log(data)
-    const result = await axios.put(
-      approveURL + data.data._id,
-      data.data,
-      config
-    )
+    const updateData = {
+      firstName: data.data.firstName,
+      lastName: data.data.lastName,
+      title: data.data.answerData.filter((item) =>
+        item.question.includes("Title")
+      )[0].answer_value,
+      email: data.data.answerData.filter((item) =>
+        item.question.includes("Email")
+      )[0].answer_value,
+      businessArea: "",
+      city: data.data.answerData
+        .filter((item) => item.question.includes("City"))[0]
+        .answer_value.split(",")[0],
+      country: data.data.answerData
+        .filter((item) => item.question.includes("City"))[0]
+        .answer_value.split(",")[0],
+      role: data.data.role,
+      connect: notify,
+      applicationId: data.data._id,
+      status: "approved",
+    }
     try {
-      if (result) {
-        console.log(result)
+      const result = await axios.put(approveURL, updateData, config)
+      if (result.data.success) {
+        setSaving(false)
+        setResult({
+          success: 1,
+          show: true,
+          message: `User saved ${notify ? "and notified" : ""}! redirecting..`,
+        })
+        setTimeout(() => {
+          setResult({ ...result, show: false })
+          history.push("/admin/members")
+        }, 3000)
       } else {
-        throw new Error("Sorry, something went wrong")
+        throw new Error("Sorry, something went wrong while saving")
       }
     } catch (e) {
-      console.log(e)
+      console.log(e.response.status)
+      setSaving(false)
+      if (e?.response.status === 403) {
+        setResult({
+          error: 1,
+          show: true,
+          message: "Email already exists as Member",
+        })
+      } else {
+        setResult({
+          error: 1,
+          show: true,
+          message: e.message,
+        })
+      }
+      setTimeout(() => {
+        setResult({ ...result, show: false })
+      }, 3000)
     }
   }
 
   return (
     <div className="bg-white px-8 pt-8 pb-4 flex rounded flex-col w-full shadow-lg">
+      <div className="w-full flex justify-center items-center">
+        <Banner result={result} />
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2 flex flex-col justify-center items-center">

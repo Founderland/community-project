@@ -4,7 +4,7 @@ import {
   ExclamationCircleIcon,
 } from "@heroicons/react/outline"
 
-const SubmitResponse = ({ result }) => {
+const Banner = ({ result }) => {
   return (
     <Transition
       show={result.show}
@@ -30,4 +30,4 @@ const SubmitResponse = ({ result }) => {
   )
 }
 
-export default SubmitResponse
+export default Banner

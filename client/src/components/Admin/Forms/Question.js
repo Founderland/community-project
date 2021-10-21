@@ -6,7 +6,7 @@ import FormPreview from "./FormPreview"
 import { EyeIcon, TrashIcon } from "@heroicons/react/outline"
 import ListOption from "../Widgets/ListOption"
 import AdminContext from "../../../contexts/Admin"
-import SubmitResponse from "./SubmitResponse"
+import Banner from "../Widgets/Banner"
 
 const defaultQuestion = {
   category: "About You",
@@ -196,7 +196,7 @@ const Question = ({ role }) => {
       ref={mainDiv}
       className="relative py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6 flex justify-center"
     >
-      <SubmitResponse result={result} />
+      <Banner result={result} />
       <div className="w-full flex flex-col justify-center items-center bg-white p-4 shadow-md ">
         <h1 className="font-bold p-3 text-xl text-mono">
           {id !== "new" ? "Edit" : "Add new"} Question

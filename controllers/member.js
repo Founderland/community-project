@@ -1,5 +1,7 @@
 const { validationResult } = require("express-validator")
 const Member = require("../models/Member")
+const Response = require("../models/Response")
+
 const { generateHashedPassword, calculateToken } = require("../helpers/user")
 
 const findAll = async (req, res) => {
@@ -64,6 +66,18 @@ const addMember = async (req, res, next) => {
     const newMember = await Member.create(data)
     if (newMember) {
       req.newMember = newMember
+      if (applicationId !== "") {
+        const updated = await Response.findByIdAndUpdate(
+          { _id: applicationId },
+          {
+            status: "approved",
+            memberId: newMember._id,
+            evaluatedOn: Date.now(),
+          }
+        )
+        if (!updated) await Promise.reject("NOT_FOUND")
+      }
+
       if (connect) {
         return next()
       } else {
@@ -80,6 +94,11 @@ const addMember = async (req, res, next) => {
       res.status(400).json({
         error: 400,
         message: errorsAfterValidation.mapped(),
+      })
+    } else if (e.message === "NOT_FOUND") {
+      res.status(400).json({
+        error: 400,
+        message: "Member created but response failed to updateå",
       })
     } else {
       res.status(500).json({
