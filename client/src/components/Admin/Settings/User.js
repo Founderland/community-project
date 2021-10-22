@@ -27,7 +27,7 @@ const roles = [
 
 const addUserURL = "/api/users/add"
 
-const AddUser = ({ reload, setReload }) => {
+const User = ({ reload, setReload }) => {
   const history = useHistory()
   const [avatar, setAvatar] = useState(avatarColors[0])
   const [firstName, setFirstName] = useState("")
@@ -52,8 +52,8 @@ const AddUser = ({ reload, setReload }) => {
     const data = { firstName, lastName, email, password, role, avatar }
     if (Object.values(data).every((value) => value.length > 0)) {
       if (password !== confirmPassword) {
-        setBanner({ error: 1, show: true, message: "Password do not match!" })
         setSaving(false)
+        setBanner({ error: 1, show: true, message: "Password do not match!" })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
         }, 3000)
@@ -61,21 +61,23 @@ const AddUser = ({ reload, setReload }) => {
         axios
           .post(addUserURL, data, config)
           .then((res) => {
+            console.log(res)
             if (res.data.success) {
               setSaving(false)
+              setReload(reload + 1)
               setBanner({
                 success: 1,
                 show: true,
                 message: "User saved! redirecting..",
               })
-              setReload(reload + 1)
               setTimeout(() => {
-                setBanner({ ...banner, show: false })
+                setBanner((prev) => ({ ...prev, show: false }))
                 history.goBack()
               }, 3000)
             }
           })
           .catch((err) => {
+            console.log(err)
             setSaving(false)
             setBanner({
               error: 1,
@@ -83,7 +85,7 @@ const AddUser = ({ reload, setReload }) => {
               message: "Sorry, something went wrong",
             })
             setTimeout(() => {
-              setBanner({ ...banner, show: false })
+              setBanner((prev) => ({ ...prev, show: false }))
             }, 3000)
           })
       }
@@ -105,7 +107,6 @@ const AddUser = ({ reload, setReload }) => {
     initials += lastName.length ? lastName[0].toUpperCase() : ""
     return initials
   }
-  console.log(banner)
   return (
     <div className="bg-white p-8 flex rounded flex-col w-full shadow-lg">
       <div className="w-full flex items-center justify-center z-20">
@@ -257,4 +258,4 @@ const AddUser = ({ reload, setReload }) => {
   )
 }
 
-export default AddUser
+export default User

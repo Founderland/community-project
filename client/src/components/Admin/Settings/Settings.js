@@ -5,8 +5,7 @@ import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
 import ListWidget from "../Widgets/ListWidget"
 import Loading from "../Widgets/Loading"
-import ComponentModal from "../Widgets/ComponentModal"
-import AddUser from "./AddUser"
+import User from "./User"
 import Profile from "./Profile"
 import moment from "moment"
 import { useHistory, useParams } from "react-router"
@@ -113,7 +112,7 @@ const Settings = () => {
           </Tab>
         </Tab.List>
         {id ? (
-          <AddUser />
+          <User reload={reload} setReload={setReload} />
         ) : (
           <>
             <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
@@ -144,8 +143,8 @@ const Settings = () => {
               ) : (
                 ""
               )}
-              <Tab.Panel classname="p-3 outline-none">
-                {!loading && <Profile />}
+              <Tab.Panel classname="z-0 h-full p-3 outline-none">
+                <Profile />
               </Tab.Panel>
             </Tab.Panels>
           </>
