@@ -129,22 +129,24 @@ const Settings = () => {
             <Tab.Panel classname="p-3 outline-none">
               {loading && <Loading />}
               {!loading && (
-                <div className="w-full px-4 outline-none">
-                  <ListWidget
-                    title=""
-                    data={data}
-                    showing={10}
-                    styles={styles}
-                    cellAlignment={"justify-center"}
-                  />
-                  <button
-                    className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                    onClick={() => handleTask("addUser")}
-                  >
-                    <UserAddIcon className="h-5 w-5" />
-                    <p className="text-mono text-sm">Add user</p>
-                  </button>
-                </div>
+                <>
+                  <div className="w-full px-4 outline-none">
+                    <ListWidget
+                      title=""
+                      data={data}
+                      showing={10}
+                      styles={styles}
+                      cellAlignment={"justify-center"}
+                    />
+                    <button
+                      className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                      onClick={() => handleTask("addUser")}
+                    >
+                      <UserAddIcon className="h-5 w-5" />
+                      <p className="text-mono text-sm">Add user</p>
+                    </button>
+                  </div>
+                </>
               )}
             </Tab.Panel>
           ) : (
@@ -155,12 +157,6 @@ const Settings = () => {
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-      {/* Data to display */}
-      <ComponentModal>
-        {task === "addUser" && (
-          <AddUser setReload={setReload} reload={reload} />
-        )}
-      </ComponentModal>
     </div>
   )
 }

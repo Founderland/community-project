@@ -5,9 +5,10 @@ import {
 } from "@heroicons/react/outline"
 
 const Banner = ({ result }) => {
+  let show = result.show ? result.show : false
   return (
     <Transition
-      show={result.show}
+      show={show}
       enter="transition ease-in-out duration-300 transform"
       enterFrom="-translate-y-full opacity-0"
       enterTo="opacity-100 translate-y-0"
