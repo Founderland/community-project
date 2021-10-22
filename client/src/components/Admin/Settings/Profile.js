@@ -31,7 +31,7 @@ const Profile = () => {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [saving, setSaving] = useState(false)
-  const [result, setResult] = useState({})
+  const [banner, setBanner] = useState({})
   const config = useMemo(() => {
     return {
       headers: {
@@ -48,7 +48,15 @@ const Profile = () => {
         setEmail(res.data.data.email)
       })
       .catch((err) => {
-        console.log(err)
+        setSaving(false)
+        setBanner({
+          error: 1,
+          show: true,
+          message: "Error getting profile data!",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 3000)
       })
   }, [])
 
@@ -63,10 +71,10 @@ const Profile = () => {
       if (password === confirmPassword) {
         updateData.password = password
       } else {
-        setResult({ error: 1, show: true, message: "Password do not match!" })
+        setBanner({ error: 1, show: true, message: "Password do not match!" })
         setSaving(false)
         setTimeout(() => {
-          setResult({ ...result, show: false })
+          setBanner((prev) => ({ ...prev, show: false }))
         }, 3000)
       }
     }
@@ -80,7 +88,7 @@ const Profile = () => {
     <div className="w-full">
       <div className="relative bg-white shadow-md rounded px-8 pt-4 pb-8 mb-4 flex flex-col my-2">
         <div className="w-full flex items-center justify-center z-20">
-          <Banner result={result} />
+          <Banner message={banner} />
         </div>
         <div className="w-full px-3 flex items-center justify-center mb-2">
           <Popover className="relative group">

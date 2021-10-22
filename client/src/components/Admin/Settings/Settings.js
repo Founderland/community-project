@@ -9,38 +9,34 @@ import ComponentModal from "../Widgets/ComponentModal"
 import AddUser from "./AddUser"
 import Profile from "./Profile"
 import moment from "moment"
+import { useHistory, useParams } from "react-router"
+
+const classNames = (...classes) => {
+  return classes.filter(Boolean).join(" ")
+}
+
+const usersAPI = "/api/users/all"
+
+const styles = {
+  new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
+  pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
+  reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
+  founder:
+    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
+  investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
+  ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  admin: "bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
+}
 
 const Settings = () => {
-  const classNames = (...classes) => {
-    return classes.filter(Boolean).join(" ")
-  }
-  const usersAPI = "/api/users/all"
-  const styles = {
-    new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
-    pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
-    reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
-    founder:
-      "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
-    investor:
-      "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
-    ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
-    sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
-    admin: "bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs",
-    user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  }
+  const history = useHistory()
+  const { id } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(0)
-  const [task, setTask] = useState(null)
-  const {
-    user,
-    setIModal,
-    setModalMessage,
-    setCModal,
-    token,
-    selectedTab,
-    setSelectedTab,
-  } = useContext(AdminContext)
+  const { user, token, selectedTab, setSelectedTab } = useContext(AdminContext)
   const config = useMemo(() => {
     return {
       headers: {
@@ -55,7 +51,7 @@ const Settings = () => {
     axios
       .get(usersAPI, config)
       .then((res) => {
-        let result = {
+        let response = {
           header: [
             { title: "Name", key: "firstName", style: "" },
             { title: " ", key: "lastName", style: "" },
@@ -70,30 +66,23 @@ const Settings = () => {
             "DD/M/YYYY hh:mm"
           )
         })
-        result = { ...result, ...res.data }
-        setData(result)
+        response = { ...response, ...res.data }
+        setData(response)
         setLoading(false)
       })
       .catch((err) => {
-        setModalMessage({
-          icon: "info",
-          title: "Error loading the database set",
-          message: "Sorry, something went wrong",
-        })
-        setIModal(true)
+        console.log(err)
       })
-  }, [reload, setIModal, setModalMessage, config])
-
-  const handleTask = (task) => {
-    setTask(task)
-    setCModal(true)
-  }
+  }, [reload])
 
   return (
     <div className="flex flex-col w-full">
-      {/* Tabs for Navigation */}
       <Tab.Group defaultIndex={selectedTab}>
-        <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none ">
+        <Tab.List
+          className={`flex p-1 space-x-1 bg-black max-w-lg outline-none ${
+            id ? "hidden" : ""
+          }`}
+        >
           {user.role === "sadmin" ? (
             <Tab
               className={({ selected }) =>
@@ -123,39 +112,44 @@ const Settings = () => {
             <p onClick={() => setSelectedTab(0)}>Profile</p>
           </Tab>
         </Tab.List>
-        <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
-        <Tab.Panels className="mt-6 bg-white outline-none">
-          {user.role === "sadmin" ? (
-            <Tab.Panel classname="p-3 outline-none">
-              {loading && <Loading />}
-              {!loading && (
-                <>
-                  <div className="w-full px-4 outline-none">
-                    <ListWidget
-                      title=""
-                      data={data}
-                      showing={10}
-                      styles={styles}
-                      cellAlignment={"justify-center"}
-                    />
-                    <button
-                      className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                      onClick={() => handleTask("addUser")}
-                    >
-                      <UserAddIcon className="h-5 w-5" />
-                      <p className="text-mono text-sm">Add user</p>
-                    </button>
-                  </div>
-                </>
+        {id ? (
+          <AddUser />
+        ) : (
+          <>
+            <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
+            <Tab.Panels className="mt-6 bg-white outline-none">
+              {user.role === "sadmin" ? (
+                <Tab.Panel classname="p-3 outline-none">
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <div className="w-full px-4 outline-none">
+                      <ListWidget
+                        title=""
+                        data={data}
+                        showing={10}
+                        styles={styles}
+                        cellAlignment={"justify-center"}
+                      />
+                      <button
+                        className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                        onClick={() => history.push("settings/id/new")}
+                      >
+                        <UserAddIcon className="h-5 w-5" />
+                        <p className="text-mono text-sm">Add user</p>
+                      </button>
+                    </div>
+                  )}
+                </Tab.Panel>
+              ) : (
+                ""
               )}
-            </Tab.Panel>
-          ) : (
-            ""
-          )}
-          <Tab.Panel classname="p-3 outline-none">
-            {!loading && <Profile />}
-          </Tab.Panel>
-        </Tab.Panels>
+              <Tab.Panel classname="p-3 outline-none">
+                {!loading && <Profile />}
+              </Tab.Panel>
+            </Tab.Panels>
+          </>
+        )}
       </Tab.Group>
     </div>
   )

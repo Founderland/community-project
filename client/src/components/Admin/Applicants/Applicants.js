@@ -13,7 +13,6 @@ const Applicants = ({ status }) => {
     return classes.filter(Boolean).join(" ")
   }
   let { category } = useParams()
-  console.log(selectedTab)
   return (
     <div className="w-full flex flex-col ">
       {id ? (
