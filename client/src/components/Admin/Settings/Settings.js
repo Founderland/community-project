@@ -9,10 +9,7 @@ import User from "./User"
 import Profile from "./Profile"
 import moment from "moment"
 import { useHistory, useParams } from "react-router"
-
-const classNames = (...classes) => {
-  return classes.filter(Boolean).join(" ")
-}
+import Tabs from "../Widgets/Tabs"
 
 const usersAPI = "/api/users/all"
 
@@ -36,6 +33,35 @@ const Settings = () => {
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(0)
   const { user, token, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const tabs = [
+    {
+      index: 0,
+      name: "Users",
+      component: (
+        <div className="w-full px-4 outline-none">
+          <ListWidget
+            title=""
+            data={data}
+            showing={10}
+            styles={styles}
+            cellAlignment={"justify-center"}
+          />
+          <button
+            className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+            onClick={() => history.push("settings/id/new")}
+          >
+            <UserAddIcon className="h-5 w-5" />
+            <p className="text-mono text-sm">Add user</p>
+          </button>
+        </div>
+      ),
+    },
+    {
+      index: 1,
+      name: "Profile",
+      component: <Profile />,
+    },
+  ]
   const config = useMemo(() => {
     return {
       headers: {
@@ -52,12 +78,12 @@ const Settings = () => {
       .then((res) => {
         let response = {
           header: [
-            { title: "Name", key: "firstName", style: "" },
-            { title: " ", key: "lastName", style: "" },
-            { title: "Email", key: "email", style: "" },
-            { title: "Role", key: "role", style: "sm:block hidden" },
-            { title: "Added on", key: "dateCreated", style: "" },
-            { title: "Actions", key: "-", style: "" },
+            { title: "Name", key: "firstName", style: "text-sm" },
+            { title: " ", key: "lastName", style: "text-sm" },
+            { title: "Email", key: "email", style: "text-sm" },
+            { title: "Role", key: "role", style: "text-sm sm:block hidden" },
+            { title: "Added on", key: "dateCreated", style: "text-sm" },
+            { title: "Actions", key: "-", style: "text-sm" },
           ],
         }
         res.data.data.forEach((element) => {
@@ -76,80 +102,14 @@ const Settings = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <Tab.Group defaultIndex={selectedTab}>
-        <Tab.List
-          className={`flex p-1 space-x-1 bg-black max-w-lg outline-none ${
-            id ? "hidden" : ""
-          }`}
-        >
-          {user.role === "sadmin" ? (
-            <Tab
-              className={({ selected }) =>
-                classNames(
-                  "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                  selected
-                    ? "font-bold bg-white shadow"
-                    : "text-white hover:bg-white hover:bg-opacity-20"
-                )
-              }
-            >
-              <p onClick={() => setSelectedTab(0)}>Users</p>
-            </Tab>
-          ) : (
-            ""
-          )}
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                selected
-                  ? "font-bold bg-white shadow"
-                  : "text-white hover:bg-white hover:bg-opacity-20"
-              )
-            }
-          >
-            <p onClick={() => setSelectedTab(0)}>Profile</p>
-          </Tab>
-        </Tab.List>
-        {id ? (
-          <User reload={reload} setReload={setReload} />
-        ) : (
-          <>
-            <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
-            <Tab.Panels className="mt-6 bg-white outline-none">
-              {user.role === "sadmin" ? (
-                <Tab.Panel classname="p-3 outline-none">
-                  {loading ? (
-                    <Loading />
-                  ) : (
-                    <div className="w-full px-4 outline-none">
-                      <ListWidget
-                        title=""
-                        data={data}
-                        showing={10}
-                        styles={styles}
-                        cellAlignment={"justify-center"}
-                      />
-                      <button
-                        className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                        onClick={() => history.push("settings/id/new")}
-                      >
-                        <UserAddIcon className="h-5 w-5" />
-                        <p className="text-mono text-sm">Add user</p>
-                      </button>
-                    </div>
-                  )}
-                </Tab.Panel>
-              ) : (
-                ""
-              )}
-              <Tab.Panel classname="z-0 h-full p-3 outline-none">
-                <Profile />
-              </Tab.Panel>
-            </Tab.Panels>
-          </>
-        )}
-      </Tab.Group>
+      <Tabs
+        tabs={tabs}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+      />
+      <tab className="flex justify-center bg-white outline-none md:border border-black py-2">
+        {loading ? <Loading /> : tabs[selectedTab].component}
+      </tab>
     </div>
   )
 }

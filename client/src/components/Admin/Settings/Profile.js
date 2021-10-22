@@ -62,8 +62,8 @@ const Profile = () => {
   }, [])
 
   const handleSubmit = (e) => {
-    console.log(e)
     e.preventDefautl()
+    save()
   }
   const save = () => {
     setSaving(true)
@@ -85,10 +85,9 @@ const Profile = () => {
     return initials
   }
 
-  console.log(profile.avatar)
   return (
-    <div className="w-full">
-      <div className="relative bg-white shadow-md rounded px-8 pt-4 pb-8 mb-4 flex flex-col my-2">
+    <div className="w-full md:w-5/6 lg:w-3/4">
+      <div className="relative bg-white px-8 pt-4 pb-8 mb-4 flex flex-col my-2">
         <form onSubmit={handleSubmit}>
           <div className="w-full flex items-center justify-center z-20">
             <Banner message={banner} />
@@ -142,7 +141,7 @@ const Profile = () => {
                 First Name
               </label>
               <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
+                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red py-3 px-4 mb-3"
                 id="first-name"
                 type="text"
                 value={profile.firstName}
@@ -159,7 +158,7 @@ const Profile = () => {
                 Last Name
               </label>
               <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4"
                 id="last-name"
                 type="text"
                 value={profile.lastName}
@@ -178,7 +177,7 @@ const Profile = () => {
                 Email
               </label>
               <input
-                className=" appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+                className=" appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
                 id="email"
                 type="text"
                 value={profile.email}
@@ -208,7 +207,7 @@ const Profile = () => {
                 Password
               </label>
               <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
                 id="password"
                 type="newpassword"
                 onChange={(e) =>
@@ -225,7 +224,7 @@ const Profile = () => {
                 Confirm Password
               </label>
               <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
                 id="password"
                 type="newpassword"
                 onChange={(e) =>
@@ -240,8 +239,9 @@ const Profile = () => {
           </div>
           <div className="-mx-3 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around -mb-3">
             {!profile.isVerified ? (
-              <button className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4">
-                Notify to verify email
+              <button className="flex items-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4">
+                <ShieldCheckIcon className="w-6 h-6" />
+                <p>Verify Email</p>
               </button>
             ) : (
               ""

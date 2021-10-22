@@ -8,13 +8,11 @@ const Main = () => {
   return (
     <Switch>
       <Route exact path={`${path}/:view/:category?/:id?/`}>
-        <div>
-          <div className="flex h-screen font-roboto">
-            <Menu />
-            <div className="flex-1 flex flex-col overflow-hidden">
-              <Header />
-              <Content />
-            </div>
+        <div className="flex h-screen">
+          <Menu />
+          <div className="w-full flex flex-col overflow-hidden">
+            <Header />
+            <Content />
           </div>
         </div>
       </Route>

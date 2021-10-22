@@ -11,7 +11,7 @@ const AdminHeader = () => {
   const { views, setMenuToggle } = useContext(AdminContext)
   const history = useHistory()
   return (
-    <div className="flex justify-between shadow items-center p-6 z-10">
+    <div className="flex justify-between items-center p-6 z-10">
       <div className="flex items-center space-x-4 lg:space-x-0">
         <button
           className="text-gray-800 focus:outline-none lg:hidden"
