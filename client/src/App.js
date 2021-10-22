@@ -18,23 +18,20 @@ function App() {
     <AnswersProvider>
       <CommunityProvider>
         <Router>
-          <Route exact path='/' component={Homepage} />
+          <Route exact path="/" component={Homepage} />
           <Route
             exact
-            path='/join-our-community'
+            path="/join-our-community"
             component={ApplicantsDispatcher}
           />
-          <Route exact path='/community' component={Community} />
-          <Route exact path='/signup/:token' component={SignUp} />
-          <Route exact path='/form/:memberType' component={Form} />
-          <Route exact path='/thankyou' component={Thankyou} />
-          <Route path='/admin' component={Admin} />
-          <Route exact path='/community/resources' component={ResourcesList} />
-          <Route
-            exact
-            path='/community/resources/:categoryPath'
-            component={ResourcesList}
-          />
+          <Route exact path="/community" component={Community} />
+
+          <Route exact path="/signup/:token" component={SignUp} />
+          <Route exact path="/form/:memberType" component={Form} />
+          <Route exact path="/thankyou" component={Thankyou} />
+          <Route path="/admin" component={Admin} />
+          {/* <Route exact path="/community/resources" component={ResourcesList} />
+        <Route exact path="/community/resources/:categoryPath" component={ResourcesList} /> */}
           {/* <Route exact path="/foundersrespone" component={FounderResponse} /> */}
           {/* <Route exact path="/admin/:memberType/addQuestion" component={AddQuestionForm } /> */}
         </Router>
