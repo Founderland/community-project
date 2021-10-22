@@ -10,6 +10,24 @@ const findAll = async (req, res) => {
     })
 }
 
+const findOne = async (req, res) => {
+  let { id } = req.params
+  if (id === "user") {
+    id = req.user.id
+  }
+  const profile = await User.findOne({ _id: id })
+  if (profile) {
+    profile["hashedPassword"] = ""
+    res.status(200).json({
+      data: profile,
+    })
+  } else {
+    res.status(404).json({
+      message: "Profile not found",
+    })
+  }
+}
+
 const addUser = async (req, res, next) => {
   const errorsAfterValidation = validationResult(req)
   const { firstName, lastName, email, password, role, avatar } = req.body
@@ -51,5 +69,6 @@ const addUser = async (req, res, next) => {
 
 module.exports = {
   findAll,
+  findOne,
   addUser,
 }
