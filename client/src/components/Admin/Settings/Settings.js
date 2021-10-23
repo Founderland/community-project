@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState, useMemo } from "react"
-import { Tab } from "@headlessui/react"
 import { UserAddIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
@@ -7,7 +6,6 @@ import ListWidget from "../Widgets/ListWidget"
 import Loading from "../Widgets/Loading"
 import User from "./User"
 import Profile from "./Profile"
-import moment from "moment"
 import { useHistory, useParams } from "react-router"
 import Tabs from "../Widgets/Tabs"
 
