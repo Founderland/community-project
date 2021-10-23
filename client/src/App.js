@@ -8,7 +8,7 @@ import Admin from "./components/Admin/Admin"
 // import FounderResponse from "./components/Forms/FounderResponse"
 import Community from "./components/Community/Community"
 import SignUp from "./components/Community/SignUp"
-import ResourcesList from "./components/Community/Resources/ResourcesList"
+// import ResourcesList from "./components/Community/Resources/ResourcesList"
 import CommunityProvider from "./contexts/CommunityProvider"
 
 // import AddQuestionForm from './components/Admin/AddQuestionForm'

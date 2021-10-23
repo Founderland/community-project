@@ -1,7 +1,7 @@
 import { MenuIcon } from "@heroicons/react/solid"
 import { useContext } from "react"
 import AdminContext from "../../contexts/Admin"
-import Notifications from "./Widgets/Notifications"
+// import Notifications from "./Widgets/Notifications"
 import ProfileMenu from "./ProfileMenu"
 import { useParams, useHistory } from "react-router"
 import { ChevronLeftIcon } from "@heroicons/react/outline"
@@ -10,6 +10,10 @@ const AdminHeader = () => {
   let { view, category, id } = useParams()
   const { views, setMenuToggle } = useContext(AdminContext)
   const history = useHistory()
+  console.log(history)
+  let back = ""
+  if (view === "applicants") back = "/admin/applicants/new"
+  else back = "/admin/" + view
   return (
     <div className="flex justify-between items-center p-6 z-10">
       <div className="flex items-center space-x-4 lg:space-x-0">
@@ -21,18 +25,18 @@ const AdminHeader = () => {
         </button>
         <div>
           <h1 className="text-lg sm:text-2xl font-medium text-mono text-gray-800">
-            {category === "id" ? (
+            {id ? (
               <button
-                onClick={() => history.goBack()}
+                onClick={() => history.push(back)}
                 className="flex justify-center items-center bg-fblue text-gray-200 px-8 py-2 space-x-2 shadow-lg m-2 transition duration-200 hover:bg-fblue-900 hover:text-white"
               >
                 <ChevronLeftIcon className="w-4 h-4" />
                 <p className="text-mono text-sm">Back</p>
               </button>
-            ) : !views[view].categories ? (
-              views[view].name
+            ) : !views[view]?.categories ? (
+              views[view]?.name
             ) : (
-              views[view].categories[category].name
+              views[view]?.categories[category]?.name
             )}
           </h1>
         </div>
