@@ -14,30 +14,26 @@ import Tabs from "../Widgets/Tabs"
 const usersAPI = "/api/users/all"
 
 const styles = {
-  new: "bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs",
-  pending: "bg-yellow-200 text-yellow-600 py-1 px-3 rounded-full text-xs",
-  reviewed: "bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs",
-  founder:
-    "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
-  investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
-  ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  sadmin: "bg-fred bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  admin: "bg-fblue bg-opacity-50 py-1 px-3 rounded-full text-xs",
-  user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
+  sadmin:
+    "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fred-700 bg-fred-100 border border-fred-300 bg-opacity-30",
+  admin:
+    "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fred-700 bg-fblue-100 border border-fblue-300 bg-opacity-30",
+  user: "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fpink-700 bg-fpink-100 border border-fpink-300 bg-opacity-30",
 }
 
 const Settings = () => {
   const history = useHistory()
   const { id } = useParams()
+  console.log(id)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(0)
-  const { user, token, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const { token, selectedTab, setSelectedTab } = useContext(AdminContext)
   const tabs = [
     {
       index: 0,
       name: "Users",
-      component: (
+      component: !id ? (
         <div className="w-full px-4 outline-none">
           <ListWidget
             title=""
@@ -54,6 +50,8 @@ const Settings = () => {
             <p className="text-mono text-sm">Add user</p>
           </button>
         </div>
+      ) : (
+        <User setReload={setReload} />
       ),
     },
     {
@@ -78,20 +76,18 @@ const Settings = () => {
       .then((res) => {
         let response = {
           header: [
-            { title: "Name", key: "firstName", style: "text-sm" },
-            { title: " ", key: "lastName", style: "text-sm" },
-            { title: "Email", key: "email", style: "text-sm" },
-            { title: "Role", key: "role", style: "text-sm sm:block hidden" },
-            { title: "Added on", key: "dateCreated", style: "text-sm" },
-            { title: "Actions", key: "-", style: "text-sm" },
+            { title: "Name", key: "firstName", style: "text-xs md:text-sm" },
+            { title: "", key: "lastName", style: "text-xs md:text-sm" },
+            { title: "Email", key: "email", style: "text-xs md:text-sm" },
+            {
+              title: "Role",
+              key: "role",
+              style: "text-xs md:text-sm sm:block hidden",
+            },
+            { title: "Actions", key: "-", style: "text-xs md:text-sm" },
           ],
+          ...res.data,
         }
-        res.data.data.forEach((element) => {
-          element.dateCreated = moment(element.dateCreated).format(
-            "DD/M/YYYY hh:mm"
-          )
-        })
-        response = { ...response, ...res.data }
         setData(response)
         setLoading(false)
       })
@@ -106,6 +102,7 @@ const Settings = () => {
         tabs={tabs}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
+        id={id}
       />
       <tab className="flex justify-center bg-white outline-none md:border border-black py-2">
         {loading ? <Loading /> : tabs[selectedTab].component}
