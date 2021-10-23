@@ -1,84 +1,62 @@
 import { useParams } from "react-router-dom"
-import { useState, useContext } from "react"
-import { Tab } from "@headlessui/react"
+import { useContext, useEffect } from "react"
 import ApplicantsList from "./ApplicantsList"
 import Application from "./Application"
 import AdminContext from "../../../contexts/Admin"
+import Tabs from "../Widgets/Tabs"
 
 const Applicants = ({ status }) => {
-  const [reload, setReload] = useState(0)
-  const { selectedTab, setSelectedTab } = useContext(AdminContext)
-  const { id } = useParams()
-  const classNames = (...classes) => {
-    return classes.filter(Boolean).join(" ")
-  }
-  let { category } = useParams()
+  const { selectedTab, setSelectedTab, reload } = useContext(AdminContext)
+  const { id, category } = useParams()
+  const tabs = [
+    {
+      index: 0,
+      name: "Founder",
+      role: "founder",
+      component: !id ? (
+        <div className="w-full px-4">
+          <ApplicantsList status={category} role="founder" reload={reload} />
+        </div>
+      ) : (
+        <Application />
+      ),
+    },
+    {
+      index: 1,
+      name: "Investor",
+      role: "investor",
+      component: !id ? (
+        <div className="w-full px-4 outline-none">
+          <ApplicantsList status={category} role="investor" reload={reload} />
+        </div>
+      ) : (
+        <Application />
+      ),
+    },
+    {
+      index: 2,
+      name: "Ally",
+      role: "ally",
+      component: !id ? (
+        <div className="w-full px-4 outline-none">
+          <ApplicantsList status={category} role="ally" reload={reload} />
+        </div>
+      ) : (
+        <Application />
+      ),
+    },
+  ]
   return (
     <div className="w-full flex flex-col ">
-      {id ? (
-        <Application />
-      ) : (
-        <Tab.Group defaultIndex={selectedTab}>
-          <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">
-            <Tab
-              className={({ selected }) =>
-                classNames(
-                  "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                  selected
-                    ? "font-bold bg-white shadow"
-                    : "text-white hover:bg-white hover:bg-opacity-20"
-                )
-              }
-            >
-              <p onClick={() => setSelectedTab(1)}>Founders</p>
-            </Tab>
-            <Tab
-              className={({ selected }) =>
-                classNames(
-                  "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                  selected
-                    ? "font-bold bg-white shadow"
-                    : "text-white hover:bg-white hover:bg-opacity-20"
-                )
-              }
-            >
-              <p onClick={() => setSelectedTab(1)}>Investors</p>
-            </Tab>
-            <Tab
-              className={({ selected }) =>
-                classNames(
-                  "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                  selected
-                    ? "font-bold bg-white shadow"
-                    : "text-white hover:bg-white hover:bg-opacity-20"
-                )
-              }
-            >
-              <p onClick={() => setSelectedTab(1)}> Allies</p>
-            </Tab>
-          </Tab.List>
-          <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
-          <Tab.Panels className="mt-6 bg-white outline-none">
-            <Tab.Panel className="p-3 outline-none ">
-              <ApplicantsList
-                status={category}
-                role="founder"
-                reload={reload}
-              />
-            </Tab.Panel>
-            <Tab.Panel className="p-3 outline-none ">
-              <ApplicantsList
-                status={category}
-                role="investor"
-                reload={reload}
-              />
-            </Tab.Panel>
-            <Tab.Panel className="p-3 outline-none ">
-              <ApplicantsList status={category} role="ally" reload={reload} />
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
-      )}
+      <Tabs
+        tabs={tabs}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        id={id}
+      />
+      <tab className="flex justify-center bg-white outline-none md:border border-black pt-4 pb-8">
+        {tabs[selectedTab].component}
+      </tab>
     </div>
   )
 }
