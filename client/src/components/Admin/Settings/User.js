@@ -77,7 +77,6 @@ const User = ({ reload, setReload }) => {
             }
           })
           .catch((err) => {
-            console.log(err)
             setSaving(false)
             setBanner({
               error: 1,

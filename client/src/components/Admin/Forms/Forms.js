@@ -86,7 +86,9 @@ const Forms = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      {tabs[selectedTab].component}
+      <tab className="flex justify-center bg-white outline-none md:border border-black pt-4 pb-8">
+        {tabs[selectedTab].component}
+      </tab>
     </div>
   )
 }
