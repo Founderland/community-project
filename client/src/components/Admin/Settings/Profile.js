@@ -24,7 +24,7 @@ const profileUrl = "/api/users/profile/"
 const verifyUrl = "/api/users/verify/"
 
 const Profile = ({ reload, setReload }) => {
-  const { token, selectedTab } = useContext(AdminContext)
+  const { token, selectedTab, setUser } = useContext(AdminContext)
   const { id } = useParams()
   const [profile, setProfile] = useState({
     avatar: "",
@@ -78,10 +78,17 @@ const Profile = ({ reload, setReload }) => {
     } else {
       try {
         const updateProfile = await axios.put(profileUrl, profile, config)
-        console.log(updateProfile)
         if (updateProfile) {
           setSaving(false)
           setReload(reload + 1)
+          if (!id) {
+            setUser((prev) => ({
+              ...prev,
+              avatar: profile.avatar,
+              firstName: profile.firstName,
+              lastName: profile.lastName,
+            }))
+          }
           setBanner({
             success: 1,
             show: true,
