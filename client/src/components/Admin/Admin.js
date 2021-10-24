@@ -56,6 +56,7 @@ const Admin = () => {
   const logout = () => {
     localStorage.authToken = ""
     setUser(null)
+    setToken(null)
     history.push("/admin")
   }
 
@@ -75,6 +76,7 @@ const Admin = () => {
         setNotifications,
         logout,
         token,
+        setToken,
         status,
         setStatus,
       }}

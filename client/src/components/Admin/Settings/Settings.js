@@ -4,7 +4,6 @@ import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
 import ListWidget from "../Widgets/ListWidget"
 import Loading from "../Widgets/Loading"
-import User from "./User"
 import Profile from "./Profile"
 import { useHistory, useParams } from "react-router"
 import Tabs from "../Widgets/Tabs"
@@ -13,16 +12,15 @@ const usersAPI = "/api/users/all"
 
 const styles = {
   sadmin:
-    "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fred-700 bg-fred-100 border border-fred-300 bg-opacity-30",
+    "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-green-700 bg-green-100 border border-green-300 bg-opacity-30",
   admin:
-    "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fred-700 bg-fblue-100 border border-fblue-300 bg-opacity-30",
+    "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fblue-700 bg-fblue-100 border border-fblue-300 bg-opacity-30",
   user: "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fpink-700 bg-fpink-100 border border-fpink-300 bg-opacity-30",
 }
 
 const Settings = () => {
   const history = useHistory()
   const { id } = useParams()
-  console.log(id)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(0)
@@ -49,13 +47,13 @@ const Settings = () => {
           </button>
         </div>
       ) : (
-        <User setReload={setReload} />
+        <Profile reload={reload} setReload={setReload} />
       ),
     },
     {
       index: 1,
       name: "Profile",
-      component: <Profile />,
+      component: <Profile reload={reload} setReload={setReload} />,
     },
   ]
   const config = useMemo(() => {
