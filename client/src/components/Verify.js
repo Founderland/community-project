@@ -97,7 +97,7 @@ const Verify = () => {
               </label>
               <input
                 className={`${
-                  password === "" || !checkPassword()
+                  password !== "" || !checkPassword()
                     ? "border-l-4 border-fred"
                     : "border-l-4 border-flime"
                 } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3`}
@@ -117,7 +117,7 @@ const Verify = () => {
               </label>
               <input
                 className={`${
-                  password === "" || !checkConfirmPassword()
+                  password !== "" || !checkConfirmPassword()
                     ? "border-l-4 border-fred"
                     : "border-l-4 border-flime"
                 } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3`}
