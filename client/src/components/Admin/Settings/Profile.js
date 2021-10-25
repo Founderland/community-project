@@ -109,7 +109,6 @@ const Profile = ({ reload, setReload }) => {
           delete profile.password
           delete profile.confirmPassword
           delete profile.isVerified
-          console.log(profile)
           if (Object.values(profile).every((value) => value.length > 0)) {
             result = await axios.post(addUserURL, profile, config)
           } else {

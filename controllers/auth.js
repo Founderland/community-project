@@ -12,12 +12,20 @@ const authenticateUser = async (username, password, done) => {
     const user = await User.findOne({ email: username })
     if (user && (await bcrypt.compare(password, user.hashedPassword))) {
       delete user.hashedPassword
-      done(null, user, { message: "Successful" })
+      if (user.isVerified && !user.isLocked) {
+        done(null, user, { message: "Successful" })
+      } else {
+        done(null, false, { message: "User unverified or locked" })
+      }
     } else {
       const user = await Member.findOne({ email: username })
       if (user && (await bcrypt.compare(password, user.hashedPassword))) {
         delete user.hashedPassword
-        done(null, user, { message: "Successful" })
+        if (user.isVerified && !user.isLocked) {
+          done(null, user, { message: "Successful" })
+        } else {
+          done(null, false, { message: "User unverified or locked" })
+        }
       } else {
         done(null, false, { message: "Wrong Credentials" })
       }
