@@ -24,7 +24,7 @@ function App() {
           path="/join-our-community"
           component={ApplicantsDispatcher}
         />
-          <Route exact path="/community" component={Community} />
+          <Route path="/community" component={Community} />
      
         <Route exact path="/signup/:token" component={SignUp} />
         <Route exact path="/form/:memberType" component={Form} />
