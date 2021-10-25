@@ -2,6 +2,7 @@ const authRouter = require("express").Router()
 const authController = require("../controllers/auth")
 const passport = require("passport")
 const memberController = require("../controllers/member")
+const userController = require("../controllers/user")
 
 // // Route to check if the user is logged in
 // authRouter.get("/verify", isUser, (req, res) => {
@@ -41,6 +42,11 @@ authRouter.post(
   passport.authenticate("jwt", { session: false }),
   memberController.confirmUser,
   authController.authorizeUser
+)
+authRouter.post(
+  "/verify/:token",
+  passport.authenticate("jwt", { session: false }),
+  userController.verifyEmail
 )
 
 module.exports = authRouter

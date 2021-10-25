@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react"
+import { PlusIcon } from "@heroicons/react/outline"
+import { useRef } from "react"
 
 const AddAnswer = ({
   setNewAnswer,
@@ -7,93 +8,101 @@ const AddAnswer = ({
   memberType,
 }) => {
   const addField = useRef()
-  useEffect(() => {
-    // addField.current.focus();
-  }, [])
+
   return (
     <>
-      <div className=' flex flex-col w-full lg:w-3/6 xl:w-3/6 text-mono py-5   items-between justify-between lg:flex-row xl:justify-start lg:items-center'>
-        <label
-          HtmlFor='newAnswer'
-          className='text-grotesk font-bold w-full lg:w-1/4 mb-5 xl:w-3/6 lg:mb-0'>
-          Add answer
-        </label>
-        <input
-          type='text'
-          id='newAnswer'
-          className='p-3 border-solid  shadow-md lg:w-2/3 xl:w-full  '
-          placeholder='New answer'
-          ref={addField}
-          value={newAnswer.answer}
-          onChange={(e) => {
-            const value = e.target.value.trimStart()
-            setNewAnswer({
-              ...newAnswer,
-              answer: value.replace(value[0], value[0]?.toUpperCase()),
-            })
-          }}
-        />
-      </div>
-      <div className='flex flex-col w-full lg:w-3/6 text-mono py-5   items-start  md:flex-row lg:justify-center md:items-center'>
-        {memberType === "founder" && (
-          <div className='flex w-2/3  lg:w-3/6 items-center lg:justify-around'>
+      <div className="flex flex-col w-full p-3">
+        <div className="w-full px-2">
+          <label
+            HtmlFor="newAnswer"
+            className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+          >
+            Answer Options
+          </label>
+        </div>
+        <div className="flex flex-col md:flex-row w-full px-2">
+          <div className="w-full md:w-9/12 mb-2 mt-2 px-2">
             <label
-              HtmlFor='newAnswer'
-              className=' text-grotesk font-bold w-2/3 lg:w-2/6  lg:text-center lg:mb-0 '>
-              Score
+              HtmlFor="newAnswer"
+              className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            >
+              Answer
             </label>
             <input
-              type='number'
-              id='score'
-              className=' p-2 shadow-md w-2/6 xl:w-2/6  '
-              placeholder='0'
-              value={newAnswer.points}
-              onFocus={(e) => (e.target.value = "")}
-              onChange={(e) =>
+              type="text"
+              id="newAnswer"
+              className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4 mb-2 mt-2 shadow-md"
+              placeholder="New answer"
+              ref={addField}
+              value={newAnswer.answer}
+              onChange={(e) => {
+                const value = e.target.value.trimStart()
                 setNewAnswer({
                   ...newAnswer,
-                  points: Number(e.target.value),
+                  answer: value.replace(value[0], value[0]?.toUpperCase()),
                 })
-              }
+              }}
             />
           </div>
-        )}
-        <div
-          className={`flex flex-row  w-full  lg:w-5/6 text-mono py-5  items-center ${
-            memberType === "founder" ? "justify-between" : "flex flex-col "
-          } md:justify-evenly`}>
           {memberType === "founder" && (
             <>
-              <label className=' text-grotesk font-bold text-center lg:w-2/6   lg:mb-0 lg:ml-5'>
-                Ideal?{" "}
-              </label>
-              <input
-                type='checkbox'
-                className=' lg:w-1/6 w-5 h-5 '
-                checked={newAnswer.ideal}
-                onChange={() =>
-                  setNewAnswer({
-                    ...newAnswer,
-                    ideal: !newAnswer.ideal,
-                  })
-                }
-              />
+              <div className="w-full md:w-2/12 mb-2 mt-2 px-2">
+                <label
+                  HtmlFor="newAnswer"
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                >
+                  Score
+                </label>
+                <input
+                  type="number"
+                  id="score"
+                  className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4 mb-2 mt-2 shadow-md"
+                  placeholder="0"
+                  value={newAnswer.points}
+                  onFocus={(e) => (e.target.value = "")}
+                  onChange={(e) =>
+                    setNewAnswer({
+                      ...newAnswer,
+                      points: Number(e.target.value),
+                    })
+                  }
+                />
+              </div>
+              <div className="w-full flex flex-col items-center md:w-2/12 mb-2 mt-2 px-2">
+                <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+                  Ideal?
+                </label>
+                <input
+                  type="checkbox"
+                  className=" lg:w-1/6 w-5 h-5 "
+                  checked={newAnswer.ideal}
+                  onChange={() =>
+                    setNewAnswer({
+                      ...newAnswer,
+                      ideal: !newAnswer.ideal,
+                    })
+                  }
+                />
+              </div>
             </>
           )}
-          <button
-            type='button'
-            className='p-4 bg-fblue text-white lg:w-2/6  '
-            onClick={() => {
-              if (addField.current.value.length === 0) {
-                addField.current.focus()
-              } else {
-                handleNewAnswer(addField)
-                addField.current.focus()
-              }
-            }}>
-            {" "}
-            Add
-          </button>
+          <div className="flex justify-center items-center w-full md:w-4/12 mb-2 mt-2 px-2">
+            <button
+              type="button"
+              className="flex justify-center items-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-max bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+              onClick={() => {
+                if (addField.current.value.length === 0) {
+                  addField.current.focus()
+                } else {
+                  handleNewAnswer(addField)
+                  addField.current.focus()
+                }
+              }}
+            >
+              <PlusIcon className="h-4 w-4" />{" "}
+              <p className="md:text-sm">Add Answer</p>
+            </button>
+          </div>
         </div>
       </div>
     </>

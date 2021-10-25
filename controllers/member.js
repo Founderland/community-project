@@ -1,11 +1,14 @@
 require("dotenv").config()
 const { validationResult } = require("express-validator")
 const Member = require("../models/Member")
+const Response = require("../models/Response")
+
 const { generateHashedPassword, calculateToken } = require("../helpers/user")
 const jwt = require("jsonwebtoken")
 
 const findAll = async (req, res) => {
   const { role } = req.params
+  console.log(role)
   const members = await Member.find({ role: role })
   if (members) {
     res.status(200).json({
@@ -64,6 +67,18 @@ const addMember = async (req, res, next) => {
     const newMember = await Member.create(data)
     if (newMember) {
       req.newMember = newMember
+      if (applicationId !== "") {
+        const updated = await Response.findByIdAndUpdate(
+          { _id: applicationId },
+          {
+            status: "approved",
+            memberId: newMember._id,
+            evaluatedOn: Date.now(),
+          }
+        )
+        if (!updated) await Promise.reject("NOT_FOUND")
+      }
+
       if (connect) {
         return next()
       } else {
@@ -80,6 +95,11 @@ const addMember = async (req, res, next) => {
       res.status(400).json({
         error: 400,
         message: errorsAfterValidation.mapped(),
+      })
+    } else if (e.message === "NOT_FOUND") {
+      res.status(400).json({
+        error: 400,
+        message: "Member created but response failed to updateå",
       })
     } else {
       res.status(500).json({
@@ -117,7 +137,7 @@ const confirmUser = async (req, res, next) => {
       businessArea,
       geoLocation,
       photo,
-      password: generateHashedPassword(password),
+      hashedPassword: generateHashedPassword(password),
       confirmed: Date.now(),
       lastUpdate: Date.now(),
       about,

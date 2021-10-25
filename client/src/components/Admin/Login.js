@@ -10,7 +10,7 @@ const loginURL = "/api/auth/login"
 
 const AdminLogin = () => {
   const history = useHistory()
-  const { setUser } = useContext(AdminContext)
+  const { setUser, setToken } = useContext(AdminContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -31,6 +31,7 @@ const AdminLogin = () => {
         localStorage.setItem("authToken", data.access_token)
         var decode = jwt.decode(data.access_token)
         if (decode.avatar) {
+          setToken(localStorage.authToken)
           setUser({
             id: decode.id,
             firstName: decode.firstName,
@@ -44,8 +45,9 @@ const AdminLogin = () => {
         }
       } catch (err) {
         setLoading(false)
+        console.log(err)
         setError(
-          err.response.status === 401 || err.message === "401"
+          err?.response?.status === 401 || err?.message === "401"
             ? "Wrong credentials"
             : "Sorry, something went wrong"
         )

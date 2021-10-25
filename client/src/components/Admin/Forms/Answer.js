@@ -22,15 +22,17 @@ const Answer = ({
   const [disabled, setDisabled] = useState(true)
   const [updated, setUpdated] = useState({ ...answer })
   const answerInput = useRef()
+  console.log(answer)
   return (
     <div
       className={`flex flex-col xl:flex-row text-center justify-between items-center w-full bg-gray-200 py-3 px-5 ${
         disabled ? style.disabledDiv : style.enabledDiv
-      }`}>
-      <div className='w-full flex flex-col md:flex-row items-center justify-between'>
-        <label className='lg:mx-3 md:1/4 font-bold'>Answer</label>
+      }`}
+    >
+      <div className="w-full flex flex-col md:flex-row items-center justify-between">
+        <label className="lg:mx-3 md:1/4 font-bold">Answer</label>
         <input
-          type='text'
+          type="text"
           className={`w-full p-2  ${
             disabled ? style.disabledInput : style.enabledInput
           }`}
@@ -53,15 +55,17 @@ const Answer = ({
           memberType !== "founder"
             ? "justify-center lg:justify-end"
             : "justify-between "
-        }`}>
+        }`}
+      >
         <label
           className={`my-2 lg:mx-3 font-bold ' ${
             memberType !== "founder" && "hidden"
-          }`}>
+          }`}
+        >
           Score:
         </label>
         <input
-          type='number'
+          type="number"
           className={`w-1/4 lg:w-1/4 my-2  ${
             memberType !== "founder" && "hidden"
           } ${disabled ? style.disabledInput : style.enabledInput}`}
@@ -75,11 +79,12 @@ const Answer = ({
           }}
         />
         <label
-          className={`my-2 lg:mx-3 ${memberType !== "founder" && "hidden"}`}>
+          className={`my-2 lg:mx-3 ${memberType !== "founder" && "hidden"}`}
+        >
           Ideal
         </label>
         <input
-          type='checkbox'
+          type="checkbox"
           className={`w-1/4 lg:w-1/4 xl:w-1/6 w-5 h-5 my-2  ${
             memberType !== "founder" && "hidden"
           } ${disabled ? style.disabledInput : style.enabledInput}`}
@@ -103,8 +108,9 @@ const Answer = ({
             setTimeout(() => {
               answerInput.current.focus()
             }, 0)
-          }}>
-          <PencilAltIcon className='h-8 w-8 m-auto' />
+          }}
+        >
+          <PencilAltIcon className="h-8 w-8 m-auto" />
         </button>
         <button
           className={` w-1/3 md:w-auto mx-2 p-3 ${
@@ -113,17 +119,19 @@ const Answer = ({
           onClick={() => {
             handleAnswerChange(i, updated)
             setDisabled(!disabled)
-          }}>
+          }}
+        >
           {" "}
-          <CheckCircleIcon className='h-8 w-8 m-auto ' />
+          <CheckCircleIcon className="h-8 w-8 m-auto " />
         </button>
 
         <button
           className={`w-1/3 md:w-auto  mx-2 p-3 ${
             disabled ? style.disabledInput : style.enabledInput
           }`}
-          onClick={() => handleDelete(i)}>
-          <TrashIcon className='h-8 w-8 m-auto' />
+          onClick={() => handleDelete(i)}
+        >
+          <TrashIcon className="h-8 w-8 m-auto" />
         </button>
       </div>
     </div>

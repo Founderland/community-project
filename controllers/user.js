@@ -10,6 +10,56 @@ const findAll = async (req, res) => {
     })
 }
 
+const findOne = async (req, res) => {
+  let { id } = req.params
+  console.log(req.user)
+  if (id === "user") {
+    id = req.user.id
+  }
+  const profile = await User.findOne({ _id: id })
+  if (profile) {
+    profile["hashedPassword"] = ""
+    res.status(200).json({
+      data: profile,
+    })
+  } else {
+    res.status(404).json({
+      message: "Profile not found",
+    })
+  }
+}
+
+const updateProfile = async (req, res) => {
+  const { _id, firstName, lastName, avatar, role, password } = req.body
+  if (_id) {
+    const profile = {
+      firstName,
+      lastName,
+      avatar,
+      role,
+    }
+    if (password) {
+      profile.hashedPassword = generateHashedPassword(password)
+    }
+    console.log(profile)
+    const updatedProfile = await User.findOneAndUpdate({ _id }, profile, {
+      new: true,
+    })
+    if (updatedProfile) {
+      updatedProfile["hashedPassword"] = ""
+      res.status(200).json({
+        data: updatedProfile,
+      })
+    } else {
+      res.status(404).json({
+        message: "Profile not found",
+      })
+    }
+  } else {
+    res.status(500).json({ message: "id not defined" })
+  }
+}
+
 const addUser = async (req, res, next) => {
   const errorsAfterValidation = validationResult(req)
   const { firstName, lastName, email, password, role, avatar } = req.body
@@ -48,8 +98,29 @@ const addUser = async (req, res, next) => {
     }
   }
 }
+const verifyEmail = async (req, res, next) => {
+  const { id } = req.body
+  if (id) {
+    try {
+      const unverified = await User.findOne({ _id: id })
+      if (unverified) {
+        req.unverified = unverified
+        return next()
+      } else {
+        res.status(404).json({ message: "User not found" })
+      }
+    } catch (e) {
+      return next(e)
+    }
+  } else {
+    res.status(500).json({ message: "id not defined" })
+  }
+}
 
 module.exports = {
   findAll,
+  findOne,
+  updateProfile,
   addUser,
+  verifyEmail,
 }

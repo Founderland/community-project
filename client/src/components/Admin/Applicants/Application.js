@@ -4,6 +4,8 @@ import axios from "axios"
 import moment from "moment"
 import AdminContext from "../../../contexts/Admin"
 import Loading from "../Widgets/Loading"
+import ComponentModal from "../Widgets/ComponentModal"
+import ApproveApplicant from "./ApproveApplicant"
 import ApplicationComments from "./ApplicationComments"
 
 const styles = {
@@ -18,7 +20,7 @@ const responseURL = "/api/applicants/response/"
 
 const Application = () => {
   const { id } = useParams()
-  const { token } = useContext(AdminContext)
+  const { token, setCModal, reload, setReload } = useContext(AdminContext)
   const config = useMemo(() => {
     return {
       headers: {
@@ -53,6 +55,7 @@ const Application = () => {
   //PROCESS APPROVED REQUEST
   const approveApplicant = () => {
     //ASK IF APPLICANT WILL BE NOTIFIED NOW
+    setCModal(true)
     //UPDATE THE STATUS IN DB
     //REDIRECT TO MEMBERS - ID
   }
@@ -71,6 +74,13 @@ const Application = () => {
         error
       ) : (
         <>
+          <ComponentModal>
+            <ApproveApplicant
+              data={data}
+              reload={reload}
+              setReload={setReload}
+            />
+          </ComponentModal>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg border-0">
             <div
               className={`${styles[data?.data.role]?.bg} mb-0 pl-6 pr-4 py-6`}

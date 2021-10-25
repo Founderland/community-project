@@ -1,7 +1,6 @@
 import { Fragment, useContext } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import AdminContext from "../../../contexts/Admin"
-import InfoModal from "./InfoModal"
 
 const ComponentModal = ({ children }) => {
   const { cModal, setCModal } = useContext(AdminContext)
@@ -38,7 +37,6 @@ const ComponentModal = ({ children }) => {
             </div>
           </Transition.Child>
         </div>
-        <InfoModal />
       </Dialog>
     </Transition>
   )
