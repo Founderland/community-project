@@ -3,8 +3,9 @@ const Response = require("../models/Response")
 
 // Add Founders Response
 
-const addResponse = async (req, res) => {
+const addResponse = async (req, res, next) => {
   const { firstName, lastName, totalScore, answerData } = req.body
+  console.log(req.body)
   try {
     //  data.map(async (item) => {
     const newResponse = await Response.create({
