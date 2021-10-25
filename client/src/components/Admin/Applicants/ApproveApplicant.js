@@ -13,12 +13,7 @@ const ApproveApplicant = ({ data, reload, setReload, role }) => {
   const [notify, setNotify] = useState(false)
   const history = useHistory()
 
-  const [result, setResult] = useState({
-    success: null,
-    show: false,
-    error: null,
-    message: null,
-  })
+  const [banner, setBanner] = useState({})
   const { setCModal, token } = useContext(AdminContext)
   const config = {
     headers: {
@@ -53,39 +48,38 @@ const ApproveApplicant = ({ data, reload, setReload, role }) => {
       status: "approved",
     }
     try {
-      const result = await axios.put(approveURL, updateData, config)
-      if (result.data.success) {
+      const approved = await axios.put(approveURL, updateData, config)
+      if (approved.data.success) {
         setSaving(false)
-        setResult({
+        setBanner({
           success: 1,
           show: true,
-          message: `User saved ${notify ? "and notified" : ""}! redirecting..`,
+          message: `User saved${notify ? " and notified" : ""}! redirecting..`,
         })
         setTimeout(() => {
-          setResult({ ...result, show: false })
+          setBanner((prev) => ({ ...prev, show: false }))
           history.push("/admin/members")
-        }, 3000)
+        }, 2000)
       } else {
         throw new Error("Sorry, something went wrong while saving")
       }
     } catch (e) {
-      console.log(e.response.status)
       setSaving(false)
       if (e?.response.status === 403) {
-        setResult({
+        setBanner({
           error: 1,
           show: true,
           message: "Email already exists as Member",
         })
       } else {
-        setResult({
+        setBanner({
           error: 1,
           show: true,
           message: e.message,
         })
       }
       setTimeout(() => {
-        setResult({ ...result, show: false })
+        setBanner((prev) => ({ ...prev, show: false }))
       }, 3000)
     }
   }
@@ -93,7 +87,7 @@ const ApproveApplicant = ({ data, reload, setReload, role }) => {
   return (
     <div className="bg-white px-8 pt-8 pb-4 flex rounded flex-col w-full shadow-lg">
       <div className="w-full flex justify-center items-center">
-        <Banner result={result} />
+        <Banner message={banner} />
       </div>
       <form onSubmit={handleSubmit}>
         <div className="md:flex w-full px-3">

@@ -1,5 +1,6 @@
 require("dotenv").config()
 const express = require("express")
+const createHttpError = require("http-errors")
 const mongoose = require("mongoose")
 const flash = require("connect-flash")
 const session = require("express-session")
@@ -31,12 +32,11 @@ app.use(
 )
 
 passportMiddleware(app)
-app.use(errorHandler)
 setupRoutes(app)
-
 app.use((req, res) =>
   res.sendFile(path.join(__dirname, "/client/build/", "index.html"))
 )
+app.use(errorHandler)
 
 app.listen(port, () => {
   console.log(`Server started ${port}`)

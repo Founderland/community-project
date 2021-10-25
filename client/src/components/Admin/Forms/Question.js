@@ -78,12 +78,7 @@ const Question = ({ role }) => {
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
   const [answersList, setAnswersList] = useState([])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
-  const [result, setResult] = useState({
-    success: null,
-    show: false,
-    error: null,
-    message: null,
-  })
+  const [banner, setBanner] = useState({})
   const [showPreview, setShowPreview] = useState(false)
   const mainDiv = useRef()
 
@@ -93,20 +88,26 @@ const Question = ({ role }) => {
       axios
         .get(questionURL, config)
         .then((res) => {
-          console.log(role)
           if (res.data) {
             setQuestionInfo({ ...res.data })
             setAnswersList(res.data.answers)
           } else {
-            setResult({ error: 1, show: true, message: "Question not found" })
+            setBanner({ error: 1, show: true, message: "Question not found" })
             setTimeout(() => {
-              setResult({ ...result, show: false })
+              setBanner((prev) => ({ ...prev, show: false }))
               history.push("/admin/forms")
-            }, 3000)
+            }, 2000)
           }
         })
         .catch((err) => {
-          console.log(err)
+          setBanner({
+            error: 1,
+            show: true,
+            message: "Sorry, something went wrong",
+          })
+          setTimeout(() => {
+            setBanner((prev) => ({ ...prev, show: false }))
+          }, 3000)
         })
     }
   }, [id])
@@ -121,51 +122,62 @@ const Question = ({ role }) => {
 
   const handleSubmit = () => {
     mainDiv.current.scrollIntoView()
-    let newQuestion = { ...questionInfo, answers: answersList }
-    // Deleting unnecessary fields for non founders
-    if (role !== "founder") {
-      delete newQuestion.rank
-      newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
+    if (questionInfo.question !== "") {
+      let newQuestion = { ...questionInfo, answers: answersList }
+      // Deleting unnecessary fields for non founders
+      if (role !== "founder") {
+        delete newQuestion.rank
+        newQuestion.answers.forEach((i) => delete i.points && delete i.ideal)
+      }
+      axios({
+        method: id !== "new" ? "PUT" : "POST",
+        baseURL: `/api/form/${role}`,
+        url: id !== "new" ? "/edit" : "/add",
+        data: newQuestion,
+      })
+        .then((res) => {
+          setBanner({
+            success: 1,
+            show: true,
+            message: "Question saved.. redirecting",
+          })
+          setTimeout(() => {
+            history.push("/admin/forms/")
+            role === "founder"
+              ? setSelectedTab(0)
+              : role === "investor"
+              ? setSelectedTab(1)
+              : setSelectedTab(2)
+          }, 2000)
+        })
+        .catch((e) => {
+          setBanner({
+            error: 1,
+            show: true,
+            message: "Sorry, something went wrong while saving..",
+          })
+          setTimeout(() => {
+            setBanner((prev) => ({ ...prev, show: false }))
+          }, 3000)
+        })
+    } else {
+      setBanner({
+        error: 1,
+        show: true,
+        message: "Question field is required",
+      })
+      setTimeout(() => {
+        setBanner((prev) => ({ ...prev, show: false }))
+      }, 3000)
     }
-    axios({
-      method: id !== "new" ? "PUT" : "POST",
-      baseURL: `/api/form/${role}`,
-      url: id !== "new" ? "/edit" : "/add",
-      data: newQuestion,
-    })
-      .then((result) => {
-        setResult({
-          success: 1,
-          show: true,
-          message: "Question saved.. redirecting",
-        })
-        setTimeout(() => {
-          history.push("/admin/forms/")
-          role === "founder"
-            ? setSelectedTab(0)
-            : role === "investor"
-            ? setSelectedTab(1)
-            : setSelectedTab(2)
-        }, 3000)
-      })
-      .catch((e) => {
-        setResult({
-          error: 1,
-          show: true,
-          message: "Sorry, something went wrong while saving..",
-        })
-        setTimeout(() => {
-          setResult({ show: false })
-        }, 5000)
-      })
   }
 
   const handleDelete = () => {
     mainDiv.current.scrollIntoView()
     axios
       .delete(`/api/form/${role}/delete/${questionInfo._id}`)
-      .then((result) => {
-        setResult({
+      .then((res) => {
+        setBanner({
           show: true,
           success: 1,
           message: "Question deleted.. redirecting",
@@ -180,14 +192,14 @@ const Question = ({ role }) => {
         }, 2000)
       })
       .catch((e) => {
-        setResult({
+        setBanner({
           error: 1,
           show: true,
           message: "Sorry, something went wrong while deleting..",
         })
         setTimeout(() => {
-          setResult({ show: false })
-        }, 5000)
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 3000)
       })
   }
 
@@ -196,7 +208,7 @@ const Question = ({ role }) => {
       ref={mainDiv}
       className="relative py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6 flex justify-center"
     >
-      <Banner result={result} />
+      <Banner message={banner} />
       <div className="w-full flex flex-col justify-center items-center bg-white p-4 shadow-md ">
         <h1 className="font-bold p-3 text-xl text-mono">
           {id !== "new" ? "Edit" : "Add new"} Question

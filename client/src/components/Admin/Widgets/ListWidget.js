@@ -17,7 +17,7 @@ const ListWidget = ({ title, data, styles, showing, colSize, link }) => {
     return () => {
       setDataToDisplay([])
     }
-  }, [data, offset, perPage])
+  }, [data, offset])
 
   return (
     <div className="w-full px-2 ">

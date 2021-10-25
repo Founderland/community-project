@@ -1,7 +1,6 @@
 import {
   AdjustmentsIcon,
   InboxInIcon,
-  ClipboardIcon,
   EmojiHappyIcon,
   EmojiSadIcon,
   CollectionIcon,
@@ -11,6 +10,7 @@ import {
   UserGroupIcon,
   UserIcon,
   ChevronDownIcon,
+  ClipboardListIcon,
 } from "@heroicons/react/outline"
 import { Disclosure, Transition } from "@headlessui/react"
 import { useContext } from "react"
@@ -20,17 +20,23 @@ import { Link, useParams } from "react-router-dom"
 
 const Menu = () => {
   const icons = {
-    home: <HomeIcon className="h-6 w-6" />,
-    textdoc: <DocumentTextIcon className="h-6 w-6" />,
-    emptydoc: <DocumentIcon className="h-6 w-6" />,
-    user: <UserIcon className="h-6 w-6" />,
-    groupuser: <UserGroupIcon className="h-6 w-6" />,
-    set: <AdjustmentsIcon className="h-6 w-6" />,
-    collection: <CollectionIcon className="h-6 w-6" />,
-    inboxin: <InboxInIcon className="h-6 w-6" />,
-    clipboard: <ClipboardIcon className="h-6 w-6" />,
-    emojisad: <EmojiSadIcon className="h-6 w-6 group-hover:text-fred" />,
-    emojihappy: <EmojiHappyIcon className="h-6 w-6 group-hover:text-flime" />,
+    home: <HomeIcon className="h-5 w-5 group-hover:text-purple-500" />,
+    textdoc: <DocumentTextIcon className="h-5 w-5 group-hover:text-cyan-500" />,
+    emptydoc: <DocumentIcon className="h-5 w-5 group-hover:text-orange-500" />,
+    user: <UserIcon className="h-5 w-5 group-hover:text-fpink-500" />,
+    groupuser: <UserGroupIcon className="h-5 w-5 group-hover:text-fblue-500" />,
+    set: <AdjustmentsIcon className="h-5 w-5 group-hover:text-red-600" />,
+    collection: (
+      <CollectionIcon className="h-5 w-5 group-hover:text-indigo-500" />
+    ),
+    inboxin: <InboxInIcon className="h-5 w-5 group-hover:text-green-500" />,
+    clipboard: (
+      <ClipboardListIcon className="h-5 w-5 group-hover:text-yellow-500" />
+    ),
+    emojisad: <EmojiSadIcon className="h-5 w-5 group-hover:text-fred" />,
+    emojihappy: (
+      <EmojiHappyIcon className="h-5 w-5 group-hover:text-green-500" />
+    ),
   }
   const { view, category } = useParams()
   const { views, setMenuToggle, menuToggle, setSelectedTab } =
@@ -41,8 +47,10 @@ const Menu = () => {
       <Link
         to={`/admin/${view}/${key}`}
         onClick={() => handleMenu()}
-        className={`block group border-l-4 text-left py-2.5 pl-6 w-full transition duration-200 hover:bg-fblue-400 flex items-center text-sm ${
-          category === key ? "border-white bg-fblue-400" : "border-transparent"
+        className={`block group border-l-4 text-left py-2.5 pl-6 w-full transition duration-200 hover:bg-white hover:text-black flex items-center text-xs ${
+          category === key
+            ? "border-gray-200 bg-gray-300 text-black"
+            : "border-transparent"
         } `}
       >
         {icons[views[view].categories[key].icon]}
@@ -78,9 +86,9 @@ const Menu = () => {
                 {({ open }) => (
                   <>
                     <Disclosure.Button
-                      className={` block border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-fblue-700 flex items-center ${
+                      className={` block group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black flex text-sm items-center ${
                         view === key
-                          ? "border-white bg-fblue-700"
+                          ? "border-gray-200 bg-white text-black"
                           : "border-transparent"
                       } `}
                     >
@@ -90,7 +98,7 @@ const Menu = () => {
                         className={`h-4 w-4 ${
                           open
                             ? "transition duration-200 transform rotate-180"
-                            : ""
+                            : "transition duration-200 transform rotate-0"
                         }`}
                       />
                     </Disclosure.Button>
@@ -113,9 +121,9 @@ const Menu = () => {
               <Link
                 to={`/admin/${key}`}
                 onClick={() => handleMenu()}
-                className={`block border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-fblue-700 flex items-center ${
+                className={`block group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black  flex items-center text-sm tracking-wider ${
                   view === key
-                    ? "border-white bg-fblue-700"
+                    ? "border-gray-200 bg-white text-black"
                     : "border-transparent"
                 } `}
               >

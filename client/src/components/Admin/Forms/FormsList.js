@@ -14,7 +14,7 @@ const styles = {
 
 const FormsList = ({ role, reload }) => {
   const [loading, setLoading] = useState(true)
-  const { token } = useContext(AdminContext)
+  const { token, selectedTab } = useContext(AdminContext)
 
   const config = useMemo(() => {
     return {
@@ -85,7 +85,7 @@ const FormsList = ({ role, reload }) => {
       }
     }
     fetchData()
-  }, [reload])
+  }, [reload, selectedTab])
 
   return loading ? (
     <Loading />

@@ -49,6 +49,10 @@ const isAuthorized = async (payload, done) => {
   })
 }
 
+const verifyEmail = async (req, res, next) => {
+  //TO UPDATE USER FOR VERIFIED EMAIL
+}
+
 const authorizeUser = async (req, res) => {
   //CAN BE USED TO PROVIDED TOKENS BOTH TO COMMUNITY AND ADMIN - BUT PAYLOAD MIGHT BE DIFFERENT
 

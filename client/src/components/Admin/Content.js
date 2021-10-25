@@ -10,7 +10,7 @@ const Content = () => {
   let { view } = useParams()
 
   return (
-    <main className="overflow-x-hidden w-full h-screen items-center mx-auto md:px-4 py-2 justify-center">
+    <main className="overflow-x-hidden w-full h-screen md:px-4 ">
       {view === "dashboard" && <Dashboard />}
       {view === "ressources" && <Ressources />}
       {view === "members" && <Members />}

@@ -1,7 +1,9 @@
 import axios from "axios"
 import { useState, useContext } from "react"
+import { useHistory } from "react-router"
 import AdminContext from "../../../contexts/Admin"
 import ListOption from "../Widgets/ListOption"
+import Banner from "../Widgets/Banner"
 import { Switch } from "@headlessui/react"
 import { CheckIcon } from "@heroicons/react/outline"
 
@@ -13,7 +15,9 @@ const roles = [
 
 const addMemberURL = "/api/users/community/add"
 
-const AddMember = ({ reload, setReload, role }) => {
+const AddMember = ({ role }) => {
+  const history = useHistory()
+
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -25,8 +29,9 @@ const AddMember = ({ reload, setReload, role }) => {
     connect: false,
   })
   const [saving, setSaving] = useState(false)
-  const { setCModal, setIModal, setModalMessage, token } =
-    useContext(AdminContext)
+  const [banner, setBanner] = useState({})
+
+  const { token, reload, setReload } = useContext(AdminContext)
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -36,53 +41,71 @@ const AddMember = ({ reload, setReload, role }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
   }
-  const save = () => {
+  const save = async () => {
     setSaving(true)
     if (data.email && checkEmail()) {
       if (data.firstName.length > 1 && data.lastName.length > 1) {
-        axios
-          .post(addMemberURL, data, config)
-          .then((res) => {
-            if (res.data.success) {
-              setSaving(false)
-              setReload(reload + 1)
-              setCModal(false)
-            }
-          })
-          .catch((err) => {
-            if (err?.response.status === 403) {
-              setModalMessage({
-                icon: "info",
-                title: "Validation Error",
-                message: err.response.data.message,
-              })
-            } else {
-              setModalMessage({
-                icon: "cross",
-                title: "Database Error",
-                message: "Sorry, something went wrong",
-              })
-            }
-            setIModal(true)
+        try {
+          const response = await axios.post(addMemberURL, data, config)
+          console.log(response)
+          if (response.data.success) {
             setSaving(false)
-          })
+            setReload(reload + 1)
+            setBanner({
+              success: 1,
+              show: true,
+              message: "User saved! redirecting..",
+            })
+            setTimeout(() => {
+              setBanner((prev) => ({ ...prev, show: false }))
+              history.goBack()
+            }, 3000)
+          }
+        } catch (err) {
+          if (err?.response.status === 403) {
+            setSaving(false)
+            setBanner({
+              error: 1,
+              show: true,
+              message: err.response.data.message,
+            })
+            setTimeout(() => {
+              setBanner((prev) => ({ ...prev, show: false }))
+            }, 3000)
+          } else {
+            console.log(err)
+            setSaving(false)
+            setBanner({
+              error: 1,
+              show: true,
+              message: "Sorry, something went wrong",
+            })
+            setTimeout(() => {
+              setBanner((prev) => ({ ...prev, show: false }))
+            }, 3000)
+          }
+        }
       } else {
-        setIModal(true)
-        setModalMessage({
-          icon: "info",
-          title: "Validation error",
+        setSaving(false)
+        setBanner({
+          error: 1,
+          show: true,
           message: "Full name is required",
         })
-        setSaving(false)
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 3000)
       }
     } else {
-      setIModal(true)
-      setModalMessage({
-        icon: "info",
-        title: "Validation error",
-        message: "A valid email must be provided",
-      })
       setSaving(false)
+      setBanner({
+        error: 1,
+        show: true,
+        message: "A valid email is required",
+      })
+      setTimeout(() => {
+        setBanner((prev) => ({ ...prev, show: false }))
+      }, 3000)
     }
   }
 
@@ -92,14 +115,14 @@ const AddMember = ({ reload, setReload, role }) => {
   const setRole = (value) => {
     handleChange(value, "role")
   }
-  const setConnect = (value) => {
-    handleChange(value, "connect")
-  }
   const checkEmail = () => {
     return /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(data.email)
   }
   return (
-    <div className="bg-white px-8 pt-8 pb-4 flex rounded flex-col w-full shadow-lg">
+    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full md:w-5/6 lg:w-2/3">
+      <div className="w-full flex items-center justify-center z-20">
+        <Banner message={banner} />
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="md:flex w-full px-3">
           <div className="w-full md:w-1/2 mb-2 px-2">
@@ -113,7 +136,9 @@ const AddMember = ({ reload, setReload, role }) => {
                   : "border-l-4 border-flime"
               } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
               type="text"
-              onChange={(e) => handleChange(e.target.value, "firstName")}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, firstName: e.target.value }))
+              }
               value={data.firstName}
               autoComplete="off"
             />
@@ -129,7 +154,9 @@ const AddMember = ({ reload, setReload, role }) => {
                   : "border-l-4 border-flime"
               } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
               type="text"
-              onChange={(e) => handleChange(e.target.value, "lastName")}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, lastName: e.target.value }))
+              }
               value={data.lastName}
               autoComplete="off"
             />
@@ -144,7 +171,7 @@ const AddMember = ({ reload, setReload, role }) => {
               className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
               type="text"
               onChange={(e) => {
-                handleChange(e.target.value, "title")
+                setData((prev) => ({ ...prev, title: e.target.value }))
               }}
               value={data.title}
             />
@@ -161,7 +188,7 @@ const AddMember = ({ reload, setReload, role }) => {
               } appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 outline-none`}
               type="text"
               onChange={(e) => {
-                handleChange(e.target.value, "email")
+                setData((prev) => ({ ...prev, email: e.target.value }))
               }}
               value={data.email}
               autoComplete="email"
@@ -177,7 +204,7 @@ const AddMember = ({ reload, setReload, role }) => {
               className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
               type="text"
               onChange={(e) => {
-                handleChange(e.target.value, "city")
+                setData((prev) => ({ ...prev, city: e.target.value }))
               }}
               value={data.city}
             />
@@ -190,7 +217,7 @@ const AddMember = ({ reload, setReload, role }) => {
               className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
               type="text"
               onChange={(e) => {
-                handleChange(e.target.value, "country")
+                setData((prev) => ({ ...prev, country: e.target.value }))
               }}
               value={data.country}
             />
@@ -220,7 +247,9 @@ const AddMember = ({ reload, setReload, role }) => {
               <Switch
                 as="button"
                 checked={data.connect}
-                onChange={setConnect}
+                onChange={() =>
+                  setData((prev) => ({ ...prev, connect: !data.connect }))
+                }
                 className={`${
                   data.connect ? "bg-flime-600" : "bg-gray-200"
                 } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}
@@ -243,7 +272,7 @@ const AddMember = ({ reload, setReload, role }) => {
           <button
             className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
             onClick={() => {
-              setCModal(false)
+              history.goBack()
             }}
           >
             Cancel

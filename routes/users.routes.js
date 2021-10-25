@@ -1,7 +1,7 @@
 const UserRouter = require("express").Router()
 const userController = require("../controllers/user")
 const memberController = require("../controllers/member")
-const { sendConnectEmail } = require("../helpers/emailHandler")
+const { sendConnectEmail, sendVerifyEmail } = require("../helpers/emailHandler")
 const passport = require("passport")
 
 const {
@@ -16,6 +16,16 @@ UserRouter.get(
   userController.findAll
 )
 UserRouter.post(
+  "/verify",
+  passport.authenticate("jwt", { session: false }),
+  userController.verifyEmail,
+  sendVerifyEmail,
+  (req, res) => {
+    console.log("email sent")
+    res.status(200).json({ message: "user notified" })
+  }
+)
+UserRouter.post(
   "/add",
   passport.authenticate("jwt", { session: false }),
   registerValidation,
@@ -25,6 +35,11 @@ UserRouter.get(
   "/profile/:id",
   passport.authenticate("jwt", { session: false }),
   userController.findOne
+)
+UserRouter.put(
+  "/profile/",
+  passport.authenticate("jwt", { session: false }),
+  userController.updateProfile
 )
 //ADMIN-COMMUNITY
 UserRouter.post(

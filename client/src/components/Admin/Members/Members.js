@@ -1,109 +1,94 @@
-import { useContext, useState } from "react"
-import { Tab } from "@headlessui/react"
+import { useContext, useState, useEffect } from "react"
+import { useHistory, useParams } from "react-router"
 import { UserAddIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
-import ComponentModal from "../Widgets/ComponentModal"
+import Tabs from "../Widgets/Tabs"
 import MembersList from "./MembersList"
 import AddMember from "./AddMember"
 
 const Members = () => {
-  const [reload, setReload] = useState(0)
-  const [task, setTask] = useState(null)
-  const { setCModal, selectedTab, setSelectedTab } = useContext(AdminContext)
-  const classNames = (...classes) => {
-    return classes.filter(Boolean).join(" ")
+  const history = useHistory()
+  const { id } = useParams()
+  const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const [role, setRole] = useState("founder")
+  const tabs = [
+    {
+      index: 0,
+      name: "Founder",
+      role: "founder",
+      component: !id ? (
+        <div className="w-full px-4 outline-none">
+          <MembersList reload={reload} role="founder" />
+          <button
+            className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+            onClick={() => handleTask("founder")}
+          >
+            <UserAddIcon className="h-5 w-5" />
+            <p className="text-mono text-sm">Add Founder</p>
+          </button>
+        </div>
+      ) : (
+        <AddMember role={role} />
+      ),
+    },
+    {
+      index: 1,
+      name: "Investor",
+      role: "investor",
+      component: !id ? (
+        <div className="w-full px-4 outline-none">
+          <MembersList reload={reload} role="investor" />
+          <button
+            className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+            onClick={() => handleTask("investor")}
+          >
+            <UserAddIcon className="h-5 w-5" />
+            <p className="text-mono text-sm">Add Investor</p>
+          </button>
+        </div>
+      ) : (
+        <AddMember role={role} />
+      ),
+    },
+    {
+      index: 2,
+      name: "Ally",
+      role: "ally",
+      component: !id ? (
+        <div className="w-full px-4 outline-none">
+          <MembersList reload={reload} role="ally" />
+          <button
+            className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+            onClick={() => handleTask("ally")}
+          >
+            <UserAddIcon className="h-5 w-5" />
+            <p className="text-mono text-sm">Add Ally</p>
+          </button>
+        </div>
+      ) : (
+        <AddMember role={role} />
+      ),
+    },
+  ]
+  const handleTask = (role) => {
+    setRole(role)
+    history.push("members/id/new")
   }
-  const handleTask = (task) => {
-    setTask(task)
-    setCModal(true)
-  }
+  useEffect(() => {
+    setRole(tabs[selectedTab].role)
+  }, [selectedTab])
 
   return (
-    <div className="flex flex-col w-full bg-white  outline-none">
-      {/* Tabs for Navigation */}
-      <Tab.Group defaultIndex={selectedTab}>
-        <Tab.List className="flex p-1 space-x-1 bg-black max-w-lg outline-none">
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                selected
-                  ? "font-bold bg-white shadow"
-                  : "text-white hover:bg-white hover:bg-opacity-20"
-              )
-            }
-          >
-            <p onClick={() => setSelectedTab(0)}> Founders</p>
-          </Tab>
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                selected
-                  ? "font-bold bg-white shadow"
-                  : "text-white hover:bg-white hover:bg-opacity-20"
-              )
-            }
-          >
-            <p onClick={() => setSelectedTab(1)}>Investors</p>
-          </Tab>
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                "w-full py-1 text-mono tracking-wide font-medium outline-none",
-                selected
-                  ? "font-bold bg-white shadow"
-                  : "text-white hover:bg-white hover:bg-opacity-20"
-              )
-            }
-          >
-            <p onClick={() => setSelectedTab(2)}> Allies</p>
-          </Tab>
-        </Tab.List>
-        <div className="w-full border mt-0 border-t border-5 border-black outline-none"></div>
-        <Tab.Panels className="mt-6 bg-white outline-none">
-          <Tab.Panel className="p-3 outline-none ">
-            <div className="w-full px-4 outline-none">
-              <MembersList reload={reload} role="founder" />
-              <button
-                className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                onClick={() => handleTask("founder")}
-              >
-                <UserAddIcon className="h-5 w-5" />
-                <p className="text-mono text-sm">Add Founder</p>
-              </button>
-            </div>
-          </Tab.Panel>
-          <Tab.Panel className="p-3 outline-none ">
-            <div className="w-full px-4 outline-none">
-              <MembersList reload={reload} role="investor" />
-              <button
-                className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                onClick={() => handleTask("investor")}
-              >
-                <UserAddIcon className="h-5 w-5" />
-                <p className="text-mono text-sm">Add Investor</p>
-              </button>
-            </div>
-          </Tab.Panel>
-          <Tab.Panel className="p-3 outline-none ">
-            <div className="w-full px-4 outline-none">
-              <MembersList reload={reload} role="ally" />
-              <button
-                className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                onClick={() => handleTask("ally")}
-              >
-                <UserAddIcon className="h-5 w-5" />
-                <p className="text-mono text-sm">Add Ally</p>
-              </button>
-            </div>
-          </Tab.Panel>
-        </Tab.Panels>
-      </Tab.Group>
-      {/* Data to display */}
-      <ComponentModal>
-        <AddMember role={task} reload={reload} setReload={setReload} />
-      </ComponentModal>
+    <div className="flex flex-col w-full ">
+      <Tabs
+        tabs={tabs}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        id={id}
+      />
+      <tab className="flex justify-center bg-white outline-none md:border border-black pt-4 pb-8">
+        {tabs[selectedTab].component}
+      </tab>{" "}
     </div>
   )
 }

@@ -75,7 +75,7 @@ const MembersList = ({ role, reload }) => {
         })
         setIModal(true)
       })
-  }, [reload, role, setIModal, setModalMessage, config])
+  }, [reload, role])
 
   return loading ? (
     <Loading />
