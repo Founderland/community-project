@@ -67,11 +67,13 @@ const Profile = ({ reload, setReload }) => {
 
   //PROFILE API CALLS
   useEffect(() => {
+    console.log(id)
     if (id !== "new") {
       setLoading(true)
       axios
         .get(id ? profileUrl + id : profileUrl + "user", config)
         .then((res) => {
+          console.log(res)
           setProfile(res.data.data)
           setLoading(false)
         })
@@ -516,23 +518,27 @@ const Profile = ({ reload, setReload }) => {
               ) : (
                 ""
               )}
-              <button
-                className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/3  mb-4"
-                onClick={() => lock()}
-              >
-                {locking ? (
-                  <div className="flex justify-center">
-                    <div
-                      style={{ borderTopColor: "transparent" }}
-                      className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                    ></div>
-                  </div>
-                ) : profile.isLocked ? (
-                  "Unlock Access"
-                ) : (
-                  "Lock Access"
-                )}
-              </button>
+              {id !== "new" && id ? (
+                <button
+                  className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/3  mb-4"
+                  onClick={() => lock()}
+                >
+                  {locking ? (
+                    <div className="flex justify-center">
+                      <div
+                        style={{ borderTopColor: "transparent" }}
+                        className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
+                      ></div>
+                    </div>
+                  ) : profile.isLocked ? (
+                    "Unlock Access"
+                  ) : (
+                    "Lock Access"
+                  )}
+                </button>
+              ) : (
+                ""
+              )}
               {!profile.isLocked && (
                 <button
                   className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"

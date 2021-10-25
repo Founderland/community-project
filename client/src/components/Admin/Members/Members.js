@@ -16,6 +16,7 @@ const Members = () => {
       index: 0,
       name: "Founder",
       role: "founder",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <MembersList reload={reload} role="founder" />
@@ -35,6 +36,7 @@ const Members = () => {
       index: 1,
       name: "Investor",
       role: "investor",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <MembersList reload={reload} role="investor" />
@@ -54,6 +56,7 @@ const Members = () => {
       index: 2,
       name: "Ally",
       role: "ally",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <MembersList reload={reload} role="ally" />

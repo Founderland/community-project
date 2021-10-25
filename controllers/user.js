@@ -134,6 +134,7 @@ const addUser = async (req, res, next) => {
     }
   }
 }
+
 const notifyUser = async (req, res, next) => {
   const { id } = req.body
   if (id) {

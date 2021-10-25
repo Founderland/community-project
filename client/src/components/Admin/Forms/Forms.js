@@ -16,6 +16,7 @@ const Forms = () => {
       index: 0,
       name: "Founder",
       role: "founder",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <FormsList role="founder" reload={reload} />
@@ -35,6 +36,7 @@ const Forms = () => {
       index: 1,
       name: "Investor",
       role: "investor",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <FormsList role="investor" reload={reload} />
@@ -54,6 +56,7 @@ const Forms = () => {
       index: 2,
       name: "Ally",
       role: "ally",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <FormsList role="ally" reload={reload} />
