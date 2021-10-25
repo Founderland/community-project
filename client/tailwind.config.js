@@ -63,9 +63,6 @@ module.exports = {
           DEFAULT: "#FCF9F9"
         }
       },
-      backgroundImage: {
-        banner: "url('/src/assets/images/banner_black.png')",
-      },
     },
   },
   variants: {
