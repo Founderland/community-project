@@ -28,7 +28,6 @@ const AdminLogin = () => {
       }
       try {
         const { data } = await axios.post(loginURL, loginData, config)
-        console.log(data)
         localStorage.setItem("authToken", data.access_token)
         var decode = jwt.decode(data.access_token)
         if (decode.avatar) {

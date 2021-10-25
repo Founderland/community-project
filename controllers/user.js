@@ -10,18 +10,21 @@ const findAll = async (req, res) => {
     })
 }
 
-const findOne = async (req, res) => {
+const findOne = async (req, res, next) => {
   let { id } = req.params
-  console.log(req.user)
   if (id === "user") {
     id = req.user.id
   }
   const profile = await User.findOne({ _id: id })
   if (profile) {
     profile["hashedPassword"] = ""
-    res.status(200).json({
-      data: profile,
-    })
+    if (req.originalUrl.includes("notify")) {
+      return next()
+    } else {
+      res.status(200).json({
+        data: profile,
+      })
+    }
   } else {
     res.status(404).json({
       message: "Profile not found",
@@ -41,7 +44,6 @@ const updateProfile = async (req, res) => {
     if (password) {
       profile.hashedPassword = generateHashedPassword(password)
     }
-    console.log(profile)
     const updatedProfile = await User.findOneAndUpdate({ _id }, profile, {
       new: true,
     })
@@ -62,7 +64,7 @@ const updateProfile = async (req, res) => {
 
 const addUser = async (req, res, next) => {
   const errorsAfterValidation = validationResult(req)
-  const { firstName, lastName, email, password, role, avatar } = req.body
+  const { firstName, lastName, email, role, avatar } = req.body
   try {
     if (!errorsAfterValidation.isEmpty()) {
       await Promise.reject("VALIDATION_FAILED")
@@ -74,11 +76,18 @@ const addUser = async (req, res, next) => {
       lastName,
       email,
       avatar,
-      hashedPassword: generateHashedPassword(password),
       role,
     }
     const newUser = await User.create(data)
-    res.status(200).json({ success: 1, message: "User saved" })
+    if (newUser) {
+      req.unverified = newUser
+      return next()
+    } else {
+      res.status(500).json({
+        error: 500,
+        message: "Sorry, something went wrong",
+      })
+    }
   } catch (e) {
     if (e === "USER_EXISTS_ALREADY") {
       res.status(403).json({
@@ -98,7 +107,7 @@ const addUser = async (req, res, next) => {
     }
   }
 }
-const verifyEmail = async (req, res, next) => {
+const notifyUser = async (req, res, next) => {
   const { id } = req.body
   if (id) {
     try {
@@ -122,5 +131,5 @@ module.exports = {
   findOne,
   updateProfile,
   addUser,
-  verifyEmail,
+  notifyUser,
 }

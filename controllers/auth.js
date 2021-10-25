@@ -3,6 +3,7 @@ const User = require("../models/User")
 const Member = require("../models/Member")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
+const { generateHashedPassword } = require("../helpers/user")
 
 const authenticateUser = async (username, password, done) => {
   //NEEDS TO BE ADAPTED TO CHECK BOTH ON COMMUNITY AND ADMIN
@@ -51,11 +52,29 @@ const isAuthorized = async (payload, done) => {
 
 const verifyEmail = async (req, res, next) => {
   //TO UPDATE USER FOR VERIFIED EMAIL
+  const { _id, password, confirmPassword } = req.body
+  if (_id) {
+    const profile = {
+      hashedPassword: generateHashedPassword(password),
+      isVerified: true,
+    }
+    const updatedProfile = await User.findOneAndUpdate({ _id }, profile, {
+      new: true,
+    })
+    if (updatedProfile) {
+      return next()
+    } else {
+      res.status(404).json({
+        message: "Profile not found",
+      })
+    }
+  } else {
+    res.status(500).json({ message: "id not defined" })
+  }
 }
 
 const authorizeUser = async (req, res) => {
   //CAN BE USED TO PROVIDED TOKENS BOTH TO COMMUNITY AND ADMIN - BUT PAYLOAD MIGHT BE DIFFERENT
-
   if (req.user._id) {
     let payload = {}
     //MAKE A DIFFERENTE PAYLOAD FOR COMMUNITY
@@ -90,4 +109,4 @@ const authorizeUser = async (req, res) => {
   }
 }
 
-module.exports = { authenticateUser, isAuthorized, authorizeUser }
+module.exports = { authenticateUser, isAuthorized, authorizeUser, verifyEmail }
