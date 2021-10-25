@@ -59,6 +59,9 @@ module.exports = {
           800: "#b9dd00",
           900: "#afd300",
         },
+        fcard: {
+          DEFAULT: "#FCF9F9"
+        }
       },
       backgroundImage: {
         banner: "url('/src/assets/images/banner_black.png')",

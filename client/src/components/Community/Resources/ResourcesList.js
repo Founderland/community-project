@@ -15,31 +15,14 @@ console.log(categoryPath)
   const data = [
     {
       id: 1,
-      categoryName: "Code Of Conduct ",
-      path: "code-of-conduct",
-      articles: [
-        {
-          articleName: "Ensure Financial Integrity and Responsibility",
-          articleDescription:
-            "Ensure that money is appropriately spent, our financial records are complete and accurate, and our internal controls are honored",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat ",
-          articleSubmittedDate: "19/10/2021",
-        },
-        {
-          articleName: "Anti-Bribery Laws",
-          articleDescription:
-            " Our rule is simple – don’t bribe anybody, at any time, for any reason.",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat ",
-          articleSubmittedDate: "18/10/2021",
-        },
-      ],
+      categoryName: "Welcome Guide",
+      path: "welcome-guide",
+ 
     },
     {
       id: 2,
-      categoryName: "Guides ",
-      path: "guides",
+      categoryName:"Resources",
+      path: "resources",
       articles: [
         {
           articleName: "Getting started",
@@ -61,8 +44,8 @@ console.log(categoryPath)
     },
     {
       id: 3,
-      categoryName: "Equality For Women ",
-      path: "equality",
+      categoryName: "Videos",
+      path: "videos",
       articles: [
         {
           articleName:
@@ -88,64 +71,8 @@ console.log(categoryPath)
         },
       ],
     },
-    {
-      id: 3,
-      categoryName: "Videos ",
-      path: "videos",
-      articles: [
-        {
-          articleName:
-            "Gender equality in the workplace",
-          articleDescription: "More women on boards, so what?",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat ",
-          articleSubmittedDate: "18/10/2021",
-        },
-        {
-          articleName: " Need to Nurture Entrepreneurship in Young Girls",
-          articleDescription: "More women on boards, so what?",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat ",
-          articleSubmittedDate: "19/10/2021",
-        },
-        {
-          articleName: "The Missing Politics of Female Empowerment",
-          articleDescription: "More women on boards, so what?",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat ",
-          articleSubmittedDate:" 19/10/2021",
-        },
-      ],
-    },
-    {
-      id: 4,
-      categoryName: "Founderland speaker Series ",
-      path: "speaker",
-      articles: [
-        {
-          articleName:
-            "The employment paradox ",
-          articleDescription: "More women on boards, so what?",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. ",
-          articleSubmittedDate: "18/10/2021",
-        },
-        {
-          articleName: " Vision 2025",
-          articleDescription: "More women on boards, so what?",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellatsoluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat ",
-          articleSubmittedDate: "19/10/2021",
-        },
-        {
-          articleName: "The Missing Politics of Female Empowerment",
-          articleDescription: "More women on boards, so what?",
-          articleBody:
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat ",
-          articleSubmittedDate:" 19/10/2021",
-        },
-      ],
-    },
+   
+    
   ];
 
   return (
@@ -169,9 +96,10 @@ console.log(categoryPath)
         </button>
     </div>
 </div>
-<div className="pt-10">
+
+<div className="pt-10  mr-2 ">
           {data.map((item) => (
-            <CategoryDisplay data={item} />
+            <CategoryDisplay data={item} active={item.path===categoryPath}/>
           ))}
           {/* <div className=" ">
             <img src={LogoTransform} alt="logo" />
@@ -182,7 +110,7 @@ console.log(categoryPath)
         <div className='w-3/4 relative'>
           <img className='w-full h-full object-cover' src={Resourcebg} alt='resource' />
           <div className="absolute top-0 flex items-center justify-center w-full h-full">
-          <h1 className="text-hanson text-7xl text-white p-36 "> The Founderland Library</h1>
+          <h1 className="text-hanson lg:text-7xl  2xl:text-8xl text-white p-36 "> The Founderland Library</h1>
           </div>
           </div> :
           <div className='w-3/4 relative'>

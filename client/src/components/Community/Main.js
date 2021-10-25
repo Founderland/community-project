@@ -26,9 +26,9 @@ const Main = () => {
 
       {/* <Content />
         <Menu /> */}
-          <Route path="/community/newsfeed">
+          {/* <Route path="/community/newsfeed">
             <Newsfeed />
-          </Route>
+          </Route> */}
           <Route path="/community/community">
             <CommunityDashboard />
           </Route>
@@ -46,7 +46,7 @@ const Main = () => {
             <Inbox />
           </Route>
           <Route path="/">
-            <HomePage />
+          <Newsfeed />
           </Route>
         </Switch>
       </Router>

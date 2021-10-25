@@ -9490,6 +9490,11 @@ react-error-overlay@^6.0.9:
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.9.tgz"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
+react-google-slides@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-google-slides/-/react-google-slides-3.1.1.tgz#4d6e633790c2bf5fa406909a6020cf93c46b2722"
+  integrity sha512-JfANQkg4HfHSKqaBEqKhug2A1xA0SYOLvTesa01zd4zqM+XnJhkC7mstfXFHxiOWyP941eGQDFR/eFKhZ8gY7Q==
+
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"

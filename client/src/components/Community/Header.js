@@ -27,7 +27,7 @@ const Header = () => {
         </h1>
         <div class="md:flex flex-grow hidden justify-center ">
         {console.log(path)}
-          <Link to ="/community/newsfeed">
+          <Link to ="/community">
           <button
             class={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
               view === 0 && "border-b-2 border-fblue"
