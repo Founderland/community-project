@@ -28,6 +28,7 @@ const AdminLogin = () => {
       }
       try {
         const { data } = await axios.post(loginURL, loginData, config)
+        console.log(data)
         localStorage.setItem("authToken", data.access_token)
         var decode = jwt.decode(data.access_token)
         if (decode.avatar) {
@@ -45,7 +46,6 @@ const AdminLogin = () => {
         }
       } catch (err) {
         setLoading(false)
-        console.log(err)
         setError(
           err?.response?.status === 401 || err?.message === "401"
             ? "Wrong credentials"

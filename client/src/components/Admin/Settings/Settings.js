@@ -24,7 +24,7 @@ const Settings = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(0)
-  const { token, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const { token, selectedTab, setSelectedTab, user } = useContext(AdminContext)
   const tabs = [
     {
       index: 0,
@@ -82,8 +82,9 @@ const Settings = () => {
             },
             { title: "Actions", key: "-", style: "text-xs md:text-sm" },
           ],
-          ...res.data,
         }
+        const userList = res.data.data.filter((item) => item._id !== user.id)
+        response.data = userList
         setData(response)
         setLoading(false)
       })

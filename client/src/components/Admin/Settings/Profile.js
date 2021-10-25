@@ -9,6 +9,12 @@ import { useContext, useEffect, useState, useMemo } from "react"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
+import ListOption from "../Widgets/ListOption"
+const roles = [
+  { name: "Supervisor", value: "sadmin" },
+  { name: "Administrator", value: "admin" },
+  { name: "Reviewer", value: "user" },
+]
 const avatarColors = [
   "bg-gradient-to-t from-red-300 to-red-500 bg-cover",
   "bg-gradient-to-t from-orange-300 to-orange-500 bg-cover",
@@ -51,7 +57,6 @@ const Profile = ({ reload, setReload }) => {
     axios
       .get(id ? profileUrl + id : profileUrl + "user", config)
       .then((res) => {
-        console.log(token)
         setProfile(res.data.data)
       })
       .catch((err) => {
@@ -118,10 +123,10 @@ const Profile = ({ reload, setReload }) => {
       const notified = await axios.post(verifyUrl, { id: profile._id }, config)
       if (notified) {
         setNotified(true)
-        setSaving(false)
+        setNotifying(false)
       }
     } catch (e) {
-      setSaving(false)
+      setNotifying(false)
       setBanner({
         error: 1,
         show: true,
@@ -131,6 +136,9 @@ const Profile = ({ reload, setReload }) => {
         setBanner((prev) => ({ ...prev, show: false }))
       }, 3000)
     }
+  }
+  const setRole = (v) => {
+    setProfile((prev) => ({ ...prev, role: v }))
   }
   const avatarInitials = () => {
     let initials = profile.firstName.length
@@ -238,53 +246,75 @@ const Profile = ({ reload, setReload }) => {
             )}
           </div>
         </div>
-        <div className="-mx-3 px-3 md:flex mb-1">
-          <label
-            className="block uppercase tracking-wide text-grey-darker text-lg font-bold mb-2"
-            for="password"
-          >
-            Set a new password
-          </label>
-        </div>
-        <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-full px-3">
-            <label
-              className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-              for="password"
-            >
-              Password
-            </label>
-            <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
-              id="password"
-              type="password"
-              onChange={(e) =>
-                setProfile((prev) => ({ ...prev, password: e.target.value }))
-              }
-              placeholder="******************"
-            />
+        {!id ? (
+          <>
+            <div className="-mx-3 px-3 md:flex mb-1">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-lg font-bold mb-2"
+                for="password"
+              >
+                Set a new password
+              </label>
+            </div>
+            <div className="-mx-3 md:flex mb-6">
+              <div className="md:w-full px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  for="password"
+                >
+                  Password
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
+                  id="password"
+                  type="password"
+                  onChange={(e) =>
+                    setProfile((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
+                  placeholder="******************"
+                />
+              </div>
+              <div className="md:w-full px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  for="password"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
+                  id="confirmpassword"
+                  type="password"
+                  onChange={(e) =>
+                    setProfile((prev) => ({
+                      ...prev,
+                      confirmPassword: e.target.value,
+                    }))
+                  }
+                  placeholder="******************"
+                />
+              </div>
+            </div>{" "}
+          </>
+        ) : (
+          <div className="-mx-3  mb-4">
+            <div className="md:w-full px-3">
+              <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+                Role
+              </label>
+              <div className="w-full">
+                <ListOption
+                  options={roles}
+                  choice={profile.role}
+                  setChoice={setRole}
+                />
+              </div>
+            </div>
           </div>
-          <div className="md:w-full px-3">
-            <label
-              className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-              for="password"
-            >
-              Confirm Password
-            </label>
-            <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
-              id="confirmpassword"
-              type="password"
-              onChange={(e) =>
-                setProfile((prev) => ({
-                  ...prev,
-                  confirmPassword: e.target.value,
-                }))
-              }
-              placeholder="******************"
-            />
-          </div>
-        </div>
+        )}
         <div className="-mx-3 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around -mb-3">
           {!profile.isVerified ? (
             <button
