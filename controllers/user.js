@@ -65,6 +65,30 @@ const updateProfile = async (req, res) => {
   }
 }
 
+const lockProfile = async (req, res) => {
+  const { _id, isLocked } = req.body
+  if (_id) {
+    const profile = {
+      isLocked,
+    }
+    const updatedProfile = await User.findOneAndUpdate({ _id }, profile, {
+      new: true,
+    })
+    if (updatedProfile) {
+      updatedProfile["hashedPassword"] = ""
+      res.status(200).json({
+        data: updatedProfile,
+      })
+    } else {
+      res.status(404).json({
+        message: "Profile not found",
+      })
+    }
+  } else {
+    res.status(500).json({ message: "id not defined" })
+  }
+}
+
 const addUser = async (req, res, next) => {
   const errorsAfterValidation = validationResult(req)
   const { firstName, lastName, email, role, avatar } = req.body
@@ -133,6 +157,7 @@ module.exports = {
   findAll,
   findOne,
   updateProfile,
+  lockProfile,
   addUser,
   notifyUser,
 }

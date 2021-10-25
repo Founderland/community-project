@@ -40,9 +40,15 @@ UserRouter.get(
   userController.findOne
 )
 UserRouter.put(
-  "/profile/",
+  "/profile",
   passport.authenticate("jwt", { session: false }),
   userController.updateProfile
+)
+
+UserRouter.put(
+  "/lock",
+  passport.authenticate("jwt", { session: false }),
+  userController.lockProfile
 )
 //ADMIN-COMMUNITY
 UserRouter.post(

@@ -2,6 +2,7 @@ import {
   ShieldCheckIcon,
   ShieldExclamationIcon,
   ChevronDownIcon,
+  ExclamationIcon,
 } from "@heroicons/react/outline"
 import { Popover } from "@headlessui/react"
 import { useParams, useHistory } from "react-router-dom"
@@ -11,6 +12,7 @@ import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
 import ListOption from "../Widgets/ListOption"
 import Loading from "../Widgets/Loading"
+
 const roles = [
   { name: "Supervisor", value: "sadmin" },
   { name: "Administrator", value: "admin" },
@@ -27,9 +29,11 @@ const avatarColors = [
   "bg-gradient-to-t from-purple-300 to-purple-500 bg-cover",
   "bg-gradient-to-t from-pink-300 to-pink-500 bg-cover",
 ]
+
 const profileUrl = "/api/users/profile/"
 const notifyUrl = "/api/users/notify/"
 const addUserURL = "/api/users/add"
+const lockUrl = "/api/users/lock"
 
 const Profile = ({ reload, setReload }) => {
   const { token, selectedTab, setUser } = useContext(AdminContext)
@@ -41,6 +45,7 @@ const Profile = ({ reload, setReload }) => {
     lastName: "",
     email: "",
     isVerified: false,
+    isLocked: false,
     password: "",
     confirmPassword: "",
     role: "sadmin",
@@ -48,6 +53,7 @@ const Profile = ({ reload, setReload }) => {
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [notifying, setNotifying] = useState(false)
+  const [locking, setLocking] = useState(false)
   const [banner, setBanner] = useState({})
   const [notified, setNotified] = useState(false)
   const config = useMemo(() => {
@@ -58,6 +64,8 @@ const Profile = ({ reload, setReload }) => {
       },
     }
   }, [token])
+
+  //PROFILE API CALLS
   useEffect(() => {
     if (id !== "new") {
       setLoading(true)
@@ -184,6 +192,54 @@ const Profile = ({ reload, setReload }) => {
       }, 3000)
     }
   }
+
+  const lock = async () => {
+    setLocking(true)
+    try {
+      const locked = await axios.put(
+        lockUrl,
+        { _id: id, isLocked: !profile.isLocked },
+        config
+      )
+      if (locked) {
+        setProfile((prev) => ({ ...prev, isLocked: !prev.isLocked }))
+        setLocking(false)
+        console.log(locked)
+        setBanner({
+          success: 1,
+          show: true,
+          message: locked.data.data.isLocked
+            ? "Account locked"
+            : "Account unlocked",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 3000)
+      } else {
+        setLocking(false)
+        setBanner({
+          error: 1,
+          show: true,
+          message: "Error notifying the user!",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 3000)
+      }
+    } catch (e) {
+      setLocking(false)
+      setBanner({
+        error: 1,
+        show: true,
+        message: "Error notifying the user!",
+      })
+      setTimeout(() => {
+        setBanner((prev) => ({ ...prev, show: false }))
+      }, 3000)
+    }
+  }
+
+  //HELPER FUNCTIONS
   const setRole = (v) => {
     setProfile((prev) => ({ ...prev, role: v }))
   }
@@ -214,6 +270,8 @@ const Profile = ({ reload, setReload }) => {
       return "border-l-4 border-gray"
     }
   }
+
+  //COMPONENT RENDER
   return (
     <>
       {loading ? (
@@ -269,6 +327,7 @@ const Profile = ({ reload, setReload }) => {
                 <input
                   className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red py-3 px-4 mb-3"
                   id="first-name"
+                  disabled={profile.isLocked}
                   type="text"
                   value={profile.firstName}
                   onChange={(e) =>
@@ -289,6 +348,7 @@ const Profile = ({ reload, setReload }) => {
                 <input
                   className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4"
                   id="last-name"
+                  disabled={profile.isLocked}
                   type="text"
                   value={profile.lastName}
                   onChange={(e) =>
@@ -397,6 +457,11 @@ const Profile = ({ reload, setReload }) => {
                   lower case letter and one number
                 </div>
               </>
+            ) : profile.isLocked ? (
+              <div className=" flex justify-center items-center space-x-4  w-full -mx-3 mb-4">
+                <ExclamationIcon className="w-8 h-8 text-fred" />
+                <p className=" ">Access has been locked for this account</p>
+              </div>
             ) : (
               <div className="-mx-3  mb-4">
                 <div className="md:w-full px-3">
@@ -452,22 +517,41 @@ const Profile = ({ reload, setReload }) => {
                 ""
               )}
               <button
-                className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                onClick={() => save()}
+                className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/3  mb-4"
+                onClick={() => lock()}
               >
-                {saving ? (
+                {locking ? (
                   <div className="flex justify-center">
                     <div
                       style={{ borderTopColor: "transparent" }}
                       className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
                     ></div>
                   </div>
-                ) : id === "new" ? (
-                  "Save"
+                ) : profile.isLocked ? (
+                  "Unlock Access"
                 ) : (
-                  "Update"
+                  "Lock Access"
                 )}
               </button>
+              {!profile.isLocked && (
+                <button
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                  onClick={() => save()}
+                >
+                  {saving ? (
+                    <div className="flex justify-center">
+                      <div
+                        style={{ borderTopColor: "transparent" }}
+                        className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
+                      ></div>
+                    </div>
+                  ) : id === "new" ? (
+                    "Save"
+                  ) : (
+                    "Update"
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
