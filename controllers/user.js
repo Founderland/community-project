@@ -14,11 +14,14 @@ const findOne = async (req, res, next) => {
   let { id } = req.params
   if (id === "user") {
     id = req.user.id
+  } else if (!id) {
+    id = req.body.id
   }
   const profile = await User.findOne({ _id: id })
   if (profile) {
     profile["hashedPassword"] = ""
     if (req.originalUrl.includes("notify")) {
+      req.unverified = profile
       return next()
     } else {
       res.status(200).json({
