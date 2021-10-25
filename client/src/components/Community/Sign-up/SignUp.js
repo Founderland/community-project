@@ -3,15 +3,17 @@ import { useEffect, useState, useMemo } from "react"
 import { useParams, useHistory } from "react-router-dom"
 
 import jwt from "jsonwebtoken"
-import { ReactComponent as LogoLines } from "../../assets/line.svg"
-import { ReactComponent as SmallLogo } from "../../assets/small.svg"
-import gifLogo from "../../assets/images/Logo-Transform.gif"
-import banner from "../../assets/images/banner_black.png"
-import founder from "../../assets/images/founder-laptop.jpg"
+import { ReactComponent as LogoLines } from "../../../assets/line.svg"
+import { ReactComponent as SmallLogo } from "../../../assets/small.svg"
+import gifLogo from "../../../assets/images/Logo-Transform.gif"
+import whiteLogo from "../../../assets/images/logo_md_white.png"
+
+import founder from "../../../assets/images/founder-laptop.jpg"
 import StepWizard from "react-step-wizard"
 import FirstStep from "./FirstStep"
 import SecondStep from "./SecondStep"
 import ThirdStep from "./ThirdStep"
+import FourthStep from "./FourthStep"
 
 const signUpURL = "/api/auth/signup"
 const getProfileURL = "/api/users/community/profile"
@@ -19,7 +21,6 @@ const getProfileURL = "/api/users/community/profile"
 const SignUp = () => {
   let history = useHistory()
   const { token } = useParams()
-  const [firstName, setFirstName] = useState("")
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -32,7 +33,7 @@ const SignUp = () => {
     businessArea: "Select your business area",
     password: "",
     confirmPassword: "",
-    photo: null,
+    photo: [],
   })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -63,7 +64,7 @@ const SignUp = () => {
           .then((res) => {
             if (res.data.data) {
               setTimeout(() => {
-                setData({ ...data, ...res.data.data })
+                setData({ ...data, ...res.data.data, photo: [] })
               }, 3000)
             } else {
               setError("Invalid Token - empty res")
@@ -130,7 +131,7 @@ const SignUp = () => {
   //Render form with data from database
   //RENDER WELCOME MESSAGE -> 3s
 
-  if (!data.firstName.length) {
+  if (!data.firstName.length && !data.lastName.length) {
     return (
       <div className='h-screen w-screen flex items-center justify-center'>
         <div className='flex flex-col items-center justify-center w-screen  h-1/4 '>
@@ -152,25 +153,24 @@ const SignUp = () => {
   return (
     <div className='h-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
       <LogoLines className='w-full h-1/5 lg:hidden' />
-      <div className='hidden lg:flex h-full w-1/3 z-30'>
+      <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative'>
         <img
           src={founder}
           className='h-full w-full object-cover filter blur-sm '
+          alt='founder'
+        />
+        <img
+          src={whiteLogo}
+          className=' w-full xl:w-5/6 p-3 object-contain absolute object-bottom'
+          alt='founder'
         />
       </div>
-      <StepWizard initialStep={1} className='h-3/5 w-full lg:h-full w-2/3 p-3'>
-        <FirstStep data={data} setData={setData} className='overflow-hidden' />
+      <StepWizard initialStep={1} className='h-4/5 w-full '>
+        <FirstStep data={data} setData={setData} />
         <SecondStep data={data} setData={setData} />
-        <ThirdStep data={data} setData={setData} handleSubmit={handleSubmit} />
+        <ThirdStep data={data} setData={setData} />
+        <FourthStep data={data} setData={setData} handleSubmit={handleSubmit} />
       </StepWizard>
-
-      {/* {/* <div className=''>
-        <img
-          src={banner}
-          // style={{ height: "250px" }}
-          alt='founderland banner'
-          className=' w-full md:h-1/2 object-scale-down md:object-cover object-bottom md:object-top'></img>
-      </div> */}
     </div>
   )
   // !showForm ? (

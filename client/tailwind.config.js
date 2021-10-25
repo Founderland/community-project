@@ -60,9 +60,6 @@ module.exports = {
           900: "#afd300",
         },
       },
-      backgroundImage: {
-        banner: "url('/src/assets/images/banner_black.png')",
-      },
     },
   },
   variants: {

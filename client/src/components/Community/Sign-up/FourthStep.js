@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const ThirdStep = ({ data, setData, previousStep, handleSubmit }) => {
+const FourthStep = ({ data, setData, previousStep, handleSubmit }) => {
   const checkPasswordsMatch = () => {
     if (data.password === data.confirmPassword) {
       handleSubmit()
@@ -10,14 +10,18 @@ const ThirdStep = ({ data, setData, previousStep, handleSubmit }) => {
   }
   return (
     <div className='h-screen w-screen lg:w-full flex flex-col justify-around items-center '>
-      <div className='flex flex-col justify-between  items-center h-full w-screen lg:w-2/3 md:h-4/6 bg-white p-3'>
-        <div className='w-full h-full lg:h-4/6 flex flex-col items-center justify-center '>
-          <div className='text-grotesk text-xl lg:text-2xl xl:w-4/6 p-2'>
-            <h2> We are almost done... </h2>
-            Please enter a log-in password to access into the Founderland
-            Community
-          </div>
-          <div className='w-full p-4 py-6'>
+      {/* <div className='flex flex-col justify-between  items-center h-full w-screen lg:w-2/3  bg-white p-3 '> */}
+
+      <div className='flex flex-col text-grotesk text-xl lg:text-2xl lg:w-4/6 p-2'>
+        <h1 className='font-bold text-xl md:text-2xl text-grotesk mb-3 text-center'>
+          Choose a Password
+        </h1>
+        Please enter a log-in password to access into the Founderland Community
+      </div>
+
+      <div className='w-full h-full lg:h-5/6 lg:w-5/6 flex flex-col items-center justify-around p-4'>
+        <div className='w-full md:w-5/6 flex flex-col justify-center items-center'>
+          <div className='w-full xl:w-3/5 px-2 py-6'>
             <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
               Password
             </label>
@@ -29,7 +33,7 @@ const ThirdStep = ({ data, setData, previousStep, handleSubmit }) => {
               onChange={(e) => setData({ ...data, password: e.target.value })}
             />
           </div>
-          <div className='w-full  p-4  py-6 '>
+          <div className='w-full xl:w-3/5  px-2  py-6 '>
             <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
               Confirm Password
             </label>
@@ -53,7 +57,7 @@ const ThirdStep = ({ data, setData, previousStep, handleSubmit }) => {
           </button>
           <button
             type='button'
-            className='p-5 bg-fblue font-bold text-lg text-white shadow-lg '
+            className='p-5 bg-black font-bold text-lg text-white shadow-lg '
             onClick={() => {
               checkPasswordsMatch()
             }}>
@@ -61,8 +65,9 @@ const ThirdStep = ({ data, setData, previousStep, handleSubmit }) => {
           </button>
         </div>
       </div>
+      {/* </div> */}
     </div>
   )
 }
 
-export default ThirdStep
+export default FourthStep
