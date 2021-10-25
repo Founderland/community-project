@@ -10,7 +10,6 @@ const AdminHeader = () => {
   let { view, category, id } = useParams()
   const { views, setMenuToggle } = useContext(AdminContext)
   const history = useHistory()
-  console.log(history)
   let back = ""
   if (view === "applicants") back = "/admin/applicants/new"
   else back = "/admin/" + view

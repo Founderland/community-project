@@ -16,12 +16,11 @@ UserRouter.get(
   userController.findAll
 )
 UserRouter.post(
-  "/verify",
+  "/notify",
   passport.authenticate("jwt", { session: false }),
-  userController.verifyEmail,
+  userController.findOne,
   sendVerifyEmail,
   (req, res) => {
-    console.log("email sent")
     res.status(200).json({ message: "user notified" })
   }
 )
@@ -29,7 +28,11 @@ UserRouter.post(
   "/add",
   passport.authenticate("jwt", { session: false }),
   registerValidation,
-  userController.addUser
+  userController.addUser,
+  sendVerifyEmail,
+  (req, res) => {
+    res.status(200).json({ message: "user notified" })
+  }
 )
 UserRouter.get(
   "/profile/:id",
@@ -37,9 +40,15 @@ UserRouter.get(
   userController.findOne
 )
 UserRouter.put(
-  "/profile/",
+  "/profile",
   passport.authenticate("jwt", { session: false }),
   userController.updateProfile
+)
+
+UserRouter.put(
+  "/lock",
+  passport.authenticate("jwt", { session: false }),
+  userController.lockProfile
 )
 //ADMIN-COMMUNITY
 UserRouter.post(

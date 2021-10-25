@@ -15,9 +15,19 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  isVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  isLocked: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   hashedPassword: {
     type: String,
-    required: true,
+    required: false,
   },
   role: {
     type: String,

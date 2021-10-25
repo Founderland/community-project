@@ -22,13 +22,20 @@ const Settings = () => {
   const history = useHistory()
   const { id } = useParams()
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [reload, setReload] = useState(0)
-  const { token, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const { token, selectedTab, setSelectedTab, user } = useContext(AdminContext)
   const tabs = [
     {
       index: 0,
+      name: "Profile",
+      component: <Profile reload={reload} setReload={setReload} />,
+      restricted: "",
+    },
+    {
+      index: 1,
       name: "Users",
+      restricted: "sadmin",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <ListWidget
@@ -49,11 +56,6 @@ const Settings = () => {
       ) : (
         <Profile reload={reload} setReload={setReload} />
       ),
-    },
-    {
-      index: 1,
-      name: "Profile",
-      component: <Profile reload={reload} setReload={setReload} />,
     },
   ]
   const config = useMemo(() => {
@@ -82,8 +84,9 @@ const Settings = () => {
             },
             { title: "Actions", key: "-", style: "text-xs md:text-sm" },
           ],
-          ...res.data,
         }
+        const userList = res.data.data.filter((item) => item._id !== user.id)
+        response.data = userList
         setData(response)
         setLoading(false)
       })

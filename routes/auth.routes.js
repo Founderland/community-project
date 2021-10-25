@@ -44,9 +44,10 @@ authRouter.post(
   authController.authorizeUser
 )
 authRouter.post(
-  "/verify/:token",
+  "/verify",
   passport.authenticate("jwt", { session: false }),
-  userController.verifyEmail
+  authController.verifyEmail,
+  authController.authorizeUser
 )
 
 module.exports = authRouter

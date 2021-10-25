@@ -61,7 +61,6 @@ const User = ({ reload, setReload }) => {
         axios
           .post(addUserURL, data, config)
           .then((res) => {
-            console.log(res)
             if (res.data.success) {
               setSaving(false)
               setReload(reload + 1)

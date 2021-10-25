@@ -13,6 +13,7 @@ const Applicants = ({ status }) => {
       index: 0,
       name: "Founder",
       role: "founder",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4">
           <ApplicantsList status={category} role="founder" reload={reload} />
@@ -25,6 +26,7 @@ const Applicants = ({ status }) => {
       index: 1,
       name: "Investor",
       role: "investor",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <ApplicantsList status={category} role="investor" reload={reload} />
@@ -37,6 +39,7 @@ const Applicants = ({ status }) => {
       index: 2,
       name: "Ally",
       role: "ally",
+      restricted: "",
       component: !id ? (
         <div className="w-full px-4 outline-none">
           <ApplicantsList status={category} role="ally" reload={reload} />
