@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
   businessArea: { type: String, trim: true },
-  geoLocation: [{ type: Number }],
+  geoLocation: { lat: { type: Number }, lon: { type: Number } },
   email: {
     type: String,
     trim: true,
@@ -40,10 +40,13 @@ const userSchema = new mongoose.Schema({
   },
   confirmed: { type: Date, default: null },
   lastUpdate: { type: Date },
-  about: {
+  bio: {
     type: String,
     trim: true,
   },
+  companyName: { type: String, trim: true },
+  companyBio: { type: String, trim: true },
+  companyLink: { type: String, trim: true },
   role: {
     type: String,
     enum: ["founder", "investor", "ally"],
@@ -51,8 +54,8 @@ const userSchema = new mongoose.Schema({
     default: "Ally",
   },
   photo: {
-    data: Buffer,
-    contentType: String,
+    public_id: { type: String },
+    url: { type: String },
   },
   following: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
   followers: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],

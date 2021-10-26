@@ -122,7 +122,10 @@ const confirmUser = async (req, res, next) => {
     businessArea,
     geoLocation,
     photo,
-    about,
+    bio,
+    companyName,
+    companyBio,
+    companyLink,
   } = req.body
   try {
     if (!errorsAfterValidation.isEmpty()) {
@@ -140,7 +143,10 @@ const confirmUser = async (req, res, next) => {
       hashedPassword: generateHashedPassword(password),
       confirmed: Date.now(),
       lastUpdate: Date.now(),
-      about,
+      bio,
+      companyName,
+      companyBio,
+      companyLink,
     }
     const updateUser = await Member.findOneAndUpdate(
       { _id: req.user.id },
