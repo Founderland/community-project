@@ -20,7 +20,7 @@ const responseURL = "/api/applicants/response/"
 
 const Application = () => {
   const { id } = useParams()
-  const { token, setCModal, reload, setReload } = useContext(AdminContext)
+  const { token, setCModal } = useContext(AdminContext)
   const config = useMemo(() => {
     return {
       headers: {
@@ -75,11 +75,7 @@ const Application = () => {
       ) : (
         <>
           <ComponentModal>
-            <ApproveApplicant
-              data={data}
-              reload={reload}
-              setReload={setReload}
-            />
+            <ApproveApplicant data={data} />
           </ComponentModal>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg border-0">
             <div

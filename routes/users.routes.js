@@ -67,7 +67,7 @@ UserRouter.get(
 
 //COMMUNITY PROFILES
 UserRouter.get(
-  "/community/profile",
+  "/community/profile/:id",
   passport.authenticate("jwt", { session: false }),
   memberController.findMember
 )

@@ -8,13 +8,13 @@ import Banner from "../Widgets/Banner"
 
 const approveURL = "/api/applicants/response/approve/"
 
-const ApproveApplicant = ({ data, reload, setReload, role }) => {
+const ApproveApplicant = ({ data }) => {
   const [saving, setSaving] = useState(false)
   const [notify, setNotify] = useState(false)
   const history = useHistory()
 
   const [banner, setBanner] = useState({})
-  const { setCModal, token } = useContext(AdminContext)
+  const { setCModal, token, reload, setReload } = useContext(AdminContext)
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -57,6 +57,7 @@ const ApproveApplicant = ({ data, reload, setReload, role }) => {
           message: `User saved${notify ? " and notified" : ""}! redirecting..`,
         })
         setTimeout(() => {
+          setReload(reload + 1)
           setBanner((prev) => ({ ...prev, show: false }))
           history.push("/admin/members")
         }, 2000)

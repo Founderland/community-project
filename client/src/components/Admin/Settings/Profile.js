@@ -35,8 +35,9 @@ const notifyUrl = "/api/users/notify/"
 const addUserURL = "/api/users/add"
 const lockUrl = "/api/users/lock"
 
-const Profile = ({ reload, setReload }) => {
-  const { token, selectedTab, setUser } = useContext(AdminContext)
+const Profile = () => {
+  const { token, selectedTab, setUser, reload, setReload } =
+    useContext(AdminContext)
   const history = useHistory()
   const { id } = useParams()
   const [profile, setProfile] = useState({
@@ -205,7 +206,6 @@ const Profile = ({ reload, setReload }) => {
       if (locked) {
         setProfile((prev) => ({ ...prev, isLocked: !prev.isLocked }))
         setLocking(false)
-        console.log(locked)
         setBanner({
           success: 1,
           show: true,
@@ -278,7 +278,7 @@ const Profile = ({ reload, setReload }) => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="w-full md:w-5/6 lg:w-3/4">
+        <div className=" w-full md:w-5/6 lg:w-3/4">
           <div className="relative bg-white px-8 pt-4 pb-8 mb-4 flex flex-col my-2">
             <div className="w-full flex items-center justify-center z-20">
               <Banner message={banner} />

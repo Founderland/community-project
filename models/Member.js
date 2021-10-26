@@ -16,6 +16,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  companyName: {
+    type: String,
+    trim: true,
+  },
+  companyBio: {
+    type: String,
+    trim: true,
+  },
+  website: {
+    type: String,
+    trim: true,
+  },
   city: {
     type: String,
     trim: true,
@@ -24,8 +36,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  businessArea: { type: String, trim: true },
   geoLocation: [{ type: Number }],
+  businessArea: { type: String, trim: true },
   email: {
     type: String,
     trim: true,
@@ -33,13 +45,6 @@ const userSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, "Valid email address required"],
     required: "Email is required",
   },
-  hashedPassword: { type: String },
-  created: {
-    type: Date,
-    default: Date.now(),
-  },
-  confirmed: { type: Date, default: null },
-  lastUpdate: { type: Date },
   about: {
     type: String,
     trim: true,
@@ -48,16 +53,24 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["founder", "investor", "ally"],
     required: true,
-    default: "Ally",
+    default: "ally",
   },
   photo: {
     data: Buffer,
     contentType: String,
   },
-  following: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
-  followers: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
+  hashedPassword: { type: String },
+  created: {
+    type: Date,
+    default: Date.now(),
+  },
+  confirmed: { type: Date, default: null },
   applicationId: { type: mongoose.Schema.ObjectId },
   notified: { type: Date, default: null },
+  lastUpdate: { type: Date },
+  locked: { type: Boolean, default: false },
+  following: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
+  followers: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
 })
 
 const Member = mongoose.model("Member", userSchema)

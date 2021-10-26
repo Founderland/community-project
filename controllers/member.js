@@ -22,9 +22,15 @@ const findAll = async (req, res) => {
 }
 
 const findMember = async (req, res) => {
-  const { _id } = req.user
-  const profile = await Member.findOne({ _id })
+  let id = null
+  if (req.user.avatar) {
+    id = req.params.id
+  } else {
+    id = req.user.id
+  }
+  const profile = await Member.findOne({ _id: id })
   if (profile) {
+    profile.hashedPassword = ""
     res.status(200).json({
       data: profile,
     })
@@ -44,6 +50,8 @@ const addMember = async (req, res, next) => {
     email,
     city,
     country,
+    companyName,
+    businessArea,
     role,
     connect,
     applicationId,
@@ -61,13 +69,15 @@ const addMember = async (req, res, next) => {
       email,
       city,
       country,
+      companyName,
+      businessArea,
       role,
       applicationId,
     }
     const newMember = await Member.create(data)
     if (newMember) {
       req.newMember = newMember
-      if (applicationId !== "") {
+      if (applicationId) {
         const updated = await Response.findByIdAndUpdate(
           { _id: applicationId },
           {
@@ -78,7 +88,6 @@ const addMember = async (req, res, next) => {
         )
         if (!updated) await Promise.reject("NOT_FOUND")
       }
-
       if (connect) {
         return next()
       } else {
@@ -86,6 +95,7 @@ const addMember = async (req, res, next) => {
       }
     } else throw new Error("DATABASE_ERROR")
   } catch (e) {
+    console.log(e)
     if (e.message === "USER_EXISTS_ALREADY") {
       res.status(403).json({
         error: 403,
@@ -99,7 +109,7 @@ const addMember = async (req, res, next) => {
     } else if (e.message === "NOT_FOUND") {
       res.status(400).json({
         error: 400,
-        message: "Member created but response failed to updateå",
+        message: "Member created but response failed to update",
       })
     } else {
       res.status(500).json({
