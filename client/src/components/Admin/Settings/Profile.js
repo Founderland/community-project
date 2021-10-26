@@ -67,13 +67,11 @@ const Profile = ({ reload, setReload }) => {
 
   //PROFILE API CALLS
   useEffect(() => {
-    console.log(id)
     if (id !== "new") {
       setLoading(true)
       axios
         .get(id ? profileUrl + id : profileUrl + "user", config)
         .then((res) => {
-          console.log(res)
           setProfile(res.data.data)
           setLoading(false)
         })
