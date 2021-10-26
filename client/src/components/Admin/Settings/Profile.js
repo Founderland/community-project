@@ -119,6 +119,7 @@ const Profile = ({ reload, setReload }) => {
           delete profile.password
           delete profile.confirmPassword
           delete profile.isVerified
+          delete profile.isLocked
           if (Object.values(profile).every((value) => value.length > 0)) {
             result = await axios.post(addUserURL, profile, config)
           } else {
@@ -483,7 +484,7 @@ const Profile = ({ reload, setReload }) => {
             <div className="-mx-3 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around -mb-3">
               {!profile.isVerified && id !== "new" ? (
                 <button
-                  className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                  className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
                   onClick={() => notify()}
                   disabled={notified}
                 >
@@ -508,7 +509,7 @@ const Profile = ({ reload, setReload }) => {
                 </button>
               ) : id === "new" ? (
                 <button
-                  className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
                   onClick={() => {
                     history.goBack()
                   }}
@@ -520,7 +521,7 @@ const Profile = ({ reload, setReload }) => {
               )}
               {id !== "new" && id ? (
                 <button
-                  className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/3  mb-4"
+                  className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
                   onClick={() => lock()}
                 >
                   {locking ? (
@@ -541,7 +542,7 @@ const Profile = ({ reload, setReload }) => {
               )}
               {!profile.isLocked && (
                 <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => save()}
                 >
                   {saving ? (
