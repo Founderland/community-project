@@ -182,11 +182,15 @@ const MemberProfile = () => {
                 <div className="text-gray-700">
                   <div className="grid md:grid-cols-2 text-sm">
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">First Name</div>
+                      <div className="px-4 py-2 uppercase font-semibold">
+                        First Name
+                      </div>
                       <div className="px-4 py-2">{profile.firstName}</div>
                     </div>
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">Last Name</div>
+                      <div className="px-4 py-2 uppercase font-semibold">
+                        Last Name
+                      </div>
                       <div className="px-4 py-2">{profile.lastName}</div>
                     </div>
                     <div className="grid grid-cols-2">
