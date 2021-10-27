@@ -77,22 +77,7 @@ const addMember = async (req, res, next) => {
     const newMember = await Member.create(data)
     if (newMember) {
       req.newMember = newMember
-      if (applicationId) {
-        const updated = await Response.findByIdAndUpdate(
-          { _id: applicationId },
-          {
-            status: "approved",
-            memberId: newMember._id,
-            evaluatedOn: Date.now(),
-          }
-        )
-        if (!updated) await Promise.reject("NOT_FOUND")
-      }
-      if (connect) {
-        return next()
-      } else {
-        res.status(200).json({ success: 1, message: "User saved" })
-      }
+      return next()
     } else throw new Error("DATABASE_ERROR")
   } catch (e) {
     console.log(e)

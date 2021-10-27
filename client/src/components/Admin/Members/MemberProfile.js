@@ -111,30 +111,28 @@ const MemberProfile = () => {
                 <h4 className="text-gray-600 text-sm text-semibold leading-6">
                   {profile.companyName}
                 </h4>
-                <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
-                  <li className="flex items-center py-3">
+                <div className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
+                  <div className="flex items-center py-3">
                     <span>Status</span>
-                    <span className="ml-auto">
-                      {profile.confirmed ? (
-                        <span className="bg-green-500 py-1 px-2 rounded text-white text-sm">
-                          Active
-                        </span>
-                      ) : profile.locked ? (
-                        <span className="bg-red-500 py-1 px-2 rounded text-white text-sm">
-                          Locked
-                        </span>
-                      ) : profile.notified ? (
-                        <span className="bg-yellow-500 py-1 px-2 rounded text-white text-sm">
-                          Unconfirmed
-                        </span>
-                      ) : (
-                        <span className="bg-yellow-500 py-1 px-2 rounded text-white text-sm">
-                          Not Notified
-                        </span>
-                      )}
-                    </span>
-                  </li>
-                  <li className="flex flex-col items-start justify-center py-3">
+                    {profile.confirmed ? (
+                      <span className="ml-auto bg-green-500 py-1 px-2 text-white text-sm">
+                        Active
+                      </span>
+                    ) : profile.locked ? (
+                      <span className="ml-auto bg-red-500 py-1 px-2 text-white text-sm">
+                        Locked
+                      </span>
+                    ) : profile.notified ? (
+                      <span className="ml-auto bg-yellow-500 py-1 px-2 text-white text-sm">
+                        Unconfirmed
+                      </span>
+                    ) : (
+                      <span className="ml-auto bg-yellow-500 py-1 px-2 text-white text-sm">
+                        Not Notified
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start justify-center py-3">
                     <p>Member since</p>
                     <div className="ml-auto w-full text-center">
                       <p className="text-xs">Created on</p>
@@ -150,24 +148,24 @@ const MemberProfile = () => {
                         </p>
                       </span>
                     )}
-                  </li>
-                  <li className="flex flex-col items-start justify-center py-3">
+                  </div>
+                  <div className="flex flex-col items-start justify-center py-3">
                     <span>Application</span>
                     <span className="ml-auto">
                       LinkTo:profile.applicationId
                     </span>
-                  </li>
+                  </div>
                   {profile.notified && (
-                    <li className="flex flex-col items-center justify-center py-3">
+                    <div className="flex flex-col items-center justify-center py-3">
                       <span className="bg-blue-500 py-1 px-2 rounded text-white text-sm">
                         Notified
                       </span>
                       <p className="text-xs">
                         {moment(profile.notified).format("DD/M/YYYY")}
                       </p>
-                    </li>
+                    </div>
                   )}
-                </ul>
+                </div>
               </div>
               <div className="my-4"></div>
             </div>
@@ -182,11 +180,15 @@ const MemberProfile = () => {
                 <div className="text-gray-700">
                   <div className="grid md:grid-cols-2 text-sm">
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">First Name</div>
+                      <div className="px-4 py-2 uppercase font-semibold">
+                        First Name
+                      </div>
                       <div className="px-4 py-2">{profile.firstName}</div>
                     </div>
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">Last Name</div>
+                      <div className="px-4 py-2 uppercase font-semibold">
+                        Last Name
+                      </div>
                       <div className="px-4 py-2">{profile.lastName}</div>
                     </div>
                     <div className="grid grid-cols-2">

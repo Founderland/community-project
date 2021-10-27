@@ -1,7 +1,7 @@
 const responseRouter = require("express").Router()
 const responseController = require("../controllers/response")
 const memberController = require("../controllers/member")
-const { sendConnectEmail } = require("../helpers/emailHandler")
+const { sendConnectEmail, sendRejected } = require("../helpers/emailHandler")
 const {
   registerValidation,
   registerCommunityValidation,
@@ -16,12 +16,6 @@ responseRouter.get(
   passport.authenticate("jwt", { session: false }),
   responseController.findAllResponse
 )
-//EDIT  APPLICANTS RESPONSE
-responseRouter.put(
-  "/response/:id/:score",
-  passport.authenticate("jwt", { session: false }),
-  responseController.editResponse
-)
 
 //GET APPLICANTS RESPONSE BY ID / STATUS ["New", "Pending", "Approved", "Rejected"] / ROLE
 responseRouter.get(
@@ -35,14 +29,22 @@ responseRouter.get(
   responseController.findResponsesByStatus
 )
 
-//APPROVE APPLICANT BY ID
+//APPROVE/REJECT APPLICANT BY ID
 responseRouter.put(
   "/response/approve/",
   passport.authenticate("jwt", { session: false }),
   registerCommunityValidation,
   memberController.addMember,
+  responseController.updateStatus,
   sendConnectEmail,
   memberController.updateNotified
+)
+responseRouter.put(
+  "/response/reject/",
+  passport.authenticate("jwt", { session: false }),
+  responseController.updateStatus,
+  sendRejected,
+  responseController.updateNotified
 )
 
 module.exports = responseRouter

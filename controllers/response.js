@@ -48,23 +48,49 @@ const findAllResponse = async (req, res) => {
 }
 
 // Update Founders Status
-const updateStatus = async (req, res) => {
-  const { status, id } = req.params
+const updateStatus = async (req, res, next) => {
+  const { status, applicationId, connect } = req.body
   try {
+    const updateData = {
+      status: status,
+      evaluatedOn: Date.now(),
+      evaluatedBy: req.user.firstName + " " + req.user.lastName,
+    }
+    if (req.newMember) updateData.memberId = req.newMember.id
     const result = await Response.findByIdAndUpdate(
-      id,
-      {
-        status: status,
-        evaluatedOn: Date.now(),
-      },
+      { _id: applicationId },
+      updateData,
       { new: true }
     )
-    res.status(200).json(result)
+    if (connect) return next()
+    res.status(200).json({ success: 1, ...result })
   } catch (error) {
     console.log(error)
   }
 }
-
+const updateNotified = async (req, res, next) => {
+  const { applicationId } = req.body
+  try {
+    const updateData = {
+      notifiedOn: Date.now(),
+    }
+    const result = await Response.findByIdAndUpdate(
+      { _id: applicationId },
+      updateData,
+      { new: true }
+    )
+    if (result) res.status(200).json({ success: 1, ...result })
+    else
+      res
+        .status(500)
+        .json({ error: 1, message: "Sorry, something went wrong..." })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ error: 1, message: "Sorry, something went wrong..." })
+  }
+}
 const findResponsesByStatus = async (req, res) => {
   const { status, role } = req.params
   try {
@@ -126,6 +152,7 @@ module.exports = {
   findAllResponse,
   findResponsesByStatus,
   updateStatus,
+  updateNotified,
   editResponse,
   findResponseById,
 }
