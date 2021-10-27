@@ -109,7 +109,7 @@ const Application = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full px-4 pt-2 grid md:grid-cols-4 sm:grid-cols-2 text-xs">
+            <div className="w-full px-4 pt-2 grid md:grid-cols-5 sm:grid-cols-2 text-xs">
               <div className="mb-2">
                 <p className=" text-xs text-grotesk">Submitted on</p>
                 <p className={`font-bold text-sm`}>
@@ -125,16 +125,34 @@ const Application = () => {
                 </div>
               )}
               {data.data.status !== "new" && (
-                <div className="mb-2">
-                  <p className=" text-xs text-grotesk">
-                    {data.data.status === "reviewed"
-                      ? "Last reviewed by"
-                      : data.data.status === "approved"
-                      ? "Approved by"
-                      : "Rejected by"}
-                  </p>
-                  <p className={`font-bold text-sm`}>{data.data.evaluatedBy}</p>
-                </div>
+                <>
+                  <div className="mb-2">
+                    <p>&nbsp;</p>
+                    <span
+                      className={`mx-auto ${
+                        data.data.status === "approved"
+                          ? "bg-green-200 text-green-900 border-green-900 border"
+                          : data.data.status === "pending"
+                          ? "bg-yellow-200 text-yellow-900 border-yellow-900 border"
+                          : "bg-red-200 text-red-900 border-red-900 border"
+                      } py-1 px-2 text-xs uppercase`}
+                    >
+                      {data.data.status}
+                    </span>
+                  </div>
+                  <div className="mb-2">
+                    <p className=" text-xs text-grotesk">
+                      {data.data.status === "reviewed"
+                        ? "Last reviewed by"
+                        : data.data.status === "approved"
+                        ? "Approved by"
+                        : "Rejected by"}
+                    </p>
+                    <p className={`font-bold text-sm`}>
+                      {data.data.evaluatedBy}
+                    </p>
+                  </div>
+                </>
               )}
               {data.data.memberId && (
                 <div className="mb-2">
@@ -185,7 +203,8 @@ const Application = () => {
               ))}
               <ApplicationComments data={data} styles={styles} />
               <footer className="p-2 mt-2">
-                {data.data.status !== "approved" ? (
+                {data.data.status === "new" ||
+                data.data.status === "pending" ? (
                   <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                     <button
                       class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
@@ -193,6 +212,15 @@ const Application = () => {
                     >
                       Reject
                     </button>
+                    <button
+                      class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                      onClick={() => updateApplication("approved")}
+                    >
+                      Approve
+                    </button>
+                  </div>
+                ) : data.data.status === "rejected" ? (
+                  <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                     <button
                       class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                       onClick={() => updateApplication("approved")}
