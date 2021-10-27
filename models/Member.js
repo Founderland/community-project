@@ -36,8 +36,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  geoLocation: [{ type: Number }],
   businessArea: { type: String, trim: true },
+  geoLocation: { lat: { type: Number }, lon: { type: Number } },
   email: {
     type: String,
     trim: true,
@@ -45,10 +45,20 @@ const userSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, "Valid email address required"],
     required: "Email is required",
   },
-  about: {
+  hashedPassword: { type: String },
+  created: {
+    type: Date,
+    default: Date.now(),
+  },
+  confirmed: { type: Date, default: null },
+  lastUpdate: { type: Date },
+  bio: {
     type: String,
     trim: true,
   },
+  companyName: { type: String, trim: true },
+  companyBio: { type: String, trim: true },
+  companyLink: { type: String, trim: true },
   role: {
     type: String,
     enum: ["founder", "investor", "ally"],
@@ -56,8 +66,8 @@ const userSchema = new mongoose.Schema({
     default: "ally",
   },
   photo: {
-    data: Buffer,
-    contentType: String,
+    public_id: { type: String },
+    url: { type: String },
   },
   hashedPassword: { type: String },
   created: {
