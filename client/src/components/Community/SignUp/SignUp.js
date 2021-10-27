@@ -56,6 +56,7 @@ const SignUp = () => {
   //Get token from URL
   useEffect(() => {
     const jwtDecoded = jwt.decode(token)
+
     //Get data from token and fetch DB data
     if (jwtDecoded?.email) {
       //check if token is expired or load the data
@@ -65,8 +66,9 @@ const SignUp = () => {
         //VALID TOKEN
         //GET THE REGISTERED DATA BASED ON THE ID OR EMAIL
         axios
-          .get(getProfileURL, config)
+          .get(`${getProfileURL}/${jwtDecoded.id}`, config)
           .then((res) => {
+            console.log(res)
             if (res.data.data) {
               setTimeout(() => {
                 setData({ ...data, ...res.data.data, photo: [] })
