@@ -17,12 +17,10 @@ const userSchema = new mongoose.Schema({
   },
   isVerified: {
     type: Boolean,
-    required: true,
     default: false,
   },
   isLocked: {
     type: Boolean,
-    required: true,
     default: false,
   },
   hashedPassword: {
@@ -32,7 +30,6 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ["sadmin", "admin", "user"],
-    required: true,
     default: "user",
   },
   avatar: {

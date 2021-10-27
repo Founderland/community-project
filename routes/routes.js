@@ -2,6 +2,7 @@ const responseRouter = require("./responses.routes")
 const formRouter = require("./form.routes")
 const userRouter = require("./users.routes")
 const authRouter = require("./auth.routes")
+const eventRouter = require("./events.routes")
 const profilePicRouter = require("./profilePic.routes")
 
 const setupRoutes = (app) => {
