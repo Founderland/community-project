@@ -18,10 +18,10 @@ const styles = {
   user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
-const MembersList = ({ role, reload }) => {
+const MembersList = ({ role }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const { setModalMessage, setIModal, token } = useContext(AdminContext)
+  const { token, reload } = useContext(AdminContext)
   const config = useMemo(() => {
     return {
       headers: {
@@ -39,48 +39,47 @@ const MembersList = ({ role, reload }) => {
       .then((res) => {
         const header = {
           header: [
-            { title: "Name", key: "firstName", style: "text-right" },
-            { title: " ", key: "lastName", style: "text-left" },
-            { title: "Email", key: "email", style: "text-center" },
-            { title: "Added on", key: "created", style: "text-center" },
-            { title: "Notified on", key: "notified", style: "text-center" },
-            { title: "Signed up on", key: "confirmed", style: "text-center" },
-            { title: "", key: "-", style: "text-center" },
+            { title: "Name", key: "firstName", style: "text-right text-sm" },
+            { title: " ", key: "lastName", style: "text-left text-sm" },
+            { title: "Email", key: "email", style: "text-center text-sm" },
+            { title: "Added on", key: "created", style: "text-center text-sm" },
+            {
+              title: "Notified on",
+              key: "notified",
+              style: "text-center text-sm",
+            },
+            {
+              title: "Signed up on",
+              key: "confirmed",
+              style: "text-center text-sm",
+            },
+            { title: "", key: "-", style: "text-center text-sm" },
           ],
         }
         const data = res.data
         data.data.forEach((element) => {
           if (element.created) {
-            element.created = moment(element.created).format("DD/M/YYYY hh:mm")
+            element.created = moment(element.created).format("DD/M/YYYY")
           }
           if (element.notified) {
-            element.notified = moment(element.notified).format(
-              "DD/M/YYYY hh:mm"
-            )
+            element.notified = moment(element.notified).format("DD/M/YYYY")
           }
           if (element.confirmed) {
-            element.confirmed = moment(element.confirmed).format(
-              "DD/M/YYYY hh:mm"
-            )
+            element.confirmed = moment(element.confirmed).format("DD/M/YYYY")
           }
         })
         setData({ ...header, ...data })
         setLoading(false)
       })
       .catch((err) => {
-        setModalMessage({
-          icon: "info",
-          title: "Error loading the database set",
-          message: "Sorry, something went wrong",
-        })
-        setIModal(true)
+        console.log(err)
       })
   }, [reload, role])
 
   return loading ? (
     <Loading />
   ) : (
-    <ListWidget title="" data={data} styles={styles} showing={5} />
+    <ListWidget title="" data={data} styles={styles} showing={10} />
   )
 }
 

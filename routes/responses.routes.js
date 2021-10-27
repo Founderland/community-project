@@ -9,11 +9,7 @@ const {
 const passport = require("passport")
 
 //ADD APPLICANTS RESPONSE
-responseRouter.post(
-  "/response",
-  passport.authenticate("jwt", { session: false }),
-  responseController.addResponse
-)
+responseRouter.post("/response", responseController.addResponse)
 //GET APPLICANTS RESPONSE
 responseRouter.get(
   "/response",

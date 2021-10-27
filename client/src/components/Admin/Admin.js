@@ -35,6 +35,7 @@ const Admin = () => {
     { icon: "pending", text: "4 founders applicants pending approval" },
   ])
   const [status, setStatus] = useState("")
+  const [reload, setReload] = useState("")
 
   useEffect(() => {
     if (localStorage.authToken) {
@@ -64,9 +65,9 @@ const Admin = () => {
     <AdminContext.Provider
       value={{
         menuToggle,
+        setMenuToggle,
         user,
         setUser,
-        setMenuToggle,
         views,
         selectedTab,
         setSelectedTab,
@@ -79,6 +80,8 @@ const Admin = () => {
         setToken,
         status,
         setStatus,
+        reload,
+        setReload,
       }}
     >
       {user ? <Main /> : <Login />}

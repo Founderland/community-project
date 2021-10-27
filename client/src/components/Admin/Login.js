@@ -45,7 +45,6 @@ const AdminLogin = () => {
         }
       } catch (err) {
         setLoading(false)
-        console.log(err)
         setError(
           err?.response?.status === 401 || err?.message === "401"
             ? "Wrong credentials"

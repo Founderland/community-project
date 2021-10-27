@@ -9,11 +9,6 @@ const registerValidation = [
     .isEmail()
     .withMessage("Invalid email"),
   check("role").exists().withMessage("Role missing"),
-  check("password")
-    .exists()
-    .withMessage("Password missing")
-    .isLength({ min: 8 })
-    .withMessage("Password too short"),
 ]
 
 const registerCommunityValidation = [

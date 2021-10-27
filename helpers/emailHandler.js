@@ -64,10 +64,9 @@ const sendConnectEmail = async (req, res, next) => {
 
 const sendVerifyEmail = async (req, res, next) => {
   console.log("sending email")
-  console.log(req.unverified)
   const { email, _id, firstName, lastName } = req.unverified
   const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
-    expiresIn: "5d",
+    expiresIn: "1d",
   })
 
   // config for mailserver and mail
