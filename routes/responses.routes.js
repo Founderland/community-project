@@ -2,10 +2,7 @@ const responseRouter = require("express").Router()
 const responseController = require("../controllers/response")
 const memberController = require("../controllers/member")
 const { sendConnectEmail, sendRejected } = require("../helpers/emailHandler")
-const {
-  registerValidation,
-  registerCommunityValidation,
-} = require("../helpers/validators")
+const { registerCommunityValidation } = require("../helpers/validators")
 const passport = require("passport")
 
 //ADD APPLICANTS RESPONSE

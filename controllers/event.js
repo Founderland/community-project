@@ -8,6 +8,23 @@ const findAll = async (req, res, next) => {
     })
 }
 
+const findFuture = async (req, res, next) => {
+  const events = await Event.find({ dateStart: { $gte: Date.now() } })
+  if (events)
+    res.status(200).json({
+      data: events,
+    })
+}
+
+const findPast = async (req, res, next) => {
+  console.log("past")
+  const events = await Event.find({ dateEnd: { $lt: Date.now() } })
+  if (events)
+    res.status(200).json({
+      data: events,
+    })
+}
+
 const findOne = async (req, res, next) => {
   let { id } = req.params
   if (!id) {
@@ -39,6 +56,8 @@ const updateAttendance = async (req, res, next) => {
 
 module.exports = {
   findAll,
+  findFuture,
+  findPast,
   findOne,
   updateOne,
   updateAttendance,

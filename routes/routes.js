@@ -14,6 +14,8 @@ const setupRoutes = (app) => {
   app.use("/api/form", formRouter)
   //Auth
   app.use("/api/auth", authRouter)
+  //Events
+  app.use("/api/events", eventRouter)
 
   app.use("/api/profile-picture", profilePicRouter)
 }
