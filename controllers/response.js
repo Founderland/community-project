@@ -48,18 +48,21 @@ const findAllResponse = async (req, res) => {
 }
 
 // Update Founders Status
-const updateStatus = async (req, res) => {
-  const { status, id } = req.params
+const updateStatus = async (req, res, next) => {
+  const { status, applicationId, connect } = req.body
   try {
     const result = await Response.findByIdAndUpdate(
-      id,
+      { _id: applicationId },
       {
         status: status,
         evaluatedOn: Date.now(),
+        memberId: req.newMember.id,
+        evaluatedBy: req.user.firstName + " " + req.user.lastName,
       },
       { new: true }
     )
-    res.status(200).json(result)
+    if (connect) return next()
+    res.status(200).json({ success: 1, ...result })
   } catch (error) {
     console.log(error)
   }

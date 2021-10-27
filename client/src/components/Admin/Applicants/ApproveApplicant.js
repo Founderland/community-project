@@ -49,6 +49,7 @@ const ApproveApplicant = ({ data }) => {
     }
     try {
       const approved = await axios.put(approveURL, updateData, config)
+      console.log(approved)
       if (approved.data.success) {
         setSaving(false)
         setBanner({
@@ -58,6 +59,7 @@ const ApproveApplicant = ({ data }) => {
         })
         setTimeout(() => {
           setReload(reload + 1)
+          setCModal(false)
           setBanner((prev) => ({ ...prev, show: false }))
           history.push("/admin/members")
         }, 2000)
@@ -65,8 +67,9 @@ const ApproveApplicant = ({ data }) => {
         throw new Error("Sorry, something went wrong while saving")
       }
     } catch (e) {
+      console.log(e)
       setSaving(false)
-      if (e?.response.status === 403) {
+      if (e?.response?.status === 403) {
         setBanner({
           error: 1,
           show: true,

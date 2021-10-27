@@ -16,12 +16,6 @@ responseRouter.get(
   passport.authenticate("jwt", { session: false }),
   responseController.findAllResponse
 )
-//EDIT  APPLICANTS RESPONSE
-responseRouter.put(
-  "/response/:id/:score",
-  passport.authenticate("jwt", { session: false }),
-  responseController.editResponse
-)
 
 //GET APPLICANTS RESPONSE BY ID / STATUS ["New", "Pending", "Approved", "Rejected"] / ROLE
 responseRouter.get(
@@ -41,6 +35,7 @@ responseRouter.put(
   passport.authenticate("jwt", { session: false }),
   registerCommunityValidation,
   memberController.addMember,
+  responseController.updateStatus,
   sendConnectEmail,
   memberController.updateNotified
 )
