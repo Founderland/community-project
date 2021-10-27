@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken"
 const views = {
   dashboard: { icon: "home", name: "Dashboard" },
   ressources: { icon: "collection", name: "Ressources" },
+  events: { icon: "calendar", name: "Events" },
   members: { icon: "groupuser", name: "Members" },
   applicants: {
     icon: "textdoc",
