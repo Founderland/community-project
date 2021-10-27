@@ -15,6 +15,9 @@ import {
 } from "@heroicons/react/outline"
 
 const memberUrl = "/api/users/community/profile/"
+const notifyUrl = "/api/users/community/notify/"
+const lockUrl = "/api/users/community/lock"
+
 const defaultProfile = {
   photo: null,
   locked: false,
@@ -86,13 +89,81 @@ const MemberProfile = () => {
     return () => {
       setProfile(defaultProfile)
     }
-  }, [])
+  }, [reload])
 
-  const lock = () => {}
+  const lock = async () => {
+    setLocking(true)
+    try {
+      const isLocked = await axios.put(
+        lockUrl,
+        { _id: id, locked: !profile.locked },
+        config
+      )
+      if (isLocked) {
+        setProfile((prev) => ({ ...prev, locked: !prev.locked }))
+        setLocking(false)
+        setBanner({
+          success: 1,
+          show: true,
+          message: isLocked.data.data.locked
+            ? "Account locked"
+            : "Account unlocked",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 3000)
+      } else {
+        setLocking(false)
+        setBanner({
+          error: 1,
+          show: true,
+          message: profile.locked
+            ? "Error unlocking member!"
+            : "Error locking member!",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 3000)
+      }
+    } catch (e) {
+      setLocking(false)
+      setBanner({
+        error: 1,
+        show: true,
+        message: profile.locked
+          ? "Error unlocking member!"
+          : "Error locking member!",
+      })
+      setTimeout(() => {
+        setBanner((prev) => ({ ...prev, show: false }))
+      }, 3000)
+    }
+  }
 
-  const notify = () => {}
+  const notify = async () => {
+    setNotifying(true)
+    try {
+      const notified = await axios.post(notifyUrl + id, { _id: id }, config)
+      console.log(notified)
+      if (notified) {
+        setNotified(true)
+        setReload(reload + 1)
+        setNotifying(false)
+      }
+    } catch (e) {
+      console.log(e)
+      setNotifying(false)
+      setBanner({
+        error: 1,
+        show: true,
+        message: "Error notifying the user!",
+      })
+      setTimeout(() => {
+        setBanner((prev) => ({ ...prev, show: false }))
+      }, 3000)
+    }
+  }
 
-  console.log(profile)
   return (
     <section className="h-full py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-4">
       {loading ? (
@@ -141,13 +212,13 @@ const MemberProfile = () => {
               <div className="bg-gray-100 bg-opacity-60 text-gray-700 py-1 px-3 mt-3 divide-y ">
                 <div className="flex items-center py-3">
                   <p className="uppercase text-sm text-grotesk">Status</p>
-                  {profile.confirmed ? (
-                    <div className="ml-auto bg-green-500 py-1 px-2 text-white text-sm shadow">
-                      Active
-                    </div>
-                  ) : profile.locked ? (
+                  {profile.locked ? (
                     <div className="ml-auto bg-red-500 py-1 px-2 text-white text-sm shadow">
                       Locked
+                    </div>
+                  ) : profile.confirmed ? (
+                    <div className="ml-auto bg-green-500 py-1 px-2 text-white text-sm shadow">
+                      Active
                     </div>
                   ) : profile.notified ? (
                     <div className="ml-auto bg-yellow-500 py-1 px-2 text-white text-sm shadow">
@@ -246,12 +317,7 @@ const MemberProfile = () => {
                       </a>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2">
-                    <div className="p-2 uppercase text-xs font-bold text-gray-400">
-                      Contact{" "}
-                    </div>
-                    <div className="p-2 text-base">{profile.contact}</div>
-                  </div>
+
                   <div className="grid grid-cols-2">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Location
@@ -336,7 +402,7 @@ const MemberProfile = () => {
                 ) : (
                   <>
                     <ShieldCheckIcon className="w-6 h-6" />
-                    <p>Notify Member to join Community App</p>
+                    <p>Notify Member</p>
                   </>
                 )}
               </button>
@@ -354,7 +420,7 @@ const MemberProfile = () => {
                     className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
                   ></div>
                 </div>
-              ) : profile.isLocked ? (
+              ) : profile.locked ? (
                 "Unlock Access"
               ) : (
                 "Lock Access"

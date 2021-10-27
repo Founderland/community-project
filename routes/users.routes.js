@@ -15,14 +15,10 @@ UserRouter.get(
   passport.authenticate("jwt", { session: false }),
   userController.findAll
 )
-UserRouter.post(
-  "/notify",
+UserRouter.get(
+  "/profile/:id",
   passport.authenticate("jwt", { session: false }),
-  userController.findOne,
-  sendVerifyEmail,
-  (req, res) => {
-    res.status(200).json({ message: "user notified" })
-  }
+  userController.findOne
 )
 UserRouter.post(
   "/add",
@@ -34,23 +30,31 @@ UserRouter.post(
     res.status(200).json({ message: "user notified" })
   }
 )
-UserRouter.get(
-  "/profile/:id",
+UserRouter.post(
+  "/notify",
   passport.authenticate("jwt", { session: false }),
-  userController.findOne
+  userController.findOne,
+  sendVerifyEmail,
+  (req, res) => {
+    res.status(200).json({ message: "user notified" })
+  }
 )
 UserRouter.put(
   "/profile",
   passport.authenticate("jwt", { session: false }),
   userController.updateProfile
 )
-
 UserRouter.put(
   "/lock",
   passport.authenticate("jwt", { session: false }),
   userController.lockProfile
 )
 //ADMIN-COMMUNITY
+UserRouter.get(
+  "/community/members/:role",
+  passport.authenticate("jwt", { session: false }),
+  memberController.findAll
+)
 UserRouter.post(
   "/community/add",
   passport.authenticate("jwt", { session: false }),
@@ -59,13 +63,20 @@ UserRouter.post(
   sendConnectEmail,
   memberController.updateNotified
 )
-UserRouter.get(
-  "/community/members/:role",
+UserRouter.post(
+  "/community/notify/:id",
   passport.authenticate("jwt", { session: false }),
-  memberController.findAll
+  memberController.findMember,
+  sendConnectEmail,
+  memberController.updateNotified
+)
+UserRouter.put(
+  "/community/lock",
+  passport.authenticate("jwt", { session: false }),
+  memberController.lockProfile
 )
 
-//COMMUNITY PROFILES
+//COMMUNITY
 UserRouter.get(
   "/community/profile/:id",
   passport.authenticate("jwt", { session: false }),
