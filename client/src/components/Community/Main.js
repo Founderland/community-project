@@ -12,7 +12,9 @@ import Newsfeed from "./Newsfeed";
 import Events from "./Events"
 import HomePage from "./HomePage";
 import Inbox from './Inbox'
-import CommunityDashboard from "./CommunityDashboard"
+
+import MapDisplay from "./Directory/MapDisplay";
+
 
 const Main = () => {
   const { path } = useRouteMatch()
@@ -30,7 +32,7 @@ const Main = () => {
             <Newsfeed />
           </Route> */}
           <Route path="/community/community">
-            <CommunityDashboard />
+            <MapDisplay />
           </Route>
           <Route path="/community/events">
             <Events />
