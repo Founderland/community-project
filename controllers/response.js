@@ -51,14 +51,15 @@ const findAllResponse = async (req, res) => {
 const updateStatus = async (req, res, next) => {
   const { status, applicationId, connect } = req.body
   try {
+    const updateData = {
+      status: status,
+      evaluatedOn: Date.now(),
+      evaluatedBy: req.user.firstName + " " + req.user.lastName,
+    }
+    if (req.newMember) updateData.memberId = req.newMember.id
     const result = await Response.findByIdAndUpdate(
       { _id: applicationId },
-      {
-        status: status,
-        evaluatedOn: Date.now(),
-        memberId: req.newMember.id,
-        evaluatedBy: req.user.firstName + " " + req.user.lastName,
-      },
+      updateData,
       { new: true }
     )
     if (connect) return next()
