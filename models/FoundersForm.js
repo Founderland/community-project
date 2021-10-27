@@ -5,13 +5,8 @@ const founderFormSchem = new mongoose.Schema({
   question: { type: String, required: true },
   rank: {
     type: String,
-    enum: [
-      "Not Important - just for info/further context",
-      "Vital - Deal Maker or Breaker",
-      "Very Important - variable is scrutinized",
-      "Moderately Important - potentially a determining factor",
-    ],
-    default: "Not Important - just for info/further context",
+    enum: ["vital", "important", "moderate", "info"],
+    default: "info",
     required: true,
   },
   type: {

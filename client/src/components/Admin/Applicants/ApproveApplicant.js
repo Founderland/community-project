@@ -6,8 +6,6 @@ import { Switch } from "@headlessui/react"
 import { CheckIcon } from "@heroicons/react/outline"
 import Banner from "../Widgets/Banner"
 
-const approveURL = "/api/applicants/response/approve/"
-
 const ApproveApplicant = ({ data }) => {
   const [saving, setSaving] = useState(false)
   const [notify, setNotify] = useState(false)
@@ -45,23 +43,31 @@ const ApproveApplicant = ({ data }) => {
       role: data.data.role,
       connect: notify,
       applicationId: data.data._id,
-      status: "approved",
+      status: data.task,
     }
     try {
-      const approved = await axios.put(approveURL, updateData, config)
-      console.log(approved)
+      const updateUrl =
+        data.task === "approved"
+          ? "/api/applicants/response/approve/"
+          : "/api/applicants/response/reject/"
+
+      const approved = await axios.put(updateUrl, updateData, config)
       if (approved.data.success) {
         setSaving(false)
         setBanner({
           success: 1,
           show: true,
-          message: `User saved${notify ? " and notified" : ""}! redirecting..`,
+          message: `Application updated${
+            notify ? " and applicant notified" : ""
+          }! redirecting..`,
         })
         setTimeout(() => {
           setReload(reload + 1)
           setCModal(false)
           setBanner((prev) => ({ ...prev, show: false }))
-          history.push("/admin/members")
+          data.task === "approved"
+            ? history.push("/admin/members")
+            : history.push("/admin/applicants/rejected")
         }, 2000)
       } else {
         throw new Error("Sorry, something went wrong while saving")
@@ -97,7 +103,9 @@ const ApproveApplicant = ({ data }) => {
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2 flex flex-col justify-center items-center">
             <label className="block uppercase tracking-wide text-grey-darker text-md font-bold mb-2">
-              Approve applicant to Community
+              {data.task === "approved"
+                ? "Approve applicant to Community"
+                : "Reject Application"}
             </label>
             <Switch.Group
               as="div"

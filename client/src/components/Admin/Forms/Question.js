@@ -12,7 +12,7 @@ const defaultQuestion = {
   category: "About You",
   question: "",
   type: "open",
-  rank: "Not Important - just for info/further context",
+  rank: "info",
   answers: [],
   categoryPage: 1,
   mandatory: true,
@@ -32,20 +32,20 @@ const categories = [
 ]
 const ranks = [
   {
-    name: "Not Important - just for info/further context",
-    value: "Not Important - just for info/further context",
+    name: "Just for Info",
+    value: "info",
   },
   {
-    name: "Vital - Deal Maker or Breaker",
-    value: "Vital - Deal Maker or Breaker",
+    name: "Deal Maker or Breaker",
+    value: "vital",
   },
   {
-    name: "Very Important - variable is scrutinized",
-    value: "Very Important - variable is scrutinized",
+    name: "Scrutinized",
+    value: "important",
   },
   {
-    name: "Moderately Important - potentially a determining factor",
-    value: "Moderately Important - potentially a determining factor",
+    name: "Potentially a determining factor",
+    value: "moderate",
   },
 ]
 const types = [
@@ -211,7 +211,7 @@ const Question = ({ role }) => {
       <Banner message={banner} />
       <div className="w-full flex flex-col justify-center items-center bg-white p-4 shadow-md ">
         <h1 className="font-bold p-3 text-xl text-mono">
-          {id !== "new" ? "Edit" : "Add new"} Question
+          {id !== "new" ? "Edit" : "Add new"} Question for {role} applicants
         </h1>
         <div className=" w-full md:px-5">
           <div className="w-full mt-4 mb-3 px-3">
@@ -290,7 +290,7 @@ const Question = ({ role }) => {
                 </label>
                 <ListOption
                   options={ranks}
-                  format={" w-full"}
+                  format={"w-full"}
                   choice={questionInfo.rank}
                   setChoice={(value) => {
                     setQuestionInfo({

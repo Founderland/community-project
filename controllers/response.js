@@ -68,7 +68,29 @@ const updateStatus = async (req, res, next) => {
     console.log(error)
   }
 }
-
+const updateNotified = async (req, res, next) => {
+  const { applicationId } = req.body
+  try {
+    const updateData = {
+      notifiedOn: Date.now(),
+    }
+    const result = await Response.findByIdAndUpdate(
+      { _id: applicationId },
+      updateData,
+      { new: true }
+    )
+    if (result) res.status(200).json({ success: 1, ...result })
+    else
+      res
+        .status(500)
+        .json({ error: 1, message: "Sorry, something went wrong..." })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ error: 1, message: "Sorry, something went wrong..." })
+  }
+}
 const findResponsesByStatus = async (req, res) => {
   const { status, role } = req.params
   try {
@@ -130,6 +152,7 @@ module.exports = {
   findAllResponse,
   findResponsesByStatus,
   updateStatus,
+  updateNotified,
   editResponse,
   findResponseById,
 }
