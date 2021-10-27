@@ -49,16 +49,17 @@ const SecondStep = ({ data, setData, previousStep, nextStep }) => {
       <div className='h-full md:h-screen  w-full flex flex-col lg:flex-row justify-center items-center z-0 '>
         <div className=' flex flex-col justify-around items-center h-full w-screen  lg:w-full xl:w-5/6  bg-white  p-3'>
           <div className='md:p-8 lg:w-full flex flex-col justify-center items-center'>
-            <h1 className='font-bold text-grotesk text-xl md:text-2xl'>
+            <h1 className='font-bold text-grotesk text-xl md:text-2xl lg:text-3xl'>
               You and your business
             </h1>
-            {/* <h1 className='text-grotesk text-xl lg:text-3xl  p-2'>
-              We'are thrilled to have you on board! Please fill out the
-              following fields with your informations in order to proceed.
-            </h1> */}
           </div>
           <div className=' h-full lg:w-full lg:h-5/6 flex '>
-            <form className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(e)
+                nextStep()
+              }}
+              className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
               <div className='w-screen md:w-1/2 p-4 py-6 '>
                 <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
                   Title
@@ -191,9 +192,8 @@ const SecondStep = ({ data, setData, previousStep, nextStep }) => {
                   Back
                 </button>
                 <button
-                  type='button'
-                  className='p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 '
-                  onClick={() => nextStep()}>
+                  type='submit'
+                  className='p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 '>
                   Next
                 </button>
               </div>

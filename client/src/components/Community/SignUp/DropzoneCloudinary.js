@@ -1,10 +1,16 @@
 import { useState, useCallback } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
-import { CloudUploadIcon } from "@heroicons/react/outline"
 
-const DropzoneCloudinary = ({ data, setData, type, setUploadStatus }) => {
+const DropzoneCloudinary = ({
+  data,
+  setData,
+  type,
+  setUploadStatus,
+  uploadStatus,
+}) => {
   const [previewSource, setPreviewSource] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   // CLOUDINARY
   const onDrop = useCallback((acceptedFiles) => {
@@ -14,21 +20,17 @@ const DropzoneCloudinary = ({ data, setData, type, setUploadStatus }) => {
     reader.onloadend = () => {
       const binaryStr = reader.result
       setPreviewSource(binaryStr)
-      // uploadImage(binaryStr)
+      uploadImage(binaryStr)
     }
   }, [])
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
-
-  const handleSubmitPicture = () => {
-    if (!previewSource) return
-    uploadImage(previewSource)
-  }
-
   const uploadImage = async (base64EncodedImage) => {
+    setLoading(true)
     try {
       const result = await axios.post("/api/profile-picture/upload", {
         data: base64EncodedImage,
-        public_id: `${type}-${Date.now()}`,
+        public_id: `${type}`, //-${Date.now()}
         folder: `${data.firstName}-${data.lastName}`,
       })
 
@@ -38,12 +40,13 @@ const DropzoneCloudinary = ({ data, setData, type, setUploadStatus }) => {
           ...data,
           photo: { public_id: result.data.public_id, url: result.data.url },
         })
+        setLoading(false)
         setTimeout(() => {
           setUploadStatus({
             success: false,
             message: "",
           })
-          setPreviewSource(null)
+          // setPreviewSource(null)
         }, 3000)
       }
       //   {
@@ -58,6 +61,7 @@ const DropzoneCloudinary = ({ data, setData, type, setUploadStatus }) => {
         success: false,
         message: e.response?.data.message || "Sorry something went wrong",
       })
+      setLoading(false)
       setTimeout(() => {
         setUploadStatus({
           success: false,
@@ -73,26 +77,27 @@ const DropzoneCloudinary = ({ data, setData, type, setUploadStatus }) => {
         {...getRootProps()}
         className=' h-3/5 md:h-5/6 w-4/5 xl:w-3/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl'>
         <input {...getInputProps()} />
-
-        {previewSource && (
+        {loading && (
+          <div className='flex justify-center'>
+            <span
+              style={{ borderTopColor: "transparent" }}
+              className='w-16 h-16 border-8 border-black  border-dotted rounded-full animate-spin'></span>
+          </div>
+        )}
+        {!loading && previewSource && (
           <img
             src={previewSource}
+            style={{ width: "200px", height: "200px" }}
             alt='chosen'
-            className='h-3/5 w-full md:h-4/5 p-4 object-scale-down'
+            className=' p-4 object-cover rounded-full'
           />
         )}
         <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
-          {previewSource
-            ? "Click the Upload button to confrim"
-            : "Drag and drop some files here, or click to select files"}
+          {data.photo.public_id
+            ? " "
+            : "Drag and drop your photo here, or click to select it"}
         </p>
       </div>
-      <button
-        type='button'
-        onClick={handleSubmitPicture}
-        className=' flex justify-center bg-gray-700 text-white font-bold p-3 w-1/2 md:w-2/5 m-4 transition duration-200 hover:bg-green-700 '>
-        Upload <CloudUploadIcon className='w-7 h-7 ml-2' />
-      </button>
     </>
   )
 }

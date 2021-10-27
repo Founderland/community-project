@@ -14,12 +14,14 @@ import FirstStep from "./FirstStep"
 import SecondStep from "./SecondStep"
 import ThirdStep from "./ThirdStep"
 import FourthStep from "./FourthStep"
+import { EmojiSadIcon } from "@heroicons/react/outline"
 
 const signUpURL = "/api/auth/signup"
 const getProfileURL = "/api/users/community/profile"
 
 const SignUp = () => {
   let history = useHistory()
+  const [accountCreated, setAccountCreated] = useState(false)
   const { token } = useParams()
   const [data, setData] = useState({
     firstName: "",
@@ -33,13 +35,13 @@ const SignUp = () => {
     businessArea: "Select your business area",
     password: "",
     confirmPassword: "",
-    photo: [],
+    photo: null,
     companyName: "",
     companyBio: "",
     companyLink: "",
   })
   const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
 
   const config = useMemo(() => {
@@ -69,13 +71,16 @@ const SignUp = () => {
               setTimeout(() => {
                 setData({ ...data, ...res.data.data, photo: [] })
                 setShowForm(true)
-              }, 3000)
+                setLoading(false)
+              }, 3500)
             } else {
+              setLoading(false)
               setError("Invalid Token - empty res")
             }
           })
           .catch((err) => {
             console.log(err.response)
+            setLoading(false)
             setError("Invalid Token - err on fetch profile")
           })
         //DISPLAY IT ON THE FORM
@@ -83,9 +88,11 @@ const SignUp = () => {
         // setError(jwtDecoded.email)
       } else {
         //OOPS
+        setLoading(false)
         setError("Invalid Token - expired")
       }
     } else {
+      setLoading(false)
       setError("Invalid Token - no email")
     }
   }, [token])
@@ -93,18 +100,21 @@ const SignUp = () => {
   //submit form
   const handleSubmit = async () => {
     // e.preventDefault()
-    // if (data.password.length && data.confirmPassword.length) {
-    setLoading(true)
+
     try {
       //receive new login token and forward to community app
       const { data: res } = await axios.post(signUpURL, data, config)
       setLoading(false)
       if (res.access_token) {
         localStorage.setItem("authToken", res.access_token)
+        setAccountCreated(true)
         //redirect to community
-        history.push("/community")
+        setTimeout(() => {
+          history.push("/community")
+        }, 5000)
       } else {
         setLoading(false)
+        setError("Sorry, something went wrong")
         throw new Error({
           response: {
             status: 500,
@@ -113,7 +123,7 @@ const SignUp = () => {
         })
       }
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message) //?
       setLoading(false)
       setError(
         err?.response?.status === 401
@@ -124,18 +134,12 @@ const SignUp = () => {
         setError("")
       }, 5000)
     }
-    // } else {
-    //   setError("Please fill in all required fields")
-    //   setTimeout(() => {
-    //     setError("")
-    //   }, 6000)
-    // }
   }
 
   //Render form with data from database
   //RENDER WELCOME MESSAGE -> 3s
-  console.log(error.length)
-  if (!showForm && !error.length) {
+
+  if (loading) {
     return (
       <div className='h-screen w-screen flex items-center justify-center'>
         <div className='flex flex-col items-center justify-center w-screen  h-1/4 '>
@@ -150,7 +154,7 @@ const SignUp = () => {
     return (
       <div className='h-full w-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
         <LogoLines className='w-full h-1/5 lg:hidden' />
-        <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative'>
+        <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative border-r-2 border-black '>
           <img
             src={founder}
             className='h-full w-full object-cover filter blur-sm '
@@ -172,12 +176,24 @@ const SignUp = () => {
             data={data}
             setData={setData}
             handleSubmit={handleSubmit}
+            accountCreated={accountCreated}
+            error={error}
           />
         </StepWizard>
       </div>
     )
   } else {
-    return <h1>{error}</h1>
+    return (
+      <div className='h-screen w-screen flex justify-center items-center'>
+        <div className=' w-screen h-1/3 md:w-2/3 xl:w-1/3 bg-fred-200 flex justify-center items-center'>
+          <h1 className='w-1/2 texl-lg lg:text-2xl text-center'>
+            Sorry something went wrong{" "}
+            <EmojiSadIcon className='w-1/2 h-1/2 m-auto' />
+            Please contact us via email to community@founderland.org
+          </h1>
+        </div>
+      </div>
+    )
   }
 }
 

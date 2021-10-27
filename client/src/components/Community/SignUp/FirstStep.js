@@ -69,6 +69,24 @@ const FirstStep = ({ data, setData, nextStep }) => {
     return newValue.replace(value[0], value[0]?.toUpperCase())
   }
 
+  const checkCountry = () => {
+    if (data.country) {
+      return selectedCountry
+        ? "border-l-4 border-flime"
+        : "border-l-4 border-fred"
+    } else {
+      return "border-l-4 border-gray"
+    }
+  }
+
+  const checkCity = () => {
+    if (data.city) {
+      return selectedCity ? "border-l-4 border-flime" : "border-l-4 border-fred"
+    } else {
+      return "border-l-4 border-gray"
+    }
+  }
+
   return (
     <>
       <div className='h-full md:h-screen  w-full flex flex-col lg:flex-row justify-center items-center z-0 '>
@@ -83,7 +101,12 @@ const FirstStep = ({ data, setData, nextStep }) => {
             </h1>
           </div>
           <div className=' h-full lg:w-full lg:h-5/6 flex '>
-            <form className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(e)
+                nextStep()
+              }}
+              className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
               <div className='w-screen md:w-1/2  p-4 py-6 '>
                 <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
                   First name
@@ -122,13 +145,10 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 </label>
                 <input
                   type='text'
-                  className={`
-                    ${
-                      selectedCountry
-                        ? " border-green-300 "
-                        : " border-yellow-300 "
-                    } 
-                         w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none`}
+                  className={
+                    checkCountry() +
+                    " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+                  }
                   required={true}
                   list='countries'
                   value={data.country}
@@ -158,9 +178,10 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 </label>
                 <input
                   type='text'
-                  className={`${
-                    selectedCity ? " border-green-300 " : " border-yellow-300 "
-                  }w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none`}
+                  className={
+                    checkCity() +
+                    " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+                  }
                   list='cities'
                   required={true}
                   value={data.city}
@@ -198,10 +219,9 @@ const FirstStep = ({ data, setData, nextStep }) => {
 
               <div className='w-full flex justify-end pt-10 pr-5'>
                 <button
-                  type='button'
-                  className='p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 '
-                  onClick={() => nextStep()}>
-                  Next
+                  type='submit'
+                  className='p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 '>
+                  Next{" "}
                 </button>
               </div>
             </form>
