@@ -8,7 +8,7 @@ import { ReactComponent as SmallLogo } from "../../../assets/small.svg"
 import gifLogo from "../../../assets/images/Logo-Transform.gif"
 import whiteLogo from "../../../assets/images/logo_md_white.png"
 
-import founder from "../../../assets/images/founder-laptop.jpg"
+import founder from "../../../assets/images/founder-laptop.png"
 import StepWizard from "react-step-wizard"
 import FirstStep from "./FirstStep"
 import SecondStep from "./SecondStep"
@@ -99,8 +99,6 @@ const SignUp = () => {
 
   //submit form
   const handleSubmit = async () => {
-    // e.preventDefault()
-
     try {
       //receive new login token and forward to community app
       const { data: res } = await axios.post(signUpURL, data, config)
@@ -154,10 +152,10 @@ const SignUp = () => {
     return (
       <div className='h-full w-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
         <LogoLines className='w-full h-1/5 lg:hidden' />
-        <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative border-r-2 border-black '>
+        <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative '>
           <img
             src={founder}
-            className='h-full w-full object-cover filter blur-sm '
+            className='h-full w-full object-cover '
             alt='founder'
           />
           <img

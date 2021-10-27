@@ -98,10 +98,6 @@ const FourthStep = ({
               lower case letter and one number
             </p>
           </div>
-          {/* <div className='-mt-5 ml-4 text-xs w-full xl:w-4/5 '>
-            * Minimum eight characters, at least one upper case letter, one
-            lower case letter and one number
-          </div> */}
           <div className='w-full xl:w-4/5  px-2  py-6 '>
             <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
               Confirm Password
