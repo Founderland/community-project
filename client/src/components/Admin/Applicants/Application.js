@@ -166,15 +166,13 @@ const Application = () => {
               {data.data.memberId && (
                 <div className="mb-2">
                   <p className=" text-xs text-grotesk">&nbsp;</p>
-                  <p className={`font-bold text-sm`}>
-                    <Link
-                      to={`/admin/members/id/${data.data.memberId}`}
-                      className="flex px-2 text-xs"
-                    >
-                      <p>Go to Member Profile</p>
-                      <ChevronRightIcon className="h-4 w-4" />
-                    </Link>
-                  </p>
+                  <Link
+                    to={`/admin/members/id/${data.data.memberId}`}
+                    className="flex items-center justify-center px-2 text-base hover:text-sky-600"
+                  >
+                    <p>Go to Member Profile</p>
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Link>
                 </div>
               )}
             </div>
