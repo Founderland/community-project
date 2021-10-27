@@ -7,16 +7,25 @@ import Loading from "../Widgets/Loading"
 import ComponentModal from "../Widgets/ComponentModal"
 import ApproveApplicant from "./ApproveApplicant"
 import ApplicationComments from "./ApplicationComments"
+import Tooltip from "../Widgets/Tooltip"
 import { Link } from "react-router-dom"
 import { ChevronRightIcon } from "@heroicons/react/outline"
 
 const styles = {
-  founder: { bg: "bg-fblue ", text: "text-white ", border: "border-fblue " },
-  investor: { bg: "bg-fred ", text: "text-black ", border: "border-fred " },
-  ally: { bg: "bg-flime ", text: "text-black ", border: "border-flime " },
-  low: { bg: "bg-red-200 ", text: "text-red-900 " },
-  med: { bg: "bg-yellow-200 ", text: "text-yellow-900 " },
-  high: { bg: "bg-green-200 ", text: "text-green-900 " },
+  founder: { bg: "fblue ", text: "white ", border: "fblue " },
+  investor: { bg: "fred ", text: "black ", border: "fred " },
+  ally: { bg: "flime ", text: "black ", border: "flime " },
+  low: { bg: "red-200 ", text: "red-900 " },
+  med: { bg: "yellow-200 ", text: "yellow-900 " },
+  high: { bg: "green-200 ", text: "green-900 " },
+  info: {
+    bg: "gray-200",
+    text: "gray-600 border-opacity-20",
+    border: "gray-900",
+  },
+  vital: { bg: "green-200", text: "green-600", border: "green-900" },
+  important: { bg: "orange-200", text: "orange-400", border: "orange-900" },
+  moderate: { bg: "yellow-200", text: "yellow-600", border: "yellow-900" },
 }
 const responseURL = "/api/applicants/response/"
 
@@ -72,7 +81,7 @@ const Application = () => {
           </ComponentModal>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg border-0">
             <div
-              className={`${
+              className={`border-${
                 styles[data?.data.role]?.border
               } border-t-8 mb-0 pl-6 pr-4 py-6`}
             >
@@ -82,9 +91,9 @@ const Application = () => {
                 >
                   {data.data.firstName + " " + data.data.lastName}
                   <span
-                    className={`mx-auto ${
+                    className={`mx-auto bg-${
                       styles[data?.data.role]?.bg
-                    }  py-1 px-2 ${styles[data?.data.role]?.text} text-xs`}
+                    }  py-1 px-2 text-${styles[data?.data.role]?.text} text-xs`}
                   >
                     {data.data.role}
                   </span>
@@ -93,12 +102,12 @@ const Application = () => {
                 <div className="flex items-center">
                   {data.data.totalScore ? (
                     <div
-                      className={`${
+                      className={`bg-${
                         data.data.totalScore > 75 && data.data.totalScore <= 150
-                          ? styles.med.bg + styles.med.text
+                          ? styles.med.bg + "text-" + styles.med.text
                           : data.data.totalScore > 150
-                          ? styles.high.bg + styles.high.text
-                          : styles.low.bg + styles.low.text
+                          ? styles.high.bg + "text-" + styles.high.text
+                          : styles.low.bg + "text-" + styles.low.text
                       } font-bold text-2xl p-4 max-h-16 shadow-xl rounded-full outline-none focus:outline-none`}
                     >
                       {data.data.totalScore}
@@ -169,29 +178,37 @@ const Application = () => {
                 </div>
               )}
             </div>
-            <div className="px-4 pb-6">
+            <hr
+              className={`mt-6 border-b-1 border-${
+                styles[data.data.role].border
+              }`}
+            />
+            <div
+              className={`px-4 pb-6 divide-y divide-${
+                styles[data.data.role].border
+              }`}
+            >
               {/*LOOP THROUGH CATEGORIES OF QUESTIONS */}
               {data.categories.map((category, i) => (
                 <div key={category}>
-                  <hr
-                    className={`mt-6 border-b-1 ${
-                      styles[data.data.role].border
-                    }`}
-                  />
                   <h6 className="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
                     {category}
                   </h6>
-                  <div className="flex flex-wrap">
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3">
                     {data.data.answerData
                       .filter((item) => item.category === category)
                       .map((item, i) => {
                         return (
-                          <div className="w-full md:w-1/2 xl:w-1/3 px-4">
-                            <div className="relative w-full mb-3">
-                              <div className="block uppercase text-gray-400 text-xs font-bold mb-2 truncate hover:overflow-clip">
+                          <div key={item.question + i} className="w-full px-4">
+                            <div className=" w-full mb-3">
+                              <div className=" uppercase text-gray-400 text-xs font-bold mb-2 ">
                                 {item.question}
                               </div>
-                              <div className="border-0 px-3 py-3 placeholder-blueGray-300 text-gray-800 bg-white text-lg shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                              <div
+                                className={`border-l-4 border-${
+                                  styles[item.rank]?.text
+                                } px-3 py-3 bg-white text-lg w-full ease-linear transition-all duration-150`}
+                              >
                                 {item.answer_value}
                               </div>
                             </div>
@@ -201,38 +218,37 @@ const Application = () => {
                   </div>
                 </div>
               ))}
-              <ApplicationComments data={data} styles={styles} />
-              <footer className="p-2 mt-2">
-                {data.data.status === "new" ||
-                data.data.status === "pending" ? (
-                  <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-                    <button
-                      class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
-                      onClick={() => updateApplication("rejected")}
-                    >
-                      Reject
-                    </button>
-                    <button
-                      class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                      onClick={() => updateApplication("approved")}
-                    >
-                      Approve
-                    </button>
-                  </div>
-                ) : data.data.status === "rejected" ? (
-                  <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-                    <button
-                      class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                      onClick={() => updateApplication("approved")}
-                    >
-                      Approve
-                    </button>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </footer>
             </div>
+            <ApplicationComments data={data} styles={styles} />
+            <footer className="p-4 mt-2">
+              {data.data.status === "new" || data.data.status === "pending" ? (
+                <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+                  <button
+                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                    onClick={() => updateApplication("rejected")}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                    onClick={() => updateApplication("approved")}
+                  >
+                    Approve
+                  </button>
+                </div>
+              ) : data.data.status === "rejected" ? (
+                <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+                  <button
+                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                    onClick={() => updateApplication("approved")}
+                  >
+                    Approve
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
+            </footer>
           </div>
         </>
       )}
