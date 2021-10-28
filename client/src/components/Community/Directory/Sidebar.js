@@ -4,7 +4,7 @@ import mapCard from "../../../assets/images/mapCard.svg";
 import horizontalSymbols from '../../../assets/images/SymbolsHorizontal.png'
 
 export default function Sidebar(props) {
-  const { memberDetails, sidebarHandler, isSidebarSelected } =
+  const { memberDetails, sidebarHandler, isSidebarSelected,selectedName,isNameSelected,isNameSelectedEvent} =
     useContext(CommunityContext);
   const [sidebarDisplay, setSidebarDisplay] = useState([]);
   const [isCardSelected, setIsCardSelected] = useState(false);
@@ -18,12 +18,16 @@ export default function Sidebar(props) {
     setSidebarDisplay(fiteredArray);
   }, [props.data]);
 
-
-
+  useEffect(() => {
+    if (isNameSelected) {
+      setSelectedMember(selectedName)
+    }
+}, [selectedName,isNameSelected])
  
 
   const closeHandler = () => {
     sidebarHandler(false);
+    isNameSelectedEvent(false)
   };
   const memberBackHandler = () => {
  
@@ -36,11 +40,11 @@ export default function Sidebar(props) {
     
   };
 
-  console.log("isCardSelected", isCardSelected);
+
   return (
     <div>
-      <div className='absolute right-0 top-0 bottom-0 pb-3 z-50  '>
-        {(!isCardSelected && isSidebarSelected) ? (
+      <div className='absolute right-0 top-0 bottom-0 pb-3 z-50 mr-4 '>
+        {(!isCardSelected && isSidebarSelected && !isNameSelected ) ? (
           <div className='w-full h-full max-w-2xl px-5 py-6 mt-2 bg-gray-900 opacity-90  shadow flex flex-col items-evenly'>
             <div className='flex justify-end' onClick={closeHandler}>
               <svg
@@ -110,7 +114,8 @@ export default function Sidebar(props) {
           </div>
         ) : (
           //   Member Card
-            <div className='w-full  h-full max-w-2xl px-5 py-6 mt-2 bg-gray-900 opacity-90  shadow flex flex-col items-evenly '>
+          (isCardSelected || isNameSelected) &&( 
+            <div className='w-full  h-full max-w-2xl  px-8 py-6 mt-2  bg-gray-900 opacity-90  shadow flex flex-col items-evenly '>
               
               <div className='flex justify-end' onClick={closeHandler}>
               <svg
@@ -160,10 +165,13 @@ export default function Sidebar(props) {
                 </span> */}
                   <img className="w-full h-full object-cover" src ={horizontalSymbols} alt="symbols" />
               </div> 
-              </div>
+                </div>
+                {
+                 !isNameSelected &&
+             
               <div className="flex  mt-4 justify-center">
-              <button className="w-2/3 py-2  bg-fblue-700 hover:bg-fblue-800 focus:ring-fblue-500 focus:ring-offset-red-200 text-white  transition ease-in duration-200 text-center text-grotesk   font-semibold text-lg font-semibold  focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-mds" onClick={memberBackHandler} > Go BACK </button> </div>
-          </div>
+              <button className="w-2/3 py-2  bg-fblue-700 hover:bg-fblue-800 focus:ring-fblue-500 focus:ring-offset-red-200 text-white  transition ease-in duration-200 text-center text-grotesk   font-semibold text-lg font-semibold  focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-mds" onClick={memberBackHandler} > Go BACK </button> </div>   }
+          </div>)
         )}
       </div>
     </div>
