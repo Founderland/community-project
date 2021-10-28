@@ -1,17 +1,18 @@
 import { TrashIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
 import { useContext, useRef, useState } from "react"
+import axios from "axios"
+
 const Comment = ({
-  id,
-  comment,
-  firstName,
-  lastName,
-  role,
-  avatar,
+  _id: commentId,
+  text,
+  user,
   timeStamp,
   forwardedRef,
+  deleteComment,
+  applicationStatus,
 }) => {
-  const { user } = useContext(AdminContext)
+  const { user: currentUser } = useContext(AdminContext)
 
   const getCommentDate = (unixTimestamp) => {
     const today = new Date(Date.now()).toLocaleDateString("de-DE")
@@ -24,8 +25,9 @@ const Comment = ({
     return today === commentDate ? commentTime : commentDate + " " + commentTime
   }
 
-  const avatarInitials = (first, last) => {
-    let initials = first[0].toUpperCase() + last[0].toUpperCase()
+  const avatarInitials = (user) => {
+    let initials =
+      user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()
     return initials
   }
 
@@ -38,43 +40,41 @@ const Comment = ({
     }
     return roleStyles[role]
   }
+
   return (
     <div
       ref={forwardedRef}
-      className='w-full flex items-center p-2 bg-gray-50 border-b-2 border-fblue-200'>
+      className='w-full flex items-center px-1 bg-gray-50 border-b-2 border-fblue-200 rounded-xl shadow my-1'>
       <div className='min-w-min flex flex-col items-center'>
         <span
-          className={`w-16 h-16 flex items-center justify-center text-mono text-lg lg:text-2xl tracking-wide rounded-full border-2 border-white ${avatar}`}>
-          {avatarInitials(firstName, lastName)}
+          className={`ml-2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-mono text-lg lg:text-xl tracking-wide rounded-full border-2 border-white ${user.avatar}`}>
+          {avatarInitials(user)}
         </span>
-        {/* <span
-                className={
-                  "-mt-3 text-xs p-0.5  px-2  flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full " +
-                  getRoleStyle(role)
-                }>
-                {role}
-              </span> */}
       </div>
-      <div className=' w-full p-4 mr-4 ml-2 '>
+      <div className=' w-full py-1 px-2 mr-4'>
         <div className='flex items-center'>
-          <h1 className='font-bold'>
-            {firstName} {lastName}
-          </h1>
+          <h3 className='font-bold text-sm'>
+            {user.firstName} {user.lastName}
+          </h3>
           <span
             className={
-              "text-xs px-1 py-0.5 mx-2 flex justify-center items-center w-min m-1 font-medium  rounded-full " +
-              getRoleStyle(role)
+              "text-xs px-1 py-0.5 mx-2 flex justify-center items-center w-min m-1 font-medium rounded-full " +
+              getRoleStyle(user.role)
             }>
-            {role}
+            {user.role}
           </span>
-          {user.id === id && (
-            <button className='ml-auto hover:text-fred'>
+          {user._id === currentUser.id && applicationStatus !== "approved" && (
+            <button
+              onClick={() => deleteComment(commentId)}
+              className='ml-auto hover:text-fred'>
               <TrashIcon className='w-6 h-6 ' />
             </button>
           )}
         </div>
-        <span className='text-sm'>{comment}</span>
-        <div className='text-xs text-right'>{getCommentDate(timeStamp)}</div>
+        <span className='text-lg'>{text}</span>
+        <div className='text-xs text-right mr-2 md:mr-0'>
+          {getCommentDate(timeStamp)}
+        </div>
       </div>
     </div>
   )

@@ -14,6 +14,27 @@ responseRouter.get(
   responseController.findAllResponse
 )
 
+// GET ALL COMMENTS
+responseRouter.get(
+  "/response/comments/:id",
+  passport.authenticate("jwt", { session: false }),
+  responseController.getComments
+)
+
+//ADD/EDIT COMMENTS TO AN APPLICATION
+responseRouter.put(
+  "/response/newcomment",
+  passport.authenticate("jwt", { session: false }),
+  responseController.addComment
+)
+
+// DELETE COMMENT
+responseRouter.delete(
+  "/response/:id/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  responseController.deleteComment
+)
+
 //GET APPLICANTS RESPONSE BY ID / STATUS ["New", "Pending", "Approved", "Rejected"] / ROLE
 responseRouter.get(
   "/response/:id",
@@ -26,7 +47,7 @@ responseRouter.get(
   responseController.findResponsesByStatus
 )
 
-//APPROVE/REJECT APPLICANT BY ID
+//APPROVE/REJECT/REVIEW APPLICANT BY ID
 responseRouter.put(
   "/response/approve/",
   passport.authenticate("jwt", { session: false }),
@@ -42,6 +63,12 @@ responseRouter.put(
   responseController.updateStatus,
   sendRejected,
   responseController.updateNotified
+)
+
+responseRouter.put(
+  "/response/review",
+  passport.authenticate("jwt", { session: false }),
+  responseController.updateStatus
 )
 
 module.exports = responseRouter

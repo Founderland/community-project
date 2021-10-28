@@ -42,6 +42,16 @@ const responseSchema = new mongoose.Schema({
       score: { type: String },
     },
   ],
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      timeStamp: { type: Date },
+      text: { type: String },
+    },
+  ],
 })
 
 const Response = mongoose.model("Response", responseSchema)

@@ -217,7 +217,12 @@ const Application = () => {
                 </div>
               ))}
             </div>
-            <ApplicationComments data={data} styles={styles} />
+            <ApplicationComments
+              data={data}
+              styles={styles}
+              config={config}
+              id={id}
+            />
             <footer className="p-4 mt-2">
               {data.data.status === "new" || data.data.status === "pending" ? (
                 <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
