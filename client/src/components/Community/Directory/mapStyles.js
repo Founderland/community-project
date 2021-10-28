@@ -14,7 +14,9 @@ export default[
         "elementType": "all",
         "stylers": [
             {
-                 "color": "#f2f2f2"
+                // "color": "#f2f2f2"
+                "color":  "#fffaf0"
+               
               
             
                 
@@ -80,20 +82,20 @@ export default[
             {
                  
                  "color": "#0066b2"
+                // "color":  "#5072A7"
                 
             },
             {
                 "visibility": "on"
             },
             {
-                "saturation": 20
+                "saturation": -30
             },
             {
-                "lightness": 15            },
+                "lightness": 20            },
         ]
     }
 ]
-
 
 
 
