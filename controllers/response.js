@@ -63,7 +63,10 @@ const updateStatus = async (req, res, next) => {
       { new: true }
     )
     if (connect) return next()
-    res.status(200).json({ success: 1, ...result })
+    res.status(200).json({
+      success: 1,
+      ...result,
+    })
   } catch (error) {
     console.log(error)
   }
@@ -147,6 +150,73 @@ const editResponse = async (req, res) => {
   }
 }
 
+const addComment = async (req, res) => {
+  const { id, newComment } = req.body
+  // update comments array
+  try {
+    const updated = await Response.findByIdAndUpdate(id, {
+      $push: { comments: newComment },
+    })
+    if (!updated) await Promise.reject("UPDATE_FAILED")
+    res.json({ message: "Comment has been added" })
+  } catch (e) {
+    if (e === "UPDATE_FAILED") {
+      res.status(400).send({
+        message: "we couldn't add your comment to this application",
+      })
+    } else {
+      res.status(500).json({ message: "Sorry something went wrong" })
+    }
+  }
+}
+
+const getComments = async (req, res) => {
+  const { id: response_id } = req.params
+  try {
+    const allComments = await Response.findById(response_id).populate({
+      path: "comments.user",
+      select: ["firstName", "lastName", "role", "avatar"],
+    })
+    if (!allComments) await Promise.reject("NOT_FOUND")
+    res.json({ comments: allComments.comments })
+    // console.log(allComments.comments)
+  } catch (e) {
+    console.log(e)
+
+    if (e === "NOT_FOUND") {
+      res.status(404).json({ message: "Sorry we couldn't find any comments" })
+    } else {
+      res.status(500).json({ message: "Something went wrong" })
+    }
+  }
+}
+
+const deleteComment = async (req, res) => {
+  const { id, commentId } = req.params
+  try {
+    const updatedList = await Response.findByIdAndUpdate(
+      id,
+      {
+        $pull: { comments: { _id: commentId } },
+      },
+      { new: true }
+    )
+
+    if (!updatedList) await Promise.reject("NOT_FOUND")
+    res.json({
+      message: "Comment has been deleted",
+    })
+  } catch (e) {
+    console.log(e)
+
+    if (e === "NOT_FOUND") {
+      res.status(404).json({ message: "Sorry we couldn't find any comments" })
+    } else {
+      res.status(500).json({ message: "Something went wrong" })
+    }
+  }
+}
+
 module.exports = {
   addResponse,
   findAllResponse,
@@ -155,4 +225,7 @@ module.exports = {
   updateNotified,
   editResponse,
   findResponseById,
+  addComment,
+  getComments,
+  deleteComment,
 }

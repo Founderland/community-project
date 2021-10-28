@@ -1,84 +1,154 @@
-import { PlusIcon } from "@heroicons/react/outline"
-import { useContext, useRef, useState } from "react"
+import { ChevronDoubleDownIcon, PlusIcon } from "@heroicons/react/outline"
+import axios from "axios"
+import { useContext, useEffect, useRef, useState } from "react"
 import AdminContext from "../../../contexts/Admin"
+import Banner from "../Widgets/Banner"
 import Comment from "./Comment"
 
-const ApplicationComments = ({ data, styles }) => {
+const ApplicationComments = ({ data, styles, config, id: applicationId }) => {
   const { user } = useContext(AdminContext)
-  const [commentText, setCommentText] = useState("")
+  const [newCommentText, setNewCommentText] = useState("")
+  const [refreshCommList, setRefreshCommList] = useState(false)
   const lastComment = useRef(null)
+  const [banner, setBanner] = useState({})
 
-  const [commentsArray, setCommentsArray] = useState([
-    {
-      id: "6177245615f7fb6abc05be34",
-      firstName: "Salvo",
-      lastName: "Patti",
-      role: "sadmin",
-      avatar: "bg-gradient-to-t from-red-300 to-red-500 bg-cover",
-      timeStamp: 1635342473000,
-      comment: "New comment new comment new comment new comment new comment",
-    },
-    {
-      userId: "snsnsks",
-      firstName: "Victor",
-      lastName: "Isidoro",
-      role: "admin",
-      avatar: "bg-gradient-to-t from-sky-300 to-sky-500 bg-cover",
-      timeStamp: 1635256073000,
-      comment: "I'm not sure about this founder",
-    },
-    {
-      userId: "snsnsks",
-      firstName: "Sasmitha",
-      lastName: "Nagesh",
-      role: "user",
-      avatar: "bg-gradient-to-t from-yellow-300 to-yellow-500 bg-cover",
-      timeStamp: 1634737673000,
-      comment: "I approve this founder",
-    },
-  ])
+  const [commentsArray, setCommentsArray] = useState([])
 
-  //ADD NEW COMMENT
-  const addComment = (user) => {
-    const newComment = {
-      ...user,
-      timeStamp: Date.now(),
-      comment: commentText,
-    }
-    commentsArray.push(newComment)
-    setCommentsArray([...commentsArray])
+  const triggerBanner = (message, num) => {
+    setBanner({
+      success: num,
+      show: true,
+      message: message,
+    })
+    setTimeout(() => {
+      setBanner((prev) => ({ ...prev, show: false }))
+    }, 3000)
+  }
+
+  const scrollDown = () => {
     setTimeout(() => {
       lastComment.current.scrollIntoView({ behavior: "smooth" })
-    }, 0)
+    }, 300)
+  }
+
+  const changeToReviewed = () => {
+    axios
+      .put(
+        `/api/applicants/response/review`,
+        { status: "pending", applicationId: applicationId },
+        config
+      )
+      .then((res) =>
+        triggerBanner(" Application status updated to: Reviewed ", 1)
+      )
+      .catch((e) => console.log(e))
+  }
+
+  useEffect(() => {
+    if (data.data.comments) {
+      axios
+        .get(`/api/applicants/response/comments/${applicationId}`, config)
+        .then((res) => {
+          setCommentsArray([...res.data.comments])
+        })
+        .catch((e) => console.log(e))
+    }
+  }, [data.data.comments, applicationId, refreshCommList])
+
+  const addComment = (user) => {
+    const newComment = {
+      user: user.id,
+      timeStamp: Date.now(),
+      text: newCommentText,
+    }
+    axios
+      .put(
+        `/api/applicants/response/newcomment`,
+        { id: applicationId, newComment },
+        config
+      )
+      .then((res) => {
+        setRefreshCommList(!refreshCommList)
+        triggerBanner(res.data.message, 1)
+        scrollDown()
+        if (data.data.status === "new") {
+          changeToReviewed()
+        }
+      })
+      .catch((e) => {
+        console.log(e.response, "running")
+        triggerBanner(
+          e.response.data.message || "Sorry something went wrong",
+          0
+        )
+      })
+    setNewCommentText("")
+  }
+
+  const deleteComment = (commentId) => {
+    axios
+      .delete(`/api/applicants/response/${applicationId}/${commentId}`, config)
+      .then((res) => {
+        setRefreshCommList(!refreshCommList)
+        triggerBanner(res.data.message, 1)
+      })
+      .catch((e) => console.log(e))
   }
 
   return (
-    <>
+    <div className='px-4'>
       <hr className={`mt-6 border-b-1 ${styles[data.data.role].border}`} />
+      <div className='w-full flex  justify-end items-center'>
+        <Banner message={banner} />
+      </div>
       <h6 className='text-gray-400 text-sm mt-3 mb-6 font-bold uppercase'>
         Reviewer comments
       </h6>
-      <div className='w-full flex flex-col items-center justify-start h-60 overflow-y-auto'>
-        {/* comments */}
-        {commentsArray.map((comment) => (
-          <Comment {...comment} forwardedRef={lastComment} />
-        ))}
-        {/* <div
-          style={{ float: "left", clear: "both" }}
-          ref={(el) => {
-            messagesEnd.current = el
-          }}></div> */}
+      <div className='relative'>
+        <div
+          className={
+            commentsArray.length > 3
+              ? "h-60 overflow-y-auto  "
+              : "h-auto" + " w-full flex flex-col items-center justify-center "
+          }>
+          {commentsArray.length > 3 && (
+            <ChevronDoubleDownIcon
+              onClick={() => scrollDown()}
+              className='w-8 h-8 absolute right-0 bottom-0 hover:text-flime hover:bg-black bg-white bg-opacity-60'
+            />
+          )}
+          {/* comments */}
+          {commentsArray.length ? (
+            commentsArray.map((comment) => (
+              <Comment
+                key={comment.timeStamp}
+                {...comment}
+                forwardedRef={lastComment}
+                config={config}
+                deleteComment={deleteComment}
+                applicationStatus={data.data.status}
+              />
+            ))
+          ) : (
+            <span className=' p-4'>There are no comment yet</span>
+          )}
+        </div>
       </div>
       <div className='flex flex-wrap'>
-        <div className='w-full  pr-4'>
-          <div className='relative w-full mb-3'>
-            {/* (Avatar) */}
+        <div className='w-full '>
+          <div
+            className={
+              data.data.status === "approved"
+                ? "hidden"
+                : "relative w-full mb-3"
+            }>
             <textarea
               type='text'
               className=' border-0 px-3 py-5 placeholder-blueGray-300 text-blueGray-600 bg-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
               rows='4'
               placeholder='Write a comment'
-              onChange={(e) => setCommentText(e.target.value)}></textarea>
+              value={newCommentText}
+              onChange={(e) => setNewCommentText(e.target.value)}></textarea>
             <button
               onClick={() => {
                 addComment(user)
@@ -92,7 +162,7 @@ const ApplicationComments = ({ data, styles }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
