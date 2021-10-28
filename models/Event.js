@@ -5,7 +5,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  banner: {
+  photo: {
     public_id: { type: String },
     url: { type: String },
   },
@@ -23,6 +23,7 @@ const eventSchema = new mongoose.Schema({
   },
   interested: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
   going: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
+  location: { type: String },
   address: { type: String },
   city: {
     type: String,
@@ -36,6 +37,7 @@ const eventSchema = new mongoose.Schema({
   },
   link: { type: String },
   tags: [{ type: String }],
+  announce: { type: Boolean, default: false },
 })
 
 const Event = mongoose.model("Event", eventSchema)

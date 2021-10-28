@@ -17,7 +17,6 @@ const findFuture = async (req, res, next) => {
 }
 
 const findPast = async (req, res, next) => {
-  console.log("past")
   const events = await Event.find({ dateEnd: { $lt: Date.now() } })
   if (events)
     res.status(200).json({

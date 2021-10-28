@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { useParams } from "react-router"
+import { useParams, useHistory } from "react-router"
 import AdminContext from "../../../contexts/Admin"
 import Tabs from "../Widgets/Tabs"
 import EventsList from "./EventsList"
@@ -9,6 +9,7 @@ import { PlusIcon } from "@heroicons/react/outline"
 
 const Events = () => {
   const { id } = useParams()
+  const history = useHistory()
   const { selectedTab, setSelectedTab } = useContext(AdminContext)
   const tabs = [
     {
@@ -37,13 +38,16 @@ const Events = () => {
         {!id ? (
           <div className="w-full px-4 outline-none">
             <EventsList state={tabs[selectedTab].role} />
-            <button className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white">
+            <button
+              className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+              onClick={() => history.push("events/id/new")}
+            >
               <PlusIcon className="h-5 w-5" />
               <p className="text-mono text-sm">Add New</p>
             </button>
           </div>
         ) : id === "new" ? (
-          <AddEvent role={tabs[selectedTab].role} />
+          <AddEvent />
         ) : (
           <Event />
         )}
