@@ -10,6 +10,7 @@ import { CheckIcon, SearchIcon } from "@heroicons/react/outline"
 import Places from "./Places"
 import MapDisplay from "./MapDisplay"
 import Tags from "../Widgets/Tags"
+import Dropzone from "../Widgets/DropZone"
 
 let types = [
   { name: "Online", value: "online" },
@@ -35,6 +36,10 @@ const AddEvent = ({ role }) => {
   })
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({})
+  const [uploadStatus, setUploadStatus] = useState({
+    success: false,
+    message: "",
+  })
   const { token, reload, setReload } = useContext(AdminContext)
 
   const config = {
@@ -60,23 +65,11 @@ const AddEvent = ({ role }) => {
     }
   }
 
+  const setLocationValues = (where, value) => {
+    setData((prev) => ({ ...prev, [where]: value }))
+  }
   const setType = (value) => {
     setData((prev) => ({ ...prev, type: value }))
-  }
-  const setAddress = (value) => {
-    setData((prev) => ({ ...prev, address: value }))
-  }
-  const setCity = (value) => {
-    setData((prev) => ({ ...prev, city: value }))
-  }
-  const setMarker = (lat, lng) => {
-    setData((prev) => ({ ...prev, geoLocation: { lat, lng } }))
-  }
-  const setLocation = (value) => {
-    setData((prev) => ({ ...prev, location: value }))
-  }
-  const setZoom = (value) => {
-    setData((prev) => ({ ...prev, zoom: value }))
   }
   const setDate = (value) => {
     console.log(value)
@@ -97,15 +90,15 @@ const AddEvent = ({ role }) => {
       setData((prev) => ({ ...prev, tags: [...data.tags, convertedValue] }))
     }
   }
-  const isLink = () => {
-    return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/.test(
-      data.link
-    )
-  }
   const popTag = (value) => {
     const newTags = [...data.tags]
     newTags.pop(value)
     setData((prev) => ({ ...prev, tags: newTags }))
+  }
+  const isLink = () => {
+    return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/.test(
+      data.link
+    )
   }
 
   return (
@@ -223,12 +216,8 @@ const AddEvent = ({ role }) => {
               Address
             </label>
             <Places
-              setLocation={setLocation}
-              setAddress={setAddress}
-              setCity={setCity}
+              setLocationValues={setLocationValues}
               address={data.address}
-              setMarker={setMarker}
-              setZoom={setZoom}
             />
             <SearchIcon className="w-6 h-6 absolute left-6 bottom-6" />
           </div>
@@ -260,6 +249,13 @@ const AddEvent = ({ role }) => {
             type="text"
             placeholder="Drag and drop box for photo"
             autoComplete="off"
+          />
+          <Dropzone
+            data={data}
+            setData={setData}
+            type="profilePicture"
+            setUploadStatus={setUploadStatus}
+            uploadStatus={uploadStatus}
           />
         </div>
         <div className="w-full md:w-1/2 mb-2 px-2">

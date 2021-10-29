@@ -13,14 +13,7 @@ import { useState } from "react"
 
 import "@reach/combobox/styles.css"
 
-const Places = ({
-  setAddress,
-  setCity,
-  setLocation,
-  address,
-  setMarker,
-  setZoom,
-}) => {
+const Places = ({ setLocationValues, address }) => {
   const {
     ready,
     value,
@@ -43,33 +36,35 @@ const Places = ({
         completeData?.types.join("|")
       )
     ) {
-      setAddress(completeData.structured_formatting.main_text)
-      setCity(completeData.structured_formatting.secondary_text)
-      setZoom(16)
+      setLocationValues("address", completeData.structured_formatting.main_text)
+      setLocationValues(
+        "city",
+        completeData.structured_formatting.secondary_text
+      )
+      setLocationValues("zoom", 16)
     } else if (/locality/.test(completeData?.types.join("|"))) {
-      setAddress("")
-      setCity(completeData.terms[0].value)
-      setZoom(12)
+      setLocationValues("address", "")
+      setLocationValues("city", completeData.terms[0].value)
+      setLocationValues("zoom", 12)
     } else if (/point_of_interest/.test(completeData?.types.join("|"))) {
-      setLocation(completeData.terms[0].value)
-      setZoom(18)
+      setLocationValues("location", completeData.terms[0].value)
+      setLocationValues("zoom", 18)
       const address =
         completeData.structured_formatting.secondary_text.split(", ")
-      setAddress(address[0])
-      setCity(address[1])
+      setLocationValues("address", address[0])
+      setLocationValues("city", address[1])
     } else {
-      setZoom(18)
+      setLocationValues("zoom", 18)
       const address =
         completeData.structured_formatting.secondary_text.split(", ")
-      console.log(address)
-      setAddress(address[0])
-      setCity(address[1])
+      setLocationValues("address", address[0])
+      setLocationValues("city", address[1])
     }
     clearSuggestions()
     getGeocode({ address: val })
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        setMarker(lat, lng)
+        setLocationValues("geoLocation", { lat, lng })
       })
       .catch((error) => {
         console.log("Error: ", error)
