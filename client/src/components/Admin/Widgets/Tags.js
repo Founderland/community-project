@@ -1,4 +1,4 @@
-import { XIcon } from "@heroicons/react/outline"
+import { PlusCircleIcon, XIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 
 const Tags = ({ tags, pushTag, popTag }) => {
@@ -52,12 +52,13 @@ const Tags = ({ tags, pushTag, popTag }) => {
         >
           {suggestions.map((tag) => (
             <div
-              className="w-full p-1"
+              className="group w-full p-1 flex items-center space-x-2 hover:text-green-500 cursor-pointer"
               onClick={(e) => {
                 handleSelect(tag)
               }}
             >
               <p className="p-1 text-sm">{tag}</p>
+              <PlusCircleIcon className="h-4 group-hover:text-green-500" />
             </div>
           ))}
         </div>
@@ -65,11 +66,11 @@ const Tags = ({ tags, pushTag, popTag }) => {
       <div className="flex-grow p-1 flex flex-wrap ">
         {tags.map((tag) => (
           <div
-            className="flex items-center space-x-2 w-max h-6 bg-gray-200 text-gray-600 py-1 pl-2 pr-1 m-1 text-center"
+            className=" group flex items-center space-x-2 w-max h-6 bg-gray-200 text-gray-600 py-1 pl-2 pr-1 m-1 text-center cursor-pointer"
             onClick={() => popTag(tag)}
           >
             <p className=" text-xs">{tag}</p>
-            <XIcon className="text-black font-bold h-3" />
+            <XIcon className="group-hover:text-red-500 text-black font-bold h-3" />
           </div>
         ))}
       </div>
