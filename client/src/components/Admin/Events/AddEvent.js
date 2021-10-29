@@ -1,12 +1,13 @@
 import axios from "axios"
-import { useState, useContext } from "react"
+import { useState, useContext, useCallback } from "react"
 import { useHistory } from "react-router"
 import AdminContext from "../../../contexts/Admin"
 import ListOption from "../Widgets/ListOption"
 import Banner from "../Widgets/Banner"
 import { Switch } from "@headlessui/react"
-import { CheckIcon } from "@heroicons/react/outline"
+import { CheckIcon, SearchIcon } from "@heroicons/react/outline"
 import Places from "./Places"
+import MapDisplay from "./MapDisplay"
 
 let types = [
   { name: "Online", value: "online" },
@@ -26,7 +27,7 @@ const AddEvent = ({ role }) => {
     dateEnd: "",
     address: "",
     city: "",
-    geoLocation: "",
+    geoLocation: { lat: 52.51621460823984, lng: 13.378192013711518 },
     type: "online",
     link: "",
     tags: "",
@@ -35,12 +36,14 @@ const AddEvent = ({ role }) => {
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({})
   const { token, reload, setReload } = useContext(AdminContext)
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   }
+
   const handleSubmit = (e) => {
     e.preventDefault()
   }
@@ -63,11 +66,20 @@ const AddEvent = ({ role }) => {
   const setType = (value) => {
     setData((prev) => ({ ...prev, type: value }))
   }
-  const setLocation = (value) => {
+  const setAddress = (value) => {
     setData((prev) => ({ ...prev, address: value }))
   }
+  const setCity = (value) => {
+    setData((prev) => ({ ...prev, city: value }))
+  }
+  const setMarker = (lat, lng) => {
+    setData((prev) => ({ ...prev, geoLocation: { lat, lng } }))
+  }
+  const setLocation = (value) => {
+    setData((prev) => ({ ...prev, location: value }))
+  }
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full md:w-5/6 lg:w-2/3">
+    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full xl:w-5/6">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
@@ -138,11 +150,18 @@ const AddEvent = ({ role }) => {
                 value={data.location}
               />
             </div>
-            <div className="mb-2 px-2">
+            <div className="relative mb-2 px-2">
               <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
                 Address
               </label>
-              <Places setLocation={setLocation} Location={data.address} />
+              <Places
+                setLocation={setLocation}
+                setAddress={setAddress}
+                setCity={setCity}
+                address={data.address}
+                setMarker={setMarker}
+              />
+              <SearchIcon className="w-6 h-6 absolute left-6 bottom-6" />
             </div>
             <div className="mb-2 px-2">
               <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
@@ -158,7 +177,9 @@ const AddEvent = ({ role }) => {
               />
             </div>
           </div>
-          <div className="hidden sm:block">map</div>
+          <div className="hidden sm:block px-3 mb-2">
+            <MapDisplay location={data.geoLocation} />
+          </div>
         </div>
         <div className="md:flex w-full px-3">
           <div className="w-full md:w-1/2 mb-2 px-2">

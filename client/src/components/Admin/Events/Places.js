@@ -9,10 +9,11 @@ import {
   ComboboxList,
   ComboboxOption,
 } from "@reach/combobox"
+import { useState } from "react"
 
 import "@reach/combobox/styles.css"
 
-const Places = ({ setLocation }) => {
+const Places = ({ setAddress, setCity, setLocation, address, setMarker }) => {
   const {
     ready,
     value,
@@ -20,48 +21,64 @@ const Places = ({ setLocation }) => {
     setValue,
     clearSuggestions,
   } = usePlacesAutocomplete()
-
+  const [selected, setSelected] = useState(false)
   const handleInput = (e) => {
+    setSelected(false)
     setValue(e.target.value)
   }
 
-  const handleSelect =
-    ({ description }) =>
-    () => {
-      // When user selects a place, we can replace the keyword without request data from API
-      // by setting the second parameter to "false"
-      setValue(description, false)
-      clearSuggestions()
-
-      // Get latitude and longitude via utility functions
-      getGeocode({ address: description })
-        .then((results) => getLatLng(results[0]))
-        .then(({ lat, lng }) => {
-          console.log("📍 Coordinates: ", { lat, lng })
-        })
-        .catch((error) => {
-          console.log("😱 Error: ", error)
-        })
+  const handleSelect = (val) => {
+    setSelected(true)
+    const [completeData] = data.filter((item) => item.description === val)
+    setValue(val, false)
+    if (
+      /route|stree_address|premise|neighborhood|intersection/.test(
+        completeData?.types.join("|")
+      )
+    ) {
+      setAddress(completeData.structured_formatting.main_text)
+      setCity(completeData.structured_formatting.secondary_text)
+    } else if (/locality/.test(completeData?.types.join("|"))) {
+      setAddress("")
+      setCity(completeData.terms[0].value)
+    } else if (/point_of_interest/.test(completeData?.types.join("|"))) {
+      setLocation(completeData.terms[0].value)
+      const address =
+        completeData.structured_formatting.secondary_text.split(", ")
+      setAddress(address[0])
+      setCity(address[1])
+    } else {
+      const address =
+        completeData.structured_formatting.secondary_text.split(", ")
+      console.log(address)
+      setAddress(address[0])
+      setCity(address[1])
     }
-
-  const renderSuggestions = () => {
-    console.log(data)
-    const suggestions = data.map(({ place_id, description }) => (
-      <ComboboxOption key={place_id} value={description} />
-    ))
-    return suggestions
+    clearSuggestions()
+    getGeocode({ address: val })
+      .then((results) => getLatLng(results[0]))
+      .then(({ lat, lng }) => {
+        setMarker(lat, lng)
+      })
+      .catch((error) => {
+        console.log("Error: ", error)
+      })
   }
-
   return (
-    <Combobox onSelect={handleSelect} aria-labelledby="demo">
+    <Combobox onSelect={handleSelect}>
       <ComboboxInput
-        className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-        value={value}
+        className="appearance-none pl-12 block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 pr-4 mb-3"
+        value={selected ? address : value}
         onChange={handleInput}
         disabled={!ready}
       />
       <ComboboxPopover>
-        <ComboboxList>{status === "OK" && renderSuggestions()}</ComboboxList>
+        <ComboboxList>
+          {status === "OK" &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption key={place_id} value={description} />
+            ))}
+        </ComboboxList>
       </ComboboxPopover>
     </Combobox>
   )
