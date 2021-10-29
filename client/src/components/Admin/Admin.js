@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useHistory, useRouteMatch } from "react-router-dom"
 import Main from "./Main"
 import Login from "./Login"
@@ -37,6 +37,22 @@ const Admin = () => {
   ])
   const [status, setStatus] = useState("")
   const [reload, setReload] = useState("")
+  const getUuid = () => {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16)
+    )
+  }
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  }, [token])
 
   useEffect(() => {
     if (localStorage.authToken) {
@@ -83,6 +99,8 @@ const Admin = () => {
         setStatus,
         reload,
         setReload,
+        getUuid,
+        config,
       }}
     >
       {user ? <Main /> : <Login />}

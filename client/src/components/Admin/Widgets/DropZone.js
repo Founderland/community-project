@@ -1,10 +1,19 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useContext } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
+import AdminContext from "../../../contexts/Admin"
 
-const Dropzone = ({ data, setData, type, setUploadStatus, uploadStatus }) => {
+const Dropzone = ({
+  data,
+  setData,
+  type,
+  setUploadStatus,
+  uploadStatus,
+  classes,
+}) => {
   const [previewSource, setPreviewSource] = useState(null)
   const [loading, setLoading] = useState(false)
+  const { getUuid } = useContext(AdminContext)
   // CLOUDINARY
   const onDrop = useCallback((acceptedFiles) => {
     const reader = new FileReader()
@@ -16,7 +25,6 @@ const Dropzone = ({ data, setData, type, setUploadStatus, uploadStatus }) => {
       uploadImage(binaryStr)
     }
   }, [])
-
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
   const uploadImage = async (base64EncodedImage) => {
     setLoading(true)
@@ -24,11 +32,12 @@ const Dropzone = ({ data, setData, type, setUploadStatus, uploadStatus }) => {
       const result = await axios.post("/api/profile-picture/upload", {
         data: base64EncodedImage,
         public_id: `${type}`, //-${Date.now()}
-        folder: `${data.firstName}-${data.lastName}`,
+        folder: `events-${getUuid()}`,
       })
-
+      console.log(result)
       if (result.data?.public_id) {
         setUploadStatus({ success: true, message: result.data.message })
+        console.log(result.data)
         setData({
           ...data,
           photo: { public_id: result.data.public_id, url: result.data.url },
@@ -66,16 +75,13 @@ const Dropzone = ({ data, setData, type, setUploadStatus, uploadStatus }) => {
 
   return (
     <>
-      <div
-        {...getRootProps()}
-        className="w-full flex flex-col justify-center items-center border-dashed border-4 border-black-600 rounded-xl"
-      >
+      <div {...getRootProps()} className={classes}>
         <input {...getInputProps()} />
         {loading && (
           <div className="flex justify-center">
             <span
               style={{ borderTopColor: "transparent" }}
-              className="w-16 h-16 border-8 border-black  border-dotted rounded-full animate-spin"
+              className="w-16 h-16 border-8 border-black border-dotted rounded-full animate-spin"
             ></span>
           </div>
         )}
@@ -84,14 +90,14 @@ const Dropzone = ({ data, setData, type, setUploadStatus, uploadStatus }) => {
             src={previewSource}
             style={{ width: "200px", height: "80px" }}
             alt="chosen"
-            className=" p-2 object-cover rounded"
+            className="p-2 object-cover"
           />
         )}
-        <p className="block uppercase text-gray-600 text-xs font-bold mb-2">
-          {data.photo.public_id
-            ? " "
-            : "Drag and drop your photo here, or click to select it"}
-        </p>
+        {!data.photo?.public_id && (
+          <p className="block uppercase text-gray-600 text-xs font-bold mb-2">
+            Drag and drop your file here, or click to select it
+          </p>
+        )}
       </div>
     </>
   )

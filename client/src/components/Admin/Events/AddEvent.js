@@ -21,7 +21,7 @@ const AddEvent = ({ role }) => {
   const history = useHistory()
   const [data, setData] = useState({
     title: "",
-    photo: "",
+    photo: null,
     description: "",
     dateStart: new Date(Date.now()),
     dateEnd: new Date(Date.now() + 1000),
@@ -31,7 +31,7 @@ const AddEvent = ({ role }) => {
     type: "online",
     link: "",
     tags: [],
-    annouce: "",
+    annouce: false,
     zoom: 16,
   })
   const [saving, setSaving] = useState(false)
@@ -100,7 +100,7 @@ const AddEvent = ({ role }) => {
       data.link
     )
   }
-
+  console.log(data)
   return (
     <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col w-full xl:w-5/6">
       <div className="w-full flex items-center justify-center z-20">
@@ -111,7 +111,7 @@ const AddEvent = ({ role }) => {
       </div>
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Title
           </label>
           <input
@@ -121,7 +121,7 @@ const AddEvent = ({ role }) => {
                 : data.title.length <= 1
                 ? "border-l-4 border-fred"
                 : "border-l-4 border-flime"
-            } appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4 mb-3`}
+            } appearance-none outline-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3`}
             type="text"
             onChange={(e) =>
               setData((prev) => ({ ...prev, title: e.target.value }))
@@ -132,11 +132,11 @@ const AddEvent = ({ role }) => {
         </div>
 
         <div className=" w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Date
           </label>
           <DateTimeRangePicker
-            className="text-sm appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border py-0.5 px-1 mb-3"
+            className="text-sm appearance-none outline-none outline-none block w-full bg-grey-lighter border py-0.5 px-1 mb-3"
             onChange={setDate}
             value={[data.dateStart, data.dateEnd]}
             disableClock={true}
@@ -148,11 +148,11 @@ const AddEvent = ({ role }) => {
       </div>
       <div className="md:flex w-full px-3">
         <div className="w-full mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Description
           </label>
           <textarea
-            className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4 mb-3"
+            className="appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3"
             type="text"
             onChange={(e) => {
               setData((prev) => ({ ...prev, description: e.target.value }))
@@ -163,7 +163,7 @@ const AddEvent = ({ role }) => {
       </div>
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Type
           </label>
           <div className="w-full">
@@ -175,7 +175,7 @@ const AddEvent = ({ role }) => {
           </div>
         </div>
         <div className="w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Link
           </label>
           <div className="w-full">
@@ -186,7 +186,7 @@ const AddEvent = ({ role }) => {
                   : !isLink()
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
-              } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3`}
+              } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3`}
               type="text"
               onChange={(e) => {
                 setData((prev) => ({ ...prev, link: e.target.value }))
@@ -199,11 +199,11 @@ const AddEvent = ({ role }) => {
       <div className="w-full grid sm:grid-cols-2 px-3">
         <div className="grid grid-cols-1">
           <div className="mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            <label className="block uppercase tracking-wide text-xs font-bold mb-2">
               Location
             </label>
             <input
-              className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
+              className="appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3"
               type="text"
               onChange={(e) => {
                 setData((prev) => ({ ...prev, location: e.target.value }))
@@ -212,7 +212,7 @@ const AddEvent = ({ role }) => {
             />
           </div>
           <div className="relative mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            <label className="block uppercase tracking-wide text-xs font-bold mb-2">
               Address
             </label>
             <Places
@@ -222,11 +222,11 @@ const AddEvent = ({ role }) => {
             <SearchIcon className="w-6 h-6 absolute left-6 bottom-6" />
           </div>
           <div className="mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            <label className="block uppercase tracking-wide text-xs font-bold mb-2">
               City
             </label>
             <input
-              className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
+              className="appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3"
               type="text"
               onChange={(e) => {
                 setData((prev) => ({ ...prev, city: e.target.value }))
@@ -241,25 +241,22 @@ const AddEvent = ({ role }) => {
       </div>
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Photo
           </label>
-          <input
-            className={`appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4 mb-3`}
-            type="text"
-            placeholder="Drag and drop box for photo"
-            autoComplete="off"
-          />
           <Dropzone
+            classes={
+              "appearance-none outline-none outline-none block w-full border-2 border-gray-300 border-black border-dotted  py-3 px-4 mb-3"
+            }
             data={data}
             setData={setData}
-            type="profilePicture"
+            type="eventCover"
             setUploadStatus={setUploadStatus}
             uploadStatus={uploadStatus}
           />
         </div>
         <div className="w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Tags
           </label>
           <div className="">
@@ -273,7 +270,7 @@ const AddEvent = ({ role }) => {
             as="div"
             className="flex md:flex-col mt-2 justify-center items-center py-2"
           >
-            <Switch.Label className="mt-2 uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            <Switch.Label className="mt-2 uppercase tracking-wide text-xs font-bold mb-2">
               Publish in Newsfeed
             </Switch.Label>
             <Switch
