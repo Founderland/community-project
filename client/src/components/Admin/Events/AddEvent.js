@@ -1,5 +1,6 @@
 import axios from "axios"
-import { useState, useContext, useCallback } from "react"
+import { useState, useContext } from "react"
+import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker"
 import { useHistory } from "react-router"
 import AdminContext from "../../../contexts/Admin"
 import ListOption from "../Widgets/ListOption"
@@ -8,15 +9,13 @@ import { Switch } from "@headlessui/react"
 import { CheckIcon, SearchIcon } from "@heroicons/react/outline"
 import Places from "./Places"
 import MapDisplay from "./MapDisplay"
+import Tags from "../Widgets/Tags"
 
 let types = [
   { name: "Online", value: "online" },
   { name: "Private", value: "private" },
   { name: "Public", value: "public" },
 ]
-
-const addMemberURL = "/api/users/community/add"
-
 const AddEvent = ({ role }) => {
   const history = useHistory()
   const [data, setData] = useState({
@@ -30,7 +29,7 @@ const AddEvent = ({ role }) => {
     geoLocation: { lat: 52.51621460823984, lng: 13.378192013711518 },
     type: "online",
     link: "",
-    tags: "",
+    tags: ["#fintech", "#fundraiser", "#restricted"],
     annouce: "",
   })
   const [saving, setSaving] = useState(false)
@@ -78,6 +77,17 @@ const AddEvent = ({ role }) => {
   const setLocation = (value) => {
     setData((prev) => ({ ...prev, location: value }))
   }
+  const setDate = (value) => {
+    if (value)
+      setData((prev) => ({ ...prev, dateStart: value[0], dateEnd: value[1] }))
+    else setData((prev) => ({ ...prev, dateStart: null, dateEnd: null }))
+  }
+  const isLink = () => {
+    return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/.test(
+      data.link
+    )
+  }
+
   return (
     <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full xl:w-5/6">
       <div className="w-full flex items-center justify-center z-20">
@@ -99,7 +109,7 @@ const AddEvent = ({ role }) => {
                   : data.title.length <= 1
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
-              } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
+              } appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
               type="text"
               onChange={(e) =>
                 setData((prev) => ({ ...prev, title: e.target.value }))
@@ -111,12 +121,12 @@ const AddEvent = ({ role }) => {
 
           <div className="w-full md:w-1/2 mb-2 px-2">
             <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Dates Picker for Start End
+              Date
             </label>
-            <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-              type="text"
-              placeholder="NPM PACKAGE FOR DATE PICKER"
+            <DateTimeRangePicker
+              className="w-1/2 p-2"
+              onChange={setDate}
+              value={[data.dateStart, data.dateEnd]}
             />
           </div>
         </div>
@@ -126,13 +136,48 @@ const AddEvent = ({ role }) => {
               Description
             </label>
             <textarea
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
+              className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
               type="text"
               onChange={(e) => {
                 setData((prev) => ({ ...prev, description: e.target.value }))
               }}
               value={data.description}
             />
+          </div>
+        </div>
+        <div className="md:flex w-full px-3">
+          <div className="w-full md:w-1/2 mb-2 px-2">
+            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+              Type
+            </label>
+            <div className="w-full">
+              <ListOption
+                options={types}
+                choice={data.type}
+                setChoice={setType}
+              />
+            </div>
+          </div>
+          <div className="w-full md:w-1/2 mb-2 px-2">
+            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+              Link
+            </label>
+            <div className="w-full">
+              <input
+                className={`${
+                  data.link === ""
+                    ? ""
+                    : !isLink()
+                    ? "border-l-4 border-fred"
+                    : "border-l-4 border-flime"
+                } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker focus:ring-2 ring-fblue border border-grey-lighter rounded py-3 px-4 mb-3`}
+                type="text"
+                onChange={(e) => {
+                  setData((prev) => ({ ...prev, link: e.target.value }))
+                }}
+                value={data.link}
+              />
+            </div>
           </div>
         </div>
         <div className="w-full grid sm:grid-cols-2 px-3">
@@ -142,7 +187,7 @@ const AddEvent = ({ role }) => {
                 Location
               </label>
               <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+                className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
                 type="text"
                 onChange={(e) => {
                   setData((prev) => ({ ...prev, location: e.target.value }))
@@ -168,7 +213,7 @@ const AddEvent = ({ role }) => {
                 City
               </label>
               <input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+                className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
                 type="text"
                 onChange={(e) => {
                   setData((prev) => ({ ...prev, city: e.target.value }))
@@ -187,7 +232,7 @@ const AddEvent = ({ role }) => {
               Photo
             </label>
             <input
-              className={`appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
+              className={`appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
               type="text"
               placeholder="Drag and drop box for photo"
               autoComplete="off"
@@ -195,14 +240,10 @@ const AddEvent = ({ role }) => {
           </div>
           <div className="w-full md:w-1/2 mb-2 px-2">
             <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Type
+              Tags
             </label>
-            <div className="w-full">
-              <ListOption
-                options={types}
-                choice={data.type}
-                setChoice={setType}
-              />
+            <div className="">
+              <Tags tags={data.tags} />
             </div>
           </div>
         </div>

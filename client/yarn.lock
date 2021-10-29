@@ -9901,6 +9901,11 @@ react-step-wizard@^5.3.9:
   resolved "https://registry.npmjs.org/react-step-wizard/-/react-step-wizard-5.3.9.tgz"
   integrity sha512-CJdWckYHAYZOD8E8p38EiFpyIJoknouroyFy6AV3YzTcCMyiyivzLMxruUZUUoKqriZH70Ik9wadBCoGSVzW0Q==
 
+react-tagsinput@^3.19.0:
+  version "3.19.0"
+  resolved "https://registry.yarnpkg.com/react-tagsinput/-/react-tagsinput-3.19.0.tgz#6e3b45595f2d295d4657bf194491988f948caabf"
+  integrity sha512-ni+/qnZrYrvLg83LtTFHErKy1KQHL0fi0Y6C5jgC1dNUePE9cS/OlQ4XH6JRSjv9GGoeVE0R/ujSBaS1uzCRYQ==
+
 react-time-picker@^4.4.2:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/react-time-picker/-/react-time-picker-4.4.3.tgz#1b27a3288b8f290ae2aa08a5232a6b92968137f1"
