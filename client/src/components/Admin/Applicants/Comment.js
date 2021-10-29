@@ -47,13 +47,13 @@ const Comment = ({
       className='w-full flex items-center px-1 bg-gray-50 border-b-2 border-fblue-200 rounded-xl shadow my-1'>
       <div className='min-w-min flex flex-col items-center'>
         <span
-          className={`ml-2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-mono text-lg lg:text-xl tracking-wide rounded-full border-2 border-white ${user.avatar}`}>
+          className={`ml-2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-mono text-lg lg:text-xl tracking-wide rounded-full border-2 border-pink-400 ${user.avatar}`}>
           {avatarInitials(user)}
         </span>
       </div>
       <div className=' w-full py-1 px-2 mr-4'>
         <div className='flex items-center'>
-          <h3 className='font-bold text-sm'>
+          <h3 className='font-bold text-xs md:text-sm'>
             {user.firstName} {user.lastName}
           </h3>
           <span
@@ -71,7 +71,7 @@ const Comment = ({
             </button>
           )}
         </div>
-        <span className='text-lg'>{text}</span>
+        <span className='text-base md:text-lg'>{text}</span>
         <div className='text-xs text-right mr-2 md:mr-0'>
           {getCommentDate(timeStamp)}
         </div>

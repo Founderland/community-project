@@ -43,6 +43,7 @@ const Application = () => {
   const [data, setData] = useState({ categories: "", data: "", task: "" })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [commentsArray, setCommentsArray] = useState([])
   //GET DATA FROM DB WITH APPLICATIONID FROM URL
   useEffect(() => {
     axios
@@ -61,7 +62,7 @@ const Application = () => {
       .catch((err) => {
         console.log(err)
       })
-  }, [id])
+  }, [id, commentsArray])
 
   const updateApplication = (status) => {
     setData((prev) => ({ ...prev, task: status }))
@@ -151,7 +152,7 @@ const Application = () => {
                   </div>
                   <div className="mb-2">
                     <p className=" text-xs text-grotesk">
-                      {data.data.status === "reviewed"
+                      {data.data.status === "pending"
                         ? "Last reviewed by"
                         : data.data.status === "approved"
                         ? "Approved by"
@@ -222,6 +223,8 @@ const Application = () => {
               styles={styles}
               config={config}
               id={id}
+              commentsArray={commentsArray}
+              setCommentsArray={setCommentsArray}
             />
             <footer className="p-4 mt-2">
               {data.data.status === "new" || data.data.status === "pending" ? (
