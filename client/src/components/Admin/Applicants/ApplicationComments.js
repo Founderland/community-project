@@ -5,14 +5,21 @@ import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
 import Comment from "./Comment"
 
-const ApplicationComments = ({ data, styles, config, id: applicationId }) => {
+const ApplicationComments = ({
+  data,
+  styles,
+  config,
+  id: applicationId,
+  commentsArray,
+  setCommentsArray,
+}) => {
   const { user } = useContext(AdminContext)
   const [newCommentText, setNewCommentText] = useState("")
   const [refreshCommList, setRefreshCommList] = useState(false)
   const lastComment = useRef(null)
   const [banner, setBanner] = useState({})
 
-  const [commentsArray, setCommentsArray] = useState([])
+  // const [commentsArray, setCommentsArray] = useState([])
 
   const triggerBanner = (message, num) => {
     setBanner({
@@ -32,16 +39,18 @@ const ApplicationComments = ({ data, styles, config, id: applicationId }) => {
   }
 
   const changeToReviewed = () => {
-    axios
-      .put(
-        `/api/applicants/response/review`,
-        { status: "pending", applicationId: applicationId },
-        config
-      )
-      .then((res) =>
-        triggerBanner(" Application status updated to: Reviewed ", 1)
-      )
-      .catch((e) => console.log(e))
+    if (data.data.status === "new" && !data.data.comments.length) {
+      axios
+        .put(
+          `/api/applicants/response/review`,
+          { status: "pending", applicationId: applicationId },
+          config
+        )
+        .then((res) =>
+          triggerBanner(" Application status updated to: Reviewed ", 1)
+        )
+        .catch((e) => console.log(e))
+    }
   }
 
   useEffect(() => {
@@ -71,9 +80,9 @@ const ApplicationComments = ({ data, styles, config, id: applicationId }) => {
         setRefreshCommList(!refreshCommList)
         triggerBanner(res.data.message, 1)
         scrollDown()
-        if (data.data.status === "new") {
-          changeToReviewed()
-        }
+        console.log(data.data.status)
+
+        changeToReviewed()
       })
       .catch((e) => {
         console.log(e.response, "running")
@@ -97,8 +106,10 @@ const ApplicationComments = ({ data, styles, config, id: applicationId }) => {
 
   return (
     <div className='px-4'>
-      <hr className={`mt-6 border-b-1 ${styles[data.data.role].border}`} />
-      <div className='w-full flex  justify-end items-center'>
+      <hr
+        className={`mt-6 border-b-1 border-${styles[data.data.role].border}`}
+      />
+      <div className='w-full flex  justify-center items-center'>
         <Banner message={banner} />
       </div>
       <h6 className='text-gray-400 text-sm mt-3 mb-6 font-bold uppercase'>
