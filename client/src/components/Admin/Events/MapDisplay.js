@@ -7,12 +7,7 @@ const containerStyle = {
   height: "100%",
 }
 
-const center = {
-  lat: 51.3397,
-  lng: 12.3731,
-}
-
-const MapDisplay = ({ location }) => {
+const MapDisplay = ({ location, zoom }) => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -34,7 +29,7 @@ const MapDisplay = ({ location }) => {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={location}
-      zoom={17}
+      zoom={zoom}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >

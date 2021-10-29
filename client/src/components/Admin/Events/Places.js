@@ -13,7 +13,14 @@ import { useState } from "react"
 
 import "@reach/combobox/styles.css"
 
-const Places = ({ setAddress, setCity, setLocation, address, setMarker }) => {
+const Places = ({
+  setAddress,
+  setCity,
+  setLocation,
+  address,
+  setMarker,
+  setZoom,
+}) => {
   const {
     ready,
     value,
@@ -38,16 +45,20 @@ const Places = ({ setAddress, setCity, setLocation, address, setMarker }) => {
     ) {
       setAddress(completeData.structured_formatting.main_text)
       setCity(completeData.structured_formatting.secondary_text)
+      setZoom(16)
     } else if (/locality/.test(completeData?.types.join("|"))) {
       setAddress("")
       setCity(completeData.terms[0].value)
+      setZoom(12)
     } else if (/point_of_interest/.test(completeData?.types.join("|"))) {
       setLocation(completeData.terms[0].value)
+      setZoom(18)
       const address =
         completeData.structured_formatting.secondary_text.split(", ")
       setAddress(address[0])
       setCity(address[1])
     } else {
+      setZoom(18)
       const address =
         completeData.structured_formatting.secondary_text.split(", ")
       console.log(address)

@@ -31,6 +31,7 @@ const AddEvent = ({ role }) => {
     link: "",
     tags: [],
     annouce: "",
+    zoom: 16,
   })
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({})
@@ -73,6 +74,9 @@ const AddEvent = ({ role }) => {
   }
   const setLocation = (value) => {
     setData((prev) => ({ ...prev, location: value }))
+  }
+  const setZoom = (value) => {
+    setData((prev) => ({ ...prev, zoom: value }))
   }
   const setDate = (value) => {
     if (value)
@@ -218,6 +222,7 @@ const AddEvent = ({ role }) => {
               setCity={setCity}
               address={data.address}
               setMarker={setMarker}
+              setZoom={setZoom}
             />
             <SearchIcon className="w-6 h-6 absolute left-6 bottom-6" />
           </div>
@@ -236,7 +241,7 @@ const AddEvent = ({ role }) => {
           </div>
         </div>
         <div className="hidden sm:block px-3 mb-2">
-          <MapDisplay location={data.geoLocation} />
+          <MapDisplay location={data.geoLocation} zoom={data.zoom} />
         </div>
       </div>
       <div className="md:flex w-full px-3">
