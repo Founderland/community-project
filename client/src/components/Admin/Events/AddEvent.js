@@ -136,15 +136,22 @@ const AddEvent = ({ role }) => {
           />
         </div>
 
-        <div className="w-full md:w-1/2 mb-2 px-2">
+        <div className="relative w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
             Date
           </label>
           <DateTimeRangePicker
-            className="w-1/2 p-2"
+            className="appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border py-0.5 px-1 sm:px-4 mb-3"
             onChange={setDate}
             value={[data.dateStart, data.dateEnd]}
+            disableClock={true}
+            clearIcon={null}
+            rangeDivider={"to"}
+            required={true}
           />
+          <span className="absolute hidden sm:block font-bold uppercase text-xs left-5 bottom-7">
+            From
+          </span>
         </div>
       </div>
       <div className="md:flex w-full px-3">
@@ -265,7 +272,7 @@ const AddEvent = ({ role }) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center w-full px-3">
+      <div className="flex justify-center items-center w-full px-3 hidden">
         <div className="w-full md:w-1/4 mb-2 px-2">
           <Switch.Group
             as="div"
