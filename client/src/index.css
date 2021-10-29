@@ -23,26 +23,8 @@ Hanson body {
   font-family: "Hanson";
 }
 
-@media (min-width: 640px) {
-  .react-datetimerange-picker__wrapper {
-    border: 0 !important;
-    justify-items: center !important;
-    padding: 0.5rem 0.5rem 0.5rem 2rem !important;
-  }
-
-  .react-datetimerange-picker__range-divider {
-    padding: 0 1.5rem 0 0 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.025em !important;
-    font-weight: 700 !important;
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
-}
-
 .react-datetimerange-picker__wrapper {
   border: 0 !important;
-  justify-items: start !important;
   padding: 0.5rem !important;
 }
 
@@ -53,4 +35,20 @@ Hanson body {
   font-weight: 700 !important;
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+@media (min-width: 640px) {
+  .react-datetimerange-picker__wrapper {
+    border: 0 !important;
+    justify-items: center !important;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+  }
+
+  .react-datetimerange-picker__range-divider {
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+    font-weight: 700 !important;
+    font-size: 1rem;
+    line-height: 1rem;
+  }
 }

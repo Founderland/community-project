@@ -22,8 +22,8 @@ const AddEvent = ({ role }) => {
     title: "",
     photo: "",
     description: "",
-    dateStart: "",
-    dateEnd: "",
+    dateStart: new Date(Date.now()),
+    dateEnd: new Date(Date.now() + 1000),
     address: "",
     city: "",
     geoLocation: { lat: 52.51621460823984, lng: 13.378192013711518 },
@@ -79,6 +79,8 @@ const AddEvent = ({ role }) => {
     setData((prev) => ({ ...prev, zoom: value }))
   }
   const setDate = (value) => {
+    console.log(value)
+    console.log(Date.now())
     if (value)
       setData((prev) => ({ ...prev, dateStart: value[0], dateEnd: value[1] }))
     else setData((prev) => ({ ...prev, dateStart: null, dateEnd: null }))
@@ -136,22 +138,19 @@ const AddEvent = ({ role }) => {
           />
         </div>
 
-        <div className="relative w-full md:w-1/2 mb-2 px-2">
+        <div className=" w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
             Date
           </label>
           <DateTimeRangePicker
-            className="appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border py-0.5 px-1 sm:px-4 mb-3"
+            className="text-sm appearance-none outline-none outline-none block w-full bg-grey-lighter text-grey-darker border py-0.5 px-1 mb-3"
             onChange={setDate}
             value={[data.dateStart, data.dateEnd]}
             disableClock={true}
             clearIcon={null}
-            rangeDivider={"to"}
-            required={true}
+            rangeDivider={" to "}
+            format={"dd-MM-y H:mm"}
           />
-          <span className="absolute hidden sm:block font-bold uppercase text-xs left-5 bottom-7">
-            From
-          </span>
         </div>
       </div>
       <div className="md:flex w-full px-3">
