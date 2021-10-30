@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors")
+const scrollBar = require("tailwind-scrollbar")
 
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
@@ -63,11 +64,10 @@ module.exports = {
           DEFAULT: "#FCF9F9",
         },
       },
-      textOverflow: ["hover", "focus"],
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [ require('tailwind-scrollbar')],
+  plugins: [scrollBar],
 }
