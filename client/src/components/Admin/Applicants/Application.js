@@ -1,4 +1,4 @@
-import { useContext, useMemo, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router"
 import axios from "axios"
 import moment from "moment"
@@ -7,7 +7,6 @@ import Loading from "../Widgets/Loading"
 import ComponentModal from "../Widgets/ComponentModal"
 import ApproveApplicant from "./ApproveApplicant"
 import ApplicationComments from "./ApplicationComments"
-import Tooltip from "../Widgets/Tooltip"
 import { Link } from "react-router-dom"
 import { ChevronRightIcon } from "@heroicons/react/outline"
 
@@ -31,15 +30,7 @@ const responseURL = "/api/applicants/response/"
 
 const Application = () => {
   const { id } = useParams()
-  const { token, setCModal } = useContext(AdminContext)
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
+  const { config, setCModal } = useContext(AdminContext)
   const [data, setData] = useState({ categories: "", data: "", task: "" })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
