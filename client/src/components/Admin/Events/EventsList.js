@@ -30,6 +30,7 @@ const EventsList = ({ state }) => {
       organizer: { _id: "1", firstName: "Victor", lastName: "Isidoro" },
       interested: [],
       going: [],
+      canceled: false,
     },
     {
       _id: "2",
@@ -53,6 +54,7 @@ const EventsList = ({ state }) => {
       organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
       interested: [],
       going: [],
+      canceled: false,
     },
   ])
   const [loading, setLoading] = useState(true)

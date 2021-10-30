@@ -16,8 +16,12 @@ const EventCard = ({ event }) => {
     >
       <div className="group cursor-pointer flex flex-col bg-white shadow-lg hover:shadow-xl">
         <img
-          className="w-full h-24 bg-top bg-cover rounded-t"
-          src="https://www.si.com/.image/t_share/MTY4MTkyMjczODM4OTc0ODQ5/cfp-trophy-deitschjpg.jpg"
+          className="w-full h-40 bg-top bg-cover"
+          src={
+            event.photo?.url
+              ? event.photo.url
+              : `https://www.si.com/.image/t_share/MTY4MTkyMjczODM4OTc0ODQ5/cfp-trophy-deitschjpg.jpg`
+          }
           alt="cover"
         />
         <div className="w-full flex flex-col justify-between px-6 py-3">
