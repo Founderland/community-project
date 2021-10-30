@@ -23,13 +23,13 @@ const Settings = () => {
   const { id } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [reload, setReload] = useState(0)
-  const { token, selectedTab, setSelectedTab, user } = useContext(AdminContext)
+  const { token, selectedTab, setSelectedTab, user, reload } =
+    useContext(AdminContext)
   const tabs = [
     {
       index: 0,
       name: "Profile",
-      component: <Profile reload={reload} setReload={setReload} />,
+      component: <Profile />,
       restricted: "",
     },
     {
@@ -54,7 +54,7 @@ const Settings = () => {
           </button>
         </div>
       ) : (
-        <Profile reload={reload} setReload={setReload} />
+        <Profile />
       ),
     },
   ]

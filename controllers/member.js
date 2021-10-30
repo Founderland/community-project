@@ -21,13 +21,24 @@ const findAll = async (req, res) => {
   }
 }
 
-const findMember = async (req, res) => {
-  const { _id } = req.user
-  const profile = await Member.findOne({ _id })
+const findMember = async (req, res, next) => {
+  let id = null
+  if (req.user.avatar) {
+    id = req.params.id
+  } else {
+    id = req.user.id
+  }
+  const profile = await Member.findOne({ _id: id })
   if (profile) {
-    res.status(200).json({
-      data: profile,
-    })
+    profile["hashedPassword"] = ""
+    if (req.originalUrl.includes("notify")) {
+      req.newMember = profile
+      return next()
+    } else {
+      res.status(200).json({
+        data: profile,
+      })
+    }
   } else {
     res.status(500).json({
       message: "Sorry, something went wrong",
@@ -44,6 +55,8 @@ const addMember = async (req, res, next) => {
     email,
     city,
     country,
+    companyName,
+    businessArea,
     role,
     connect,
     applicationId,
@@ -61,31 +74,18 @@ const addMember = async (req, res, next) => {
       email,
       city,
       country,
+      companyName,
+      businessArea,
       role,
       applicationId,
     }
     const newMember = await Member.create(data)
     if (newMember) {
       req.newMember = newMember
-      if (applicationId !== "") {
-        const updated = await Response.findByIdAndUpdate(
-          { _id: applicationId },
-          {
-            status: "approved",
-            memberId: newMember._id,
-            evaluatedOn: Date.now(),
-          }
-        )
-        if (!updated) await Promise.reject("NOT_FOUND")
-      }
-
-      if (connect) {
-        return next()
-      } else {
-        res.status(200).json({ success: 1, message: "User saved" })
-      }
+      return next()
     } else throw new Error("DATABASE_ERROR")
   } catch (e) {
+    console.log(e)
     if (e.message === "USER_EXISTS_ALREADY") {
       res.status(403).json({
         error: 403,
@@ -99,7 +99,7 @@ const addMember = async (req, res, next) => {
     } else if (e.message === "NOT_FOUND") {
       res.status(400).json({
         error: 400,
-        message: "Member created but response failed to updateå",
+        message: "Member created but response failed to update",
       })
     } else {
       res.status(500).json({
@@ -122,7 +122,10 @@ const confirmUser = async (req, res, next) => {
     businessArea,
     geoLocation,
     photo,
-    about,
+    bio,
+    companyName,
+    companyBio,
+    companyLink,
   } = req.body
   try {
     if (!errorsAfterValidation.isEmpty()) {
@@ -140,7 +143,10 @@ const confirmUser = async (req, res, next) => {
       hashedPassword: generateHashedPassword(password),
       confirmed: Date.now(),
       lastUpdate: Date.now(),
-      about,
+      bio,
+      companyName,
+      companyBio,
+      companyLink,
     }
     const updateUser = await Member.findOneAndUpdate(
       { _id: req.user.id },
@@ -193,12 +199,37 @@ const updateNotified = async (req, res) => {
     { new: true }
   )
   if (update) {
-    res.status(200).json({ success: 1, message: "User notified" })
+    update.hashedPassword = ""
+    res.status(200).json({ success: 1, message: "User notified", data: update })
   } else {
     res.status(500).json({
       error: 1,
       message: "User notified but database not updated",
     })
+  }
+}
+
+const lockProfile = async (req, res) => {
+  const { _id, locked } = req.body
+  if (_id) {
+    const profile = {
+      locked,
+    }
+    const updatedProfile = await Member.findOneAndUpdate({ _id }, profile, {
+      new: true,
+    })
+    if (updatedProfile) {
+      updatedProfile["hashedPassword"] = ""
+      res.status(200).json({
+        data: updatedProfile,
+      })
+    } else {
+      res.status(404).json({
+        message: "Profile not found",
+      })
+    }
+  } else {
+    res.status(500).json({ message: "id not defined" })
   }
 }
 
@@ -208,4 +239,5 @@ module.exports = {
   addMember,
   confirmUser,
   updateNotified,
+  lockProfile,
 }

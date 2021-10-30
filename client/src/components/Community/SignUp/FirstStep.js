@@ -1,38 +1,5 @@
-import ListOption from "../../Admin/Widgets/ListOption"
 import { useEffect, useState } from "react"
 import axios from "axios"
-
-let defaultBusinessAreas = [
-  { name: "Select your business area", value: "Select your business area" },
-  { name: "SaaS/Enterprise Software", value: "SaaS/Enterprise Software" },
-  {
-    name: "Mobility",
-    value: "Mobility",
-  },
-  {
-    name: "Sustainability/Impact investment",
-    value: "Sustainability/Impact investment",
-  },
-  { name: "HealthTech", value: "HealthTech" },
-  {
-    name: "DTC",
-    value: "DTC",
-  },
-  { name: "E-comm/Marketplaces", value: "E-comm/Marketplaces" },
-  { name: "IoT", value: "IoT" },
-  {
-    name: "FoodTech",
-    value: "FoodTech",
-  },
-  { name: "Gaming/Entertainment", value: "Gaming/Entertainment" },
-  { name: "Engineering/DeepTech/AI", value: "Engineering/DeepTech/AI" },
-  {
-    name: "FinTech",
-    value: "FinTech",
-  },
-  { name: "EdTech", value: "EdTech" },
-  { name: "Other", value: "Other" },
-]
 
 const config = {
   headers: {
@@ -46,12 +13,6 @@ const FirstStep = ({ data, setData, nextStep }) => {
   const [cityList, setCityList] = useState([])
   const [selectedCountry, setSelectedCounty] = useState(null)
   const [selectedCity, setSelectedCity] = useState(null)
-  const [businessAreas, setbusinessAreas] = useState([...defaultBusinessAreas])
-
-  // check if the value entered by the user is included in the object list
-  const isSelectionIncluded = (object) => {
-    return Object.values(object).some((item) => item.name === data.businessArea)
-  }
 
   // get all the cities
   useEffect(() => {
@@ -93,7 +54,6 @@ const FirstStep = ({ data, setData, nextStep }) => {
           `http://api.openweathermap.org/geo/1.0/direct?q=${data.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
         )
         .then((res) => {
-          console.log(res.data)
           setData({
             ...data,
             geoLocation: { lat: res.data[0].lat, lon: res.data[0].lon },
@@ -102,6 +62,30 @@ const FirstStep = ({ data, setData, nextStep }) => {
         .catch((e) => console.log(e))
     }
   }, [data.city, cityList, selectedCountry])
+
+  // trim initial white spaces and makes first letter cap
+  const formatValue = (value) => {
+    const newValue = value.trimStart()
+    return newValue.replace(value[0], value[0]?.toUpperCase())
+  }
+
+  const checkCountry = () => {
+    if (data.country) {
+      return selectedCountry
+        ? "border-l-4 border-flime"
+        : "border-l-4 border-fred"
+    } else {
+      return "border-l-4 border-gray"
+    }
+  }
+
+  const checkCity = () => {
+    if (data.city) {
+      return selectedCity ? "border-l-4 border-flime" : "border-l-4 border-fred"
+    } else {
+      return "border-l-4 border-gray"
+    }
+  }
 
   return (
     <>
@@ -117,7 +101,12 @@ const FirstStep = ({ data, setData, nextStep }) => {
             </h1>
           </div>
           <div className=' h-full lg:w-full lg:h-5/6 flex '>
-            <form className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(e)
+                nextStep()
+              }}
+              className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
               <div className='w-screen md:w-1/2  p-4 py-6 '>
                 <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
                   First name
@@ -127,9 +116,9 @@ const FirstStep = ({ data, setData, nextStep }) => {
                   className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
                   required={true}
                   placeholder='First name'
-                  defaultValue={data.firstName}
+                  value={data.firstName}
                   onChange={(e) =>
-                    setData({ ...data, firstName: e.target.value })
+                    setData({ ...data, firstName: formatValue(e.target.value) })
                   }
                 />
               </div>
@@ -143,78 +132,11 @@ const FirstStep = ({ data, setData, nextStep }) => {
                   className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
                   required={true}
                   placeholder='Last name'
-                  defaultValue={data.lastName}
+                  value={data.lastName}
                   onChange={(e) =>
-                    setData({ ...data, lastName: e.target.value })
+                    setData({ ...data, lastName: formatValue(e.target.value) })
                   }
                 />
-              </div>
-              <div className='w-screen md:w-1/2 p-4 py-6 '>
-                <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
-                  Title
-                </label>
-                <input
-                  type='text'
-                  className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
-                  required={true}
-                  placeholder='Title'
-                  defaultValue={data.title}
-                  onChange={(e) => setData({ ...data, title: e.target.value })}
-                />
-              </div>
-
-              <div className='w-screen md:w-1/2 p-4 py-6 '>
-                <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
-                  Business area
-                </label>
-                <ListOption
-                  options={businessAreas}
-                  required={true}
-                  choice={
-                    isSelectionIncluded(businessAreas)
-                      ? data.businessArea || "Select your business area"
-                      : null
-                  }
-                  setChoice={(value) => {
-                    setData({
-                      ...data,
-                      businessArea: value,
-                    })
-                  }}
-                />
-                <div
-                  className={
-                    data.businessArea === "Other" ||
-                    !isSelectionIncluded(businessAreas)
-                      ? "w-full py-6 "
-                      : "hidden"
-                  }>
-                  <input
-                    type='text'
-                    placeholder='Enter your business area'
-                    className={
-                      data.businessArea === "Other" ||
-                      !isSelectionIncluded(businessAreas)
-                        ? "w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
-                        : "hidden"
-                    }
-                    onChange={(e) =>
-                      setTimeout(() => {
-                        setbusinessAreas([
-                          ...businessAreas,
-                          {
-                            name: e.target.value,
-                            value: e.target.value,
-                          },
-                        ])
-                        setData({
-                          ...data,
-                          businessArea: e.target.value,
-                        })
-                      }, 10000)
-                    }
-                  />
-                </div>
               </div>
 
               <div className='w-screen md:w-1/2 p-4 py-6 '>
@@ -223,22 +145,18 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 </label>
                 <input
                   type='text'
-                  className={`
-                    ${
-                      selectedCountry
-                        ? " border-green-300 "
-                        : " border-yellow-300 "
-                    } 
-                         w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none`}
+                  className={
+                    checkCountry() +
+                    " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+                  }
                   required={true}
                   list='countries'
-                  defaultValue={data.country}
+                  value={data.country}
                   placeholder='Country'
                   onChange={(e) => {
-                    const value = e.target.value.trimStart()
                     setData({
                       ...data,
-                      country: value.replace(value[0], value[0]?.toUpperCase()),
+                      country: formatValue(e.target.value),
                     })
                   }}
                 />
@@ -260,18 +178,18 @@ const FirstStep = ({ data, setData, nextStep }) => {
                 </label>
                 <input
                   type='text'
-                  className={`${
-                    selectedCity ? " border-green-300 " : " border-yellow-300 "
-                  }w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none`}
+                  className={
+                    checkCity() +
+                    " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+                  }
                   list='cities'
                   required={true}
-                  defaultValue={data.city}
+                  value={data.city}
                   placeholder='City'
                   onChange={(e) => {
-                    const value = e.target.value.trimStart()
                     setData({
                       ...data,
-                      city: value.replace(value[0], value[0]?.toUpperCase()),
+                      city: formatValue(e.target.value),
                     })
                   }}
                 />
@@ -291,18 +209,19 @@ const FirstStep = ({ data, setData, nextStep }) => {
                   type='text'
                   className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
                   required={true}
-                  value={data.about}
+                  value={data.bio}
                   placeholder='About you (max 3 sentences)'
-                  onChange={(e) => setData({ ...data, about: e.target.value })}
+                  onChange={(e) =>
+                    setData({ ...data, bio: formatValue(e.target.value) })
+                  }
                 />
               </div>
 
               <div className='w-full flex justify-end pt-10 pr-5'>
                 <button
-                  type='button'
-                  className='p-5 bg-fblue font-bold text-lg text-white shadow-lg '
-                  onClick={() => nextStep()}>
-                  Next
+                  type='submit'
+                  className='p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 '>
+                  Next{" "}
                 </button>
               </div>
             </form>

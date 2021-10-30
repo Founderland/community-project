@@ -16,6 +16,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  companyName: {
+    type: String,
+    trim: true,
+  },
+  companyBio: {
+    type: String,
+    trim: true,
+  },
+  website: {
+    type: String,
+    trim: true,
+  },
   city: {
     type: String,
     trim: true,
@@ -25,7 +37,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
   businessArea: { type: String, trim: true },
-  geoLocation: [{ type: Number }],
+  geoLocation: { lat: { type: Number }, lon: { type: Number } },
   email: {
     type: String,
     trim: true,
@@ -40,24 +52,35 @@ const userSchema = new mongoose.Schema({
   },
   confirmed: { type: Date, default: null },
   lastUpdate: { type: Date },
-  about: {
+  bio: {
     type: String,
     trim: true,
   },
+  companyName: { type: String, trim: true },
+  companyBio: { type: String, trim: true },
+  companyLink: { type: String, trim: true },
   role: {
     type: String,
     enum: ["founder", "investor", "ally"],
     required: true,
-    default: "Ally",
+    default: "ally",
   },
   photo: {
-    data: Buffer,
-    contentType: String,
+    public_id: { type: String },
+    url: { type: String },
   },
-  following: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
-  followers: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
+  hashedPassword: { type: String },
+  created: {
+    type: Date,
+    default: Date.now(),
+  },
+  confirmed: { type: Date, default: null },
   applicationId: { type: mongoose.Schema.ObjectId },
   notified: { type: Date, default: null },
+  lastUpdate: { type: Date },
+  locked: { type: Boolean, default: false },
+  following: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
+  followers: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
 })
 
 const Member = mongoose.model("Member", userSchema)

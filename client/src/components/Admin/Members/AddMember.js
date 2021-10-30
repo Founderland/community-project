@@ -7,10 +7,35 @@ import Banner from "../Widgets/Banner"
 import { Switch } from "@headlessui/react"
 import { CheckIcon } from "@heroicons/react/outline"
 
-const roles = [
-  { name: "Founder", value: "founder" },
-  { name: "Investor", value: "investor" },
-  { name: "Ally", value: "ally" },
+let businessAreas = [
+  { name: "Select the business area", value: "Select the business area" },
+  { name: "SaaS/Enterprise Software", value: "SaaS/Enterprise Software" },
+  {
+    name: "Mobility",
+    value: "Mobility",
+  },
+  {
+    name: "Sustainability/Impact investment",
+    value: "Sustainability/Impact investment",
+  },
+  { name: "HealthTech", value: "HealthTech" },
+  {
+    name: "DTC",
+    value: "DTC",
+  },
+  { name: "E-comm/Marketplaces", value: "E-comm/Marketplaces" },
+  { name: "IoT", value: "IoT" },
+  {
+    name: "FoodTech",
+    value: "FoodTech",
+  },
+  { name: "Gaming/Entertainment", value: "Gaming/Entertainment" },
+  { name: "Engineering/DeepTech/AI", value: "Engineering/DeepTech/AI" },
+  {
+    name: "FinTech",
+    value: "FinTech",
+  },
+  { name: "EdTech", value: "EdTech" },
 ]
 
 const addMemberURL = "/api/users/community/add"
@@ -26,6 +51,8 @@ const AddMember = ({ role }) => {
     role: role,
     city: "",
     country: "",
+    companyName: "",
+    businessArea: "Select the business area",
     connect: false,
   })
   const [saving, setSaving] = useState(false)
@@ -50,7 +77,6 @@ const AddMember = ({ role }) => {
           console.log(response)
           if (response.data.success) {
             setSaving(false)
-            setReload(reload + 1)
             setBanner({
               success: 1,
               show: true,
@@ -58,10 +84,12 @@ const AddMember = ({ role }) => {
             })
             setTimeout(() => {
               setBanner((prev) => ({ ...prev, show: false }))
+              setReload(reload + 1)
               history.goBack()
             }, 3000)
           }
         } catch (err) {
+          console.log(err)
           if (err?.response.status === 403) {
             setSaving(false)
             setBanner({
@@ -73,7 +101,6 @@ const AddMember = ({ role }) => {
               setBanner((prev) => ({ ...prev, show: false }))
             }, 3000)
           } else {
-            console.log(err)
             setSaving(false)
             setBanner({
               error: 1,
@@ -109,11 +136,8 @@ const AddMember = ({ role }) => {
     }
   }
 
-  const handleChange = (value, key) => {
-    setData({ ...data, [key]: value })
-  }
-  const setRole = (value) => {
-    handleChange(value, "role")
+  const setBusinessArea = (value) => {
+    setData((prev) => ({ ...prev, businessArea: value }))
   }
   const checkEmail = () => {
     return /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(data.email)
@@ -124,6 +148,9 @@ const AddMember = ({ role }) => {
         <Banner message={banner} />
       </div>
       <form onSubmit={handleSubmit}>
+        <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
+          Add new {role}
+        </div>
         <div className="md:flex w-full px-3">
           <div className="w-full md:w-1/2 mb-2 px-2">
             <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
@@ -132,6 +159,8 @@ const AddMember = ({ role }) => {
             <input
               className={`${
                 data.firstName === ""
+                  ? ""
+                  : data.firstName.length <= 1
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
               } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
@@ -150,6 +179,8 @@ const AddMember = ({ role }) => {
             <input
               className={`${
                 data.lastName === ""
+                  ? ""
+                  : data.lastName.length <= 1
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
               } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
@@ -182,7 +213,9 @@ const AddMember = ({ role }) => {
             </label>
             <input
               className={`${
-                data.email === "" || !checkEmail()
+                data.email === ""
+                  ? ""
+                  : !checkEmail()
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
               } appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 outline-none`}
@@ -224,25 +257,40 @@ const AddMember = ({ role }) => {
           </div>
         </div>
         <div className="md:flex w-full px-3">
-          <div className="w-full md:w-3/4 mb-2 px-2">
+          <div className="w-full md:w-1/2 mb-2 px-2">
             <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Role
+              Company Name
+            </label>
+            <input
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+              type="text"
+              onChange={(e) => {
+                setData((prev) => ({ ...prev, companyName: e.target.value }))
+              }}
+              value={data.companyName}
+            />
+          </div>
+          <div className="w-full md:w-1/2 mb-2 px-2">
+            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+              Sector
             </label>
             <div className="w-full">
               <ListOption
-                options={roles}
-                choice={data.role}
-                setChoice={setRole}
+                options={businessAreas}
+                choice={data.businessArea}
+                setChoice={setBusinessArea}
               />
             </div>
           </div>
+        </div>
+        <div className="flex justify-center items-center w-full px-3">
           <div className="w-full md:w-1/4 mb-2 px-2">
             <Switch.Group
               as="div"
               className="flex md:flex-col mt-2 justify-center items-center py-2"
             >
               <Switch.Label className="mt-2 uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-                Send Email
+                Send Welcome Email
               </Switch.Label>
               <Switch
                 as="button"

@@ -7,7 +7,7 @@ import Resources from '../../../assets/images/Resources.png'
 import Video from '../../../assets/images/Videos.png'
 import guideClicked from '../../../assets/images/guideclicked.svg'
 import resourceclicked from '../../../assets/images/resourceClicked.svg'
-import videoClicked from '../../../assets/images/videosclicked.svg'
+import videoClicked from '../../../assets/images/videosClicked.svg'
 import { CommunityContext } from '../../../contexts/CommunityProvider';
 
 export default function CategoryDisplay(props) {

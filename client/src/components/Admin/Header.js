@@ -26,7 +26,11 @@ const AdminHeader = () => {
           <h1 className="text-lg sm:text-2xl font-medium text-mono text-gray-800">
             {id ? (
               <button
-                onClick={() => history.push(back)}
+                onClick={() =>
+                  history.action === "POP"
+                    ? history.push(back)
+                    : history.goBack()
+                }
                 className="flex justify-center items-center bg-fblue text-gray-200 px-8 py-2 space-x-2 shadow-lg m-2 transition duration-200 hover:bg-fblue-900 hover:text-white"
               >
                 <ChevronLeftIcon className="w-4 h-4" />

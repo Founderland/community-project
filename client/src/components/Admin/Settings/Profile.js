@@ -35,8 +35,9 @@ const notifyUrl = "/api/users/notify/"
 const addUserURL = "/api/users/add"
 const lockUrl = "/api/users/lock"
 
-const Profile = ({ reload, setReload }) => {
-  const { token, selectedTab, setUser } = useContext(AdminContext)
+const Profile = () => {
+  const { token, selectedTab, setUser, reload, setReload } =
+    useContext(AdminContext)
   const history = useHistory()
   const { id } = useParams()
   const [profile, setProfile] = useState({
@@ -67,13 +68,11 @@ const Profile = ({ reload, setReload }) => {
 
   //PROFILE API CALLS
   useEffect(() => {
-    console.log(id)
     if (id !== "new") {
       setLoading(true)
       axios
         .get(id ? profileUrl + id : profileUrl + "user", config)
         .then((res) => {
-          console.log(res)
           setProfile(res.data.data)
           setLoading(false)
         })
@@ -119,6 +118,7 @@ const Profile = ({ reload, setReload }) => {
           delete profile.password
           delete profile.confirmPassword
           delete profile.isVerified
+          delete profile.isLocked
           if (Object.values(profile).every((value) => value.length > 0)) {
             result = await axios.post(addUserURL, profile, config)
           } else {
@@ -206,7 +206,6 @@ const Profile = ({ reload, setReload }) => {
       if (locked) {
         setProfile((prev) => ({ ...prev, isLocked: !prev.isLocked }))
         setLocking(false)
-        console.log(locked)
         setBanner({
           success: 1,
           show: true,
@@ -222,7 +221,7 @@ const Profile = ({ reload, setReload }) => {
         setBanner({
           error: 1,
           show: true,
-          message: "Error notifying the user!",
+          message: "Error locking user!",
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
@@ -233,7 +232,7 @@ const Profile = ({ reload, setReload }) => {
       setBanner({
         error: 1,
         show: true,
-        message: "Error notifying the user!",
+        message: "Error locking user!",
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
@@ -279,7 +278,7 @@ const Profile = ({ reload, setReload }) => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="w-full md:w-5/6 lg:w-3/4">
+        <div className=" w-full md:w-5/6 lg:w-3/4">
           <div className="relative bg-white px-8 pt-4 pb-8 mb-4 flex flex-col my-2">
             <div className="w-full flex items-center justify-center z-20">
               <Banner message={banner} />
@@ -483,7 +482,7 @@ const Profile = ({ reload, setReload }) => {
             <div className="-mx-3 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around -mb-3">
               {!profile.isVerified && id !== "new" ? (
                 <button
-                  className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                  className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
                   onClick={() => notify()}
                   disabled={notified}
                 >
@@ -508,7 +507,7 @@ const Profile = ({ reload, setReload }) => {
                 </button>
               ) : id === "new" ? (
                 <button
-                  className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
                   onClick={() => {
                     history.goBack()
                   }}
@@ -520,7 +519,7 @@ const Profile = ({ reload, setReload }) => {
               )}
               {id !== "new" && id ? (
                 <button
-                  className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/3  mb-4"
+                  className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
                   onClick={() => lock()}
                 >
                   {locking ? (
@@ -541,7 +540,7 @@ const Profile = ({ reload, setReload }) => {
               )}
               {!profile.isLocked && (
                 <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => save()}
                 >
                   {saving ? (

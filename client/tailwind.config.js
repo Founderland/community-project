@@ -60,13 +60,14 @@ module.exports = {
           900: "#afd300",
         },
         fcard: {
-          DEFAULT: "#FCF9F9"
-        }
+          DEFAULT: "#FCF9F9",
+        },
       },
+      textOverflow: ["hover", "focus"],
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [ require('tailwind-scrollbar')],
 }

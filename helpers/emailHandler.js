@@ -66,7 +66,7 @@ const sendVerifyEmail = async (req, res, next) => {
   console.log("sending email")
   const { email, _id, firstName, lastName } = req.unverified
   const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
-    expiresIn: "5d",
+    expiresIn: "1d",
   })
 
   // config for mailserver and mail
@@ -120,8 +120,8 @@ const sendVerifyEmail = async (req, res, next) => {
   }
 }
 
-const sendRejected = (data) => {
-  const { email, firstName, lastName } = data
+const sendRejected = async (req, res, next) => {
+  const { email, firstName, lastName } = req.body
   console.log("sending email")
   // config for mailserver and mail
   const config = {
@@ -164,11 +164,15 @@ const sendRejected = (data) => {
     // send mail using transporter
     await transporter.sendMail(mail)
   }
-
-  sendMail(config).catch((err) => console.log(err))
+  const result = await sendMail(config)
+  try {
+    return next()
+  } catch (e) {
+    return next(e)
+  }
 }
 
-const sendThankYou = (data) => {
+const sendThankYou = async (req, res, next) => {
   const { email, firstName, lastName } = data
   console.log("sending email")
 
@@ -214,10 +218,15 @@ const sendThankYou = (data) => {
     await transporter.sendMail(mail)
   }
 
-  sendMail(config).catch((err) => console.log(err))
+  const result = await sendMail(config)
+  try {
+    return next()
+  } catch (e) {
+    return next(e)
+  }
 }
 
-const sendResetEmail = (data) => {
+const sendResetEmail = async (req, res, next) => {
   const { email, _id, firstName, lastName } = data
   console.log("sending email")
   const token = jwt.sign(
@@ -230,7 +239,6 @@ const sendResetEmail = (data) => {
       expiresIn: "10m",
     }
   )
-
   // config for mailserver and mail
   const config = {
     mailserver: {
@@ -253,7 +261,6 @@ const sendResetEmail = (data) => {
       },
     },
   }
-
   const sendMail = async ({ mailserver, mail }) => {
     // create a nodemailer transporter using smtp
     let transporter = nodemailer.createTransport(mailserver)
@@ -273,8 +280,12 @@ const sendResetEmail = (data) => {
     // send mail using transporter
     await transporter.sendMail(mail)
   }
-
-  sendMail(config).catch((err) => console.log(err))
+  const result = await sendMail(config)
+  try {
+    return next()
+  } catch (e) {
+    return next(e)
+  }
 }
 
 module.exports = {
