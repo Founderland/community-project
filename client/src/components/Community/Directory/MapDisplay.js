@@ -13,11 +13,13 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import womenImg from "../../../assets/images/women.png";
+
 import "./MapDisplay.css";
 import mapStyles from "./mapStyles";
 import Sidebar from "./Sidebar";
 import { CommunityContext } from "../../../contexts/CommunityProvider";
 import Autocomplete from "react-autocomplete";
+
 // import '@reach/combobox/styles.css'
 
 const libraries = ["places"];
@@ -43,7 +45,8 @@ export default function MapDisplay(props) {
     isSidebarSelected,
     isNameSelectedEvent,
     selectedNameEvent,
-    isNameSelected
+    isNameSelected,
+    mobileScreen
   } = useContext(CommunityContext);
   const [latlong, setLatLong] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -56,6 +59,7 @@ export default function MapDisplay(props) {
   });
   const [total, setTotal] = useState(0);
   const [searchValue, setSearchValue] = useState("");
+  const [screenwidth, setScreenWidth] = useState(window.innerWidth);
 
   // const [isSidebarSelected, setIssideSelected] = useState(false)
 
@@ -78,6 +82,17 @@ export default function MapDisplay(props) {
       setSearchValue('');
    }
   }, [isNameSelected])
+
+// Renders when screen size changes
+useEffect(() => {
+  function handleResize() {
+    setScreenWidth(window.innerWidth);
+  }
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, [screenwidth]);
+
+
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -136,9 +151,9 @@ export default function MapDisplay(props) {
 
   return (
     <div className='relative'>
-      <div className='absolute z-50 w-1/2 m-4 h-14'>
+      <div className='absolute left-0 right-0 z-50 md:w-1/2 m-4 h-14'>
         <Autocomplete
-          className="w-full"
+          className=""
           getItemValue={(item) => `${item.firstname} ${item.lasname}` }
           items={memberDetails}
           shouldItemRender={(item, value) => (item.firstname.toLowerCase().indexOf(value.toLowerCase())) > -1||(item.lasname.toLowerCase().indexOf(value.toLowerCase())) > -1}
@@ -149,13 +164,13 @@ export default function MapDisplay(props) {
           }}
           open={openSearchMenu}
           renderInput={(props) => (
-            <input {...props}  type="text" id="rounded-email" className="w-3/4 h-full rounded-md border-fblue-600 border-transparent  shadow-lg flex-1 appearance-none border-2   ml-10 py-2 px-6 bg-white text-gray-700 text-2xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono" placeholder="Search Founder by Name ...."/>
+            <input {...props}  type="text" id="rounded-email" className="w-full md:w-3/4 h-full rounded-md border-fblue-600 border-transparent  shadow-lg flex-1 appearance-none border-2  md:ml-10 py-2 px-6 bg-white text-gray-700 xs:text-md md:text-2xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono " placeholder="Search Founder by name.."/>
           )}
           renderMenu={(items, value, style) => (
-            <div style={{ ...style}} children={items} className="" />
+            <div children={items} className="w-full md:w-3/4 md:ml-10 max-h-64 overflow-y-scroll" />
           )}
           renderItem={(item, isHighlighted) => (
-            <div className="p-4 text-2xl" style={{ background: isHighlighted ? "lightgray" : "white" }}>
+            <div className="p-4 border-b border-gray-400 text-lg md:text-xl 2xl:text-3xl" style={{ background: isHighlighted ? "lightgray" : "white" }}>
               { item.firstname + " " + item.lasname}
             </div>
           )}
@@ -168,7 +183,7 @@ export default function MapDisplay(props) {
 
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={5.7}
+        zoom={screenwidth<600?3 :5.7}
         center={center}
         options={options}
         onLoad={onMapLoad}
@@ -180,12 +195,18 @@ export default function MapDisplay(props) {
               lat: parseFloat(latlng.lat),
               lng: parseFloat(latlng.lng),
             }}
-            icon={{
+            icon={screenwidth<600 ?{
+              url: "/dot.png",
+              scaledSize: new window.google.maps.Size(10, 10),
+              origin: new window.google.maps.Point(0, 0),
+              anchor: new window.google.maps.Point(3, 3),
+            } : {
               url: "/redDot.svg",
               scaledSize: new window.google.maps.Size(30, 30),
               origin: new window.google.maps.Point(0, 0),
-              anchor: new window.google.maps.Point(8, 6),
-            }}
+              anchor: new window.google.maps.Point(8, 6),}}
+
+
             onClick={() => clickHandler(latlng)}
             onMouseOver={() => handleMouseOver(latlng.lat, latlng.lng, index)}
             onMouseOut={handleMouseExit}
@@ -207,6 +228,11 @@ export default function MapDisplay(props) {
         ))}
         {isSidebarSelected && <Sidebar data={selected} />}
       </GoogleMap>
+
+
+
+
+
     </div>
   );
 }

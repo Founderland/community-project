@@ -10,7 +10,7 @@ console.log("FROM CARD",data.articleSubmittedDate)
      <div>
     
 
-      <div className="py-5 px-3 mt-10 ">  
+      <div className="py-5 px-3 md:mt-10 ">  
 
       <div className="max-w-sm overflow-hidden shadow-lg w-80 bg-fcard bg-opacity-90 text-white text-center ">
         <div className="flex ">
