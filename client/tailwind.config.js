@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors")
+const scrollBar = require("tailwind-scrollbar")
 
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
@@ -60,13 +61,13 @@ module.exports = {
           900: "#afd300",
         },
         fcard: {
-          DEFAULT: "#FCF9F9"
-        }
+          DEFAULT: "#FCF9F9",
+        },
       },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [ require('tailwind-scrollbar')],
+  plugins: [scrollBar],
 }

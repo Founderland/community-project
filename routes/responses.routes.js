@@ -1,30 +1,38 @@
 const responseRouter = require("express").Router()
 const responseController = require("../controllers/response")
 const memberController = require("../controllers/member")
-const { sendConnectEmail } = require("../helpers/emailHandler")
-const {
-  registerValidation,
-  registerCommunityValidation,
-} = require("../helpers/validators")
+const { sendConnectEmail, sendRejected } = require("../helpers/emailHandler")
+const { registerCommunityValidation } = require("../helpers/validators")
 const passport = require("passport")
 
 //ADD APPLICANTS RESPONSE
-responseRouter.post(
-  "/response",
-  passport.authenticate("jwt", { session: false }),
-  responseController.addResponse
-)
+responseRouter.post("/response", responseController.addResponse)
 //GET APPLICANTS RESPONSE
 responseRouter.get(
   "/response",
   passport.authenticate("jwt", { session: false }),
   responseController.findAllResponse
 )
-//EDIT  APPLICANTS RESPONSE
-responseRouter.put(
-  "/response/:id/:score",
+
+// GET ALL COMMENTS
+responseRouter.get(
+  "/response/comments/:id",
   passport.authenticate("jwt", { session: false }),
-  responseController.editResponse
+  responseController.getComments
+)
+
+//ADD/EDIT COMMENTS TO AN APPLICATION
+responseRouter.put(
+  "/response/newcomment",
+  passport.authenticate("jwt", { session: false }),
+  responseController.addComment
+)
+
+// DELETE COMMENT
+responseRouter.delete(
+  "/response/:id/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  responseController.deleteComment
 )
 
 //GET APPLICANTS RESPONSE BY ID / STATUS ["New", "Pending", "Approved", "Rejected"] / ROLE
@@ -39,14 +47,28 @@ responseRouter.get(
   responseController.findResponsesByStatus
 )
 
-//APPROVE APPLICANT BY ID
+//APPROVE/REJECT/REVIEW APPLICANT BY ID
 responseRouter.put(
   "/response/approve/",
   passport.authenticate("jwt", { session: false }),
   registerCommunityValidation,
   memberController.addMember,
+  responseController.updateStatus,
   sendConnectEmail,
   memberController.updateNotified
+)
+responseRouter.put(
+  "/response/reject/",
+  passport.authenticate("jwt", { session: false }),
+  responseController.updateStatus,
+  sendRejected,
+  responseController.updateNotified
+)
+
+responseRouter.put(
+  "/response/review",
+  passport.authenticate("jwt", { session: false }),
+  responseController.updateStatus
 )
 
 module.exports = responseRouter

@@ -15,14 +15,21 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  isLocked: {
+    type: Boolean,
+    default: false,
+  },
   hashedPassword: {
     type: String,
-    required: true,
+    required: false,
   },
   role: {
     type: String,
     enum: ["sadmin", "admin", "user"],
-    required: true,
     default: "user",
   },
   avatar: {

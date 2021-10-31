@@ -11,6 +11,7 @@ import {
   UserIcon,
   ChevronDownIcon,
   ClipboardListIcon,
+  CalendarIcon,
 } from "@heroicons/react/outline"
 import { Disclosure, Transition } from "@headlessui/react"
 import { useContext } from "react"
@@ -20,15 +21,16 @@ import { Link, useParams } from "react-router-dom"
 
 const Menu = () => {
   const icons = {
-    home: <HomeIcon className="h-5 w-5 group-hover:text-purple-500" />,
+    home: <HomeIcon className="h-5 w-5 group-hover:text-pink-500" />,
     textdoc: <DocumentTextIcon className="h-5 w-5 group-hover:text-cyan-500" />,
     emptydoc: <DocumentIcon className="h-5 w-5 group-hover:text-orange-500" />,
     user: <UserIcon className="h-5 w-5 group-hover:text-fpink-500" />,
     groupuser: <UserGroupIcon className="h-5 w-5 group-hover:text-fblue-500" />,
     set: <AdjustmentsIcon className="h-5 w-5 group-hover:text-red-600" />,
     collection: (
-      <CollectionIcon className="h-5 w-5 group-hover:text-indigo-500" />
+      <CollectionIcon className="h-5 w-5 group-hover:text-purple-500" />
     ),
+    calendar: <CalendarIcon className="h-5 w-5 group-hover:text-indigo-500" />,
     inboxin: <InboxInIcon className="h-5 w-5 group-hover:text-green-500" />,
     clipboard: (
       <ClipboardListIcon className="h-5 w-5 group-hover:text-yellow-500" />

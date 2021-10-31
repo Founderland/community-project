@@ -8,18 +8,20 @@ import { ReactComponent as SmallLogo } from "../../../assets/small.svg"
 import gifLogo from "../../../assets/images/Logo-Transform.gif"
 import whiteLogo from "../../../assets/images/logo_md_white.png"
 
-import founder from "../../../assets/images/founder-laptop.jpg"
+import founder from "../../../assets/images/founder-laptop.png"
 import StepWizard from "react-step-wizard"
 import FirstStep from "./FirstStep"
 import SecondStep from "./SecondStep"
 import ThirdStep from "./ThirdStep"
 import FourthStep from "./FourthStep"
+import { EmojiSadIcon } from "@heroicons/react/outline"
 
 const signUpURL = "/api/auth/signup"
 const getProfileURL = "/api/users/community/profile"
 
 const SignUp = () => {
   let history = useHistory()
+  const [accountCreated, setAccountCreated] = useState(false)
   const { token } = useParams()
   const [data, setData] = useState({
     firstName: "",
@@ -29,14 +31,17 @@ const SignUp = () => {
     country: "",
     email: "",
     geoLocation: "",
-    about: "",
+    bio: "",
     businessArea: "Select your business area",
     password: "",
     confirmPassword: "",
-    photo: [],
+    photo: null,
+    companyName: "",
+    companyBio: "",
+    companyLink: "",
   })
   const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
 
   const config = useMemo(() => {
@@ -51,6 +56,7 @@ const SignUp = () => {
   //Get token from URL
   useEffect(() => {
     const jwtDecoded = jwt.decode(token)
+
     //Get data from token and fetch DB data
     if (jwtDecoded?.email) {
       //check if token is expired or load the data
@@ -60,47 +66,55 @@ const SignUp = () => {
         //VALID TOKEN
         //GET THE REGISTERED DATA BASED ON THE ID OR EMAIL
         axios
-          .get(getProfileURL, config)
+          .get(`${getProfileURL}/${jwtDecoded.id}`, config)
           .then((res) => {
+            console.log(res)
             if (res.data.data) {
               setTimeout(() => {
                 setData({ ...data, ...res.data.data, photo: [] })
-              }, 3000)
+                setShowForm(true)
+                setLoading(false)
+              }, 3500)
             } else {
+              setLoading(false)
               setError("Invalid Token - empty res")
             }
           })
           .catch((err) => {
             console.log(err.response)
+            setLoading(false)
             setError("Invalid Token - err on fetch profile")
           })
         //DISPLAY IT ON THE FORM
         //RESULT DATA UPDATES STATES WITH PREREGISTERED DATA
-        setError(jwtDecoded.email)
+        // setError(jwtDecoded.email)
       } else {
         //OOPS
+        setLoading(false)
         setError("Invalid Token - expired")
       }
     } else {
+      setLoading(false)
       setError("Invalid Token - no email")
     }
   }, [token])
 
   //submit form
   const handleSubmit = async () => {
-    // e.preventDefault()
-    // if (data.password.length && data.confirmPassword.length) {
-    setLoading(true)
     try {
       //receive new login token and forward to community app
       const { data: res } = await axios.post(signUpURL, data, config)
       setLoading(false)
       if (res.access_token) {
         localStorage.setItem("authToken", res.access_token)
+        setAccountCreated(true)
         //redirect to community
-        history.push("/community")
+        setTimeout(() => {
+          history.push("/community")
+        }, 5000)
       } else {
         setLoading(false)
+        setError("Sorry, something went wrong")
         throw new Error({
           response: {
             status: 500,
@@ -109,7 +123,7 @@ const SignUp = () => {
         })
       }
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message) //?
       setLoading(false)
       setError(
         err?.response?.status === 401
@@ -120,18 +134,12 @@ const SignUp = () => {
         setError("")
       }, 5000)
     }
-    // } else {
-    //   setError("Please fill in all required fields")
-    //   setTimeout(() => {
-    //     setError("")
-    //   }, 6000)
-    // }
   }
 
   //Render form with data from database
   //RENDER WELCOME MESSAGE -> 3s
 
-  if (!data.firstName.length && !data.lastName.length) {
+  if (loading) {
     return (
       <div className='h-screen w-screen flex items-center justify-center'>
         <div className='flex flex-col items-center justify-center w-screen  h-1/4 '>
@@ -142,103 +150,51 @@ const SignUp = () => {
         </div>
       </div>
     )
-  }
-
-  //RENDER FORM WITH ALL PROFILE TEXT FIELDS
-
-  //RENDER FORM FOR PHOTO UPLOAD (OR SKIP)
-
-  //FINISH STEP TO SAVE AND FINAL MESSAGE BEFORE REDIRECT TO COMMUNITY
-
-  return (
-    <div className='h-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
-      <LogoLines className='w-full h-1/5 lg:hidden' />
-      <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative'>
-        <img
-          src={founder}
-          className='h-full w-full object-cover filter blur-sm '
-          alt='founder'
-        />
-        <img
-          src={whiteLogo}
-          className=' w-full xl:w-5/6 p-3 object-contain absolute object-bottom'
-          alt='founder'
-        />
+  } else if (showForm) {
+    return (
+      <div className='h-full w-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
+        <LogoLines className='w-full h-1/5 lg:hidden' />
+        <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative '>
+          <img
+            src={founder}
+            className='h-full w-full object-cover '
+            alt='founder'
+          />
+          <img
+            src={whiteLogo}
+            className=' w-full xl:w-5/6 p-3 object-contain absolute object-bottom'
+            alt='founder'
+          />
+        </div>
+        <StepWizard
+          initialStep={1}
+          className='h-full md:h-screen lg:w-2/3 flex flex-col justify-center lg:justify-start items-center'>
+          <FirstStep data={data} setData={setData} />
+          <SecondStep data={data} setData={setData} />
+          <ThirdStep data={data} setData={setData} />
+          <FourthStep
+            data={data}
+            setData={setData}
+            handleSubmit={handleSubmit}
+            accountCreated={accountCreated}
+            error={error}
+          />
+        </StepWizard>
       </div>
-      <StepWizard initialStep={1} className='h-4/5 w-full '>
-        <FirstStep data={data} setData={setData} />
-        <SecondStep data={data} setData={setData} />
-        <ThirdStep data={data} setData={setData} />
-        <FourthStep data={data} setData={setData} handleSubmit={handleSubmit} />
-      </StepWizard>
-    </div>
-  )
-  // !showForm ? (
-  //     <div className='flex h-screen justify-center items-center w-full '>
-  //       <div className='flex bg-white md:w-2/3 xl:w-1/2'>
-  //         <div className='w-full p-8 md:w-1/2'>
-  //           <div className='flex justify-center'>
-  //             <LogoLines className='w-full ' />
-  //           </div>
-  //           <div className='mt-4 flex items-center justify-between'>
-  //             <span className='border-b w-1/5 lg:w-1/4'></span>
-  //             <p className='text-grotesk text-center text-fblue uppercase'>
-  //               Welcome to Founderland
-  //             </p>
-  //             <span className='border-b w-1/5 lg:w-1/4'></span>
-  //             <p className='text-grotesk text-center'>
-  //               Please, complete your profile before proceeding
-  //             </p>
-  //           </div>
-  //           <form onSubmit={handleSubmit}>
-  //             <div className='mt-4'>
-  //               <label className='text-grotesk block text-sm font-bold mb-2'>
-  //                 First Name
-  //               </label>
-  //               <input className='border border-gray-300 py-2 px-4 block w-full appearance-none' />
-  //             </div>
-  //             <div className='mt-4'>
-  //               <label className='text-grotesk block text-sm font-bold mb-2'>
-  //                 Password
-  //               </label>
-  //               <input
-  //                 className='border border-gray-300 py-2 px-4 block w-full appearance-none'
-  //                 type='password'
-  //                 value={data.password}
-  //                 onChange={(e) => handleChange(e.target.value, "password")}
-  //               />
-  //             </div>
-  //             <div className='mt-1 flex justify-end'>
-  //               <button className='text-grotesk text-xs text-gray-500'>
-  //                 Forgot Password?
-  //               </button>
-  //             </div>
-  //             <div className='mt-8'>
-  //               <button
-  //                 type='submit'
-  //                 className='group w-full px-4 py-2 text-mono bg-fblue transition-colors ease-in-out duration-500 hover:bg-flime text-sm text-white hover:text-black'>
-  //                 {loading ? (
-  //                   <div className='flex justify-center'>
-  //                     <div
-  //                       style={{
-  //                         borderTopColor: "transparent",
-  //                       }}
-  //                       className='w-5 h-5 border-2 border-black group-hover:border-white border-dotted rounded-full animate-spin'></div>
-  //                   </div>
-  //                 ) : error.length ? (
-  //                   <span className=' animate-pulse'>{error}</span>
-  //                 ) : (
-  //                   "Login"
-  //                 )}
-  //               </button>
-  //             </div>
-  //           </form>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   ) : (
-  //     `Nothing to show yet - ${error}`
-  //   )
+    )
+  } else {
+    return (
+      <div className='h-screen w-screen flex justify-center items-center'>
+        <div className=' w-screen h-1/3 md:w-2/3 xl:w-1/3 bg-fred-200 flex justify-center items-center'>
+          <h1 className='w-1/2 texl-lg lg:text-2xl text-center'>
+            Sorry something went wrong{" "}
+            <EmojiSadIcon className='w-1/2 h-1/2 m-auto' />
+            Please contact us via email to community@founderland.org
+          </h1>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default SignUp

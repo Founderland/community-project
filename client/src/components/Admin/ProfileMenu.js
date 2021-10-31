@@ -13,7 +13,7 @@ const ProfileMenu = () => {
     return initials
   }
   const goToProfile = () => {
-    setSelectedTab(1)
+    setSelectedTab(0)
     history.push("/admin/settings")
   }
   return (

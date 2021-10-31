@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @font-face {
   font-family: "Hanson";
   src: url("./assets/font/Hanson-Bold.ttf");
@@ -21,4 +22,34 @@ Hanson body {
 
 .text-hanson {
   font-family: "Hanson";
+}
+
+.react-datetimerange-picker__wrapper {
+  border: 0 !important;
+  padding: 0.5rem !important;
+}
+
+.react-datetimerange-picker__range-divider {
+  padding: 0 0.25rem 0 0.25rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.025em !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+@media (min-width: 640px) {
+  .react-datetimerange-picker__wrapper {
+    border: 0 !important;
+    justify-items: center !important;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+  }
+
+  .react-datetimerange-picker__range-divider {
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+    font-weight: 700 !important;
+    font-size: 1rem;
+    line-height: 1rem;
+  }
 }

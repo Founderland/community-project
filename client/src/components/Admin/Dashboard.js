@@ -81,7 +81,6 @@ const AdminDashboard = () => {
     axios
       .get(membersAPI + "investor", config)
       .then((res) => {
-        console.log(res)
         const data = {
           label: "Investors",
           value: res.data.data.length,

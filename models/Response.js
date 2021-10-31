@@ -6,6 +6,7 @@ const responseSchema = new mongoose.Schema({
   totalScore: { type: Number },
   submissionDate: { type: Date, default: Date.now(), required: true },
   evaluatedOn: { type: Date },
+  evaluatedBy: { type: String },
   status: {
     type: String,
     enum: ["new", "pending", "approved", "rejected"],
@@ -39,6 +40,16 @@ const responseSchema = new mongoose.Schema({
       },
       answer_value: { type: String },
       score: { type: String },
+    },
+  ],
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      timeStamp: { type: Date },
+      text: { type: String },
     },
   ],
 })
