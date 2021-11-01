@@ -164,7 +164,7 @@ useEffect(() => {
           }}
           open={openSearchMenu}
           renderInput={(props) => (
-            <input {...props}  type="text" id="rounded-email" className="w-full md:w-3/4 h-full rounded-md border-fblue-600 border-transparent  shadow-lg flex-1 appearance-none border-2  md:ml-10 py-2 px-6 bg-white text-gray-700 xs:text-md md:text-2xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono " placeholder="Search Founder by name.."/>
+            <input {...props}  type="text" id="rounded-email" className="w-full xl:w-3/4 h-full rounded-md border-fblue-600 border-transparent  shadow-lg flex-1 appearance-none border-2  md:ml-10 py-2 px-6 bg-white text-gray-700 xs:text-md md:text-2xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono " placeholder="Search Founder by name.."/>
           )}
           renderMenu={(items, value, style) => (
             <div children={items} className="w-full md:w-3/4 md:ml-10 max-h-64 overflow-y-scroll" />

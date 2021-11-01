@@ -11,6 +11,9 @@ import videoClicked from "../../../assets/images/videosClicked.svg";
 import guidesmall from "../../../assets/images/welcomeguideSmall.svg"
 import resourceSmall from "../../../assets/images/heartSmall.svg"
 import videosSmall from "../../../assets/images/videosSmall.svg"
+import guideSmallSelect from "../../../assets/images/guidedSmallClick.svg"
+import resourceSmallSelect from "../../../assets/images/resourceSmallClick.svg"
+import videoSmallSelect from "../../../assets/images/videoSmallClic.svg"
 import { CommunityContext } from "../../../contexts/CommunityProvider";
 
 export default function CategoryDisplay(props) {
@@ -43,7 +46,7 @@ export default function CategoryDisplay(props) {
     <>
     <Link className="hidden xl:flex" to={`/community/resources/${data.path}`}>
       <div
-           className={`flex mb-14 ${isActive && findBg()}`}
+           className={`flex w-full mb-14 ${isActive && findBg()}`}
         onClick={categoryClickHandler}
       >
         {/* {category!==data.path || data.path==="resources" ?  <img classname="" src={folder} alt="folder" /> : <img classname="" src={redFolder} alt="folder" />} */}
@@ -83,7 +86,7 @@ export default function CategoryDisplay(props) {
       </div>
       </Link>
 
-      <Link className={`block xl:hidden w-1/3 text-center ${isActive && findBg()}`} to={`/community/resources/${data.path}`}>
+      <Link className={`block  xl:hidden w-1/3 text-center ${isActive && findBg()}`} to={`/community/resources/${data.path}`}>
        {/* mobile version */}
        <div
           className={`flex flex-col `}
@@ -91,22 +94,22 @@ export default function CategoryDisplay(props) {
         >
           {data.categoryName === "Welcome Guide" && (
             <img
-              classname='w-16 m-4 '
-              src={guidesmall}
+            className='m-4 md:mx-11 lg:mx-14'
+              src={isActive?guideSmallSelect:guidesmall}
               alt='welcomeguide'
             />
           )}
           {data.categoryName === "Resources" && (
             <img
-              classname='w-16 m-4'
-              src={resourceSmall}
+            className='m-4 md:mx-11 lg:mx-14'
+              src={isActive?resourceSmallSelect:resourceSmall}
               alt='rsources'
             />
           )}
           {data.categoryName === "Videos" && (
             <img
-              classname='w-16 m-4'
-              src={videosSmall}
+            className='m-4 md:mx-11 lg:mx-14'
+              src={isActive?videoSmallSelect:videosSmall}
               alt='resources'
             />
           )}
@@ -115,7 +118,7 @@ export default function CategoryDisplay(props) {
             <h1
               className={` ${
                 isActive ? "text-white" : "text-black"
-              } text-grotesk font-semibold text-2xl p-2 `}
+              } text-grotesk font-semibold md:text-3xl p-2 `}
             >
               {" "}
               {data.categoryName}

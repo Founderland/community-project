@@ -89,7 +89,7 @@ export default function Sidebar(props) {
                   { item.firstname + " " + item.lasname }
                   </h1>
                   
-                  <p class='mt-2 text-gray-800 text-base md:text-xl lg:text-2xl 2xl:text-3xl font-semibold'>
+                  <p class='mt-2 text-gray-800 text-base md:text-lg lg:text-xl 2xl:text-2xl '>
                     {item.companyname && item.companyname.toUpperCase()}
                   </p>
                   <p class='mt-2 text-gray-800 text-sm md:text-base lg:text-lg 2xl:text-xl font-semibold'>

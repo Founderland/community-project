@@ -88,7 +88,7 @@ export default function ResourcesList() {
 
       <div className=' hidden xl:w-full xl:flex h-screen   '>
         <div className='w-1/4  flex flex-col pt-10  pl-16 bg-gray-50 bg-opacity-50'>
-          <div class='flex items-center justify-center'>
+          <div class='flex items-center justify-start '>
             <div class='flex border-2 rounded'>
               <input
                 type='text'
