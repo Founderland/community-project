@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import Login from "./Login"
+import Login from "../Admin/Login"
 import Main from "./Main"
 import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
@@ -27,7 +27,7 @@ const Community = () => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
       const decode = jwt.decode(localStorage.authToken)
-      if (decode.id && decode.role) {
+      if (decode.id && !decode.avatar) {
         setUser({
           id: decode.id,
           firstName: decode.firstName,
@@ -35,6 +35,9 @@ const Community = () => {
           email: decode.email,
           role: decode.role,
         })
+      } else {
+        // setUser(null)
+        setToken(null)
       }
     }
   }, [token])
@@ -46,7 +49,6 @@ const Community = () => {
   const changeView = (view) => {
     setView(view)
   }
-  console.log(user)
   return (
     <UserContext.Provider
       value={{
@@ -60,6 +62,7 @@ const Community = () => {
         setNotifications,
         logout,
         token,
+        setToken,
       }}>
       {user ? <Main /> : <Login />}
     </UserContext.Provider>
