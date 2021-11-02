@@ -4,24 +4,12 @@ import Main from "./Main"
 import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
 
-const views = [
-  "newsfeed",
-  "community",
-  "events",
-  "ressources",
-  "inbox",
-  "profile",
-  "settings",
-]
+const views = ["community", "events", "ressources", "profile", "settings"]
 
 const Community = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [view, setView] = useState(0)
-  const [notifications, setNotifications] = useState([
-    { icon: "love", text: "Sasmitha liked your post" },
-    { icon: "anot", text: "Salvo wants to connect with you" },
-  ])
 
   useEffect(() => {
     if (localStorage.authToken) {
@@ -45,6 +33,7 @@ const Community = () => {
   const logout = () => {
     localStorage.authToken = ""
     setUser(null)
+    setToken(null)
   }
   const changeView = (view) => {
     setView(view)
@@ -58,12 +47,11 @@ const Community = () => {
         setView,
         changeView,
         views,
-        notifications,
-        setNotifications,
         logout,
         token,
         setToken,
-      }}>
+      }}
+    >
       {user ? <Main /> : <Login />}
     </UserContext.Provider>
   )
