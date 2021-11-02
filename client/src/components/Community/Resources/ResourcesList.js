@@ -86,7 +86,7 @@ export default function ResourcesList() {
         <h1 className='text-3xl'> Navbar </h1>
       </div> */}
 
-      <div className=' hidden xl:w-full xl:flex h-screen   '>
+      <div className=' hidden lg:w-full xl:flex h-screen   '>
         <div className='w-1/4  flex flex-col pt-10  pl-16 bg-gray-50 bg-opacity-50'>
           <div class='flex items-center justify-start '>
             <div class='flex border-2 rounded'>
@@ -178,7 +178,7 @@ export default function ResourcesList() {
         )}
       </div>
 
-      <div className='xl:hidden flex items-center justify-end fixed w-full bottom-8 right-0 left-0 px-8'>
+      <div className='lg:hidden flex items-center justify-end fixed w-full bottom-8 right-0 left-0 px-8'>
         <input
           type='text'
           class={`px-4 py-2 border border-black rounded-l-xl transition duration-200 ease-in-out ${viewSearchBar ? "w-full opacity-100":"w-0 opacity-0"}`}
