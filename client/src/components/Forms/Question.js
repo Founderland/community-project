@@ -24,7 +24,9 @@ const Question = ({
     answer_id: "",
     score: "",
   })
-
+  const [checkBoxValues, setCheckBoxValues] = useState([])
+  const [checkboxAnswer, setCheckboxAnswer] = useState([])
+  
   const { submit, answerHandler } = useContext(AnswersContext)
 
   useEffect(() => {
@@ -45,7 +47,11 @@ const Question = ({
       score: score,
     })
   }
-
+  const [checked, setChecked] = useState(false);
+ 
+  const handleChange = () => {
+    setChecked(!checked);
+  };
   return (
     <div className="p-2 text-grotesk text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl mt-1 xl:mt-5">
       <label className=" ">{question}</label>
@@ -70,7 +76,36 @@ const Question = ({
               })
             }
           />
-        ) : (
+        ) : (type === "multiple" ?
+          <div className=" flex flex-col">
+     
+              {answers.map((item,index) => (
+                <div>
+                  <input type="checkbox" id="scales" name="scales"
+                   required={questionPreview ? false : mandatory}
+                    onChange={(e) => {
+                      checkBoxValues[index] = checkBoxValues[index] ? "" : item.answer;
+                      setCheckBoxValues([...checkBoxValues])
+                    
+                      setAnswerData({
+                        id: _id,
+                        question: question,
+                        rank: rank,
+                        category: category,
+                        value: [...checkBoxValues],
+                        answer_id: item[0]?._id,
+                        score: "",
+                      })
+                }
+                  } />    
+
+
+                <label className=" ml-4">{item.answer}</label> 
+          
+              
+                  </div>
+                  ))}
+              </div>  :
           <SelectAnswer
             answers={answers}
             selectedAnswer={selectedDisplay}

@@ -129,7 +129,8 @@ function CommunityProvider({ children }) {
    const [memberDetails, setMemberDetails] = useState([])
    const [isSidebarSelected, setIssideSelected] = useState(false)
    const [selectedName, setSelectedName] = useState('')
-   const[isNameSelected,setIsNameselected]=useState(false)
+   const [isNameSelected, setIsNameselected] = useState(false)
+
 
 
  useEffect(() => {
@@ -149,6 +150,11 @@ function CommunityProvider({ children }) {
    const sidebarHandler = (value) => {
       setIssideSelected(value)
    }
+
+
+
+
+
    useEffect(() => {
           console.log("isNameSelected", isNameSelected);
           console.log("selectedName", selectedName);
@@ -170,8 +176,8 @@ function CommunityProvider({ children }) {
          isNameSelectedEvent: isNameSelectedEvent,
          isNameSelected: isNameSelected,
          selectedNameEvent: selectedNameEvent,
-         selectedName:selectedName,
-        
+         selectedName: selectedName,
+ 
          
       }} >
       {children}

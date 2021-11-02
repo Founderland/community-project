@@ -22,6 +22,9 @@ const Header = () => {
   else if (location.pathname === "/community/community") setView(1)
   else if (location.pathname === "/community/events") setView(2)
   else if (location.pathname === "/community/resources") setView(3)
+  else if (location.pathname === "/community/resources/welcome-guide") setView(3)
+  else if (location.pathname === "/community/resources/resources") setView(3)
+  else if (location.pathname === "/community/resources/videos") setView(3)  
   else if (location.pathname === "/community/inbox") setView(4)
   return (
     <div className='flex w-full bg-white shadow-lg p-3'>
