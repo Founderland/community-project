@@ -12,20 +12,12 @@ const styles = {
   ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
+const applicantsURL = "/api/applicants/response/"
+
 const ApplicantsList = ({ status, role, reload }) => {
   const [loading, setLoading] = useState(true)
-  const { token, selectedTab } = useContext(AdminContext)
+  const { config, selectedTab } = useContext(AdminContext)
   let { category } = useParams()
-
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
-  const applicantsURL = "/api/applicants/response/"
 
   const getTimeDifference = (DateToCompare) => {
     const today = Date.now()
@@ -54,16 +46,21 @@ const ApplicantsList = ({ status, role, reload }) => {
           applicantsURL + category + "/" + role,
           config
         )
+        console.log(result)
         const userData = result.data.map((item) => {
           // Getting first and last name
-          const firstName = item.answerData.find(
-            (x) => x.question === "First name"
-          )?.answer_value
-          const lastName = item.answerData.find(
-            (x) => x.question === "Last name"
-          )?.answer_value
+          const firstName = item.firstName.length
+            ? item.firstName
+            : item.answerData.find((x) => x.question === "First name")
+                ?.answer_value
+
+          const lastName = item.lastName.length
+            ? item.lastName
+            : item.answerData.find((x) => x.question === "Last name")
+                ?.answer_value
           const questionLocation = item.answerData.find(
-            (x) => x.question === "City,Country" || x.question === "Location"
+            (x) =>
+              x.question === "City and Country" || x.question === "Location"
           )
           const questionEmail = item.answerData.find(
             (x) => x.question === "email" || x.question === "Email"
@@ -90,7 +87,6 @@ const ApplicantsList = ({ status, role, reload }) => {
 
           return finalObject
         })
-
         setListData({
           header: [
             {
@@ -113,11 +109,13 @@ const ApplicantsList = ({ status, role, reload }) => {
               key: status === "new" ? "submitted" : "evaluatedOn",
               style: "text-left hidden md:table-cell items-center",
             },
-            {
-              title: "Score",
-              key: "totalScore",
-              style: "text-left",
-            },
+            role === "founder"
+              ? {
+                  title: "Score",
+                  key: "totalScore",
+                  style: "text-left",
+                }
+              : "null",
             { title: "", key: "-", style: "text-center" },
           ],
           data: userData,
