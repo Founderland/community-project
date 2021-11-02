@@ -9,7 +9,7 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
     <>
       <div
         className={`${
-          id ? "cursor-not-allowed" : "cursor-pointer"
+          id ? "cursor-not-allowed hidden" : "cursor-pointer"
         } transition ease-in-out duration-200 w-min flex p-1 bg-${color} outline-none justify-start`}
       >
         {tabs.map((tab) =>
