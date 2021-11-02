@@ -1,9 +1,20 @@
-import React from 'react'
+import { useEffect, useState } from "react"
+import axios from "axios"
+
+
 
 export default function Newsfeed() {
-   return (
-      <div className=" flex justify-center items-center">
-         <h1 className=" text-5xl ">News Feed</h1>
-      </div>
-   )
+
+  return (
+    <div>
+      <h1 className="flex justify-center align-center text-5xl">Newsfeed</h1>
+    </div>
+  )
+
+
+
 }
+
+
+
+

@@ -3,6 +3,7 @@ const authController = require("../controllers/auth")
 const passport = require("passport")
 const memberController = require("../controllers/member")
 const userController = require("../controllers/user")
+const { sendResetEmail } = require("../helpers/emailHandler")
 
 // // Route to check if the user is logged in
 // authRouter.get("/verify", isUser, (req, res) => {
@@ -46,8 +47,17 @@ authRouter.post(
 authRouter.post(
   "/verify",
   passport.authenticate("jwt", { session: false }),
-  authController.verifyEmail,
+  authController.verifyEmailAndUpdatePass,
   authController.authorizeUser
+)
+
+authRouter.post(
+  "/forgot-password",
+  authController.findUserOrMember,
+  sendResetEmail,
+  (req, res) => {
+    res.status(200).json({ message: "Request sent" })
+  }
 )
 
 module.exports = authRouter

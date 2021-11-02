@@ -30,6 +30,7 @@ const findOne = async (req, res, next) => {
     id = req.body.id
   }
   const event = await Event.findOne({ _id: id })
+  console.log(event)
   if (event) {
     if (req.body.task) {
       return next()

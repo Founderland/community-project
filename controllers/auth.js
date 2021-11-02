@@ -21,7 +21,7 @@ const authenticateUser = async (username, password, done) => {
       const user = await Member.findOne({ email: username })
       if (user && (await bcrypt.compare(password, user.hashedPassword))) {
         delete user.hashedPassword
-        if (user.isVerified && !user.isLocked) {
+        if (user.confirmed && !user.locked) {
           done(null, user, { message: "Successful" })
         } else {
           done(null, false, { message: "User unverified or locked" })
@@ -58,17 +58,25 @@ const isAuthorized = async (payload, done) => {
   })
 }
 
-const verifyEmail = async (req, res, next) => {
+const verifyEmailAndUpdatePass = async (req, res, next) => {
   //TO UPDATE USER FOR VERIFIED EMAIL
-  const { _id, password, confirmPassword } = req.body
-  if (_id) {
+  const { id, password, confirmPassword, isAdmin } = req.body
+  if (id) {
+    let updatedProfile
     const profile = {
       hashedPassword: generateHashedPassword(password),
       isVerified: true,
     }
-    const updatedProfile = await User.findOneAndUpdate({ _id }, profile, {
-      new: true,
-    })
+    if (isAdmin) {
+      updatedProfile = await User.findByIdAndUpdate(id, profile, {
+        new: true,
+      })
+    } else {
+      updatedProfile = await Member.findByIdAndUpdate(id, profile, {
+        new: true,
+      })
+    }
+
     if (updatedProfile) {
       return next()
     } else {
@@ -117,4 +125,42 @@ const authorizeUser = async (req, res) => {
   }
 }
 
-module.exports = { authenticateUser, isAuthorized, authorizeUser, verifyEmail }
+// FIND USER BY MAIL TO TRIGGER PASS RESET
+const findUserOrMember = async (req, res, next) => {
+  const { email, isAdmin } = req.body
+  try {
+    if (isAdmin) {
+      const user = await User.findOne({ email: email })
+      if (!user) await Promise.reject("NOT_FOUND")
+      if (!user.isLocked) {
+        req.user = user
+        return next()
+      } else {
+        res.status(401).json({ message: "User is locked" })
+      }
+    } else {
+      const user = await Member.findOne({ email: email })
+      if (!user) await Promise.reject("NOT_FOUND")
+      if (user.confirmed && !user.locked) {
+        req.user = user
+        return next()
+      } else {
+        res.status(401).json({ message: "User unverified or locked" })
+      }
+    }
+  } catch (err) {
+    if (err === "NOT_FOUND") {
+      res.status(404).json({ message: "User not found" })
+    } else {
+      res.status(500).json({ message: "Database Error" })
+    }
+  }
+}
+
+module.exports = {
+  authenticateUser,
+  isAuthorized,
+  authorizeUser,
+  verifyEmailAndUpdatePass,
+  findUserOrMember,
+}

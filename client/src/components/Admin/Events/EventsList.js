@@ -12,7 +12,7 @@ const eventsUrl = "/api/events/"
 const EventsList = ({ state }) => {
   const [data, setData] = useState([
     {
-      _id: "1",
+      _id: "61717b06b088de36430653a1",
       title: "Fundraiser",
       photo: null,
       description: "Fundraiser for Climate",
@@ -30,13 +30,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "Library",
-      organizer: { _id: "1", firstName: "Victor", lastName: "Isidoro" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Victor",
+        lastName: "Isidoro",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "2",
+      _id: "61717b06b088de36430653a2",
       title: "Conference",
       photo: null,
       description: "Conference on Food Shortage",
@@ -54,13 +58,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "3",
+      _id: "61717b06b088de36430653a3",
       title: "Conference",
       photo: null,
       description: "Conference on Food Shortage",
@@ -78,13 +86,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "4",
+      _id: "61717b06b088de36430653a4",
       title: "Conference",
       photo: null,
       description: "Conference on Food Shortage",
@@ -102,13 +114,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "5",
+      _id: "61717b06b088de36430653a5",
       title: "Conference",
       photo: null,
       description: "Conference on Food Shortage",
@@ -126,13 +142,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "6",
+      _id: "61717b06b088de36430653a6",
       title: "Conference",
       photo: null,
       description: "Conference on Food Shortage",
@@ -150,13 +170,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "7",
+      _id: "61717b06b088de36430653a7",
       title: "Conference",
       photo: null,
       description: "Conference on Food Shortage",
@@ -174,13 +198,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "8",
+      _id: "61717b06b088de36430653a8",
       title: "Halloween",
       photo: null,
       description: "Conference on Food Shortage",
@@ -198,13 +226,17 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
     },
     {
-      _id: "9",
+      _id: "61717b06b088de36430653a9",
       title: "Conference",
       photo: null,
       description: "Conference on Food Shortage",
@@ -222,7 +254,11 @@ const EventsList = ({ state }) => {
       annouce: false,
       zoom: 18,
       location: "",
-      organizer: { _id: "1", firstName: "Sasmitha", lastName: "Kumar" },
+      host: {
+        _id: "61717b06b088de36430653a1",
+        firstName: "Sasmitha",
+        lastName: "Kumar",
+      },
       interested: [],
       going: [],
       canceled: false,
@@ -290,7 +326,6 @@ const EventsList = ({ state }) => {
     else newFilter.push(value)
     setSearchTags(newFilter)
   }
-
   return loading ? (
     <Loading />
   ) : (
@@ -317,7 +352,10 @@ const EventsList = ({ state }) => {
       <div className="bg-white">
         <div className="flex w-full justify-start overflow-auto">
           {dataToDisplay.length ? (
-            dataToDisplay.map((event) => <EventCard event={event} />)
+            dataToDisplay.map((event) => {
+              console.log(event)
+              return <EventCard event={event} />
+            })
           ) : (
             <span className="font-medium flex space-x-4 items-center my-2 ml-2">
               <EmojiSadIcon className="h-6 w-6" />

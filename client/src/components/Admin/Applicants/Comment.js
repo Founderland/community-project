@@ -47,7 +47,7 @@ const Comment = ({
       className='w-full flex items-center px-1 bg-gray-50 border-b-2 border-fblue-200 rounded-xl shadow my-1'>
       <div className='min-w-min flex flex-col items-center'>
         <span
-          className={`ml-2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-mono text-lg lg:text-xl tracking-wide rounded-full border-2 border-pink-400 ${user.avatar}`}>
+          className={`ml-2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-mono text-lg lg:text-xl tracking-wide rounded-full border-2 border-white-400 ${user.avatar}`}>
           {avatarInitials(user)}
         </span>
       </div>

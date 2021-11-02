@@ -58,7 +58,7 @@ const Admin = () => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
       const decode = jwt.decode(localStorage.authToken)
-      if (decode.id && decode.role) {
+      if (decode.id && decode.avatar) {
         setUser({
           id: decode.id,
           firstName: decode.firstName,
@@ -67,9 +67,12 @@ const Admin = () => {
           role: decode.role,
         })
         if (isExact) history.push("/admin/dashboard")
+      } else {
+        // setUser(null)
+        setToken(null)
       }
     }
-  }, [])
+  }, [token])
 
   const logout = () => {
     localStorage.authToken = ""
@@ -101,9 +104,8 @@ const Admin = () => {
         setReload,
         getUuid,
         config,
-      }}
-    >
-      {user ? <Main /> : <Login />}
+      }}>
+      {user ? <Main /> : <Login isAdminLogin />}
     </AdminContext.Provider>
   )
 }

@@ -19,4 +19,10 @@ eventRouter.get(
   eventController.findPast
 )
 
+eventRouter.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  eventController.findOne
+)
+
 module.exports = eventRouter

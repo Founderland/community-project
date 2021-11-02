@@ -1,33 +1,21 @@
 import { useState, useEffect } from "react"
-import Login from "./Login"
+import Login from "../Admin/Login"
 import Main from "./Main"
 import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
 
-const views = [
-  "newsfeed",
-  "community",
-  "events",
-  "ressources",
-  "inbox",
-  "profile",
-  "settings",
-]
+const views = ["community", "events", "ressources", "profile", "settings"]
 
 const Community = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [view, setView] = useState(0)
-  const [notifications, setNotifications] = useState([
-    { icon: "love", text: "Sasmitha liked your post" },
-    { icon: "anot", text: "Salvo wants to connect with you" },
-  ])
 
   useEffect(() => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
       const decode = jwt.decode(localStorage.authToken)
-      if (decode.id && decode.role) {
+      if (decode.id && !decode.avatar) {
         setUser({
           id: decode.id,
           firstName: decode.firstName,
@@ -35,6 +23,9 @@ const Community = () => {
           email: decode.email,
           role: decode.role,
         })
+      } else {
+        // setUser(null)
+        setToken(null)
       }
     }
   }, [token])
@@ -42,11 +33,11 @@ const Community = () => {
   const logout = () => {
     localStorage.authToken = ""
     setUser(null)
+    setToken(null)
   }
   const changeView = (view) => {
     setView(view)
   }
-  console.log(user)
   return (
     <UserContext.Provider
       value={{
@@ -56,11 +47,11 @@ const Community = () => {
         setView,
         changeView,
         views,
-        notifications,
-        setNotifications,
         logout,
         token,
-      }}>
+        setToken,
+      }}
+    >
       {user ? <Main /> : <Login />}
     </UserContext.Provider>
   )

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { useHistory } from "react-router"
 import AdminContext from "../../../contexts/Admin"
 import ListOption from "../Widgets/ListOption"
@@ -57,11 +57,21 @@ const AddMember = ({ role }) => {
   })
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({})
+  const [countryList, setCountryList] = useState([])
+  const [cityList, setCityList] = useState([])
+  const [selectedCountry, setSelectedCounty] = useState(null)
+  const [selectedCity, setSelectedCity] = useState(null)
 
   const { token, reload, setReload } = useContext(AdminContext)
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  }
+  const configuration = {
+    headers: {
+      "X-CSCAPI-KEY": process.env.REACT_APP_COUNTRIES,
       "Content-Type": "application/json",
     },
   }
@@ -142,6 +152,89 @@ const AddMember = ({ role }) => {
   const checkEmail = () => {
     return /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(data.email)
   }
+
+// Country and city
+  
+
+
+// get all the cities
+useEffect(() => {
+  axios
+    .get(`https://api.countrystatecity.in/v1/countries`, configuration)
+    .then((res) => {
+      setCountryList(res.data)
+      console.log(res.data)
+    })
+    .catch((e) => console.log(e))
+}, [])
+
+useEffect(() => {
+  // check if the country entered is in our list
+  setSelectedCounty(
+    countryList.find((country) => country.name === data.country)
+  )
+  console.log("countrz")
+  console.log(countryList.find((country) => country.name === data.country))
+  // get list of cities in the selected country
+  if (selectedCountry) {
+    axios
+      .get(
+        `https://api.countrystatecity.in/v1/countries/${selectedCountry?.iso2}/cities`,
+        configuration
+      )
+      .then((res) => {
+        setCityList(res.data)
+      })
+      .catch((e) => console.log(e))
+  }
+}, [data.country, selectedCountry, countryList])
+  
+  
+useEffect(() => {
+  // check if the city entered is in our list
+  setSelectedCity(cityList.find((city) => city.name === data.city))
+
+  // get city coordinates
+  if (data.country.length & data.city.length) {
+    axios
+      .get(
+        `http://api.openweathermap.org/geo/1.0/direct?q=${data.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
+      )
+      .then((res) => {
+        setData({
+          ...data,
+          geoLocation: { lat: res.data[0].lat, lon: res.data[0].lon },
+        })
+      })
+      .catch((e) => console.log(e))
+  }
+}, [data.city, cityList, selectedCountry])
+  
+const formatValue = (value) => {
+  const newValue = value.trimStart()
+  return newValue.replace(value[0], value[0]?.toUpperCase())
+}
+
+  
+const checkCountry = () => {
+  if (data.country) {
+    return selectedCountry
+      ? "border-l-4 border-flime"
+      : "border-l-4 border-fred"
+  } else {
+    return "border-l-4 border-gray"
+  }
+}
+
+const checkCity = () => {
+  if (data.city) {
+    return selectedCity ? "border-l-4 border-flime" : "border-l-4 border-fred"
+  } else {
+    return "border-l-4 border-gray"
+  }
+}
+  
+
   return (
     <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full md:w-5/6 lg:w-2/3">
       <div className="w-full flex items-center justify-center z-20">
@@ -229,31 +322,56 @@ const AddMember = ({ role }) => {
           </div>
         </div>
         <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              City
-            </label>
-            <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-              type="text"
-              onChange={(e) => {
-                setData((prev) => ({ ...prev, city: e.target.value }))
-              }}
-              value={data.city}
-            />
-          </div>
+        
           <div className="w-full md:w-1/2 mb-2 px-2">
             <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
               Country
             </label>
             <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+              className={checkCountry() + " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"}
               type="text"
+              list='countries'
               onChange={(e) => {
-                setData((prev) => ({ ...prev, country: e.target.value }))
+                setData((prev) => ({ ...prev, country: formatValue(e.target.value) }))
               }}
               value={data.country}
             />
+              <datalist id='countries'>
+                  {countryList.length > 0 &&
+                    countryList
+                      .filter((country) =>
+                        country.name.startsWith(data.country)
+                      )
+                      .splice(0, 10)
+                      .map((country, i) => (
+                        <option key={i}>{country.name}</option>
+                      ))}
+                </datalist>
+
+          </div>
+
+{/* City */}
+         <div className="w-full md:w-1/2 mb-2 px-2">
+            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+              City
+            </label>
+            <input
+              className={checkCity() + " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"}
+              type="text"
+              list='cities'
+              onChange={(e) => {
+                setData((prev) => ({ ...prev, city: formatValue(e.target.value) }))
+              }}
+        
+              value={data.city}
+            />
+            <datalist id='cities'>
+                  {cityList.length > 0 &&
+                    cityList
+                      .filter((city) => city.name.startsWith(data.city))
+                      .splice(0, 10)
+                      .map((city, i) => <option key={i}>{city.name}</option>)}
+                </datalist>
           </div>
         </div>
         <div className="md:flex w-full px-3">
