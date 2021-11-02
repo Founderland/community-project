@@ -221,7 +221,7 @@ const Profile = () => {
         setBanner({
           error: 1,
           show: true,
-          message: "Error notifying the user!",
+          message: "Error locking user!",
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
@@ -232,7 +232,7 @@ const Profile = () => {
       setBanner({
         error: 1,
         show: true,
-        message: "Error notifying the user!",
+        message: "Error locking user!",
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))

@@ -12,10 +12,13 @@ import Newsfeed from "./Newsfeed";
 import Events from "./Events"
 import HomePage from "./HomePage";
 import Inbox from './Inbox'
-import CommunityDashboard from "./CommunityDashboard"
+
+import MapDisplay from "./Directory/MapDisplay";
+
 
 const Main = () => {
-  const { path } = useRouteMatch()
+  const { path, url } = useRouteMatch()
+  console.log("pathfromroute",path,url)
   return (
     <div className="w-full h-screen">
           
@@ -29,10 +32,11 @@ const Main = () => {
           {/* <Route path="/community/newsfeed">
             <Newsfeed />
           </Route> */}
-          <Route path="/community/community">
-            <CommunityDashboard />
+          
+          <Route path={path + "/community"}>
+            <MapDisplay />
           </Route>
-          <Route path="/community/events">
+          <Route path={path + "/events"}>
             <Events />
           </Route>
           <Route path={path+"/resources/:categoryPath"}>
@@ -45,7 +49,7 @@ const Main = () => {
           <Route path={path+"/inbox"}>
             <Inbox />
           </Route>
-          <Route path="/">
+          <Route  path="/">
           <Newsfeed />
           </Route>
         </Switch>
