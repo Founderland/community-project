@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import AdminContext from "../../../contexts/Admin"
 import Loading from "../Widgets/Loading"
 import axios from "axios"
+import moment from "moment"
 import ListWidget from "../Widgets/ListWidget"
 const styles = {
   founder:
@@ -83,7 +84,7 @@ const ApplicantsList = ({ status, role, reload }) => {
             const date = new Date(item.evaluatedOn)
             finalObject = {
               ...finalObject,
-              evaluatedOn: date.toLocaleDateString("de-DE"),
+              evaluatedOn: moment(date).format("DD/M/YYYY"),
             }
           }
 
