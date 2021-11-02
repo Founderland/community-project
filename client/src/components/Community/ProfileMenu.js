@@ -1,5 +1,6 @@
 import { Menu, Transition } from "@headlessui/react"
 import { Fragment, useContext } from "react"
+import { Link } from "react-router-dom"
 import UserContext from "../../contexts/User"
 
 const ProfileMenu = () => {
@@ -39,13 +40,16 @@ const ProfileMenu = () => {
           >
             My Events
           </Menu.Item>
-          <Menu.Item
-            as="button"
-            className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
-            onClick={() => setView(5)}
-          >
-            Profile
-          </Menu.Item>
+          <Link to={`/community/profile/${user.id}`}>
+            {" "}
+            <Menu.Item
+              as="button"
+              className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
+              onClick={() => setView(5)}
+            >
+              Profile
+            </Menu.Item>
+          </Link>
           <Menu.Item
             as="button"
             className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
