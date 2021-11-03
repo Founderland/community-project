@@ -8,7 +8,6 @@ const jwt = require("jsonwebtoken")
 
 const findAll = async (req, res) => {
   const { role } = req.params
-  console.log(role)
   const members = await Member.find({ role: role })
   if (members) {
     res.status(200).json({

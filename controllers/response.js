@@ -5,7 +5,6 @@ const Response = require("../models/Response")
 
 const addResponse = async (req, res, next) => {
   const { firstName, lastName, totalScore, answerData } = req.body
-  console.log(req.body)
   try {
     //  data.map(async (item) => {
     const newResponse = await Response.create({
@@ -36,7 +35,6 @@ const addResponse = async (req, res, next) => {
     }
   }
 }
-
 // Find Founders Response
 const findAllResponse = async (req, res) => {
   try {
@@ -46,7 +44,54 @@ const findAllResponse = async (req, res) => {
     console.log(error)
   }
 }
-
+const findResponsesByStatus = async (req, res) => {
+  const { status, role } = req.params
+  try {
+    if (status === "allpending" && role) {
+      const result = await Response.find({
+        status: { $in: ["new", "pending"] },
+      })
+        .sort({
+          totalScore: "desc", //order responses by score
+        })
+        .populate({
+          path: "comments.user",
+          model: "User",
+          select: ["firstName", "lastName", "role", "avatar"],
+        })
+      res.status(200).json(result)
+    } else if (role !== "null") {
+      const result = await Response.find({ status, role })
+        .sort({
+          totalScore: "desc", //order responses by score
+        })
+        .populate({
+          path: "comments.user",
+          model: "User",
+          select: ["firstName", "lastName", "role", "avatar"],
+        })
+      res.status(200).json(result)
+    } else {
+      const result = await Response.find({ status }).sort({
+        totalScore: "desc", //order responses by score
+      })
+      res.status(200).json(result)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+const findResponseById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const result = await Response.findOne({ _id: id }).sort({
+      totalScore: "desc", //order responses by score
+    })
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
 // Update Founders Status
 const updateStatus = async (req, res, next) => {
   const { status, applicationId, connect } = req.body
@@ -94,41 +139,6 @@ const updateNotified = async (req, res, next) => {
       .json({ error: 1, message: "Sorry, something went wrong..." })
   }
 }
-const findResponsesByStatus = async (req, res) => {
-  const { status, role } = req.params
-  try {
-    if (status && role) {
-      const result = await Response.find({ status, role }).sort({
-        totalScore: "desc", //order responses by score
-      })
-      // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
-
-      // console.log(result)
-      res.status(200).json(result)
-    } else {
-      const result = await Response.find({ status }).sort({
-        totalScore: "desc", //order responses by score
-      })
-      // .populate({ path: 'answerData.question_id', select: ['question', 'category', 'type', 'rank'] })
-
-      // console.log(result)
-      res.status(200).json(result)
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
-const findResponseById = async (req, res) => {
-  const { id } = req.params
-  try {
-    const result = await Response.findOne({ _id: id }).sort({
-      totalScore: "desc", //order responses by score
-    })
-    res.status(200).json(result)
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 const editResponse = async (req, res) => {
   const { id } = req.params
@@ -149,7 +159,7 @@ const editResponse = async (req, res) => {
     }
   }
 }
-
+//COMMENTS
 const addComment = async (req, res) => {
   const { id, newComment } = req.body
   // update comments array
@@ -169,7 +179,6 @@ const addComment = async (req, res) => {
     }
   }
 }
-
 const getComments = async (req, res) => {
   const { id: response_id } = req.params
   try {
@@ -190,7 +199,6 @@ const getComments = async (req, res) => {
     }
   }
 }
-
 const deleteComment = async (req, res) => {
   const { id, commentId } = req.params
   try {

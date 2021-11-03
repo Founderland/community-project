@@ -48,6 +48,7 @@ const Verify = () => {
           }, 6000)
         }
       } catch (e) {
+        console.log(e)
         setSaving(false)
         setError("Sorry, something went wrong")
         setTimeout(() => {
@@ -78,8 +79,7 @@ const Verify = () => {
     if (decoded.avatar) {
       setIsAdmin(true)
     }
-    console.log(decoded)
-    const now = Date.now()
+    const now = Date.now() / 1000
     const expiry = decoded?.exp //1667224386000
     if (now < expiry) {
       setIsTokenValid(true)

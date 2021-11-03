@@ -1,8 +1,57 @@
 import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline"
 import { Link, useParams } from "react-router-dom"
+const avatarInitials = (first, last) => {
+  let initials = first[0].toUpperCase() + last[0].toUpperCase()
+  return initials
+}
 
 const RowsWidget = ({ headers, item, styles, link }) => {
   const { view } = useParams()
+  const displayReviews = (reviews) => {
+    const extra = reviews.length - 3
+    let reviewsDisplay = []
+    if (reviews.length) {
+      if (reviews.length <= 3) {
+        reviewsDisplay = [
+          ...reviews.map((review) => (
+            <div
+              className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white ${
+                review.user.avatar
+              } ${styles[String(review.user.role)]}`}
+            >
+              {avatarInitials(review.user.firstName, review.user.lastName)}
+            </div>
+          )),
+        ]
+      } else {
+        if (extra > 0) {
+          reviewsDisplay.push(
+            <div class="cursor-default flex relative w-8 h-8 bg-gray-500 justify-center items-center m-1 mr-2 -ml-3 rounded-full border-r-2 border-white text-sm font-bold text-white">
+              + {extra}
+            </div>
+          )
+        }
+        for (let i = 0; i < 3; i++) {
+          reviewsDisplay.push(
+            <div
+              className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white ${
+                reviews[i].user.avatar
+              } ${styles[String(reviews[i].user.role)]}`}
+            >
+              {avatarInitials(
+                reviews[i].user.firstName,
+                reviews[i].user.lastName
+              )}
+            </div>
+          )
+        }
+      }
+    } else {
+      reviewsDisplay.push(<p className="text-sm">Not reviewed yet</p>)
+    }
+    return reviewsDisplay
+  }
+
   return (
     <tr className="border-b border-gray-200 hover:bg-gray-100">
       {headers.map((header) => {
@@ -11,13 +60,15 @@ const RowsWidget = ({ headers, item, styles, link }) => {
             return (
               <td className={`py-3 px-5 ${header.style}`}>
                 <div className={`flex items-center px-2 ${header.style}`}>
-                  <span className="">array</span>
+                  <div class="flex flex-row-reverse items-center">
+                    {displayReviews(item[header.key])}
+                  </div>
                 </div>
               </td>
             )
           } else {
             return (
-              <td className={`py-3 px-5 ${header.style}`}>
+              <td className={`capitalize py-3 px-5 ${header.style}`}>
                 <p
                   className={
                     styles[
