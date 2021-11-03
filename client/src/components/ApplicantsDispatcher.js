@@ -116,7 +116,7 @@ const ApplicantsDispatcher = () => {
                 <div className="flex flex-col-reverse w-screen h-1/3  md:justify-end items-center md:h-1/4  ">
                     <Link
                         className="flex items-center justify-center p-5 text-white text-center text-hanson  text-xl md:text-lg xl:text-3xl h-2/5 w-full  md:h-2/5 md:w-1/4 bg-black "
-                        to="/form/newsletter"
+                        to="/newsletter"
                     >
                         NEWSLETTER <br className="hidden md:flex" /> SIGN-UP
                     </Link>
