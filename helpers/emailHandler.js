@@ -65,9 +65,13 @@ const sendConnectEmail = async (req, res, next) => {
 const sendVerifyEmail = async (req, res, next) => {
   console.log("sending email")
   const { email, _id, firstName, lastName } = req.unverified
-  const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  })
+  const token = jwt.sign(
+    { email, id: _id, avatar: true },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  )
 
   // config for mailserver and mail
   const config = {
@@ -227,12 +231,13 @@ const sendThankYou = async (req, res, next) => {
 }
 
 const sendResetEmail = async (req, res, next) => {
-  const { email, _id, firstName, lastName } = data
-  console.log("sending email")
+  const { email, _id: id, firstName, lastName, avatar } = req.user
+  console.log("sending email", req.user)
   const token = jwt.sign(
     {
       email,
-      _id,
+      id,
+      avatar,
     },
     process.env.JWT_SECRET,
     {
@@ -257,6 +262,7 @@ const sendResetEmail = async (req, res, next) => {
         token,
         firstName,
         lastName,
+        avatar,
         host: process.env.HOST,
       },
     },
@@ -280,8 +286,8 @@ const sendResetEmail = async (req, res, next) => {
     // send mail using transporter
     await transporter.sendMail(mail)
   }
-  const result = await sendMail(config)
   try {
+    const result = await sendMail(config)
     return next()
   } catch (e) {
     return next(e)

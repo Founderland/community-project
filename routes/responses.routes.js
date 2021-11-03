@@ -64,7 +64,6 @@ responseRouter.put(
   sendRejected,
   responseController.updateNotified
 )
-
 responseRouter.put(
   "/response/review",
   passport.authenticate("jwt", { session: false }),

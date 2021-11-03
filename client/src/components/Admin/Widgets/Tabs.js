@@ -9,7 +9,7 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
     <>
       <div
         className={`${
-          id ? "cursor-not-allowed" : "cursor-pointer"
+          id ? "cursor-not-allowed hidden" : "cursor-pointer"
         } transition ease-in-out duration-200 w-min flex p-1 bg-${color} outline-none justify-start`}
       >
         {tabs.map((tab) =>
@@ -22,7 +22,11 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
               }`}
               onClick={() => (id ? null : setSelectedTab(tab.index))}
             >
-              <p className="text-xs md:text-md">{tab.name}</p>
+              {tab.name.includes("@") ? (
+                tab.component
+              ) : (
+                <p className="text-xs md:text-md">{tab.name}</p>
+              )}
             </div>
           ) : (
             ""

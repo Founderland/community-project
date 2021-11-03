@@ -1,58 +1,31 @@
-import Menu from "./Menu"
-import Content from "./Content"
 import Header from "./Header"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useRouteMatch
-} from "react-router-dom";
-import ResourcesList from "./Resources/ResourcesList";
-import Newsfeed from "./Newsfeed";
+import Menu from "./Menu"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import ResourcesList from "./Resources/ResourcesList"
 import Events from "./Events"
-import HomePage from "./HomePage";
-import Inbox from './Inbox'
 
-import MapDisplay from "./Directory/MapDisplay";
-
+import MapDisplay from "./Directory/MapDisplay"
 
 const Main = () => {
-  const { path, url } = useRouteMatch()
-  console.log("pathfromroute",path,url)
   return (
     <div className="w-full h-screen">
-          
-
       <Router>
-      <Header />
+        <Header />
         <Switch>
-
-      {/* <Content />
-        <Menu /> */}
-          {/* <Route path="/community/newsfeed">
-            <Newsfeed />
-          </Route> */}
-          
-          <Route path={path + "/community"}>
+          <Route exact path={"/"}>
             <MapDisplay />
           </Route>
-          <Route path={path + "/events"}>
+          <Route path={"/events"}>
             <Events />
           </Route>
-          <Route path={path+"/resources/:categoryPath"}>
+          <Route path="/resources/:categoryPath">
             <ResourcesList />
           </Route>
-          <Route path={path+"/resources"}>
+          <Route path="/resources">
             <ResourcesList />
-          </Route>
-
-          <Route path={path+"/inbox"}>
-            <Inbox />
-          </Route>
-          <Route  path="/">
-          <Newsfeed />
           </Route>
         </Switch>
+        <Menu />
       </Router>
     </div>
   )

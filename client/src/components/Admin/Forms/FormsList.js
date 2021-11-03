@@ -4,13 +4,13 @@ import Loading from "../Widgets/Loading"
 import axios from "axios"
 import ListWidget from "../Widgets/ListWidget"
 const styles = {
-  info: "mx-auto bg-gray-200 text-gray-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center",
+  info: "mx-auto bg-gray-200 text-gray-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl",
   vital:
-    "mx-auto bg-green-200 text-green-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center",
+    "mx-auto bg-green-200 text-green-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl",
   important:
-    "mx-auto bg-orange-200 text-orange-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center",
+    "mx-auto bg-orange-200 text-orange-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl",
   moderate:
-    "mx-auto bg-yellow-200 text-yellow-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center",
+    "mx-auto bg-yellow-200 text-yellow-600 py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl",
 }
 
 const FormsList = ({ role, reload }) => {
