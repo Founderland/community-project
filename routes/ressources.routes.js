@@ -4,7 +4,7 @@ const passport = require("passport")
 
 //GET Ressource
 ressourceRouter.get(
-  "/ressource",
+  "/all",
   passport.authenticate("jwt", { session: false }),
   ressourceController.findAllRessource
 )
