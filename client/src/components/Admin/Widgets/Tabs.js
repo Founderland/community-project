@@ -22,7 +22,11 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
               }`}
               onClick={() => (id ? null : setSelectedTab(tab.index))}
             >
-              <p className="text-xs md:text-md">{tab.name}</p>
+              {tab.name.includes("@") ? (
+                tab.component
+              ) : (
+                <p className="text-xs md:text-md">{tab.name}</p>
+              )}
             </div>
           ) : (
             ""
