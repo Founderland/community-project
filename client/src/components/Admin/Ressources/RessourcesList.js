@@ -41,8 +41,13 @@ const RessourcesList = ({ categories, category }) => {
       .then((res) => {
         setData(res.data)
         //GET ALL AVAILABLE TAGS
-        const allTags = data
-          ?.map((item) => item.tags)
+        let allTags = []
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].articles.length) {
+            allTags.push(data[i].articles.map((article) => article.tags))
+          }
+        }
+        allTags
           .flat(1)
           .filter((item, i, self) => i === self.indexOf(item))
           .sort((a, b) => a.substring(1).length - b.substring(1).length)
@@ -88,7 +93,6 @@ const RessourcesList = ({ categories, category }) => {
     else newFilter.push(value)
     setSearchTags(newFilter)
   }
-
   return loading ? (
     <Loading />
   ) : (

@@ -20,7 +20,7 @@ const addRessourceUrl = "/api/ressources/add"
 const AddRessource = ({ categories, category }) => {
   const history = useHistory()
   const [data, setData] = useState({
-    member: "",
+    member: "61814cbf5f7dd7305e7615f5",
     articleTitle: "",
     articleContent: "",
     articleDescription: "",
@@ -28,9 +28,7 @@ const AddRessource = ({ categories, category }) => {
     photo: null,
     tags: [],
     sources: [],
-    categoryName: categories.filter((cat) => cat.value === category)[0].name,
     categoryKey: category,
-    categoryIcon: categories.filter((cat) => cat.value === category)[0].icon,
   })
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({})
@@ -47,13 +45,26 @@ const AddRessource = ({ categories, category }) => {
     }))
   }
 
-  const { config } = useContext(AdminContext)
+  const { config, reload, setReload } = useContext(AdminContext)
 
   const save = async () => {
     setSaving(true)
     if (data.articleTitle && data.articleDescription && data.articleContent) {
       try {
-        const newRessource = axios.post(addRessourceUrl, data, config)
+        const newRessource = await axios.post(addRessourceUrl, data, config)
+        if (newRessource.data.success) {
+          setSaving(false)
+          setBanner({
+            success: 1,
+            show: true,
+            message: "Ressource saved! Redirecting...",
+          })
+          setTimeout(() => {
+            setBanner((prev) => ({ ...prev, show: false }))
+            setReload(reload + 1)
+            history.goBack()
+          }, 5000)
+        }
       } catch (e) {
         console.log(e)
       }

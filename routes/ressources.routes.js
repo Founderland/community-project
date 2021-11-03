@@ -14,6 +14,18 @@ ressourceRouter.get(
   ressourceController.findRessourcesByCategory
 )
 
+//ADD Ressource
+ressourceRouter.post(
+  "/add",
+  passport.authenticate("jwt", { session: false }),
+  ressourceController.addRessource
+)
+ressourceRouter.post(
+  "/addcategory",
+  passport.authenticate("jwt", { session: false }),
+  ressourceController.addCategory
+)
+
 //EDIT Ressource
 ressourceRouter.put(
   "/:id",

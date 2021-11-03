@@ -1,9 +1,10 @@
 const mongoose = require("mongoose")
 
 const ressourceSchema = new mongoose.Schema({
-  categoryName: { type: String },
-  categoryKey: { type: String },
-  categoryIcon: { type: String },
+  categoryName: { type: String, required: true },
+  categoryKey: { type: String, required: true },
+  categoryIcon: { type: String, required: true },
+  categoryColor: { type: String, required: true },
   path: { type: String },
   articles: [
     {
