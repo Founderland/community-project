@@ -11,6 +11,7 @@ import SignUp from "./components/Community/SignUp/SignUp"
 // import ResourcesList from "./components/Community/Resources/ResourcesList"
 import CommunityProvider from "./contexts/CommunityProvider"
 import Verify from "./components/Verify"
+import NewsLetter from "./components/Forms/NewsLetter"
 
 // import AddQuestionForm from './components/Admin/AddQuestionForm'
 
@@ -28,7 +29,8 @@ function App() {
           <Route  path="/community" component={Community} />
 
           <Route exact path="/signup/:token" component={SignUp} />
-          <Route exact path="/form/:memberType" component={Form} />
+          <Route exact path="/newsletter" component={NewsLetter} />
+          <Route exact path ="/form/:memberType" component={Form} /> 
           <Route exact path="/thankyou" component={Thankyou} />
           <Route path="/admin" component={Admin} />
           <Route exact path="/verify/:token" component={Verify} />
