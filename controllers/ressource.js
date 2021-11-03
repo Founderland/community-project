@@ -2,79 +2,95 @@ const Ressource = require("../models/Ressource")
 
 // Add Ressource
 const addRessource = async (req, res, next) => {
-  const { firstName, lastName, totalScore, answerData } = req.body
+  const {
+    member,
+    articleTitle,
+    articleDescription,
+    categoryKey,
+    articleContent,
+    articleType,
+    sources,
+    tags,
+  } = req.body
   try {
-    //  data.map(async (item) => {
-    const newRessource = await Ressource.create({
-      firstName,
-      lastName,
-      totalScore,
-      answerData,
-    })
-
-    // {
-    //   // question_id: `${item.question_id}`,
-    //   // answerId: `${item.answer_id}`,
-    //   // score : `${item.score}`
-    // }
-
-    if (!newRessource) {
-      await Promise.reject("founder response error") //reject promise with error
+    const article = {
+      member,
+      articleTitle,
+      articleDescription,
+      articleContent,
+      articleType,
+      sources,
+      tags,
+      articleSubmittedDate: new Date(),
+      articleLastUpdateDate: new Date(),
     }
-    // })
-
-    return res.status(200).json("Succesful attempt")
+    const newRessource = await Ressource.updateOne(
+      { categoryKey },
+      { $push: { articles: article } }
+    )
+    if (!newRessource) {
+      await Promise.reject("Error saving ressource")
+    }
+    return res.status(200).json({ success: true, ressource: newRessource })
   } catch (e) {
-    if (e === "founder response error") {
-      console.log("founder response error")
+    console.log(e)
+    return res.status(404).json({ e })
+  }
+}
+const addCategory = async (req, res, next) => {
+  const { categoryName, categoryKey, categoryIcon, categoryColor } = req.body
+  try {
+    const existing = await Ressource.findOne({ categoryKey })
+    if (existing) throw new Error("CATEGORY_EXISTS_ALREADY")
+    const category = {
+      categoryName,
+      categoryKey,
+      categoryIcon,
+      categoryColor,
+    }
+    const newRessource = await Ressource.create(category)
+    if (!newRessource) {
+      await Promise.reject("Error saving ressource")
+    }
+    return res.status(200).json({ success: true, ressource: newRessource })
+  } catch (e) {
+    if (e.message === "CATEGORY_EXISTS_ALREADY") {
+      res.status(403).json({
+        error: 403,
+        message: "Category already exists",
+      })
     } else {
-      console.log(e)
       return res.status(404).json({ e })
     }
   }
 }
+
 // Find Ressource
 const findAllRessource = async (req, res) => {
   try {
-    const result = await Ressource.find({})
+    const result = await Ressource.find(
+      {},
+      { numberOfArticles: { $size: "$articles" } }
+    ).select({
+      categoryKey: 1,
+      categoryName: 1,
+    })
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
   }
 }
-const findRessourcesByStatus = async (req, res) => {
-  const { status, role } = req.params
+const findRessourcesByCategory = async (req, res) => {
+  const { category } = req.params
   try {
-    if (status === "allpending" && role) {
-      const result = await Ressource.find({
-        status: { $in: ["new", "pending"] },
-      })
-        .sort({
-          totalScore: "desc", //order responses by score
-        })
-        .populate({
-          path: "comments.user",
-          model: "User",
-          select: ["firstName", "lastName", "role", "avatar"],
-        })
-      res.status(200).json(result)
-    } else if (role !== "null") {
-      const result = await Ressource.find({ status, role })
-        .sort({
-          totalScore: "desc", //order responses by score
-        })
-        .populate({
-          path: "comments.user",
-          model: "User",
-          select: ["firstName", "lastName", "role", "avatar"],
-        })
-      res.status(200).json(result)
-    } else {
-      const result = await Ressource.find({ status }).sort({
-        totalScore: "desc", //order responses by score
-      })
-      res.status(200).json(result)
-    }
+    const result = await Ressource.find({
+      categoryKey: category,
+    }).populate({
+      path: "articles.member",
+      model: "Member",
+      select: ["firstName", "lastName", "role", "photo"],
+    })
+    res.status(200).json(result)
   } catch (error) {
     console.log(error)
   }
@@ -141,7 +157,8 @@ module.exports = {
   addRessource,
   findAllRessource,
   findRessourceById,
-  findRessourcesByStatus,
+  findRessourcesByCategory,
   editRessource,
   deleteRessource,
+  addCategory,
 }

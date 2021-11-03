@@ -18,7 +18,7 @@ const setupRoutes = (app) => {
   //Events
   app.use("/api/events", eventRouter)
   //Ressources
-  app.use("/api/ressources", eventRouter)
+  app.use("/api/ressources", ressourceRouter)
 
   app.use("/api/profile-picture", profilePicRouter)
 }

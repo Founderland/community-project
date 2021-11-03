@@ -49,7 +49,7 @@ const Members = () => {
             <MembersList reload={reload} role={tabs[selectedTab].role} />
             <button
               className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-              onClick={() => handleTask("ally")}
+              onClick={() => handleTask()}
             >
               <UserAddIcon className="h-5 w-5" />
               <p className="text-mono text-sm">Add New</p>

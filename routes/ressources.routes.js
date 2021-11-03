@@ -4,21 +4,38 @@ const passport = require("passport")
 
 //GET Ressource
 ressourceRouter.get(
-  "/all",
+  "/",
   passport.authenticate("jwt", { session: false }),
   ressourceController.findAllRessource
+)
+ressourceRouter.get(
+  "/:category",
+  passport.authenticate("jwt", { session: false }),
+  ressourceController.findRessourcesByCategory
+)
+
+//ADD Ressource
+ressourceRouter.post(
+  "/add",
+  passport.authenticate("jwt", { session: false }),
+  ressourceController.addRessource
+)
+ressourceRouter.post(
+  "/addcategory",
+  passport.authenticate("jwt", { session: false }),
+  ressourceController.addCategory
 )
 
 //EDIT Ressource
 ressourceRouter.put(
-  "/ressource/newcomment",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
   ressourceController.editRessource
 )
 
 // DELETE Ressource
 ressourceRouter.delete(
-  "/ressource/:id/:commentId",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
   ressourceController.deleteRessource
 )
