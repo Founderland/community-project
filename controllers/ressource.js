@@ -42,39 +42,17 @@ const findAllRessource = async (req, res) => {
     console.log(error)
   }
 }
-const findRessourcesByStatus = async (req, res) => {
-  const { status, role } = req.params
+const findRessourcesByCategory = async (req, res) => {
+  const { category } = req.params
   try {
-    if (status === "allpending" && role) {
-      const result = await Ressource.find({
-        status: { $in: ["new", "pending"] },
-      })
-        .sort({
-          totalScore: "desc", //order responses by score
-        })
-        .populate({
-          path: "comments.user",
-          model: "User",
-          select: ["firstName", "lastName", "role", "avatar"],
-        })
-      res.status(200).json(result)
-    } else if (role !== "null") {
-      const result = await Ressource.find({ status, role })
-        .sort({
-          totalScore: "desc", //order responses by score
-        })
-        .populate({
-          path: "comments.user",
-          model: "User",
-          select: ["firstName", "lastName", "role", "avatar"],
-        })
-      res.status(200).json(result)
-    } else {
-      const result = await Ressource.find({ status }).sort({
-        totalScore: "desc", //order responses by score
-      })
-      res.status(200).json(result)
-    }
+    const result = await Ressource.find({
+      categoryKey: category,
+    }).populate({
+      path: "articles.member",
+      model: "Member",
+      select: ["firstName", "lastName", "role", "photo"],
+    })
+    res.status(200).json(result)
   } catch (error) {
     console.log(error)
   }
@@ -141,7 +119,7 @@ module.exports = {
   addRessource,
   findAllRessource,
   findRessourceById,
-  findRessourcesByStatus,
+  findRessourcesByCategory,
   editRessource,
   deleteRessource,
 }
