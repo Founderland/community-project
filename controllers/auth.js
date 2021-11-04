@@ -21,9 +21,8 @@ const authenticateUser = async (req, username, password, done) => {
         }
       }
     } else {
-      const user = await Member.findOne({ email: username })
+      const user = await Member.findOne({ email: username }).lean()
       if (user && (await bcrypt.compare(password, user.hashedPassword))) {
-        console.log(user)
         delete user.hashedPassword
         if (user.confirmed && !user.locked) {
           done(null, user, { message: "Successful" })

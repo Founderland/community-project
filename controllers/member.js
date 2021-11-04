@@ -22,16 +22,10 @@ const findAll = async (req, res) => {
 }
 
 const findMember = async (req, res, next) => {
-  let id = null
-  // if (req.user.avatar) {
-  id = req.params.id
-  // } else {
-  //   id = req.user.id
-  // }
-
-  const profile = await Member.findOne({ _id: id })
+  const id = req.params.id
+  const profile = await Member.findOne({ _id: id }).lean()
   if (profile) {
-    profile["hashedPassword"] = ""
+    delete profile.hashedPassword
     if (req.originalUrl.includes("notify")) {
       req.newMember = profile
       return next()
