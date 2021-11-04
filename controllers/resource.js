@@ -8,6 +8,8 @@ const addResource = async (req, res, next) => {
     articleDescription,
     categoryKey,
     articleContent,
+    articleCover,
+    articleFile,
     articleType,
     sources,
     tags,
@@ -18,6 +20,8 @@ const addResource = async (req, res, next) => {
       articleTitle,
       articleDescription,
       articleContent,
+      articleCover,
+      articleFile,
       articleType,
       sources,
       tags,
@@ -75,6 +79,7 @@ const findAllResource = async (req, res) => {
       categoryKey: 1,
       categoryName: 1,
     })
+    console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)

@@ -17,6 +17,8 @@ const resourceSchema = new mongoose.Schema({
       articleCover: { public_id: { type: String }, url: { type: String } },
       articleDescription: { type: String },
       articleContent: { type: String },
+      articleFile: { public_id: { type: String }, url: { type: String } },
+
       articleType: {
         type: String,
         enum: ["link", "article", "video", "picture"],
