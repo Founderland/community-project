@@ -13,9 +13,7 @@ const forgotPassURL = "/api/auth/forgot-password"
 
 const Login = ({ isAdminLogin }) => {
   const history = useHistory()
-  const { setUser, setToken } = useContext(
-    isAdminLogin ? AdminContext : UserContext
-  )
+  const { setToken } = useContext(isAdminLogin ? AdminContext : UserContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [forgotPassword, setForgotPassword] = useState(false)
@@ -34,8 +32,12 @@ const Login = ({ isAdminLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    var timeOutIds = window.setTimeout(function () {}, 0)
+    while (timeOutIds--) {
+      window.clearTimeout(timeOutIds)
+    }
     if (!forgotPassword) {
-      const loginData = { email, password }
+      const loginData = { email, password, isAdminLogin }
       if (email.length && password.length) {
         setLoading(true)
         const config = {
@@ -47,13 +49,10 @@ const Login = ({ isAdminLogin }) => {
           const { data } = await axios.post(loginURL, loginData, config)
           localStorage.setItem("authToken", data.access_token)
           var decode = jwt.decode(data.access_token)
-          console.log(decode)
           if (decode) {
             setToken(localStorage.authToken)
             if (decode.avatar && isAdminLogin) {
               history.push("/admin/dashboard")
-            } else if (!decode.avatar && !isAdminLogin) {
-              history.push("/community")
             } else {
               setLoading(false)
               setError("Sorry, wrong credentials")
@@ -66,7 +65,6 @@ const Login = ({ isAdminLogin }) => {
           }
         } catch (err) {
           setLoading(false)
-          console.log(err)
           setError(
             err?.response?.status === 401 || err?.message === "401"
               ? "Wrong credentials"
@@ -83,11 +81,13 @@ const Login = ({ isAdminLogin }) => {
         }, 6000)
       }
     } else {
+      setLoading(true)
       try {
         const result = await axios.post(forgotPassURL, {
           email,
           isAdmin: isAdminLogin,
         })
+        setLoading(false)
         if (result) {
           setError(result.data.message)
         } else {
@@ -95,7 +95,8 @@ const Login = ({ isAdminLogin }) => {
         }
         setTimeout(() => {
           setError("")
-        }, 6000)
+          setForgotPassword(false)
+        }, 5000)
       } catch (err) {
         if (err.response.status === 404) {
           setError("Request sent")
@@ -109,61 +110,64 @@ const Login = ({ isAdminLogin }) => {
     }
   }
   return (
-    <div className='flex h-screen justify-center items-center w-full '>
-      <div className='flex bg-white shadow-lg md:w-5/6 lg:w-2/3 xl:w-1/2'>
+    <div className="flex h-screen justify-center items-center w-full ">
+      <div className="flex bg-white shadow-lg md:w-5/6 lg:w-2/3 xl:w-1/2">
         <div className={`relative hidden md:block md:w-1/2 bg-${color}`}>
-          <SmallLogo className='absolute bottom-0 h-20 w-20 text-white fill-current' />
+          <SmallLogo className="absolute bottom-0 h-20 w-20 text-white fill-current" />
         </div>
-        <div className='w-full p-8 md:w-1/2'>
-          <div className='flex justify-center'>
-            <LogoLines className='w-full' />
+        <div className="w-full p-8 md:w-1/2">
+          <div className="flex justify-center">
+            <LogoLines className="w-full" />
           </div>
-          <div className='mt-4 flex items-center justify-between'>
-            <span className='border-b w-1/5 lg:w-1/4'></span>
-            <p className='text-grotesk text-center text-blue-500 uppercase'>
+          <div className="mt-4 flex items-center justify-between">
+            <span className="border-b w-1/5 lg:w-1/4"></span>
+            <p className="text-grotesk text-center text-blue-500 uppercase">
               {forgotPassword ? "Forgot password?" : title}
             </p>
-            <span className='border-b w-1/5 lg:w-1/4'></span>
+            <span className="border-b w-1/5 lg:w-1/4"></span>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className='mt-4'>
-              <label className='text-grotesk block text-sm font-bold mb-2'>
+            <div className="mt-4">
+              <label className="text-grotesk block text-sm font-bold mb-2">
                 email
               </label>
               <input
-                className='border border-gray-300 py-2 px-4 block w-full appearance-none'
+                className="border border-gray-300 py-2 px-4 block w-full appearance-none"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
               />
             </div>
             <div className={forgotPassword ? "hidden" : "mt-4"}>
-              <label className='text-grotesk block text-sm font-bold mb-2'>
+              <label className="text-grotesk block text-sm font-bold mb-2">
                 Password
               </label>
               <input
-                className='border border-gray-300 py-2 px-4 block w-full appearance-none'
-                type='password'
+                className="border border-gray-300 py-2 px-4 block w-full appearance-none"
+                type="password"
                 value={password}
+                autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className='mt-1 flex justify-end'>
+            <div className="mt-1 flex justify-end">
               <button
-                type='button'
+                type="button"
                 onClick={() => setForgotPassword(true)}
                 className={`${
                   forgotPassword
                     ? ""
                     : "hover:text-fblue transform hover:scale-110 duration-200 ease-in "
-                } text-grotesk text-xs text-gray-500`}>
+                } text-grotesk text-xs text-gray-500`}
+              >
                 {forgotPassword
                   ? " We’ll send instructions to your inbox to reset your password."
                   : "Forgot Password?"}
               </button>
             </div>
-            <div className='mt-8 flex w-full justify-between'>
+            <div className="mt-8 flex w-full justify-between">
               <button
-                type='button'
+                type="button"
                 onClick={() => {
                   setForgotPassword(false)
                 }}
@@ -171,23 +175,26 @@ const Login = ({ isAdminLogin }) => {
                   forgotPassword
                     ? "group  lg:w-1/4 px-4 py-2 text-mono bg-flime transition-colors ease-in-out duration-500 hover:bg-fblue text-lg text-black hover:text-white flex justify-center items-center  "
                     : "hidden"
-                }>
-                <ArrowLeftIcon className='w-5 h-5 mr-1' />
-                <span className='hidden xl:block text-sm'>Back</span>
+                }
+              >
+                <ArrowLeftIcon className="w-5 h-5 mr-1" />
+                <span className="hidden xl:block text-sm">Back</span>
               </button>
               <button
-                type='submit'
+                type="submit"
                 className={`
                   ${forgotPassword ? "w-4/6 " : "w-full "}
-                     group px-4 py-2 text-mono bg-flime transition-colors ease-in-out duration-500 hover:bg-fblue text-sm text-black hover:text-white`}>
+                     group px-4 py-2 text-mono bg-flime transition-colors ease-in-out duration-500 hover:bg-fblue text-sm text-black hover:text-white`}
+              >
                 {loading ? (
-                  <div className='flex justify-center'>
+                  <div className="flex justify-center">
                     <div
                       style={{ borderTopColor: "transparent" }}
-                      className='w-5 h-5 border-2 border-black group-hover:border-white border-dotted rounded-full animate-spin'></div>
+                      className="w-5 h-5 border-2 border-black group-hover:border-white border-dotted rounded-full animate-spin"
+                    ></div>
                   </div>
                 ) : error.length ? (
-                  <span className=' animate-pulse'>{error}</span>
+                  <span className=" animate-pulse">{error}</span>
                 ) : forgotPassword ? (
                   "Reset Password"
                 ) : (

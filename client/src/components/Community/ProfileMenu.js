@@ -82,28 +82,24 @@ const ProfileMenu = () => {
         leave='transition ease-in duration-75'
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'>
-        <Menu.Items className='absolute outline-none w-40 bg-white overflow-hidden shadow-xl right-0'>
-          <Menu.Item
-            as='button'
-            className='w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime'
-            onClick={() => setView(2)}>
-            My Events
-          </Menu.Item>
-          <Link to={`/community/profile/${user.id}`}>
-            {" "}
+        <Menu.Items className='absolute z-50 outline-none w-40 bg-white overflow-hidden shadow-xl right-0'>
+          <Link to={`/community/events/member`}>
             <Menu.Item
               as='button'
               className='w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime'
-              onClick={() => setView(5)}>
+              onClick={() => setView(1)}>
+              My Events
+            </Menu.Item>
+          </Link>
+
+          <Link to={`/community/profile/${user.id}`}>
+            <Menu.Item
+              as='button'
+              className='w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime'
+              onClick={() => setView(3)}>
               Profile
             </Menu.Item>
           </Link>
-          <Menu.Item
-            as='button'
-            className='w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime'
-            onClick={() => setView(6)}>
-            Settings
-          </Menu.Item>
           <div className='flex items-center justify-between'>
             <span className='border-b w-full'></span>
           </div>

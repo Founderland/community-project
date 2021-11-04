@@ -304,7 +304,7 @@ const Event = () => {
   console.log(data.dateStart, data.dateEnd)
   return (
     <>
-      <section className="h-full py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6">
+      <section className="h-full py-1 bg-white flex justify-center w-full lg:w-5/6 px-4 mx-auto mt-6">
         {loading ? (
           <Loading />
         ) : error ? (
@@ -313,9 +313,9 @@ const Event = () => {
           </div>
         ) : (
           <>
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg border-0">
+            <div className="self-center flex flex-col w-full xl:w-5/6 mb-6 shadow-lg border-0">
               <img
-                className="w-full h-96 bg-bottom bg-cover"
+                className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
                 src={
                   event.photo?.url
                     ? event.photo.url
@@ -328,18 +328,18 @@ const Event = () => {
                   <p className="text-2xl tracking-wider self-center font-bold uppercase">
                     {data.title}
                   </p>
-                  <div className="flex space-x-2 ml-4 self-end text-grotesk">
-                    <p className="text-xs self-end">Hosted by</p>
+                  <div className="flex flex-col sm:flex-row space-x-2 ml-4 self-end text-grotesk">
+                    <p className="w-full text-xs self-end">Hosted by</p>
                     <p className="text-xs uppercase self-end">
                       {data.host.firstName} {data.host.lastName}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-grow-0 items-center p-4">
+                <div className="hidden sm:flex sm:flex-grow-0 justify-center sm:justify-start items-center p-4">
                   <p className={styles[event.type]}>{event.type}</p>
                 </div>
               </div>
-              <div className="w-full px-4 pt-2 grid md:grid-cols-5 sm:grid-cols-2 text-xs justify-center items-center">
+              <div className="w-full px-4 pt-2 grid grid-cols-2 lg:grid-cols-5 md:grid-cols-4 text-xs justify-center items-center">
                 <div className="mb-2">
                   <p className="text-xs text-grotesk">From</p>
                   <div class="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
@@ -390,8 +390,8 @@ const Event = () => {
                     </div>
                   </div>
                 </div>
-                <div className="p-2"></div>
-                <div className="h-full mb-2 col-span-2 py-2 px-4">
+                <div className="p-2 hidden lg:block"></div>
+                <div className="h-full mb-2 col-span-2 py-2 px-4 hidden md:block">
                   <MapDisplay location={data.geoLocation} zoom={data.zoom} />
                 </div>
               </div>

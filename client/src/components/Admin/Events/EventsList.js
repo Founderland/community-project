@@ -330,32 +330,33 @@ const EventsList = ({ state }) => {
     <Loading />
   ) : (
     <div className="w-full px-2 ">
-      <div className="text-mono flex items-center overflow-auto">
+      <div className="text-mono flex space-x-2 items-center overflow-auto">
         <SearchIcon className="h-5 w-5 text-gray-800" />
-        {tags.map((tag) => {
-          const selected = searchTags.includes(tag)
-          return (
-            <div
-              key={tag}
-              className={`${
-                selected
-                  ? "bg-green-300 text-green-600"
-                  : "bg-gray-200 text-gray-600"
-              } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
-              onClick={() => filterTag(tag)}
-            >
-              <p className=" text-xs">{tag}</p>
-            </div>
-          )
-        })}
+        {tags.length ? (
+          tags.map((tag) => {
+            const selected = searchTags.includes(tag)
+            return (
+              <div
+                key={tag}
+                className={`${
+                  selected
+                    ? "bg-green-300 text-green-600"
+                    : "bg-gray-200 text-gray-600"
+                } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
+                onClick={() => filterTag(tag)}
+              >
+                <p className=" text-xs">{tag}</p>
+              </div>
+            )
+          })
+        ) : (
+          <p className="text-xs">No tags available</p>
+        )}
       </div>
       <div className="bg-white">
         <div className="flex w-full justify-start overflow-auto">
           {dataToDisplay.length ? (
-            dataToDisplay.map((event) => {
-              console.log(event)
-              return <EventCard event={event} />
-            })
+            dataToDisplay.map((event) => <EventCard event={event} />)
           ) : (
             <span className="font-medium flex space-x-4 items-center my-2 ml-2">
               <EmojiSadIcon className="h-6 w-6" />

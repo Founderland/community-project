@@ -111,7 +111,7 @@ const DropzoneCloudinary = ({
           />
         )}
         <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
-          "Drag and drop your photo here, or click to select it"
+          Drag and drop your photo here, or click to select it
         </p>
       </div>
     </>

@@ -9,20 +9,26 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
     <>
       <div
         className={`${
-          id ? "cursor-not-allowed" : "cursor-pointer"
-        } transition ease-in-out duration-200 w-min flex p-1 bg-${color} outline-none justify-start`}
+          id ? "cursor-not-allowed hidden" : "cursor-pointer"
+        }  transition ease-in-out duration-200 max-w-max flex p-1 bg-${color} outline-none justify-start overflow-x-auto`}
       >
         {tabs.map((tab) =>
           user.role.includes(tab.restricted) ? (
             <div
-              className={`transition ease-in-out duration-200 w-24 md:w-32 px-1 py-0.5 text-${color} text-sm text-mono tracking-wide font-medium outline-none flex justify-center items-center ${
+              className={`min-w-max transition ease-in-out duration-200 px-3 py-0.5 text-${color} text-mono tracking-wide breaksfont-medium outline-none flex justify-center items-center ${
                 selectedTab === tab.index
-                  ? "font-bold bg-white shadow"
+                  ? "font-bold bg-white shadow text-black"
                   : "text-white hover:bg-white hover:bg-opacity-20"
               }`}
-              onClick={() => (id ? null : setSelectedTab(tab.index))}
+              onClick={() =>
+                id || tab.name.includes("@") ? null : setSelectedTab(tab.index)
+              }
             >
-              <p className="text-xs md:text-md">{tab.name}</p>
+              {tab.name.includes("@") ? (
+                tab.component
+              ) : (
+                <p className="text-xs md:text-md">{tab.name}</p>
+              )}
             </div>
           ) : (
             ""
