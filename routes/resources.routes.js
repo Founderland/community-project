@@ -9,9 +9,14 @@ resourceRouter.get(
   resourceController.findAllResource
 )
 resourceRouter.get(
-  "/:category",
+  "/category/:category",
   passport.authenticate("jwt", { session: false }),
   resourceController.findResourcesByCategory
+)
+resourceRouter.get(
+  "/id/:id",
+  passport.authenticate("jwt", { session: false }),
+  resourceController.findResourceById
 )
 
 //ADD Resource

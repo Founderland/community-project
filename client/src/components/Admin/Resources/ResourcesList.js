@@ -7,7 +7,7 @@ import Loading from "../Widgets/Loading"
 import ResourceCard from "./ResourceCard"
 import Pagination from "../Widgets/Pagination"
 
-const resourcesUrl = "/api/resources/"
+const resourcesUrl = "/api/resources/category/"
 
 const ResourcesList = ({ categories, category }) => {
   const [data, setData] = useState([])

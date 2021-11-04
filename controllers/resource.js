@@ -79,7 +79,6 @@ const findAllResource = async (req, res) => {
       categoryKey: 1,
       categoryName: 1,
     })
-    console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
@@ -102,10 +101,16 @@ const findResourcesByCategory = async (req, res) => {
 }
 const findResourceById = async (req, res) => {
   const { id } = req.params
+  console.log(id)
   try {
-    const result = await Resource.findOne({ _id: id }).sort({
-      totalScore: "desc", //order responses by score
+    const result = await Resource.findOne({
+      articles: { $elemMatch: { _id: id } },
+    }).populate({
+      path: "articles.member",
+      model: "Member",
+      select: ["firstName", "lastName", "role", "photo"],
     })
+    console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
