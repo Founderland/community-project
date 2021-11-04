@@ -23,9 +23,17 @@ const RessourcesList = ({ categories, category }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = axios.get(ressourcesUrl + category, config)
+        const { data } = await axios.get(ressourcesUrl + category, config)
         if (data) {
-          setData(data)
+          const articles = [...data[0].articles]
+          setData(articles)
+          let allTags = articles
+            .map((article) => article.tags)
+            .flat(1)
+            .filter((item, i, self) => i === self.indexOf(item))
+            .sort((a, b) => a.substring(1).length - b.substring(1).length)
+
+          setTags(allTags)
           setLoading(false)
         }
       } catch (e) {
@@ -34,30 +42,6 @@ const RessourcesList = ({ categories, category }) => {
     }
     getData()
   }, [reload, selectedTab])
-
-  useEffect(() => {
-    axios
-      .get(ressourcesUrl + category, config)
-      .then((res) => {
-        setData(res.data)
-        //GET ALL AVAILABLE TAGS
-        let allTags = []
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].articles.length) {
-            allTags.push(data[i].articles.map((article) => article.tags))
-          }
-        }
-        allTags
-          .flat(1)
-          .filter((item, i, self) => i === self.indexOf(item))
-          .sort((a, b) => a.substring(1).length - b.substring(1).length)
-        setTags(allTags)
-        setLoading(false)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }, [reload, selectedTab, searchTags])
 
   useEffect(() => {
     let filteredData = [...data]

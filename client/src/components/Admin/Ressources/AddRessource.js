@@ -24,7 +24,7 @@ const AddRessource = ({ categories, category }) => {
     articleTitle: "",
     articleContent: "",
     articleDescription: "",
-    type: "article",
+    articleType: "article",
     photo: null,
     tags: [],
     sources: [],
@@ -90,7 +90,7 @@ const AddRessource = ({ categories, category }) => {
     }))
   }
   const setType = (value) => {
-    setData((prev) => ({ ...prev, type: value }))
+    setData((prev) => ({ ...prev, articleType: value }))
   }
   const pushTag = (value) => {
     const convertedValue =
@@ -220,12 +220,12 @@ const AddRessource = ({ categories, category }) => {
           <div className="w-full">
             <ListOption
               options={types}
-              choice={data.type}
+              choice={data.articleType}
               setChoice={setType}
             />
           </div>
         </div>
-        {data.type.match(regex) && (
+        {data.articleType.match(regex) && (
           <div className="w-full md:w-1/2 mb-2 px-2">
             <label
               className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
@@ -260,7 +260,7 @@ const AddRessource = ({ categories, category }) => {
         )}
       </div>
 
-      {data.type === "article" && (
+      {data.articleType === "article" && (
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2">
             <label
@@ -278,7 +278,7 @@ const AddRessource = ({ categories, category }) => {
           </div>
         </div>
       )}
-      {data.type === "picture" && (
+      {data.articleType === "picture" && (
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2">
             <label className="block uppercase tracking-wide text-xs font-bold mb-2">
@@ -307,7 +307,7 @@ const AddRessource = ({ categories, category }) => {
           </div>
         </div>
       </div>
-      {data.type === "article" && (
+      {data.articleType === "article" && (
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2">
             <label className="block uppercase tracking-wide text-xs font-bold mb-2">
