@@ -3,7 +3,9 @@ import Menu from "./Menu"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import ResourcesList from "./Resources/ResourcesList"
 import Events from "./Events"
-
+import HomePage from "./HomePage"
+import Inbox from "./Inbox"
+import Profile from "./Profile/Profile"
 import MapDisplay from "./Directory/MapDisplay"
 
 const Main = () => {

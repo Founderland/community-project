@@ -24,7 +24,7 @@ const Community = () => {
           role: decode.role,
         })
       } else {
-        // setUser(null)
+        setUser(null)
         setToken(null)
       }
     }
