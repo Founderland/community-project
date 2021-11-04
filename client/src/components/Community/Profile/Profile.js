@@ -215,7 +215,7 @@ const Profile = () => {
                 <button
                   type='button'
                   className={
-                    "flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 bg-flime  transition duration-200 hover:bg-fblue hover:text-white"
+                    "flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 px-4 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                   }
                   onClick={() => {
                     setDisableEdit((prev) => !prev)

@@ -23,7 +23,6 @@ const ProfileMenu = () => {
           `/api/users/community/profile/${user.id}`,
           config
         )
-        console.log(data.data)
         if (data.data?.photo) {
           setProfilePic({
             ...data.data.photo,
@@ -48,6 +47,9 @@ const ProfileMenu = () => {
   return (
     <Menu as='div' className='relative'>
       <Menu.Button className='group flex items-center space-x-3 relative focus:outline-none'>
+        <h2 className='text-gray-800 text-bold text-sm lg:text-lg hidden sm:block'>
+          {user.firstName + " " + user.lastName}
+        </h2>
         {profilePic?.public_id ? (
           <Image
             cloudName='founderland'
