@@ -3,10 +3,13 @@ import Login from "../Admin/Login"
 import Main from "./Main"
 import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
+import { useRouteMatch } from "react-router"
 
 const views = ["community", "events", "ressources", "profile", "settings"]
 
 const Community = () => {
+  const { path, url } = useRouteMatch()
+  console.log(path, url)
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [view, setView] = useState(0)

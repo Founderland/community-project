@@ -13,9 +13,7 @@ const forgotPassURL = "/api/auth/forgot-password"
 
 const Login = ({ isAdminLogin }) => {
   const history = useHistory()
-  const { setUser, setToken } = useContext(
-    isAdminLogin ? AdminContext : UserContext
-  )
+  const { setToken } = useContext(isAdminLogin ? AdminContext : UserContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [forgotPassword, setForgotPassword] = useState(false)
@@ -35,7 +33,7 @@ const Login = ({ isAdminLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!forgotPassword) {
-      const loginData = { email, password }
+      const loginData = { email, password, isAdminLogin }
       if (email.length && password.length) {
         setLoading(true)
         const config = {
@@ -45,14 +43,13 @@ const Login = ({ isAdminLogin }) => {
         }
         try {
           const { data } = await axios.post(loginURL, loginData, config)
+          console.log(data.access_token)
           localStorage.setItem("authToken", data.access_token)
           var decode = jwt.decode(data.access_token)
           if (decode) {
             setToken(localStorage.authToken)
             if (decode.avatar && isAdminLogin) {
               history.push("/admin/dashboard")
-            } else if (!decode.avatar && !isAdminLogin) {
-              history.push("/")
             } else {
               setLoading(false)
               setError("Sorry, wrong credentials")
@@ -82,11 +79,13 @@ const Login = ({ isAdminLogin }) => {
         }, 6000)
       }
     } else {
+      setLoading(true)
       try {
         const result = await axios.post(forgotPassURL, {
           email,
           isAdmin: isAdminLogin,
         })
+        setLoading(false)
         if (result) {
           setError(result.data.message)
         } else {
@@ -94,7 +93,8 @@ const Login = ({ isAdminLogin }) => {
         }
         setTimeout(() => {
           setError("")
-        }, 6000)
+          setForgotPassword(false)
+        }, 5000)
       } catch (err) {
         if (err.response.status === 404) {
           setError("Request sent")

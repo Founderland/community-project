@@ -27,6 +27,7 @@ const passportMiddleware = (app) => {
       {
         usernameField: "email",
         passwordField: "password",
+        passReqToCallback: true,
         session: false,
       },
       authenticateUser
