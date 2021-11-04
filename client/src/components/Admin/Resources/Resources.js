@@ -4,13 +4,13 @@ import { PlusIcon, TrashIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
 import Tabs from "../Widgets/Tabs"
-import RessourcesList from "./RessourcesList"
-import Ressource from "./Ressource"
-import AddRessource from "./AddRessource"
+import ResourcesList from "./ResourcesList"
+import Resource from "./Resource"
+import AddResource from "./AddResource"
 import ComponentModal from "../Widgets/ComponentModal"
 import AddCategory from "./AddCategory"
 
-const Ressources = () => {
+const Resources = () => {
   const history = useHistory()
 
   const { selectedTab, setSelectedTab, setCModal, config, reload, user } =
@@ -22,7 +22,7 @@ const Ressources = () => {
   //  getCategories
   useEffect(() => {
     axios
-      .get("/api/ressources/", config)
+      .get("/api/resources/", config)
       .then((res) => {
         let filteredTabs = res.data.map((category, i) => ({
           index: i,
@@ -64,7 +64,7 @@ const Ressources = () => {
   }, [reload])
 
   const handleTask = () => {
-    history.push("ressources/id/new")
+    history.push("resources/id/new")
   }
   return (
     <div className="w-full flex flex-col ">
@@ -82,14 +82,14 @@ const Ressources = () => {
           <tab className="flex justify-center bg-white outline-none md:border border-black pt-4 pb-8">
             {!id ? (
               <div className="w-full px-4 outline-none">
-                <RessourcesList category={tabs[selectedTab].key} />
+                <ResourcesList category={tabs[selectedTab].key} />
                 <div className="flex space-x-2">
                   <button
                     className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                     onClick={() => handleTask()}
                   >
                     <PlusIcon className="h-5 w-5" />
-                    <p className="text-mono text-sm">Add New Ressource</p>
+                    <p className="text-mono text-sm">Add New Resource</p>
                   </button>
                   {user.role.includes("sadmin") && !tabs[selectedTab].locked ? (
                     <button className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-gray-700 transition duration-200 hover:bg-fred text-white">
@@ -102,12 +102,12 @@ const Ressources = () => {
                 </div>
               </div>
             ) : id === "new" ? (
-              <AddRessource
+              <AddResource
                 category={tabs[selectedTab].key}
                 categories={categories}
               />
             ) : (
-              <Ressource />
+              <Resource />
             )}
           </tab>
         </>
@@ -118,4 +118,4 @@ const Ressources = () => {
   )
 }
 
-export default Ressources
+export default Resources

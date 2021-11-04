@@ -15,9 +15,9 @@ const types = [
   { name: "Video", value: "video" },
   { name: "Picture", value: "picture" },
 ]
-const addRessourceUrl = "/api/ressources/add"
+const addResourceUrl = "/api/resources/add"
 
-const AddRessource = ({ categories, category }) => {
+const AddResource = ({ categories, category }) => {
   const history = useHistory()
   const [data, setData] = useState({
     member: "61814cbf5f7dd7305e7615f5",
@@ -51,13 +51,13 @@ const AddRessource = ({ categories, category }) => {
     setSaving(true)
     if (data.articleTitle && data.articleDescription && data.articleContent) {
       try {
-        const newRessource = await axios.post(addRessourceUrl, data, config)
-        if (newRessource.data.success) {
+        const newResource = await axios.post(addResourceUrl, data, config)
+        if (newResource.data.success) {
           setSaving(false)
           setBanner({
             success: 1,
             show: true,
-            message: "Ressource saved! Redirecting...",
+            message: "Resource saved! Redirecting...",
           })
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
@@ -131,7 +131,7 @@ const AddRessource = ({ categories, category }) => {
         <Banner message={banner} />
       </div>
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
-        Add new ressource
+        Add new resource
       </div>
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
@@ -354,4 +354,4 @@ const AddRessource = ({ categories, category }) => {
   )
 }
 
-export default AddRessource
+export default AddResource

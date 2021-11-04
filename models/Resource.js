@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const ressourceSchema = new mongoose.Schema({
+const resourceSchema = new mongoose.Schema({
   categoryName: { type: String, required: true },
   categoryKey: { type: String, required: true },
   categoryIcon: { type: String, required: true },
@@ -30,6 +30,6 @@ const ressourceSchema = new mongoose.Schema({
   ],
 })
 
-const Ressource = mongoose.model("Ressource", ressourceSchema)
+const Resource = mongoose.model("Resource", resourceSchema)
 
-module.exports = Ressource
+module.exports = Resource

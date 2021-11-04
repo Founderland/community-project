@@ -4,12 +4,12 @@ import { EmojiSadIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
 import axios from "axios"
 import Loading from "../Widgets/Loading"
-import RessourceCard from "./RessourceCard"
+import ResourceCard from "./ResourceCard"
 import Pagination from "../Widgets/Pagination"
 
-const ressourcesUrl = "/api/ressources/"
+const resourcesUrl = "/api/resources/"
 
-const RessourcesList = ({ categories, category }) => {
+const ResourcesList = ({ categories, category }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
@@ -23,7 +23,7 @@ const RessourcesList = ({ categories, category }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(ressourcesUrl + category, config)
+        const { data } = await axios.get(resourcesUrl + category, config)
         if (data) {
           const articles = [...data[0].articles]
           setData(articles)
@@ -106,7 +106,7 @@ const RessourcesList = ({ categories, category }) => {
       </div>
       <div className="flex w-full justify-start overflow-auto mt-2">
         {dataToDisplay.length ? (
-          dataToDisplay.map((article) => <RessourceCard ressource={article} />)
+          dataToDisplay.map((article) => <ResourceCard resource={article} />)
         ) : (
           <span className="font-medium flex space-x-4 items-center my-2 ml-2">
             <EmojiSadIcon className="h-6 w-6" />
@@ -129,4 +129,4 @@ const RessourcesList = ({ categories, category }) => {
   )
 }
 
-export default RessourcesList
+export default ResourcesList

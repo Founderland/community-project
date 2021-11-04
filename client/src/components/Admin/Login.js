@@ -32,6 +32,10 @@ const Login = ({ isAdminLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    var timeOutIds = window.setTimeout(function () {}, 0)
+    while (timeOutIds--) {
+      window.clearTimeout(timeOutIds)
+    }
     if (!forgotPassword) {
       const loginData = { email, password, isAdminLogin }
       if (email.length && password.length) {
@@ -43,7 +47,6 @@ const Login = ({ isAdminLogin }) => {
         }
         try {
           const { data } = await axios.post(loginURL, loginData, config)
-          console.log(data.access_token)
           localStorage.setItem("authToken", data.access_token)
           var decode = jwt.decode(data.access_token)
           if (decode) {
@@ -62,7 +65,6 @@ const Login = ({ isAdminLogin }) => {
           }
         } catch (err) {
           setLoading(false)
-          console.log(err)
           setError(
             err?.response?.status === 401 || err?.message === "401"
               ? "Wrong credentials"
@@ -133,6 +135,7 @@ const Login = ({ isAdminLogin }) => {
                 className="border border-gray-300 py-2 px-4 block w-full appearance-none"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
               />
             </div>
             <div className={forgotPassword ? "hidden" : "mt-4"}>
@@ -143,6 +146,7 @@ const Login = ({ isAdminLogin }) => {
                 className="border border-gray-300 py-2 px-4 block w-full appearance-none"
                 type="password"
                 value={password}
+                autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>

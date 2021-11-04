@@ -3,20 +3,16 @@ import { ChevronDoubleRightIcon } from "@heroicons/react/outline"
 import { useHistory } from "react-router-dom"
 import moment from "moment"
 
-const RessourceCard = ({ ressource }) => {
+const ResourceCard = ({ resource }) => {
   const history = useHistory()
   return (
     <div className="group py-5 px-3">
       <div
-        onClick={() => history.push(`/admin/ressources/id/${ressource._id}`)}
+        onClick={() => history.push(`/admin/resources/id/${resource._id}`)}
         className="cursor-pointer max-w-sm overflow-hidden shadow-lg hover:shadow-xl w-80 text-center "
       >
         <div className="flex ">
-          <img
-            className="w-4/5"
-            src={ressource.articleCover?.url}
-            alt="women"
-          />
+          <img className="w-4/5" src={resource.articleCover?.url} alt="women" />
           <div className="w-1/5 ">
             <img
               className="w-full h-full object-fill "
@@ -27,15 +23,15 @@ const RessourceCard = ({ ressource }) => {
         </div>
         <div className="px-2 py-2">
           <div className="font-bold text-black text-xl mb-2  font-mono">
-            {ressource.articleTitle}
+            {resource.articleTitle}
           </div>
           <p className="h-10 text-black text-sm text-mono overflow-ellipsis text-justify">
-            {ressource.articleDescription}
+            {resource.articleDescription}
           </p>
         </div>
         <div className=" pl-6 pr-2 pt-4 pb-2 flex justify-between">
           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mr-2 mb-2">
-            {moment(ressource.articleSubmittedDate).format("DD/MM/YYYY")}
+            {moment(resource.articleSubmittedDate).format("DD/MM/YYYY")}
           </span>
           <ChevronDoubleRightIcon className="h-6 w-6 text-black group-hover:text-fblue" />
         </div>
@@ -44,4 +40,4 @@ const RessourceCard = ({ ressource }) => {
   )
 }
 
-export default RessourceCard
+export default ResourceCard

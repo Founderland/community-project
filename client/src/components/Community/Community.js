@@ -3,17 +3,15 @@ import Login from "../Admin/Login"
 import Main from "./Main"
 import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
-import { useRouteMatch } from "react-router"
+import { useHistory } from "react-router"
 
-const views = ["community", "events", "ressources", "profile", "settings"]
+const views = ["community", "events", "resources", "profile"]
 
 const Community = () => {
-  const { path, url } = useRouteMatch()
-  console.log(path, url)
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [view, setView] = useState(0)
-
+  const history = useHistory()
   useEffect(() => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
@@ -37,6 +35,7 @@ const Community = () => {
     localStorage.authToken = ""
     setUser(null)
     setToken(null)
+    history.push("/community")
   }
   const changeView = (view) => {
     setView(view)

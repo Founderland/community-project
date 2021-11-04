@@ -10,7 +10,7 @@ import { ReactComponent as SmallLogo } from "../../assets/small.svg"
 import { Link } from "react-router-dom"
 
 const Header = () => {
-  const { view, views } = useContext(UserContext)
+  const { view, views, setView } = useContext(UserContext)
 
   return (
     <div className="flex w-full md:bg-white bg-black shadow-lg p-3">
@@ -22,37 +22,37 @@ const Header = () => {
           {views[view].toUpperCase()}
         </h1>
         <div class="md:flex flex-grow hidden justify-center ">
-          <Link to="/">
-            <button
-              class={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
-                view === 1 && "border-b-2 border-fblue"
-              }`}
-            >
-              <UserGroupIcon className="h-8" />
-              community
-            </button>
+          <Link
+            to="/community"
+            class={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
+              view === 0 && "border-b-2 border-fblue"
+            }`}
+            onClick={() => setView(0)}
+          >
+            <UserGroupIcon className="h-8" />
+            community
           </Link>
 
-          <Link to="/events">
-            <button
-              class={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
-                view === 2 && "border-b-2 border-fblue"
-              }`}
-            >
-              <CalendarIcon className="h-8" />
-              events
-            </button>
+          <Link
+            to="/community/events"
+            class={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
+              view === 1 && "border-b-2 border-fblue"
+            }`}
+            onClick={() => setView(1)}
+          >
+            <CalendarIcon className="h-8" />
+            events
           </Link>
 
-          <Link to={`/resources`}>
-            <button
-              class={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
-                view === 3 && "border-b-2 border-fblue"
-              }`}
-            >
-              <CollectionIcon className="h-8" />
-              ressources
-            </button>
+          <Link
+            to={`/community/resources`}
+            class={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
+              view === 2 && "border-b-2 border-fblue"
+            }`}
+            onClick={() => setView(2)}
+          >
+            <CollectionIcon className="h-8" />
+            resources
           </Link>
         </div>
       </div>
