@@ -1,7 +1,9 @@
 import { Menu, Transition } from "@headlessui/react"
-import { Fragment, useContext } from "react"
+import { Fragment, useContext, useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 import UserContext from "../../contexts/User"
+import { Image, Transformation } from "cloudinary-react"
+import axios from "axios"
 
 const ProfileMenu = () => {
   const { user, setView, logout } = useContext(UserContext)
@@ -11,16 +13,66 @@ const ProfileMenu = () => {
       user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()
     return initials
   }
+
+  const [profilePic, setProfilePic] = useState({})
+
+  useEffect(() => {
+    const getProfilepic = async () => {
+      try {
+        const { data } = await axios.get(
+          `/api/users/community/profile/${user.id}`,
+          config
+        )
+        console.log(data.data)
+        if (data.data?.photo) {
+          setProfilePic({
+            ...data.data.photo,
+          })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getProfilepic()
+  }, [])
+
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        "Content-Type": "application/json",
+      },
+    }
+  }, [])
+
   return (
     <Menu as='div' className='relative'>
       <Menu.Button className='group flex items-center space-x-3 relative focus:outline-none'>
-        <h2 className='text-gray-800 text-bold text-sm lg:text-lg hidden sm:block'>
-          {user.firstName + " " + user.lastName}
-        </h2>
-        <span
-          className={`flex items-center justify-center text-mono text-lg lg:text-2xl tracking-wide w-10 h-10 lg:w-14 lg:h-14 rounded-full border-2 group-hover:border-fblue ${user.avatar}`}>
-          {avatarInitials()}
-        </span>
+        {profilePic?.public_id ? (
+          <Image
+            cloudName='founderland'
+            publicId={profilePic?.public_id}
+            width='50'
+            height='50'>
+            <Transformation
+              width='200'
+              height='200'
+              gravity='face'
+              crop='thumb'
+            />
+            <Transformation radius='100' />
+          </Image>
+        ) : (
+          <>
+            <h2 className='text-gray-800 text-bold text-sm lg:text-lg hidden sm:block'>
+              {user.firstName + " " + user.lastName}
+            </h2>
+            <span
+              className={`flex items-center justify-center text-mono text-lg lg:text-2xl tracking-wide w-10 h-10 lg:w-14 lg:h-14 rounded-full border-2 group-hover:border-fblue ${user.avatar}`}>
+              {avatarInitials()}
+            </span>
+          </>
+        )}
       </Menu.Button>
       <Transition
         as={Fragment}
