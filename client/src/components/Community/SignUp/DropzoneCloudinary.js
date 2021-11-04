@@ -46,17 +46,18 @@ const DropzoneCloudinary = ({
         {
           data: base64EncodedImage,
           public_id: `${type}`, //-${Date.now()}
-          folder: `${data.firstName}-${data.lastName}`,
+          folder: `${data.firstName}-${data.lastName}-${data._id || data.id}`,
         },
         config
       )
 
       if (result.data?.public_id) {
         setUploadStatus({ success: true, message: result.data.message })
-        setData({
-          ...data,
+
+        setData((prev) => ({
+          ...prev,
           photo: { public_id: result.data.public_id, url: result.data.url },
-        })
+        }))
         setLoading(false)
         setTimeout(() => {
           setUploadStatus({
@@ -92,7 +93,7 @@ const DropzoneCloudinary = ({
     <>
       <div
         {...getRootProps()}
-        className=' h-3/5 md:h-5/6 w-4/5 xl:w-3/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl'>
+        className=' h-3/5 md:h-5/6 w-4/5 xl:w-4/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl'>
         <input {...getInputProps()} />
         {loading && (
           <div className='flex justify-center'>
@@ -110,8 +111,7 @@ const DropzoneCloudinary = ({
           />
         )}
         <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
-          {data.photo.public_id &&
-            "Drag and drop your photo here, or click to select it"}
+          "Drag and drop your photo here, or click to select it"
         </p>
       </div>
     </>

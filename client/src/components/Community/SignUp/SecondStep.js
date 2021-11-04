@@ -1,45 +1,8 @@
 import { useState } from "react"
-import ListOption from "../../Admin/Widgets/ListOption"
 
-let defaultBusinessAreas = [
-  { name: "Select your business area", value: "Select your business area" },
-  { name: "SaaS/Enterprise Software", value: "SaaS/Enterprise Software" },
-  {
-    name: "Mobility",
-    value: "Mobility",
-  },
-  {
-    name: "Sustainability/Impact investment",
-    value: "Sustainability/Impact investment",
-  },
-  { name: "HealthTech", value: "HealthTech" },
-  {
-    name: "DTC",
-    value: "DTC",
-  },
-  { name: "E-comm/Marketplaces", value: "E-comm/Marketplaces" },
-  { name: "IoT", value: "IoT" },
-  {
-    name: "FoodTech",
-    value: "FoodTech",
-  },
-  { name: "Gaming/Entertainment", value: "Gaming/Entertainment" },
-  { name: "Engineering/DeepTech/AI", value: "Engineering/DeepTech/AI" },
-  {
-    name: "FinTech",
-    value: "FinTech",
-  },
-  { name: "EdTech", value: "EdTech" },
-  { name: "Other", value: "Other" },
-]
+import BusinessAreaSelect from "../Profile/BusinessAreaSelect"
+
 const SecondStep = ({ data, setData, previousStep, nextStep }) => {
-  const [businessAreas, setbusinessAreas] = useState([...defaultBusinessAreas])
-
-  // check if the value entered by the user is included in the object list
-  const isSelectionIncluded = (object) => {
-    return Object.values(object).some((item) => item.name === data.businessArea)
-  }
-
   const formatValue = (value) => {
     const newValue = value.trimStart()
     return newValue.replace(value[0], value[0]?.toUpperCase())
@@ -79,54 +42,8 @@ const SecondStep = ({ data, setData, previousStep, nextStep }) => {
                 <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
                   Business area
                 </label>
-                <ListOption
-                  options={businessAreas}
-                  required={true}
-                  choice={
-                    isSelectionIncluded(businessAreas)
-                      ? data.businessArea || "Select your business area"
-                      : null
-                  }
-                  setChoice={(value) => {
-                    setData({
-                      ...data,
-                      businessArea: value,
-                    })
-                  }}
-                />
-                <div
-                  className={
-                    data.businessArea === "Other" ||
-                    !isSelectionIncluded(businessAreas)
-                      ? "w-full py-6 "
-                      : "hidden"
-                  }>
-                  <input
-                    type='text'
-                    placeholder='Enter your business area'
-                    className={
-                      data.businessArea === "Other" ||
-                      !isSelectionIncluded(businessAreas)
-                        ? "w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
-                        : "hidden"
-                    }
-                    onChange={(e) =>
-                      setTimeout(() => {
-                        setbusinessAreas([
-                          ...businessAreas,
-                          {
-                            name: formatValue(e.target.value),
-                            value: formatValue(e.target.value),
-                          },
-                        ])
-                        setData({
-                          ...data,
-                          businessArea: formatValue(e.target.value),
-                        })
-                      }, 10000)
-                    }
-                  />
-                </div>
+
+                <BusinessAreaSelect profile={data} setProfile={setData} />
               </div>
 
               <div className='w-screen md:w-1/2 p-4 py-6 '>
