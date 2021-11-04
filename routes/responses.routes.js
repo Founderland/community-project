@@ -1,9 +1,19 @@
 const responseRouter = require("express").Router()
 const responseController = require("../controllers/response")
+const newsletterController=require("../controllers/NewsletterResponse")
 const memberController = require("../controllers/member")
 const { sendConnectEmail, sendRejected } = require("../helpers/emailHandler")
 const { registerCommunityValidation } = require("../helpers/validators")
 const passport = require("passport")
+
+
+
+// ADD NEWSLETTER RESPONSE
+
+responseRouter.post("/response/newsletter", newsletterController.addNewsletterResponse)
+
+// GET NEWSLETTER RESPONSE
+ responseRouter.get("/response/newsletter",newsletterController.findNewsletterResponse)
 
 //ADD APPLICANTS RESPONSE
 responseRouter.post("/response", responseController.addResponse)
