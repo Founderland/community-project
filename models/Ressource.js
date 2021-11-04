@@ -14,6 +14,7 @@ const ressourceSchema = new mongoose.Schema({
         default: null,
       },
       articleTitle: { type: String },
+      articleCover: { public_id: { type: String }, url: { type: String } },
       articleDescription: { type: String },
       articleContent: { type: String },
       articleType: {

@@ -104,29 +104,27 @@ const RessourcesList = ({ categories, category }) => {
           <p className="text-xs">No tags available</p>
         )}
       </div>
-      <div className="bg-white">
-        <div className="flex w-full justify-start overflow-auto mt-2">
-          {dataToDisplay.length ? (
-            dataToDisplay.map((event) => <RessourceCard event={event} />)
-          ) : (
-            <span className="font-medium flex space-x-4 items-center my-2 ml-2">
-              <EmojiSadIcon className="h-6 w-6" />
-              <p>Nothing to display</p>
-            </span>
-          )}
-        </div>
-        {data.length > perPage && (
-          <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
-            <div className="flex items-center justify-center">
-              <Pagination
-                setPage={setOffset}
-                currentPage={offset}
-                pageCount={pageCount}
-              />
-            </div>
-          </div>
+      <div className="flex w-full justify-start overflow-auto mt-2">
+        {dataToDisplay.length ? (
+          dataToDisplay.map((article) => <RessourceCard ressource={article} />)
+        ) : (
+          <span className="font-medium flex space-x-4 items-center my-2 ml-2">
+            <EmojiSadIcon className="h-6 w-6" />
+            <p>Nothing to display</p>
+          </span>
         )}
       </div>
+      {data.length > perPage && (
+        <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
+          <div className="flex items-center justify-center">
+            <Pagination
+              setPage={setOffset}
+              currentPage={offset}
+              pageCount={pageCount}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
