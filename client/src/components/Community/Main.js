@@ -12,7 +12,7 @@ import Newsfeed from "./Newsfeed"
 import Events from "./Events"
 import HomePage from "./HomePage"
 import Inbox from "./Inbox"
-import Profile from "./Profile"
+import Profile from "./Profile/Profile"
 import MapDisplay from "./Directory/MapDisplay"
 
 const Main = () => {

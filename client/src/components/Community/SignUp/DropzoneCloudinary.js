@@ -1,6 +1,7 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useMemo } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
+import { config } from "dotenv"
 
 const DropzoneCloudinary = ({
   data,
@@ -8,9 +9,19 @@ const DropzoneCloudinary = ({
   type,
   setUploadStatus,
   uploadStatus,
+  noPreview,
 }) => {
   const [previewSource, setPreviewSource] = useState(null)
   const [loading, setLoading] = useState(false)
+
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        "Content-Type": "application/json",
+      },
+    }
+  }, [])
 
   // CLOUDINARY
   const onDrop = useCallback((acceptedFiles) => {
@@ -19,7 +30,9 @@ const DropzoneCloudinary = ({
     reader.onerror = () => console.log("file reading has failed")
     reader.onloadend = () => {
       const binaryStr = reader.result
-      setPreviewSource(binaryStr)
+      if (!noPreview) {
+        setPreviewSource(binaryStr)
+      }
       uploadImage(binaryStr)
     }
   }, [])
@@ -28,11 +41,15 @@ const DropzoneCloudinary = ({
   const uploadImage = async (base64EncodedImage) => {
     setLoading(true)
     try {
-      const result = await axios.post("/api/profile-picture/upload", {
-        data: base64EncodedImage,
-        public_id: `${type}`, //-${Date.now()}
-        folder: `${data.firstName}-${data.lastName}`,
-      })
+      const result = await axios.post(
+        "/api/profile-picture/upload",
+        {
+          data: base64EncodedImage,
+          public_id: `${type}`, //-${Date.now()}
+          folder: `${data.firstName}-${data.lastName}`,
+        },
+        config
+      )
 
       if (result.data?.public_id) {
         setUploadStatus({ success: true, message: result.data.message })
@@ -93,9 +110,8 @@ const DropzoneCloudinary = ({
           />
         )}
         <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
-          {data.photo.public_id
-            ? " "
-            : "Drag and drop your photo here, or click to select it"}
+          {data.photo.public_id &&
+            "Drag and drop your photo here, or click to select it"}
         </p>
       </div>
     </>
