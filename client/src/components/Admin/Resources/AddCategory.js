@@ -6,7 +6,7 @@ import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
 import icons from "../../../assets/icons/Icons"
 
-const addCategoryUrl = "/api/ressources/addcategory"
+const addCategoryUrl = "/api/resources/addcategory"
 const symbolColor = ["fblue", "fred", "fpink", "flime"]
 
 const AddCategory = ({ data }) => {

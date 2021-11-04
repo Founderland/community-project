@@ -83,4 +83,10 @@ UserRouter.get(
   memberController.findMember
 )
 
+UserRouter.put(
+  "/community/profile/update",
+  passport.authenticate("jwt", { session: false }),
+  memberController.updateMember
+)
+
 module.exports = UserRouter

@@ -19,7 +19,7 @@ function App() {
           path="/join-our-community"
           component={ApplicantsDispatcher}
         />
-          <Route exact path="/newsletter" component={NewsLetter} />
+        <Route exact path="/newsletter" component={NewsLetter} />
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
       </AnswersProvider>
@@ -29,7 +29,7 @@ function App() {
       <Route exact path="/verify/:token" component={Verify} />
 
       <CommunityProvider>
-        <Route path="/" component={Community} />
+        <Route path="/community" component={Community} />
       </CommunityProvider>
     </Router>
   )

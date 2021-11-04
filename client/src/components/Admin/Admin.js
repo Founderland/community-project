@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken"
 
 const views = {
   dashboard: { icon: "home", name: "Dashboard" },
-  ressources: { icon: "collection", name: "Ressources" },
+  resources: { icon: "collection", name: "Resources" },
   events: { icon: "calendar", name: "Events" },
   members: { icon: "groupuser", name: "Members" },
   applicants: {
@@ -104,7 +104,8 @@ const Admin = () => {
         setReload,
         getUuid,
         config,
-      }}>
+      }}
+    >
       {user ? <Main /> : <Login isAdminLogin />}
     </AdminContext.Provider>
   )

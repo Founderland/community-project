@@ -1,13 +1,15 @@
-const Ressource = require("../models/Ressource")
+const Resource = require("../models/Resource")
 
-// Add Ressource
-const addRessource = async (req, res, next) => {
+// Add Resource
+const addResource = async (req, res, next) => {
   const {
     member,
     articleTitle,
     articleDescription,
     categoryKey,
     articleContent,
+    articleCover,
+    articleFile,
     articleType,
     sources,
     tags,
@@ -18,20 +20,22 @@ const addRessource = async (req, res, next) => {
       articleTitle,
       articleDescription,
       articleContent,
+      articleCover,
+      articleFile,
       articleType,
       sources,
       tags,
       articleSubmittedDate: new Date(),
       articleLastUpdateDate: new Date(),
     }
-    const newRessource = await Ressource.updateOne(
+    const newResource = await Resource.updateOne(
       { categoryKey },
       { $push: { articles: article } }
     )
-    if (!newRessource) {
-      await Promise.reject("Error saving ressource")
+    if (!newResource) {
+      await Promise.reject("Error saving resource")
     }
-    return res.status(200).json({ success: true, ressource: newRessource })
+    return res.status(200).json({ success: true, resource: newResource })
   } catch (e) {
     console.log(e)
     return res.status(404).json({ e })
@@ -40,7 +44,7 @@ const addRessource = async (req, res, next) => {
 const addCategory = async (req, res, next) => {
   const { categoryName, categoryKey, categoryIcon, categoryColor } = req.body
   try {
-    const existing = await Ressource.findOne({ categoryKey })
+    const existing = await Resource.findOne({ categoryKey })
     if (existing) throw new Error("CATEGORY_EXISTS_ALREADY")
     const category = {
       categoryName,
@@ -48,11 +52,11 @@ const addCategory = async (req, res, next) => {
       categoryIcon,
       categoryColor,
     }
-    const newRessource = await Ressource.create(category)
-    if (!newRessource) {
-      await Promise.reject("Error saving ressource")
+    const newResource = await Resource.create(category)
+    if (!newResource) {
+      await Promise.reject("Error saving resource")
     }
-    return res.status(200).json({ success: true, ressource: newRessource })
+    return res.status(200).json({ success: true, resource: newResource })
   } catch (e) {
     if (e.message === "CATEGORY_EXISTS_ALREADY") {
       res.status(403).json({
@@ -65,10 +69,10 @@ const addCategory = async (req, res, next) => {
   }
 }
 
-// Find Ressource
-const findAllRessource = async (req, res) => {
+// Find Resource
+const findAllResource = async (req, res) => {
   try {
-    const result = await Ressource.find(
+    const result = await Resource.find(
       {},
       { numberOfArticles: { $size: "$articles" } }
     ).select({
@@ -80,10 +84,10 @@ const findAllRessource = async (req, res) => {
     console.log(error)
   }
 }
-const findRessourcesByCategory = async (req, res) => {
+const findResourcesByCategory = async (req, res) => {
   const { category } = req.params
   try {
-    const result = await Ressource.find({
+    const result = await Resource.find({
       categoryKey: category,
     }).populate({
       path: "articles.member",
@@ -95,22 +99,28 @@ const findRessourcesByCategory = async (req, res) => {
     console.log(error)
   }
 }
-const findRessourceById = async (req, res) => {
+const findResourceById = async (req, res) => {
   const { id } = req.params
+  console.log(id)
   try {
-    const result = await Ressource.findOne({ _id: id }).sort({
-      totalScore: "desc", //order responses by score
+    const result = await Resource.findOne({
+      articles: { $elemMatch: { _id: id } },
+    }).populate({
+      path: "articles.member",
+      model: "Member",
+      select: ["firstName", "lastName", "role", "photo"],
     })
+    console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
   }
 }
-// Update Ressource
-const editRessource = async (req, res) => {
+// Update Resource
+const editResource = async (req, res) => {
   const { id } = req.params
   try {
-    const updated = await Ressource.findByIdAndUpdate(id, {
+    const updated = await Resource.findByIdAndUpdate(id, {
       totalScore: score,
     })
     if (!updated) await Promise.reject("NOT_FOUND")
@@ -126,11 +136,11 @@ const editRessource = async (req, res) => {
     }
   }
 }
-//Delete Ressource
-const deleteRessource = async (req, res) => {
+//Delete Resource
+const deleteResource = async (req, res) => {
   const { id, commentId } = req.params
   try {
-    const updatedList = await Ressource.findByIdAndUpdate(
+    const updatedList = await Resource.findByIdAndUpdate(
       id,
       {
         $pull: { comments: { _id: commentId } },
@@ -140,7 +150,7 @@ const deleteRessource = async (req, res) => {
 
     if (!updatedList) await Promise.reject("NOT_FOUND")
     res.json({
-      message: "Ressource has been deleted",
+      message: "Resource has been deleted",
     })
   } catch (e) {
     console.log(e)
@@ -154,11 +164,11 @@ const deleteRessource = async (req, res) => {
 }
 
 module.exports = {
-  addRessource,
-  findAllRessource,
-  findRessourceById,
-  findRessourcesByCategory,
-  editRessource,
-  deleteRessource,
+  addResource,
+  findAllResource,
+  findResourceById,
+  findResourcesByCategory,
+  editResource,
+  deleteResource,
   addCategory,
 }

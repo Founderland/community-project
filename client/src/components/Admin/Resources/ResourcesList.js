@@ -4,12 +4,12 @@ import { EmojiSadIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
 import axios from "axios"
 import Loading from "../Widgets/Loading"
-import RessourceCard from "./RessourceCard"
+import ResourceCard from "./ResourceCard"
 import Pagination from "../Widgets/Pagination"
 
-const ressourcesUrl = "/api/ressources/"
+const resourcesUrl = "/api/resources/category/"
 
-const RessourcesList = ({ categories, category }) => {
+const ResourcesList = ({ categories, category }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
@@ -23,9 +23,17 @@ const RessourcesList = ({ categories, category }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = axios.get(ressourcesUrl + category, config)
+        const { data } = await axios.get(resourcesUrl + category, config)
         if (data) {
-          setData(data)
+          const articles = [...data[0].articles]
+          setData(articles)
+          let allTags = articles
+            .map((article) => article.tags)
+            .flat(1)
+            .filter((item, i, self) => i === self.indexOf(item))
+            .sort((a, b) => a.substring(1).length - b.substring(1).length)
+
+          setTags(allTags)
           setLoading(false)
         }
       } catch (e) {
@@ -34,30 +42,6 @@ const RessourcesList = ({ categories, category }) => {
     }
     getData()
   }, [reload, selectedTab])
-
-  useEffect(() => {
-    axios
-      .get(ressourcesUrl + category, config)
-      .then((res) => {
-        setData(res.data)
-        //GET ALL AVAILABLE TAGS
-        let allTags = []
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].articles.length) {
-            allTags.push(data[i].articles.map((article) => article.tags))
-          }
-        }
-        allTags
-          .flat(1)
-          .filter((item, i, self) => i === self.indexOf(item))
-          .sort((a, b) => a.substring(1).length - b.substring(1).length)
-        setTags(allTags)
-        setLoading(false)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }, [reload, selectedTab, searchTags])
 
   useEffect(() => {
     let filteredData = [...data]
@@ -120,31 +104,29 @@ const RessourcesList = ({ categories, category }) => {
           <p className="text-xs">No tags available</p>
         )}
       </div>
-      <div className="bg-white">
-        <div className="flex w-full justify-start overflow-auto mt-2">
-          {dataToDisplay.length ? (
-            dataToDisplay.map((event) => <RessourceCard event={event} />)
-          ) : (
-            <span className="font-medium flex space-x-4 items-center my-2 ml-2">
-              <EmojiSadIcon className="h-6 w-6" />
-              <p>Nothing to display</p>
-            </span>
-          )}
-        </div>
-        {data.length > perPage && (
-          <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
-            <div className="flex items-center justify-center">
-              <Pagination
-                setPage={setOffset}
-                currentPage={offset}
-                pageCount={pageCount}
-              />
-            </div>
-          </div>
+      <div className="flex w-full justify-start overflow-auto mt-2">
+        {dataToDisplay.length ? (
+          dataToDisplay.map((article) => <ResourceCard resource={article} />)
+        ) : (
+          <span className="font-medium flex space-x-4 items-center my-2 ml-2">
+            <EmojiSadIcon className="h-6 w-6" />
+            <p>Nothing to display</p>
+          </span>
         )}
       </div>
+      {data.length > perPage && (
+        <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
+          <div className="flex items-center justify-center">
+            <Pagination
+              setPage={setOffset}
+              currentPage={offset}
+              pageCount={pageCount}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
-export default RessourcesList
+export default ResourcesList

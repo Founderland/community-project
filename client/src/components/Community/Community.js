@@ -3,14 +3,15 @@ import Login from "../Admin/Login"
 import Main from "./Main"
 import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
+import { useHistory } from "react-router"
 
-const views = ["community", "events", "ressources", "profile", "settings"]
+const views = ["community", "events", "resources", "profile"]
 
 const Community = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [view, setView] = useState(0)
-
+  const history = useHistory()
   useEffect(() => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
@@ -24,7 +25,7 @@ const Community = () => {
           role: decode.role,
         })
       } else {
-        // setUser(null)
+        setUser(null)
         setToken(null)
       }
     }
@@ -34,6 +35,7 @@ const Community = () => {
     localStorage.authToken = ""
     setUser(null)
     setToken(null)
+    history.push("/community")
   }
   const changeView = (view) => {
     setView(view)

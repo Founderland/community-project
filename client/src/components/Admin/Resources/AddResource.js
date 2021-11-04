@@ -15,19 +15,20 @@ const types = [
   { name: "Video", value: "video" },
   { name: "Picture", value: "picture" },
 ]
-const addRessourceUrl = "/api/ressources/add"
+const addResourceUrl = "/api/resources/add"
 
-const AddRessource = ({ categories, category }) => {
+const AddResource = ({ categories, category }) => {
   const history = useHistory()
   const [data, setData] = useState({
     member: "61814cbf5f7dd7305e7615f5",
+    articleCover: null,
     articleTitle: "",
     articleContent: "",
     articleDescription: "",
-    type: "article",
-    photo: null,
+    articleType: "article",
     tags: [],
     sources: [],
+    articleFile: null,
     categoryKey: category,
   })
   const [saving, setSaving] = useState(false)
@@ -44,29 +45,64 @@ const AddRessource = ({ categories, category }) => {
       articleContent: value,
     }))
   }
-
   const { config, reload, setReload } = useContext(AdminContext)
 
   const save = async () => {
+    console.log(data)
     setSaving(true)
-    if (data.articleTitle && data.articleDescription && data.articleContent) {
+    if (data.articleTitle && data.articleDescription && data.articleCover) {
       try {
-        const newRessource = await axios.post(addRessourceUrl, data, config)
-        if (newRessource.data.success) {
+        if (
+          (data.articleType === "link" || data.articleType === "video") &&
+          !isLink(data.articleContent)
+        ) {
+          await Promise.reject(new Error("invalid_URL"))
+        }
+        if (data.articleType === "picture" && !data.articleFile.public_id) {
+          await Promise.reject(new Error("missing_field"))
+        }
+        if (data.articleType === "article" && !data.articleContent) {
+          await Promise.reject(new Error("missing_field"))
+        }
+        const newResource = await axios.post(addResourceUrl, data, config)
+        if (newResource.data.success) {
           setSaving(false)
           setBanner({
             success: 1,
             show: true,
-            message: "Ressource saved! Redirecting...",
+            message: "Resource saved! Redirecting...",
           })
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
             setReload(reload + 1)
             history.goBack()
-          }, 5000)
+          }, 3000)
         }
       } catch (e) {
         console.log(e)
+        if (e?.message === "invalid_URL") {
+          setSaving(false)
+          setBanner({
+            error: 1,
+            show: true,
+            message: "Invalid URL provided",
+          })
+          setTimeout(() => {
+            setBanner((prev) => ({ ...prev, show: false }))
+          }, 5000)
+        } else {
+          setSaving(false)
+          setRequired(true)
+          setBanner({
+            error: 1,
+            show: true,
+            message: "Please fill in all required fields!",
+          })
+          setTimeout(() => {
+            setBanner((prev) => ({ ...prev, show: false }))
+            setRequired(false)
+          }, 5000)
+        }
       }
     } else {
       setSaving(false)
@@ -90,7 +126,7 @@ const AddRessource = ({ categories, category }) => {
     }))
   }
   const setType = (value) => {
-    setData((prev) => ({ ...prev, type: value }))
+    setData((prev) => ({ ...prev, articleType: value }))
   }
   const pushTag = (value) => {
     const convertedValue =
@@ -131,7 +167,7 @@ const AddRessource = ({ categories, category }) => {
         <Banner message={banner} />
       </div>
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
-        Add new ressource
+        Add new resource
       </div>
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
@@ -182,7 +218,7 @@ const AddRessource = ({ categories, category }) => {
         </div>
       </div>
       <div className="md:flex w-full px-3">
-        <div className="w-full mb-2 px-2">
+        <div className="w-full md:w-1/2 mb-2 px-2">
           <label
             className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
               required ? "text-red-600 animate-pulse" : ""
@@ -211,6 +247,27 @@ const AddRessource = ({ categories, category }) => {
             autoComplete="off"
           />
         </div>
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label
+            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
+              required ? "text-red-600 animate-pulse" : ""
+            }`}
+          >
+            Cover photo
+          </label>
+          <Dropzone
+            classes={
+              "appearance-none outline-none outline-none block w-full border-2 border-gray-300 border-black border-dotted  py-3 px-4 mb-3"
+            }
+            data={data}
+            setData={setData}
+            type="articleCover"
+            folder="resources"
+            setUploadStatus={setUploadStatus}
+            uploadStatus={uploadStatus}
+            required={required}
+          />
+        </div>
       </div>
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
@@ -220,12 +277,12 @@ const AddRessource = ({ categories, category }) => {
           <div className="w-full">
             <ListOption
               options={types}
-              choice={data.type}
+              choice={data.articleType}
               setChoice={setType}
             />
           </div>
         </div>
-        {data.type.match(regex) && (
+        {data.articleType.match(regex) && (
           <div className="w-full md:w-1/2 mb-2 px-2">
             <label
               className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
@@ -260,7 +317,7 @@ const AddRessource = ({ categories, category }) => {
         )}
       </div>
 
-      {data.type === "article" && (
+      {data.articleType === "article" && (
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2">
             <label
@@ -278,7 +335,7 @@ const AddRessource = ({ categories, category }) => {
           </div>
         </div>
       )}
-      {data.type === "picture" && (
+      {data.articleType === "picture" && (
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2">
             <label className="block uppercase tracking-wide text-xs font-bold mb-2">
@@ -290,9 +347,11 @@ const AddRessource = ({ categories, category }) => {
               }
               data={data}
               setData={setData}
-              type="eventCover"
+              type="articleFile"
+              folder="resources"
               setUploadStatus={setUploadStatus}
               uploadStatus={uploadStatus}
+              required={required}
             />
           </div>
         </div>
@@ -307,7 +366,7 @@ const AddRessource = ({ categories, category }) => {
           </div>
         </div>
       </div>
-      {data.type === "article" && (
+      {data.articleType === "article" && (
         <div className="md:flex w-full px-3">
           <div className="w-full mb-2 px-2">
             <label className="block uppercase tracking-wide text-xs font-bold mb-2">
@@ -354,4 +413,4 @@ const AddRessource = ({ categories, category }) => {
   )
 }
 
-export default AddRessource
+export default AddResource

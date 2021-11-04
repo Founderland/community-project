@@ -78,6 +78,25 @@ const userSchema = new mongoose.Schema({
   applicationId: { type: mongoose.Schema.ObjectId },
   notified: { type: Date, default: null },
   lastUpdate: { type: Date },
+  events: {
+    hosted: [
+      {
+        id: { type: mongoose.Schema.ObjectId, ref: "Event" },
+        title: { type: String },
+      },
+    ],
+    attended: [
+      {
+        id: { type: mongoose.Schema.ObjectId, ref: "Event" },
+        title: { type: String },
+      },
+    ],
+  },
+  socialmedia: {
+    linkedin: { type: String, default: null },
+    instagram: { type: String, default: null },
+    twitter: { type: String, default: null },
+  },
   locked: { type: Boolean, default: false },
   following: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],
   followers: [{ type: mongoose.Schema.ObjectId, ref: "Member" }],

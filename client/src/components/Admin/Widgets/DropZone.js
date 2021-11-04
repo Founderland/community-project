@@ -10,10 +10,12 @@ const Dropzone = ({
   setUploadStatus,
   uploadStatus,
   classes,
+  folder,
+  required,
 }) => {
   const [previewSource, setPreviewSource] = useState(null)
   const [loading, setLoading] = useState(false)
-  const { getUuid } = useContext(AdminContext)
+  const { getUuid, config } = useContext(AdminContext)
   // CLOUDINARY
   const onDrop = useCallback((acceptedFiles) => {
     const reader = new FileReader()
@@ -29,19 +31,23 @@ const Dropzone = ({
   const uploadImage = async (base64EncodedImage) => {
     setLoading(true)
     try {
-      const result = await axios.post("/api/profile-picture/upload", {
-        data: base64EncodedImage,
-        public_id: `${type}`, //-${Date.now()}
-        folder: `events-${getUuid()}`,
-      })
+      const result = await axios.post(
+        "/api/profile-picture/upload",
+        {
+          data: base64EncodedImage,
+          public_id: `${type}`, //-${Date.now()}
+          folder: `${folder}/${getUuid()}`,
+        },
+        config
+      )
       console.log(result)
       if (result.data?.public_id) {
         setUploadStatus({ success: true, message: result.data.message })
         console.log(result.data)
-        setData({
-          ...data,
-          photo: { public_id: result.data.public_id, url: result.data.url },
-        })
+        setData((prev) => ({
+          ...prev,
+          [type]: { public_id: result.data.public_id, url: result.data.url },
+        }))
         setLoading(false)
         setTimeout(() => {
           setUploadStatus({
@@ -51,12 +57,6 @@ const Dropzone = ({
           // setPreviewSource(null)
         }, 3000)
       }
-      //   {
-      //     message: "Picture uploaded succesfully",
-      //     public_id: 'profile_pictures/e1ln3u5t1aoe9nipu3nn',
-      //     url: 'https://res.cloudinary.com/founderland/image/upload/v1635157373/profile_pictures/e1ln3u5t1aoe9nipu3nn.png',
-      //     format: 'png',
-      //   }
     } catch (e) {
       console.log(e)
       setUploadStatus({
@@ -75,7 +75,12 @@ const Dropzone = ({
 
   return (
     <>
-      <div {...getRootProps()} className={classes}>
+      <div
+        {...getRootProps()}
+        className={`${classes} ${
+          required ? "border-red-600 animate-pulse" : ""
+        }`}
+      >
         <input {...getInputProps()} />
         {loading && (
           <div className="flex justify-center">
@@ -93,8 +98,12 @@ const Dropzone = ({
             className="p-2 object-cover"
           />
         )}
-        {!data.photo?.public_id && (
-          <p className="block uppercase text-gray-600 text-xs font-bold mb-2">
+        {!data[type]?.public_id && (
+          <p
+            className={`block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2 ${
+              required ? "text-red-600 animate-pulse" : ""
+            }`}
+          >
             Drag and drop your file here, or click to select it
           </p>
         )}
