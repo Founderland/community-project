@@ -99,7 +99,7 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
           required={true}
           list='cities'
           disabled={disableEdit}
-          className={`p-2 text-base ${
+          className={`p-2 text-base outline-none my-1 md:my-0 ${
             disableEdit ? "bg-white " : "bg-sky-50"
           } ${checkCity()}`}
           value={profile.city}
@@ -128,7 +128,7 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
           required={true}
           list='countries'
           disabled={disableEdit}
-          className={`p-2 text-base ${
+          className={`p-2 text-base outline-none my-1 md:my-0 ${
             disableEdit ? "bg-white " : "bg-sky-50"
           } ${checkCountry()}`}
           value={profile.country}

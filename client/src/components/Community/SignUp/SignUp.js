@@ -150,7 +150,7 @@ const SignUp = () => {
         </div>
       </div>
     )
-  } else if (showForm) {
+  } else if (showForm && data.confirmed === null) {
     return (
       <div className='h-full w-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
         <LogoLines className='w-full h-1/5 lg:hidden' />
@@ -184,13 +184,28 @@ const SignUp = () => {
     )
   } else {
     return (
-      <div className='h-screen w-screen flex justify-center items-center'>
-        <div className=' w-screen h-1/3 md:w-2/3 xl:w-1/3 bg-fred-200 flex justify-center items-center'>
-          <h1 className='w-1/2 texl-lg lg:text-2xl text-center'>
-            Sorry something went wrong{" "}
-            <EmojiSadIcon className='w-1/2 h-1/2 m-auto' />
-            Please contact us via email to community@founderland.org
-          </h1>
+      <div className='w-full h-full flex flex-col justify-center items-center'>
+        <div className='sm:shadow w-full h-full sm:w-1/2 p-5'>
+          <div className='flex justify-center'>
+            <LogoLines className='w-5/6' />
+          </div>
+          <div className='my-3 flex items-center justify-between'>
+            <span className='border-b w-1/5 lg:w-1/4'></span>
+            <p className='text-grotesk text-center text-blue-500 uppercase'>
+              Community
+            </p>
+            <span className='border-b w-1/5 lg:w-1/4'></span>
+          </div>
+          <div className=' w-full flex flex-col justify-center items-center text-lg text-center'>
+            {data.confirmed !== null ? (
+              "It looks like you have already registered."
+            ) : (
+              <>
+                <EmojiSadIcon className='w-10 h-10 ' /> Sorry something went
+                wrong. Please contact us via email to community@founderland.org
+              </>
+            )}{" "}
+          </div>
         </div>
       </div>
     )

@@ -4,6 +4,21 @@ import { ReactComponent as LinkedinLogo } from "../../../assets/images/linkedin.
 import { ReactComponent as TwitterLogo } from "../../../assets/images/twitter.svg"
 
 const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
+  const isLink = (link) => {
+    return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/.test(
+      link
+    )
+  }
+  const getLinkstyle = (value) => {
+    if (disableEdit) return null
+    if (value) {
+      return isLink(value)
+        ? "border-l-4 border-flime"
+        : "border-l-4 border-fred"
+    } else {
+      return "border-l-4 border-gray"
+    }
+  }
   return (
     <div
       className={`flex ${
@@ -18,18 +33,21 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
           `}>
         <a
           target='_blank'
-          href={profile.socialmedia?.instagram || "#"}
+          disabled
+          href={profile.socialmedia?.instagram || null}
           rel='noreferrer'>
           <InstagramLogo
             className={`w-10 h-10 ${
-              !profile.socialmedia?.instagram && " opacity-30"
+              !profile.socialmedia?.instagram && " opacity-30 "
             }`}
           />
         </a>
         {isMyProfile && (
           <input
             disabled={disableEdit}
-            placeholder={profile.socialmedia?.instagram || "Add your profile"}
+            placeholder={
+              profile.socialmedia?.instagram || "Add your profile's link"
+            }
             defaultValue={profile.socialmedia?.instagram}
             onChange={(e) =>
               setProfile({
@@ -40,9 +58,9 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
                 },
               })
             }
-            className={`p-2 text-base w-3/4 xl:w-full  ${
-              disableEdit ? "bg-white " : "bg-sky-50"
-            }`}
+            className={`p-2 text-base w-3/4 xl:w-full outline-none ${getLinkstyle(
+              profile.socialmedia?.instagram
+            )} ${disableEdit ? "bg-white " : "bg-sky-50"}`}
           />
         )}
         {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
@@ -55,7 +73,7 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
           `}>
         <a
           target='_blank'
-          href={profile.socialmedia?.linkedin || "#"}
+          href={profile.socialmedia?.linkedin || null}
           rel='noreferrer'>
           <LinkedinLogo
             className={`w-10 h-10 ${
@@ -66,7 +84,9 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
         {isMyProfile && (
           <input
             disabled={disableEdit}
-            placeholder={profile.socialmedia?.linkedin || "Add your profile"}
+            placeholder={
+              profile.socialmedia?.linkedin || "Add your profile's link"
+            }
             defaultValue={profile.socialmedia?.linkedin}
             onChange={(e) =>
               setProfile({
@@ -77,9 +97,9 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
                 },
               })
             }
-            className={`p-2 text-base w-3/4 xl:w-full  ${
-              disableEdit ? "bg-white " : "bg-sky-50"
-            }`}
+            className={`p-2 text-base w-3/4 xl:w-full outline-none ${getLinkstyle(
+              profile.socialmedia?.linkedin
+            )} ${disableEdit ? "bg-white " : "bg-sky-50"}`}
           />
         )}
         {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
@@ -88,7 +108,7 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
         className={`
             flex w-full items-center   ${!isMyProfile && " justify-center"}
           `}>
-        <a href={profile.socialmedia?.twitter || "#"}>
+        <a href={profile.socialmedia?.twitter || null}>
           <TwitterLogo
             className={`w-10 h-10 ${
               !profile.socialmedia?.twitter && " opacity-30"
@@ -98,7 +118,9 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
         {isMyProfile && (
           <input
             disabled={disableEdit}
-            placeholder={profile.socialmedia?.twitter || "Add your profile"}
+            placeholder={
+              profile.socialmedia?.twitter || "Add your profile's link"
+            }
             defaultValue={profile.socialmedia?.twitter}
             onChange={(e) =>
               setProfile({
@@ -109,9 +131,9 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
                 },
               })
             }
-            className={`p-2 text-base w-3/4 xl:w-full  ${
-              disableEdit ? "bg-white " : "bg-sky-50"
-            }`}
+            className={`p-2 text-base w-3/4 xl:w-full outline-none ${getLinkstyle(
+              profile.socialmedia?.twitter
+            )} ${disableEdit ? "bg-white " : "bg-sky-50"}`}
           />
         )}
         {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
