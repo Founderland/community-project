@@ -45,7 +45,7 @@ const EventCard = ({ event }) => {
               <SpeakerphoneIcon className="w-4 h-4 text-gray-700 mr-2" />
 
               <p className="text-gray-700 font-normal text-sm text-grotesk">
-                {event.host.firstName} {event.host.lastName}
+                {event.member.firstName} {event.member.lastName}
               </p>
             </div>
             <ChevronRightIcon className="w-6 h-6 group-hover:text-fblue" />

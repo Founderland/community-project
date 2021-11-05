@@ -7,7 +7,7 @@ const Main = () => {
   return (
     <Switch>
       <Route exact path={`/community/:view?/:category?/:id?/`}>
-        <div className="w-full h-screen overflow-none">
+        <div className="relative w-full h-screen">
           <Header />
           <Content />
           <Menu />
