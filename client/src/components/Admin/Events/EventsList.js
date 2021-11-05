@@ -312,8 +312,9 @@ const EventsList = ({ state }) => {
       offset * perPage + perPage
     )
     setDataToDisplay(slice)
-    setPageCount(Math.ceil(data.length / perPage))
-
+    if (searchTags.length) {
+      setPageCount(Math.ceil(dataToDisplay.length / perPage))
+    } else setPageCount(Math.ceil(data.length / perPage))
     return () => {
       setDataToDisplay([])
     }
@@ -330,7 +331,7 @@ const EventsList = ({ state }) => {
     <Loading />
   ) : (
     <div className="w-full px-2 ">
-      <div className="text-mono flex space-x-2 items-center overflow-auto">
+      <div className="max-w-max text-mono flex  space-x-2 items-center overflow-x-auto mt-3 pl-2">
         <SearchIcon className="h-5 w-5 text-gray-800" />
         {tags.length ? (
           tags.map((tag) => {
@@ -364,7 +365,7 @@ const EventsList = ({ state }) => {
             </span>
           )}
         </div>
-        {data.length > perPage && (
+        {data.length > perPage && searchTags.length === 0 ? (
           <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
             <div className="flex items-center justify-center">
               <Pagination
@@ -374,6 +375,18 @@ const EventsList = ({ state }) => {
               />
             </div>
           </div>
+        ) : dataToDisplay.length > perPage ? (
+          <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
+            <div className="flex items-center justify-center">
+              <Pagination
+                setPage={setOffset}
+                currentPage={offset}
+                pageCount={pageCount}
+              />
+            </div>
+          </div>
+        ) : (
+          ""
         )}
       </div>
     </div>

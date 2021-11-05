@@ -85,7 +85,7 @@ const ResourcesList = ({ categories, category }) => {
     <div className="w-full px-2 ">
       <>
         <div className="max-w-max text-mono flex  space-x-2 items-center overflow-x-auto mt-3 pl-2">
-          <SearchIcon className="h-8 w-8  text-gray-800" />
+          <SearchIcon className="h-8 w-8 text-gray-800" />
           {tags.length ? (
             tags.map((tag) => {
               const selected = searchTags.includes(tag)
