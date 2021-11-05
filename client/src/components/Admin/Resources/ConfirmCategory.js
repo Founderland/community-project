@@ -30,7 +30,7 @@ const Confirm = ({ data }) => {
         setTimeout(() => {
           setReload(reload + 1)
           setCCModal(false)
-        }, 3000)
+        }, 2000)
       } else {
         throw new Error("Sorry, something went wrong while saving")
       }

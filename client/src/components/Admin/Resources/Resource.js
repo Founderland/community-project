@@ -15,7 +15,7 @@ const resourceUrl = "/api/resources/id/"
 
 const Resource = ({ category, categories }) => {
   const { id } = useParams()
-  const { config, reload, setCCModal } = useContext(AdminContext)
+  const { config, reload, setCCModal, user } = useContext(AdminContext)
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -159,15 +159,19 @@ const Resource = ({ category, categories }) => {
             >
               Edit
             </button>
-            <button
-              className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
-              onClick={() => {
-                setCCModal(true)
-              }}
-            >
-              <TrashIcon className="h-5 w-5" />
-              Delete
-            </button>
+            {user.role.includes("admin") ? (
+              <button
+                className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+                onClick={() => {
+                  setCCModal(true)
+                }}
+              >
+                <TrashIcon className="h-5 w-5" />
+                Delete
+              </button>
+            ) : (
+              ""
+            )}
           </div>
         </>
       )}

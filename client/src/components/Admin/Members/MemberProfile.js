@@ -111,7 +111,7 @@ const MemberProfile = () => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 2000)
       } else {
         setLocking(false)
         setBanner({
@@ -123,7 +123,7 @@ const MemberProfile = () => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 4000)
       }
     } catch (e) {
       setLocking(false)
@@ -136,7 +136,7 @@ const MemberProfile = () => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 
@@ -160,7 +160,7 @@ const MemberProfile = () => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 

@@ -53,7 +53,7 @@ const ApproveApplicant = ({ data }) => {
           show: true,
           message: `Application updated${
             notify ? " and applicant notified" : ""
-          }! redirecting..`,
+          }! Redirecting..`,
         })
         setTimeout(() => {
           setReload(reload + 1)

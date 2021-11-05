@@ -25,12 +25,12 @@ const Confirm = ({ data }) => {
         setBanner({
           success: 1,
           show: true,
-          message: "Resource deleted! redirecting..",
+          message: "Resource deleted! Redirecting..",
         })
         setTimeout(() => {
           history.push("/admin/resources/")
           setReload(reload + 1)
-        }, 3000)
+        }, 2000)
       } else {
         throw new Error("Sorry, something went wrong while saving")
       }

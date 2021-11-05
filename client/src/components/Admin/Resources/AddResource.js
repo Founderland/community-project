@@ -93,7 +93,7 @@ const AddResource = ({ categories, category, article, edit, setEdit }) => {
             setBanner((prev) => ({ ...prev, show: false }))
             setReload(reload + 1)
             history.goBack()
-          }, 3000)
+          }, 2000)
         } else {
           setEdit(false)
           setReload(reload + 1)

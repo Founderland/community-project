@@ -61,7 +61,7 @@ const AddEvent = ({ role }) => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 

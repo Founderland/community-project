@@ -58,7 +58,7 @@ const Dropzone = ({
           if (type.match(regex)) {
             setPreviewSource(null)
           }
-        }, 3000)
+        }, 2000)
       }
     } catch (e) {
       console.log(e)
@@ -72,7 +72,7 @@ const Dropzone = ({
           success: false,
           message: "",
         })
-      }, 3000)
+      }, 4000)
     }
   }
 

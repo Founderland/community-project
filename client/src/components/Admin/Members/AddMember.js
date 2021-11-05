@@ -90,13 +90,13 @@ const AddMember = ({ role }) => {
             setBanner({
               success: 1,
               show: true,
-              message: "User saved! redirecting..",
+              message: "User saved! Redirecting..",
             })
             setTimeout(() => {
               setBanner((prev) => ({ ...prev, show: false }))
               setReload(reload + 1)
               history.goBack()
-            }, 3000)
+            }, 2000)
           }
         } catch (err) {
           console.log(err)
@@ -109,7 +109,7 @@ const AddMember = ({ role }) => {
             })
             setTimeout(() => {
               setBanner((prev) => ({ ...prev, show: false }))
-            }, 3000)
+            }, 4000)
           } else {
             setSaving(false)
             setBanner({
@@ -119,7 +119,7 @@ const AddMember = ({ role }) => {
             })
             setTimeout(() => {
               setBanner((prev) => ({ ...prev, show: false }))
-            }, 3000)
+            }, 4000)
           }
         }
       } else {
@@ -131,7 +131,7 @@ const AddMember = ({ role }) => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 4000)
       }
     } else {
       setSaving(false)
@@ -142,7 +142,7 @@ const AddMember = ({ role }) => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 

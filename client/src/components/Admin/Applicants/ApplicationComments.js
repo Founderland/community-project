@@ -29,7 +29,7 @@ const ApplicationComments = ({
     })
     setTimeout(() => {
       setBanner((prev) => ({ ...prev, show: false }))
-    }, 3000)
+    }, 4000)
   }
 
   const scrollDown = () => {
