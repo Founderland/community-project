@@ -3,8 +3,6 @@ import icons from "../../../assets/icons/Icons"
 
 const CategoryDisplay = ({ category, isActive }) => {
   let history = useHistory()
-
-  console.log(isActive)
   return (
     <>
       <div
