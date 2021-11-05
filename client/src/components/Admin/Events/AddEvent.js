@@ -20,8 +20,6 @@ let types = [
 
 const addEventUrl = "/api/events/add"
 const updateEventUrl = "/api/events/update/"
-const cancelEventUrl = "/api/events/cancel/"
-const deleteEventUrl = "/api/events/cancel/"
 
 const AddEvent = ({ event, edit, setEdit }) => {
   const history = useHistory()
@@ -64,7 +62,6 @@ const AddEvent = ({ event, edit, setEdit }) => {
   const save = async () => {
     setSaving(true)
     try {
-      console.log(data, data.title.length, data.description.length)
       if (!data.title.length && !data.description.length)
         await Promise.reject(new Error("missing_fields_title_Description"))
       if (data.type === "online" && !isLink(data.link))
@@ -75,7 +72,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
         await Promise.reject(new Error("missing_fields_city"))
       let newEvent = null
       if (edit) {
-        newEvent = await axios.put(updateEventUrl, data, config)
+        newEvent = await axios.put(updateEventUrl + data._id, data, config)
       } else {
         newEvent = await axios.post(addEventUrl, data, config)
       }
@@ -153,6 +150,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
       link
     )
   }
+  console.log(data)
   return (
     <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col w-full xl:w-5/6">
       <div className="w-full flex items-center justify-center z-20">

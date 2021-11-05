@@ -11,6 +11,7 @@ import ComponentModal from "../Widgets/ComponentModal"
 import { EmojiSadIcon, TrashIcon, XCircleIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import moment from "moment"
+import AddEvent from "./AddEvent"
 const avatarInitials = (first, last) => {
   let initials = first[0].toUpperCase() + last[0].toUpperCase()
   return initials
@@ -48,6 +49,7 @@ const Event = () => {
         console.log(err)
       })
   }, [id, reload])
+  console.log(edit)
   return (
     <section className="h-full py-1 bg-white flex flex-col justify-center w-full lg:w-5/6 px-4 mx-auto mt-6">
       <ConfirmModal>
@@ -62,6 +64,8 @@ const Event = () => {
         <div className="flex space-x-2">
           <EmojiSadIcon className="h-6 w-6 text-black" /> <p>{error}</p>
         </div>
+      ) : edit ? (
+        <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
           <div className="relative self-center flex flex-col w-full xl:w-5/6 mb-6 shadow-lg border-0">
@@ -260,6 +264,7 @@ const Event = () => {
                   </p>
                   <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
                     {data.city}
+                    {edit && "edit"}
                   </p>
                 </div>
               )}
@@ -279,29 +284,31 @@ const Event = () => {
           </div>
         </>
       )}
-      <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-        <button
-          className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-          onClick={() => {
-            setEdit(true)
-          }}
-        >
-          Edit
-        </button>
-        {user.role.includes("admin") ? (
+      {!edit && (
+        <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
           <button
-            className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+            className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
             onClick={() => {
-              setCCModal(true)
+              setEdit(true)
             }}
           >
-            <TrashIcon className="h-5 w-5" />
-            Delete
+            Edit
           </button>
-        ) : (
-          ""
-        )}
-      </div>
+          {user.role.includes("admin") ? (
+            <button
+              className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+              onClick={() => {
+                setCCModal(true)
+              }}
+            >
+              <TrashIcon className="h-5 w-5" />
+              Delete
+            </button>
+          ) : (
+            ""
+          )}
+        </div>
+      )}
     </section>
   )
 }

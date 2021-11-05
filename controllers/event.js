@@ -157,7 +157,53 @@ const addEvent = async (req, res, next) => {
 }
 
 const updateEvent = async (req, res, next) => {
-  console.log("updateEvent")
+  const {
+    _id,
+    member,
+    anounce,
+    description,
+    eventCover,
+    type,
+    tags,
+    address,
+    city,
+    dateEnd,
+    dateStart,
+    geoLocation,
+    link,
+    location,
+    title,
+    zoom,
+  } = req.body
+  try {
+    const event = {
+      member,
+      anounce,
+      description,
+      eventCover,
+      type,
+      tags,
+      address,
+      city,
+      dateEnd: new Date(dateEnd),
+      dateStart: new Date(dateStart),
+      geoLocation,
+      link,
+      location,
+      title,
+      zoom,
+    }
+    const updatedEvent = await Event.findOneAndUpdate({ _id }, event, {
+      new: true,
+    })
+    if (!updatedEvent) {
+      await Promise.reject("Error saving event")
+    }
+    return res.status(200).json({ success: true, resource: updatedEvent })
+  } catch (e) {
+    console.log(e)
+    return res.status(404).json({ e })
+  }
 }
 const cancelEvent = async (req, res, next) => {
   const { id } = req.params
@@ -169,7 +215,6 @@ const cancelEvent = async (req, res, next) => {
         new: true,
       }
     )
-    console.log(canceled)
     if (canceled) {
       res.status(200).json({
         data: canceled,
