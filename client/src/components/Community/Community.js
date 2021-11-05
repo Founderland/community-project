@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Login from "../Admin/Login"
 import Main from "./Main"
 import UserContext from "../../contexts/User"
@@ -30,6 +30,14 @@ const Community = () => {
       }
     }
   }, [token])
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  }, [token])
 
   const logout = () => {
     localStorage.authToken = ""
@@ -52,6 +60,7 @@ const Community = () => {
         logout,
         token,
         setToken,
+        config,
       }}
     >
       {user ? <Main /> : <Login />}

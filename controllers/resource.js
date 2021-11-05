@@ -78,6 +78,8 @@ const findAllResource = async (req, res) => {
     ).select({
       categoryKey: 1,
       categoryName: 1,
+      categoryIcon: 1,
+      categoryColor: 1,
     })
     res.status(200).json(result)
   } catch (error) {

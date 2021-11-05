@@ -1,23 +1,25 @@
 import React, { useContext, useState } from "react"
 import CategoryDisplay from "./CategoryDisplay"
 import Resourcebg from "../../../assets/images/resourcebg.png"
-import LogoTransform from "../../../assets/images/croppedLogo.gif"
-import { CommunityContext } from "../../../contexts/CommunityProvider"
+import UserContext from "../../../contexts/User"
 import { useParams } from "react-router"
 import DisplayArticles from "./DisplayArticles"
 import { SearchIcon } from "@heroicons/react/solid"
+import axios from "axios"
+import { useEffect } from "react"
 
 export default function ResourcesList() {
-  const { category, categoryHandler } = useContext(CommunityContext)
+  const { config } = useContext(UserContext)
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
   const [viewSearchBar, setViewSearchBar] = useState(false)
-  const { categoryPath } = useParams()
-  categoryHandler(categoryPath)
-  console.log(categoryPath)
+  const { category } = useParams()
+
   const data = [
     {
       id: 1,
       categoryName: "Welcome Guide",
-      path: "welcome-guide",
+      path: "welcomeguide",
     },
     {
       id: 2,
@@ -71,6 +73,27 @@ export default function ResourcesList() {
       ],
     },
   ]
+  useEffect(() => {
+    axios
+      .get("/api/resources/", config)
+      .then((res) => {
+        console.log(res.data)
+        let filteredData = res.data.map((category, i) => ({
+          index: i,
+          id: category._id,
+          name: category.categoryName,
+          key: category.categoryKey,
+          icon: category.categoryIcon,
+          color: category.categoryColor,
+          locked: category.numberOfArticles !== 0 ? false : true,
+        }))
+        setCategories(filteredData)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   const searchHandler = () => {
     if (!viewSearchBar) {
@@ -79,15 +102,13 @@ export default function ResourcesList() {
       console.log("SEARCH HERE")
     }
   }
-
-  return (
+  console.log(categories)
+  return loading ? (
+    "loading"
+  ) : (
     <div className="relative">
-      {/* <div className='fixed top-0 left-0 z-10 right-0 flex justify-center items-center w-full bg-white shadow-lg h-16'>
-        <h1 className='text-3xl'> Navbar </h1>
-      </div> */}
-
-      <div className=" hidden lg:w-full xl:flex h-screen   ">
-        <div className="w-1/4  flex flex-col pt-10  pl-16 bg-gray-50 bg-opacity-50">
+      <div className="flex w-full h-screen">
+        <div className="w-1/4 flex flex-col pt-10 pl-6 bg-gray-50 bg-opacity-50">
           <div class="flex items-center justify-start ">
             <div class="flex border-2 rounded">
               <input
@@ -107,20 +128,13 @@ export default function ResourcesList() {
               </button>
             </div>
           </div>
-
-          <div className="pt-10  mr-2 ">
-            {data.map((item) => (
-              <CategoryDisplay
-                data={item}
-                active={item.path === categoryPath}
-              />
+          <div className="pt-5 pr-2">
+            {categories.map((item) => (
+              <CategoryDisplay category={item} active={item.key === category} />
             ))}
-            {/* <div className=" ">
-            <img src={LogoTransform} alt="logo" />
-            </div> */}
           </div>
         </div>
-        {!categoryPath ? (
+        {!category ? (
           <div className="w-3/4 relative">
             <img
               className="w-full h-full object-cover"
@@ -138,22 +152,21 @@ export default function ResourcesList() {
           <div className="w-3/4 relative">
             {
               <DisplayArticles
-                data={data.filter((item) => item.path === categoryPath)}
+                data={data.filter((item) => item.path === category)}
               />
             }
           </div>
         )}
       </div>
-
-      {/* For Mobile Screens */}
+      {/* For Mobile Screens
       <div className="w-full h-screen xl:hidden">
         <div className="m-h-18 flex justify-evenly ">
-          {data.map((item) => (
-            <CategoryDisplay data={item} active={item.path === categoryPath} />
+          {categories.map((item) => (
+            <CategoryDisplay category={item} active={item.key === category} />
           ))}
         </div>
 
-        {!categoryPath ? (
+        {!category ? (
           <div className="h-3/4 relative">
             <img
               className="w-full h-full object-cover"
@@ -171,13 +184,12 @@ export default function ResourcesList() {
           <div className="h-3/4 relative">
             {
               <DisplayArticles
-                data={data.filter((item) => item.path === categoryPath)}
+                data={data.filter((item) => item.path === category)}
               />
             }
           </div>
         )}
       </div>
-
       <div className="lg:hidden flex items-center justify-end fixed w-full bottom-8 right-0 left-0 px-8">
         <input
           type="text"
@@ -195,7 +207,7 @@ export default function ResourcesList() {
         >
           <SearchIcon className="h-5 w-5 text-white" />
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }
