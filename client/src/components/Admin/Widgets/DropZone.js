@@ -106,7 +106,12 @@ const Dropzone = ({
               required ? "text-red-600 animate-pulse" : ""
             }`}
           >
-            Drag and drop your file here, or click to select it
+            <p>Drag and drop your file here, or click to select it</p>
+            {type.match(regex) ? (
+              <p className="text-xs">(optimal ratio: 2:1)</p>
+            ) : (
+              ""
+            )}
           </p>
         )}
       </div>

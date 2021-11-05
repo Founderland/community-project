@@ -9983,6 +9983,11 @@ react-time-picker@^4.4.2:
     react-fit "^1.0.3"
     update-input-width "^1.2.2"
 
+react-tiny-link@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/react-tiny-link/-/react-tiny-link-3.6.1.tgz#69da07660e16e2498c42458b09b02d4c41e6683c"
+  integrity sha512-spQghU5GqBWsLE8rKOTYo/h6MNoZJn8Gqs6jpeQuo/eq2bALkeOke2FfSswVOhGN8z8riDY+TqaJ2eaoNKtrAw==
+
 react-window-size@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/react-window-size/-/react-window-size-1.2.2.tgz#4fd71ba91c512550cf8a4275fadd02480bcdbb14"

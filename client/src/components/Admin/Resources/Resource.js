@@ -8,6 +8,7 @@ import AdminContext from "../../../contexts/Admin"
 import ConfirmModal from "../Widgets/ConfirmModal"
 import Confirm from "./Confirm"
 import AddResource from "./AddResource"
+import LinkPreview from "./LinkPreview"
 
 const resourceUrl = "/api/resources/id/"
 
@@ -102,10 +103,10 @@ const Resource = ({ category, categories }) => {
               </div>
             </div>
 
-            <div className="max-w-3xl mx-auto my-4 px-6 text-justify text-base">
+            <div className="max-w-3xl mx-auto my-4 px-6 py-8 text-justify text-base text-mono">
               <p>{data.article.articleDescription}</p>
             </div>
-            <div className="max-w-3xl mx-auto px-2">
+            <div className="max-w-3xl mx-auto px-2 flex justify-center items-center pb-4">
               {data.article.articleType === "article" ? (
                 <div
                   dangerouslySetInnerHTML={{
@@ -113,7 +114,7 @@ const Resource = ({ category, categories }) => {
                   }}
                 ></div>
               ) : data.article.articleType === "link" ? (
-                "link"
+                <LinkPreview url={data.article.articleContent} />
               ) : data.article.articleType === "picture" ? (
                 <img
                   src={data.article.articleFile.url}
@@ -125,7 +126,8 @@ const Resource = ({ category, categories }) => {
               )}
             </div>
             {data.article.sources.length > 0 && (
-              <div className="max-w-3xl mx-auto my-4 px-6 p-2 text-justify text-sm border-t-2 border-gray-200">
+              <div className="max-w-3xl mx-auto mt-6 px-6 p-2 text-justify text-sm border-t-2 border-gray-200">
+                <p className="text-xs mt-1">Sources:</p>
                 <ul className="list-outside list-disc text-xs py-2">
                   {data.article.sources.map((source) => (
                     <li className=" text-xs text-mono">
@@ -137,7 +139,7 @@ const Resource = ({ category, categories }) => {
                 </ul>
               </div>
             )}
-            <footer className="max-w-3xl mx-auto border-t-2 border-gray-200 mt-2">
+            <footer className="max-w-3xl mx-auto border-t-2 border-gray-200 mt-1">
               <p className="text-center text-xs py-2">
                 Last updated -{" "}
                 {moment(data.article.articleLastUpdated).format("DD MMMM YYYY")}
