@@ -61,7 +61,7 @@ const Members = () => {
         id={id}
       />
 
-      <section className="flex justify-center bg-white outline-none md:border border-black pt-4 pb-8">
+      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
         {!id ? (
           <div className="w-full px-4 outline-none">
             {selectedTab === 3 ? (
