@@ -17,7 +17,7 @@ const ApplicationComments = ({
   const [newCommentText, setNewCommentText] = useState("")
   const [refreshCommList, setRefreshCommList] = useState(false)
   const lastComment = useRef(null)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
 
   // const [commentsArray, setCommentsArray] = useState([])
 
@@ -105,27 +105,28 @@ const ApplicationComments = ({
   }
 
   return (
-    <div className='px-4'>
+    <div className="px-4">
       <hr
         className={`mt-6 border-b-1 border-${styles[data.data.role].border}`}
       />
-      <div className='w-full flex  justify-center items-center'>
+      <div className="w-full flex  justify-center items-center">
         <Banner message={banner} />
       </div>
-      <h6 className='text-gray-400 text-sm mt-3 mb-6 font-bold uppercase'>
+      <h6 className="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
         Reviewer comments
       </h6>
-      <div className='relative'>
+      <div className="relative">
         <div
           className={
             commentsArray.length > 3
               ? "h-60 overflow-y-auto  "
               : "h-auto" + " w-full flex flex-col items-center justify-center "
-          }>
+          }
+        >
           {commentsArray.length > 3 && (
             <ChevronDoubleDownIcon
               onClick={() => scrollDown()}
-              className='w-8 h-8 absolute right-0 bottom-0 hover:text-flime hover:bg-black bg-white bg-opacity-60'
+              className="w-8 h-8 absolute right-0 bottom-0 hover:text-flime hover:bg-black bg-white bg-opacity-60"
             />
           )}
           {/* comments */}
@@ -141,32 +142,35 @@ const ApplicationComments = ({
               />
             ))
           ) : (
-            <span className=' p-4'>There are no comment yet</span>
+            <span className=" p-4">There are no comment yet</span>
           )}
         </div>
       </div>
-      <div className='flex flex-wrap'>
-        <div className='w-full '>
+      <div className="flex flex-wrap">
+        <div className="w-full ">
           <div
             className={
               data.data.status === "approved"
                 ? "hidden"
                 : "relative w-full mb-3"
-            }>
+            }
+          >
             <textarea
-              type='text'
-              className=' border-0 px-3 py-5 placeholder-blueGray-300 text-blueGray-600 bg-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150'
-              rows='4'
-              placeholder='Write a comment'
+              type="text"
+              className=" border-0 px-3 py-5 placeholder-blueGray-300 text-blueGray-600 bg-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              rows="4"
+              placeholder="Write a comment"
               value={newCommentText}
-              onChange={(e) => setNewCommentText(e.target.value)}></textarea>
+              onChange={(e) => setNewCommentText(e.target.value)}
+            ></textarea>
             <button
               onClick={() => {
                 addComment(user)
               }}
-              className='absolute bottom-1 right-1 flex px-4 md:px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white'>
-              <PlusIcon className='w-5 h-5' />
-              <p className='text-mono text-sm hidden md:block'>
+              className="absolute bottom-1 right-1 flex px-4 md:px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+            >
+              <PlusIcon className="w-5 h-5" />
+              <p className="text-mono text-sm hidden md:block">
                 add new comment
               </p>
             </button>

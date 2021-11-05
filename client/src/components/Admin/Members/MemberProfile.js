@@ -56,7 +56,7 @@ const MemberProfile = () => {
   const [notified, setNotified] = useState(false)
   const [locking, setLocking] = useState(false)
   const [profile, setProfile] = useState(defaultProfile)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const { id } = useParams()
   const { token, reload, setReload } = useContext(AdminContext)
   const config = useMemo(() => {

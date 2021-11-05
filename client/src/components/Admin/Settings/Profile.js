@@ -55,7 +55,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false)
   const [notifying, setNotifying] = useState(false)
   const [locking, setLocking] = useState(false)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const [notified, setNotified] = useState(false)
   const config = useMemo(() => {
     return {

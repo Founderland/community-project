@@ -18,7 +18,7 @@ const AddCategory = ({ data }) => {
   })
   const [saving, setSaving] = useState(false)
 
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const { setCModal, config, reload, setReload } = useContext(AdminContext)
 
   const save = async () => {

@@ -78,7 +78,7 @@ const Question = ({ role }) => {
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
   const [answersList, setAnswersList] = useState([])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const [showPreview, setShowPreview] = useState(false)
   const mainDiv = useRef()
 
