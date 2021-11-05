@@ -42,7 +42,7 @@ const Resource = ({ category, categories }) => {
   }, [id, reload])
 
   return (
-    <section className=" h-full py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6">
+    <section className="h-full pt-1 pb-20 w-full lg:w-5/6 px-4 mx-auto mt-6 overflow-auto">
       <ConfirmModal>
         <Confirm data={data} />
       </ConfirmModal>
@@ -63,7 +63,7 @@ const Resource = ({ category, categories }) => {
           <article className="py-2 px-4">
             <div className="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative">
               <div
-                className=" left-0 bottom-0 w-full h-full z-10 "
+                className="absolute left-0 bottom-0 w-full h-full z-10 "
                 style={{
                   backgroundImage:
                     "linear-gradient(180deg,transparent,rgba(0,0,0,.7))",
@@ -71,10 +71,16 @@ const Resource = ({ category, categories }) => {
               ></div>
               <img
                 src={data.article.articleCover.url}
-                className=" left-0 top-0 w-full h-full z-0 object-cover"
+                className="relative left-0 top-0 w-full h-full z-0 object-cover"
                 alt="article cover"
               />
-              <div className="p-4  bottom-0 left-0 z-20 bg-gradient-to-t from-gray-600 to-gray-100 ">
+              <div
+                className="absolute w-full left-0 bottom-0 p-4 bottom-0 left-0 z-20  "
+                style={{
+                  backgroundImage:
+                    "linear-gradient(180deg,transparent,rgba(0,0,0,.7))",
+                }}
+              >
                 {data.article.tags.map((tag) => (
                   <p className="mx-1 text-xs px-2 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2">
                     {tag}
