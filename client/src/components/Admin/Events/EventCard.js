@@ -1,4 +1,8 @@
-import { ChevronRightIcon, SpeakerphoneIcon } from "@heroicons/react/solid"
+import {
+  ChevronRightIcon,
+  SpeakerphoneIcon,
+  XCircleIcon,
+} from "@heroicons/react/outline"
 import { Link } from "react-router-dom"
 import moment from "moment"
 
@@ -14,16 +18,22 @@ const EventCard = ({ event }) => {
       className=" flex items-center justify-center my-3 mx-2"
       to={`/admin/events/id/${event._id}`}
     >
-      <div className="group cursor-pointer flex flex-col bg-white shadow-lg hover:shadow-xl">
-        <img
-          className="w-full h-40 bg-top bg-cover"
-          src={
-            event.photo?.url
-              ? event.photo.url
-              : `https://www.si.com/.image/t_share/MTY4MTkyMjczODM4OTc0ODQ5/cfp-trophy-deitschjpg.jpg`
-          }
-          alt="cover"
-        />
+      <div className="max-w-sm group cursor-pointer flex flex-col bg-white shadow-lg hover:shadow-xl">
+        <div className="flex w-full relative ">
+          <img
+            className="w-full h-40 bg-top bg-cover"
+            src={event.eventCover?.url}
+            alt="cover"
+          />
+          {event.isCanceled && (
+            <div className="w-full h-full bg-white bg-opacity-40 tracking-wider absolute flex space-x-2 text-hanson">
+              <XCircleIcon className="ml-2 w-10 h-10 text-red-600" />
+              <p className="mt-2 w-full text-lg text-red-600">
+                Event Cancelled
+              </p>
+            </div>
+          )}
+        </div>
         <div className="w-full flex flex-col justify-between px-6 py-3">
           <div className="w-full flex justify-between">
             <p className="text-sm font-semibold text-red-400">

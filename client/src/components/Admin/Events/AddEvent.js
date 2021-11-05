@@ -233,7 +233,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
           />
         </div>
       </div>
-      <div className="md:flex w-full px-3">
+      <div className="md:flex w-full px-3 mb-2">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Type
@@ -247,27 +247,31 @@ const AddEvent = ({ event, edit, setEdit }) => {
           </div>
         </div>
         <div className="w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-            Link
-          </label>
-          <div className="w-full">
-            <input
-              className={`${
-                data.link === ""
-                  ? ""
-                  : !isLink(data.link)
-                  ? "border-l-4 border-fred"
-                  : "border-l-4 border-flime"
-              } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3 ${
-                required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
-              }`}
-              type="text"
-              onChange={(e) => {
-                setData((prev) => ({ ...prev, link: e.target.value }))
-              }}
-              value={data.link}
-            />
-          </div>
+          {data.type === "online" && (
+            <>
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+                Link
+              </label>
+              <div className="w-full">
+                <input
+                  className={`${
+                    data.link === ""
+                      ? ""
+                      : !isLink(data.link)
+                      ? "border-l-4 border-fred"
+                      : "border-l-4 border-flime"
+                  } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3 ${
+                    required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+                  }`}
+                  type="text"
+                  onChange={(e) => {
+                    setData((prev) => ({ ...prev, link: e.target.value }))
+                  }}
+                  value={data.link}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
       {data.type !== "online" && (

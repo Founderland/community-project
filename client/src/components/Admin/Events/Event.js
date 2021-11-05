@@ -3,20 +3,30 @@ import { useState, useEffect, useContext } from "react"
 import Loading from "../Widgets/Loading"
 import MapDisplay from "./MapDisplay"
 import AdminContext from "../../../contexts/Admin"
-import { EmojiSadIcon, TrashIcon } from "@heroicons/react/outline"
+import LinkPreview from "../Resources/LinkPreview"
+import ConfirmModal from "../Widgets/ConfirmModal"
+import ConfirmDelete from "./ConfirmDelete"
+import ConfirmCancel from "./ConfirmCancel"
+import ComponentModal from "../Widgets/ComponentModal"
+import { EmojiSadIcon, TrashIcon, XCircleIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import moment from "moment"
+const avatarInitials = (first, last) => {
+  let initials = first[0].toUpperCase() + last[0].toUpperCase()
+  return initials
+}
 
 const styles = {
   online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
   public: "bg-fblue-100 text-white border-fblue-900 border p-1 px-2 text-sm",
   private: "bg-fred-100 text-black border-fred-900 border p-1 px-2 text-sm",
 }
-const eventUrl = "/api/events/id/"
+const eventUrl = "/api/events/"
 
 const Event = () => {
   const { id } = useParams()
-  const { config, reload, setCCModal, user } = useContext(AdminContext)
+  const { config, reload, setCCModal, setCModal, user } =
+    useContext(AdminContext)
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -26,8 +36,8 @@ const Event = () => {
     axios
       .get(eventUrl + id, config)
       .then((res) => {
-        if (res.data) {
-          setData({ ...data, ...res.data })
+        if (res.data.data) {
+          setData(res.data.data)
           setLoading(false)
         } else {
           setError("No event found with this ID")
@@ -37,9 +47,15 @@ const Event = () => {
       .catch((err) => {
         console.log(err)
       })
-  }, [id])
+  }, [id, reload])
   return (
     <section className="h-full py-1 bg-white flex flex-col justify-center w-full lg:w-5/6 px-4 mx-auto mt-6">
+      <ConfirmModal>
+        <ConfirmDelete data={data} />
+      </ConfirmModal>
+      <ComponentModal>
+        <ConfirmCancel data={data} />
+      </ComponentModal>
       {loading ? (
         <Loading />
       ) : error ? (
@@ -48,27 +64,49 @@ const Event = () => {
         </div>
       ) : (
         <>
-          <div className="self-center flex flex-col w-full xl:w-5/6 mb-6 shadow-lg border-0">
+          <div className="relative self-center flex flex-col w-full xl:w-5/6 mb-6 shadow-lg border-0">
             <img
               className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
               src={
-                data.photo?.url
-                  ? data.photo.url
+                data.eventCover?.url
+                  ? data.eventCover.url
                   : `https://www.si.com/.image/t_share/MTY4MTkyMjczODM4OTc0ODQ5/cfp-trophy-deitschjpg.jpg`
               }
               alt="cover"
             />
+            {data.isCanceled && (
+              <>
+                {" "}
+                <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
+                <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
+                  Event Canceled
+                </p>
+              </>
+            )}
             <div className="flex w-full justify-between">
               <div className="flex flex-grow p-4 text-mono">
                 <p className="text-2xl tracking-wider self-center font-bold uppercase">
                   {data.title}
                 </p>
-                <div className="flex flex-col sm:flex-row space-x-2 ml-4 self-end text-grotesk">
+                <img
+                  src={data.member.photo?.url}
+                  className="h-10 w-10 ml-4 rounded-full mr-2 object-cover"
+                  alt="user profile"
+                />
+                <div className="space-x-2  self-end text-grotesk">
                   <p className="w-full text-xs self-end">Hosted by</p>
                   <p className="text-xs uppercase self-end">
-                    {data.host.firstName} {data.host.lastName}
+                    {data.member.firstName} {data.member.lastName}
                   </p>
                 </div>
+                {data.isCanceled && (
+                  <div className="hidden sm:flex items-center space-x-2 ml-4 self-end text-grotesk">
+                    <XCircleIcon className="w-8 h-8 text-red-600" />
+                    <p className="w-full text-lg text-red-600">
+                      Event Cancelled
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="hidden sm:flex sm:flex-grow-0 justify-center sm:justify-start items-center p-4">
                 <p className={styles[data.type]}>{data.type}</p>
@@ -126,31 +164,117 @@ const Event = () => {
                 </div>
               </div>
               <div className="p-2 hidden lg:block"></div>
-              <div className="h-full mb-2 col-span-2 py-2 px-4 hidden md:block">
-                <MapDisplay location={data.geoLocation} zoom={data.zoom} />
-              </div>
+              {data.type !== "online" && (
+                <div className="h-full mb-2 col-span-2 py-2 px-4 hidden md:block">
+                  <MapDisplay location={data.geoLocation} zoom={data.zoom} />
+                </div>
+              )}
+              {data.type === "online" && (
+                <div className="h-full mb-2 col-span-2 py-2 hidden md:block">
+                  <LinkPreview url={data.link} />
+                </div>
+              )}
             </div>
-            <hr className={`mt-6 border-b-1 border-fblue`} />
+            <hr className={`mt-6 border-b-1 border-gray-400`} />
             <div className="w-full flex flex-col px-4 py-2">
               <h6 className="text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
                 About
               </h6>
-              <div className="px-3 bg-white text-xl w-full ease-linear transition-all duration-150">
+              <div className="px-3 bg-white text-lg text-mono w-full ease-linear transition-all duration-150">
                 {data.description}
               </div>
-              <h6 className="text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
-                Attendees
+              <h6 className="text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
+                Going
               </h6>
-              <div className="px-3 bg-white text-lg w-full ease-linear transition-all duration-150">
+              <div className="px-3 bg-white text-base text-mono w-full ease-linear transition-all duration-150">
                 {data.going.length
-                  ? data.going.map((attendee) => attendee._id)
+                  ? data.going.map((attendee) => {
+                      return (
+                        <div
+                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                        >
+                          {attendee.photo?.public_id ? (
+                            <img
+                              src={attendee.photo?.url}
+                              className="h-10 w-10 rounded-full mr-2 object-cover"
+                              alt="user profile"
+                            />
+                          ) : (
+                            avatarInitials(
+                              attendee.firstName,
+                              attendee.lastName
+                            )
+                          )}
+                        </div>
+                      )
+                    })
                   : "No confirmations yet"}
               </div>
+              <h6 className="text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
+                Interested
+              </h6>
+              <div className="px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150">
+                {data.interested.length
+                  ? data.interested.map((attendee) => {
+                      return (
+                        <div
+                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                        >
+                          {attendee.photo?.public_id ? (
+                            <img
+                              src={attendee.photo?.url}
+                              className="h-10 w-10 rounded-full mr-2 object-cover"
+                              alt="user profile"
+                            />
+                          ) : (
+                            avatarInitials(
+                              attendee.firstName,
+                              attendee.lastName
+                            )
+                          )}
+                        </div>
+                      )
+                    })
+                  : "No confirmations yet"}
+              </div>
+              {data.type !== "online" && (
+                <div className="px-3 bg-white text-lg w-full border-t-2 border-b-2 border-gray-300 mt-2">
+                  <p className="text-gray-400 text-xs mt-2 font-bold mb-1 uppercase">
+                    Location
+                  </p>
+                  <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
+                    {data.location}
+                  </p>
+                  {data.address && (
+                    <>
+                      <p className="text-gray-400 text-xs mt-2 font-bold mb-1 uppercase">
+                        Address
+                      </p>
+                      <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
+                        {data.address}
+                      </p>
+                    </>
+                  )}
+                  <p className="text-gray-400 text-xs mt-2 font-bold mb-1 uppercase">
+                    City
+                  </p>
+                  <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
+                    {data.city}
+                  </p>
+                </div>
+              )}
             </div>
             <footer className="flex p-4 mt-2 justify-center items-center">
-              <button class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4">
-                Cancel Event
-              </button>
+              {!data.isCanceled && (
+                <button
+                  class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                  onClick={() => {
+                    setCModal(true)
+                  }}
+                >
+                  Cancel Event
+                </button>
+              )}
             </footer>
           </div>
         </>
