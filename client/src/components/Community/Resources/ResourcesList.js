@@ -102,35 +102,19 @@ export default function ResourcesList() {
       console.log("SEARCH HERE")
     }
   }
-  console.log(categories)
+  console.log(category)
   return loading ? (
     "loading"
   ) : (
     <div className="relative">
-      <div className="flex w-full h-screen">
-        <div className="w-1/4 flex flex-col pt-10 pl-6 bg-gray-50 bg-opacity-50">
-          <div class="flex items-center justify-start ">
-            <div class="flex border-2 rounded">
-              <input
-                type="text"
-                class="px-4 py-2 w-60"
-                placeholder="Search..."
-              />
-              <button class="flex items-center justify-center px-4 border-l">
-                <svg
-                  class="w-6 h-6 text-gray-600"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                </svg>
-              </button>
-            </div>
-          </div>
+      <div className="md:flex w-full h-screen">
+        <div className="w-full md:w-1/4 md:flex flex-col pt-2 md:pt-10 pl-6 bg-gray-50 bg-opacity-50">
           <div className="pt-5 pr-2">
             {categories.map((item) => (
-              <CategoryDisplay category={item} active={item.key === category} />
+              <CategoryDisplay
+                category={item}
+                isActive={item.key === category}
+              />
             ))}
           </div>
         </div>
@@ -158,56 +142,6 @@ export default function ResourcesList() {
           </div>
         )}
       </div>
-      {/* For Mobile Screens
-      <div className="w-full h-screen xl:hidden">
-        <div className="m-h-18 flex justify-evenly ">
-          {categories.map((item) => (
-            <CategoryDisplay category={item} active={item.key === category} />
-          ))}
-        </div>
-
-        {!category ? (
-          <div className="h-3/4 relative">
-            <img
-              className="w-full h-full object-cover"
-              src={Resourcebg}
-              alt="resource"
-            />
-            <div className="absolute top-0 flex items-center justify-center w-full h-full">
-              <h1 className="text-hanson md:text-4xl  lg:text-6xl text-white p-28 ">
-                {" "}
-                The Founderland Library
-              </h1>
-            </div>
-          </div>
-        ) : (
-          <div className="h-3/4 relative">
-            {
-              <DisplayArticles
-                data={data.filter((item) => item.path === category)}
-              />
-            }
-          </div>
-        )}
-      </div>
-      <div className="lg:hidden flex items-center justify-end fixed w-full bottom-8 right-0 left-0 px-8">
-        <input
-          type="text"
-          class={`px-4 py-2 border border-black rounded-l-xl transition duration-200 ease-in-out ${
-            viewSearchBar ? "w-full opacity-100" : "w-0 opacity-0"
-          }`}
-          placeholder="Search..."
-        />
-        <button
-          onClick={searchHandler}
-          type="button"
-          class={`w-12 float-right py-2 px-4 flex justify-center items-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  w-12 h-12 ${
-            viewSearchBar ? "rounded-r-lg" : "rounded-lg"
-          }`}
-        >
-          <SearchIcon className="h-5 w-5 text-white" />
-        </button>
-      </div> */}
     </div>
   )
 }
