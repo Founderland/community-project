@@ -103,7 +103,7 @@ const Settings = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="flex justify-center bg-white outline-none md:border border-black pt-4 pb-8">
+      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
         {loading ? <Loading /> : tabs[selectedTab].component}
       </section>
     </div>
