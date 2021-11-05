@@ -78,7 +78,7 @@ const Question = ({ role }) => {
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
   const [answersList, setAnswersList] = useState([])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const [showPreview, setShowPreview] = useState(false)
   const mainDiv = useRef()
 
@@ -107,7 +107,7 @@ const Question = ({ role }) => {
           })
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
-          }, 3000)
+          }, 4000)
         })
     }
   }, [id])
@@ -139,7 +139,7 @@ const Question = ({ role }) => {
           setBanner({
             success: 1,
             show: true,
-            message: "Question saved.. redirecting",
+            message: "Question saved! Redirecting..",
           })
           setTimeout(() => {
             history.push("/admin/forms/")
@@ -158,7 +158,7 @@ const Question = ({ role }) => {
           })
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
-          }, 3000)
+          }, 4000)
         })
     } else {
       setBanner({
@@ -168,7 +168,7 @@ const Question = ({ role }) => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 
@@ -180,7 +180,7 @@ const Question = ({ role }) => {
         setBanner({
           show: true,
           success: 1,
-          message: "Question deleted.. redirecting",
+          message: "Question deleted.! Redirecting..",
         })
         setTimeout(() => {
           history.push("/admin/forms")
@@ -199,7 +199,7 @@ const Question = ({ role }) => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 4000)
       })
   }
 

@@ -8,13 +8,22 @@ import ResourcesList from "./ResourcesList"
 import Resource from "./Resource"
 import AddResource from "./AddResource"
 import ComponentModal from "../Widgets/ComponentModal"
+import ConfirmModal from "../Widgets/ConfirmModal"
 import AddCategory from "./AddCategory"
+import ConfirmCategory from "./ConfirmCategory.js"
 
 const Resources = () => {
   const history = useHistory()
 
-  const { selectedTab, setSelectedTab, setCModal, config, reload, user } =
-    useContext(AdminContext)
+  const {
+    selectedTab,
+    setSelectedTab,
+    setCModal,
+    setCCModal,
+    config,
+    reload,
+    user,
+  } = useContext(AdminContext)
   const [tabs, setTabs] = useState([])
   const [categories, setCategories] = useState([])
   const { id } = useParams()
@@ -64,13 +73,16 @@ const Resources = () => {
   }, [reload])
 
   const handleTask = () => {
-    history.push("resources/id/new")
+    history.push("/admin/resources/id/new")
   }
   return (
     <div className="w-full flex flex-col ">
       <ComponentModal>
         <AddCategory />
       </ComponentModal>
+      <ConfirmModal>
+        <ConfirmCategory data={tabs[selectedTab]} />
+      </ConfirmModal>
       {tabs.length > 0 ? (
         <>
           <Tabs
@@ -92,7 +104,12 @@ const Resources = () => {
                     <p className="text-mono text-sm">Add New Resource</p>
                   </button>
                   {user.role.includes("sadmin") && !tabs[selectedTab].locked ? (
-                    <button className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-gray-700 transition duration-200 hover:bg-fred text-white">
+                    <button
+                      className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-gray-700 transition duration-200 hover:bg-fred text-white"
+                      onClick={() => {
+                        setCCModal(true)
+                      }}
+                    >
                       <TrashIcon className="h-5 w-5" />
                       <p className="text-mono text-sm">Delete Category</p>
                     </button>
@@ -107,7 +124,10 @@ const Resources = () => {
                 categories={categories}
               />
             ) : (
-              <Resource />
+              <Resource
+                category={tabs[selectedTab].key}
+                categories={categories}
+              />
             )}
           </tab>
         </>

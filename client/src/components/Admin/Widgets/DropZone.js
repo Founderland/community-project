@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from "react"
+import { useState, useCallback, useContext, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
@@ -16,6 +16,8 @@ const Dropzone = ({
   const [previewSource, setPreviewSource] = useState(null)
   const [loading, setLoading] = useState(false)
   const { getUuid, config } = useContext(AdminContext)
+  const regex = new RegExp("(?:Cover)", "g")
+
   // CLOUDINARY
   const onDrop = useCallback((acceptedFiles) => {
     const reader = new FileReader()
@@ -27,6 +29,7 @@ const Dropzone = ({
       uploadImage(binaryStr)
     }
   }, [])
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
   const uploadImage = async (base64EncodedImage) => {
     setLoading(true)
@@ -40,10 +43,8 @@ const Dropzone = ({
         },
         config
       )
-      console.log(result)
       if (result.data?.public_id) {
         setUploadStatus({ success: true, message: result.data.message })
-        console.log(result.data)
         setData((prev) => ({
           ...prev,
           [type]: { public_id: result.data.public_id, url: result.data.url },
@@ -54,8 +55,10 @@ const Dropzone = ({
             success: false,
             message: "",
           })
-          // setPreviewSource(null)
-        }, 3000)
+          if (type.match(regex)) {
+            setPreviewSource(null)
+          }
+        }, 2000)
       }
     } catch (e) {
       console.log(e)
@@ -69,7 +72,7 @@ const Dropzone = ({
           success: false,
           message: "",
         })
-      }, 3000)
+      }, 4000)
     }
   }
 
@@ -93,18 +96,22 @@ const Dropzone = ({
         {!loading && previewSource && (
           <img
             src={previewSource}
-            style={{ width: "200px", height: "80px" }}
             alt="chosen"
-            className="p-2 object-cover"
+            className="w-full p-2 object-cover"
           />
         )}
-        {!data[type]?.public_id && (
+        {!previewSource && (
           <p
-            className={`block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2 ${
+            className={`block uppercase tracking-wide text-gray-600 text-xs font-bold ${
               required ? "text-red-600 animate-pulse" : ""
             }`}
           >
-            Drag and drop your file here, or click to select it
+            <p>Drag and drop your file here, or click to select it</p>
+            {type.match(regex) ? (
+              <p className="text-xs">(optimal ratio: 2:1)</p>
+            ) : (
+              ""
+            )}
           </p>
         )}
       </div>

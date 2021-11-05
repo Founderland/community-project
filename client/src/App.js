@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
+import { BrowserRouter as Router, Route } from "react-router-dom"
 import ApplicantsDispatcher from "./components/ApplicantsDispatcher"
 import Form from "./components/Form"
 import Thankyou from "./components/Forms/Thankyou"

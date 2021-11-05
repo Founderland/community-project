@@ -40,7 +40,7 @@ resourceRouter.put(
 
 // DELETE Resource
 resourceRouter.delete(
-  "/:id",
+  "/:id/:article",
   passport.authenticate("jwt", { session: false }),
   resourceController.deleteResource
 )
