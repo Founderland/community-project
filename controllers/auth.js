@@ -5,20 +5,23 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const { generateHashedPassword } = require("../helpers/user")
 
-const authenticateUser = async (username, password, done) => {
+const authenticateUser = async (req, username, password, done) => {
+  const { isAdminLogin } = req.body
   //NEEDS TO BE ADAPTED TO CHECK BOTH ON COMMUNITY AND ADMIN
   try {
     // Check that user exists by email
-    const user = await User.findOne({ email: username })
-    if (user && (await bcrypt.compare(password, user.hashedPassword))) {
-      delete user.hashedPassword
-      if (user.isVerified && !user.isLocked) {
-        done(null, user, { message: "Successful" })
-      } else {
-        done(null, false, { message: "User unverified or locked" })
+    if (isAdminLogin) {
+      const user = await User.findOne({ email: username })
+      if (user && (await bcrypt.compare(password, user.hashedPassword))) {
+        delete user.hashedPassword
+        if (user.isVerified && !user.isLocked) {
+          done(null, user, { message: "Successful" })
+        } else {
+          done(null, false, { message: "User unverified or locked" })
+        }
       }
     } else {
-      const user = await Member.findOne({ email: username })
+      const user = await Member.findOne({ email: username }).lean()
       if (user && (await bcrypt.compare(password, user.hashedPassword))) {
         delete user.hashedPassword
         if (user.confirmed && !user.locked) {

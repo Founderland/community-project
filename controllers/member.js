@@ -5,6 +5,7 @@ const Response = require("../models/Response")
 
 const { generateHashedPassword, calculateToken } = require("../helpers/user")
 const jwt = require("jsonwebtoken")
+const { Mongoose } = require("mongoose")
 
 const findAll = async (req, res) => {
   const { role } = req.params
@@ -21,15 +22,10 @@ const findAll = async (req, res) => {
 }
 
 const findMember = async (req, res, next) => {
-  let id = null
-  if (req.user.avatar) {
-    id = req.params.id
-  } else {
-    id = req.user.id
-  }
-  const profile = await Member.findOne({ _id: id })
+  const id = req.params.id
+  const profile = await Member.findOne({ _id: id }).lean()
   if (profile) {
-    profile["hashedPassword"] = ""
+    delete profile.hashedPassword
     if (req.originalUrl.includes("notify")) {
       req.newMember = profile
       return next()
@@ -232,6 +228,34 @@ const lockProfile = async (req, res) => {
   }
 }
 
+const updateMember = async (req, res) => {
+  const { _id } = req.body
+  try {
+    const update = await Member.findByIdAndUpdate(
+      _id,
+      { ...req.body, lastUpdate: Date.now() },
+      { new: true }
+    )
+    if (update) {
+      update.hashedPassword = ""
+      res
+        .status(200)
+        .json({ success: 1, message: "User updated", data: update })
+    } else {
+      res.status(500).json({
+        error: 1,
+        message: "Something went wrong",
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      error: 1,
+      message: "Something went wrong",
+    })
+  }
+}
+
 module.exports = {
   findAll,
   findMember,
@@ -239,4 +263,5 @@ module.exports = {
   confirmUser,
   updateNotified,
   lockProfile,
+  updateMember,
 }

@@ -1,5 +1,5 @@
 const responseRouter = require("./responses.routes")
-const ressourceRouter = require("./ressources.routes")
+const resourceRouter = require("./resources.routes")
 const formRouter = require("./form.routes")
 const userRouter = require("./users.routes")
 const authRouter = require("./auth.routes")
@@ -17,8 +17,8 @@ const setupRoutes = (app) => {
   app.use("/api/auth", authRouter)
   //Events
   app.use("/api/events", eventRouter)
-  //Ressources
-  app.use("/api/ressources", eventRouter)
+  //Resources
+  app.use("/api/resources", resourceRouter)
 
   app.use("/api/profile-picture", profilePicRouter)
 }

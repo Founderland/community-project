@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Login from "../Admin/Login"
 import Main from "./Main"
 import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
+import { useHistory } from "react-router"
 
-const views = ["community", "events", "ressources", "profile", "settings"]
-
+const views = {
+  community: { icon: "userGroup", name: "Community", hide: false },
+  resources: { icon: "collection", name: "Resources", hide: false },
+  events: { icon: "calendar", name: "Events", hide: false },
+  profile: { icon: "user", name: "Profile", hide: true },
+}
 const Community = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
-  const [view, setView] = useState(0)
-
+  const history = useHistory()
   useEffect(() => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
@@ -24,9 +28,17 @@ const Community = () => {
           role: decode.role,
         })
       } else {
-        // setUser(null)
+        setUser(null)
         setToken(null)
       }
+    }
+  }, [token])
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     }
   }, [token])
 
@@ -34,22 +46,18 @@ const Community = () => {
     localStorage.authToken = ""
     setUser(null)
     setToken(null)
-  }
-  const changeView = (view) => {
-    setView(view)
+    history.push("/community")
   }
   return (
     <UserContext.Provider
       value={{
         user,
         setUser,
-        view,
-        setView,
-        changeView,
         views,
         logout,
         token,
         setToken,
+        config,
       }}
     >
       {user ? <Main /> : <Login />}

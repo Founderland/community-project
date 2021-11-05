@@ -55,7 +55,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false)
   const [notifying, setNotifying] = useState(false)
   const [locking, setLocking] = useState(false)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const [notified, setNotified] = useState(false)
   const config = useMemo(() => {
     return {
@@ -109,7 +109,7 @@ const Profile = () => {
       setSaving(false)
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     } else {
       try {
         let result = null
@@ -130,7 +130,7 @@ const Profile = () => {
             })
             setTimeout(() => {
               setBanner((prev) => ({ ...prev, show: false }))
-            }, 3000)
+            }, 4000)
             return null
           }
         }
@@ -152,13 +152,13 @@ const Profile = () => {
             message: !id
               ? "User profile updated"
               : id !== "new"
-              ? "User profile updated! redirecting.."
-              : "User saved and notified! redirecting..",
+              ? "User profile updated! Redirecting.."
+              : "User saved and notified! Redirecting..",
           })
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
             if (id) history.goBack()
-          }, 3000)
+          }, 2000)
         }
       } catch (e) {
         setSaving(false)
@@ -169,7 +169,7 @@ const Profile = () => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 4000)
       }
     }
   }
@@ -191,7 +191,7 @@ const Profile = () => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 
@@ -215,7 +215,7 @@ const Profile = () => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 2000)
       } else {
         setLocking(false)
         setBanner({
@@ -225,7 +225,7 @@ const Profile = () => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 4000)
       }
     } catch (e) {
       setLocking(false)
@@ -236,7 +236,7 @@ const Profile = () => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 

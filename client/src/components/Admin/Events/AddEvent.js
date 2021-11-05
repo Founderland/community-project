@@ -35,7 +35,7 @@ const AddEvent = ({ role }) => {
     zoom: 16,
   })
   const [saving, setSaving] = useState(false)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const [uploadStatus, setUploadStatus] = useState({
     success: false,
     message: "",
@@ -61,7 +61,7 @@ const AddEvent = ({ role }) => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 
@@ -91,8 +91,7 @@ const AddEvent = ({ role }) => {
     }
   }
   const popTag = (value) => {
-    const newTags = [...data.tags]
-    newTags.pop(value)
+    const newTags = [...data.tags].filter((tag) => tag !== value)
     setData((prev) => ({ ...prev, tags: newTags }))
   }
   const isLink = () => {
@@ -100,7 +99,6 @@ const AddEvent = ({ role }) => {
       data.link
     )
   }
-  console.log(data)
   return (
     <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col w-full xl:w-5/6">
       <div className="w-full flex items-center justify-center z-20">

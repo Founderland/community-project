@@ -1,5 +1,5 @@
 import Dashboard from "./Dashboard"
-import Ressources from "./Ressources/Ressources"
+import Resources from "./Resources/Resources"
 import Settings from "./Settings/Settings"
 import Applicants from "./Applicants/Applicants"
 import Members from "./Members/Members"
@@ -9,11 +9,10 @@ import Events from "./Events/Events"
 
 const Content = () => {
   let { view } = useParams()
-
   return (
     <main className="overflow-x-hidden w-full h-screen md:px-4 ">
       {view === "dashboard" && <Dashboard />}
-      {view === "ressources" && <Ressources />}
+      {view === "resources" && <Resources />}
       {view === "events" && <Events />}
       {view === "members" && <Members />}
       {view === "forms" && <Forms />}

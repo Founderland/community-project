@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
+import { BrowserRouter as Router, Route } from "react-router-dom"
 import ApplicantsDispatcher from "./components/ApplicantsDispatcher"
 import Form from "./components/Form"
 import Thankyou from "./components/Forms/Thankyou"
@@ -8,7 +8,7 @@ import Community from "./components/Community/Community"
 import SignUp from "./components/Community/SignUp/SignUp"
 import CommunityProvider from "./contexts/CommunityProvider"
 import Verify from "./components/Verify"
-import NewsLetters from "./components/Forms/NewsLetters"
+import NewsLetter from "./components/Forms/NewsLetters"
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
           path="/join-our-community"
           component={ApplicantsDispatcher}
         />
-          <Route exact path="/newsletter" component={NewsLetters} />
+        <Route exact path="/newsletter" component={NewsLetter} />
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
       </AnswersProvider>
@@ -29,7 +29,7 @@ function App() {
       <Route exact path="/verify/:token" component={Verify} />
 
       <CommunityProvider>
-        <Route path="/" component={Community} />
+        <Route path="/community" component={Community} />
       </CommunityProvider>
     </Router>
   )
