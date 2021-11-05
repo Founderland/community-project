@@ -56,6 +56,7 @@ const ProfileMenu = () => {
             publicId={profilePic?.public_id}
             width="50"
             height="50"
+            className="hover:border-flime border-white border-2 rounded-full"
           >
             <Transformation
               width="200"

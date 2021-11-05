@@ -25,7 +25,7 @@ const Header = () => {
     <div className="flex w-full md:bg-white bg-black shadow p-3">
       <div className="flex flex-grow items-center space-x-4 lg:space-x-0">
         <a href="https://www.founderland.org" alt="Founderland homepage">
-          <SmallLogo className="h-10 text-black bg-white md:text-white md:bg-black fill-current" />
+          <SmallLogo className="h-8 text-black bg-white md:text-white md:bg-black fill-current ml-4" />
         </a>
         <h1 className="md:hidden text-lg sm:text-xl tracking-wider font-medium text-mono md:text-gray-800 text-white">
           {selectedView.toUpperCase()}
