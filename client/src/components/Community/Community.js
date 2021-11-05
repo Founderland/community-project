@@ -5,12 +5,15 @@ import UserContext from "../../contexts/User"
 import jwt from "jsonwebtoken"
 import { useHistory } from "react-router"
 
-const views = ["community", "events", "resources", "profile"]
-
+const views = {
+  community: { icon: "userGroup", name: "Community", hide: false },
+  resources: { icon: "collection", name: "Resources", hide: false },
+  events: { icon: "calendar", name: "Events", hide: false },
+  profile: { icon: "user", name: "Profile", hide: true },
+}
 const Community = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
-  const [view, setView] = useState(0)
   const history = useHistory()
   useEffect(() => {
     if (localStorage.authToken) {
@@ -45,17 +48,11 @@ const Community = () => {
     setToken(null)
     history.push("/community")
   }
-  const changeView = (view) => {
-    setView(view)
-  }
   return (
     <UserContext.Provider
       value={{
         user,
         setUser,
-        view,
-        setView,
-        changeView,
         views,
         logout,
         token,

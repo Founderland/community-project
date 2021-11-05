@@ -1,18 +1,19 @@
-import { useContext } from "react"
 import ResourcesList from "./Resources/ResourcesList"
 import Events from "./Events"
 import Profile from "./Profile/Profile"
 import MapDisplay from "./Directory/MapDisplay"
-import UserContext from "../../contexts/User"
+import { useParams } from "react-router-dom"
 
 const Content = () => {
-  const { view } = useContext(UserContext)
+  const { view } = useParams()
+  let selectedView = view
+  if (!view) selectedView = "community"
   return (
     <main className="overflow-x-hidden w-full h-screen md:px-4 ">
-      {view === 0 && <MapDisplay />}
-      {view === 1 && <Events />}
-      {view === 2 && <ResourcesList />}
-      {view === 3 && <Profile />}
+      {selectedView === "community" && <MapDisplay />}
+      {selectedView === "events" && <Events />}
+      {selectedView === "resources" && <ResourcesList />}
+      {selectedView === "profile" && <Profile />}
     </main>
   )
 }
