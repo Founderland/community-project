@@ -6,6 +6,7 @@ import axios from "axios"
 import UserContext from "../../../contexts/User"
 import LinkPreview from "../../Admin/Resources/LinkPreview"
 import ReactPlayer from "react-player"
+import SlideShow from "./SlideShow"
 
 const resourceUrl = "/api/resources/id/"
 
@@ -41,6 +42,9 @@ const Article = () => {
         <Loading />
       ) : error ? (
         error
+      ) : data.article.articleType === "link" &&
+        data.article.articleContent.includes("docs.google.com/presentation") ? (
+        <SlideShow url={data.article.articleContent} />
       ) : (
         <>
           <article className="py-2 px-4">
