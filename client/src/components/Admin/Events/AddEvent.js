@@ -1,27 +1,34 @@
 import axios from "axios"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker"
 import { useHistory } from "react-router"
 import AdminContext from "../../../contexts/Admin"
 import ListOption from "../Widgets/ListOption"
 import Banner from "../Widgets/Banner"
-import { Switch } from "@headlessui/react"
-import { CheckIcon, SearchIcon } from "@heroicons/react/outline"
+import { SearchIcon } from "@heroicons/react/outline"
 import Places from "./Places"
 import MapDisplay from "./MapDisplay"
 import Tags from "../Widgets/Tags"
 import Dropzone from "../Widgets/DropZone"
+import { Image } from "cloudinary-react"
 
 let types = [
   { name: "Online", value: "online" },
   { name: "Private", value: "private" },
   { name: "Public", value: "public" },
 ]
-const AddEvent = ({ role }) => {
+
+const addEventUrl = "/api/events/add"
+const updateEventUrl = "/api/events/update/"
+const cancelEventUrl = "/api/events/cancel/"
+const deleteEventUrl = "/api/events/cancel/"
+
+const AddEvent = ({ event, edit, setEdit }) => {
   const history = useHistory()
   const [data, setData] = useState({
+    member: "61814cbf5f7dd7305e7615f5",
     title: "",
-    photo: null,
+    eventCover: null,
     description: "",
     dateStart: new Date(Date.now()),
     dateEnd: new Date(Date.now() + 1000),
@@ -30,37 +37,84 @@ const AddEvent = ({ role }) => {
     geoLocation: { lat: 52.51621460823984, lng: 13.378192013711518 },
     type: "online",
     link: "",
+    location: "",
     tags: [],
     annouce: false,
     zoom: 16,
   })
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({ show: false })
+  const [required, setRequired] = useState(false)
   const [uploadStatus, setUploadStatus] = useState({
     success: false,
     message: "",
   })
-  const { token, reload, setReload } = useContext(AdminContext)
+  const { config, reload, setReload } = useContext(AdminContext)
 
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  }
+  //EDIT
+  useEffect(() => {
+    if (edit) {
+      setData((prev) => ({
+        ...prev,
+        ...event,
+      }))
+    }
+  }, [])
 
   const save = async () => {
     setSaving(true)
-    if (data.title && data.description) {
-    } else {
-      setSaving(false)
-      setBanner({
-        error: 1,
-        show: true,
-        message: "Please fill in all required fields!",
-      })
+    try {
+      console.log(data, data.title.length, data.description.length)
+      if (!data.title.length && !data.description.length)
+        await Promise.reject(new Error("missing_fields_title_Description"))
+      if (data.type === "online" && !isLink(data.link))
+        await Promise.reject(new Error("invalid_url"))
+      if (!data.eventCover?.public_id)
+        await Promise.reject(new Error("missing_fields_cover"))
+      if (data.type !== "online" && !data.city)
+        await Promise.reject(new Error("missing_fields_city"))
+      let newEvent = null
+      if (edit) {
+        newEvent = await axios.put(updateEventUrl, data, config)
+      } else {
+        newEvent = await axios.post(addEventUrl, data, config)
+      }
+      if (newEvent.data.success && !edit) {
+        setSaving(false)
+        setBanner({
+          success: 1,
+          show: true,
+          message: "Event saved! Redirecting...",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+          setReload(reload + 1)
+          history.goBack()
+        }, 2000)
+      } else {
+        setEdit(false)
+        setReload(reload + 1)
+      }
+    } catch (e) {
+      if (e?.message.includes("missing_fields")) {
+        setSaving(false)
+        setRequired(true)
+        setBanner({
+          error: 1,
+          show: true,
+          message: "Please fill in all required fields! " + e.message,
+        })
+      } else if (e?.message === "invalid_url") {
+        setSaving(false)
+        setBanner({
+          error: 1,
+          show: true,
+          message: "Invalid link provided!",
+        })
+      }
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
+        setRequired(false)
       }, 4000)
     }
   }
@@ -94,9 +148,9 @@ const AddEvent = ({ role }) => {
     const newTags = [...data.tags].filter((tag) => tag !== value)
     setData((prev) => ({ ...prev, tags: newTags }))
   }
-  const isLink = () => {
+  const isLink = (link) => {
     return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/.test(
-      data.link
+      link
     )
   }
   return (
@@ -107,6 +161,22 @@ const AddEvent = ({ role }) => {
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
         Add new event
       </div>
+      {data.eventCover?.public_id && (
+        <div className=" w-full px-3">
+          <label
+            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
+              required ? "text-red-600 animate-pulse" : ""
+            }`}
+          >
+            cover
+          </label>
+          <Image
+            cloudName="founderland"
+            publicId={data.eventCover.public_id}
+            className="w-full px-8 pb-8 pt-2"
+          ></Image>
+        </div>
+      )}
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">
@@ -119,7 +189,9 @@ const AddEvent = ({ role }) => {
                 : data.title.length <= 1
                 ? "border-l-4 border-fred"
                 : "border-l-4 border-flime"
-            } appearance-none outline-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3`}
+            } appearance-none outline-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
+              required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+            }`}
             type="text"
             onChange={(e) =>
               setData((prev) => ({ ...prev, title: e.target.value }))
@@ -150,7 +222,9 @@ const AddEvent = ({ role }) => {
             Description
           </label>
           <textarea
-            className="appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3"
+            className={`appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
+              required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+            }`}
             type="text"
             onChange={(e) => {
               setData((prev) => ({ ...prev, description: e.target.value }))
@@ -181,10 +255,12 @@ const AddEvent = ({ role }) => {
               className={`${
                 data.link === ""
                   ? ""
-                  : !isLink()
+                  : !isLink(data.link)
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
-              } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3`}
+              } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3 ${
+                required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+              }`}
               type="text"
               onChange={(e) => {
                 setData((prev) => ({ ...prev, link: e.target.value }))
@@ -194,61 +270,68 @@ const AddEvent = ({ role }) => {
           </div>
         </div>
       </div>
-      <div className="w-full grid sm:grid-cols-2 px-3">
-        <div className="grid grid-cols-1">
-          <div className="mb-2 px-2">
-            <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-              Location
-            </label>
-            <input
-              className="appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3"
-              type="text"
-              onChange={(e) => {
-                setData((prev) => ({ ...prev, location: e.target.value }))
-              }}
-              value={data.location}
-            />
+      {data.type !== "online" && (
+        <div className="w-full grid sm:grid-cols-2 px-3">
+          <div className="grid grid-cols-1">
+            <div className="mb-2 px-2">
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+                Location
+              </label>
+              <input
+                className={`appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3 ${
+                  required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+                }`}
+                type="text"
+                onChange={(e) => {
+                  setData((prev) => ({ ...prev, location: e.target.value }))
+                }}
+                value={data.location}
+              />
+            </div>
+            <div className="relative mb-2 px-2">
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+                Address
+              </label>
+              <Places
+                setLocationValues={setLocationValues}
+                address={data.address}
+              />
+              <SearchIcon className="w-6 h-6 absolute left-6 bottom-6" />
+            </div>
+            <div className="mb-2 px-2">
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+                City
+              </label>
+              <input
+                className={`appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3 ${
+                  required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+                }`}
+                type="text"
+                onChange={(e) => {
+                  setData((prev) => ({ ...prev, city: e.target.value }))
+                }}
+                value={data.city}
+              />
+            </div>
           </div>
-          <div className="relative mb-2 px-2">
-            <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-              Address
-            </label>
-            <Places
-              setLocationValues={setLocationValues}
-              address={data.address}
-            />
-            <SearchIcon className="w-6 h-6 absolute left-6 bottom-6" />
-          </div>
-          <div className="mb-2 px-2">
-            <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-              City
-            </label>
-            <input
-              className="appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3"
-              type="text"
-              onChange={(e) => {
-                setData((prev) => ({ ...prev, city: e.target.value }))
-              }}
-              value={data.city}
-            />
+          <div className="hidden sm:block px-3 mb-2">
+            <MapDisplay location={data.geoLocation} zoom={data.zoom} />
           </div>
         </div>
-        <div className="hidden sm:block px-3 mb-2">
-          <MapDisplay location={data.geoLocation} zoom={data.zoom} />
-        </div>
-      </div>
+      )}
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-            Photo
+            Cover Photo
           </label>
           <Dropzone
-            classes={
-              "appearance-none outline-none outline-none block w-full border-2 border-gray-300 border-black border-dotted  py-3 px-4 mb-3"
-            }
+            classes={`appearance-none outline-none outline-none block w-full border-2 border-gray-300 border-black border-dotted  py-3 px-4 mb-3 ${
+              required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+            }`}
             data={data}
             setData={setData}
             type="eventCover"
+            fodler="Events"
             setUploadStatus={setUploadStatus}
             uploadStatus={uploadStatus}
           />
@@ -260,38 +343,6 @@ const AddEvent = ({ role }) => {
           <div className="">
             <Tags tags={data.tags} pushTag={pushTag} popTag={popTag} />
           </div>
-        </div>
-      </div>
-      <div className="flex justify-center items-center w-full px-3 hidden">
-        <div className="w-full md:w-1/4 mb-2 px-2">
-          <Switch.Group
-            as="div"
-            className="flex md:flex-col mt-2 justify-center items-center py-2"
-          >
-            <Switch.Label className="mt-2 uppercase tracking-wide text-xs font-bold mb-2">
-              Publish in Newsfeed
-            </Switch.Label>
-            <Switch
-              as="button"
-              checked={data.announce}
-              onChange={() =>
-                setData((prev) => ({ ...prev, announce: !data.announce }))
-              }
-              className={`${
-                data.announce ? "bg-flime-600" : "bg-gray-200"
-              } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}
-            >
-              {({ checked }) => (
-                <span
-                  className={`${
-                    checked ? "translate-x-5" : "translate-x-0"
-                  } inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
-                >
-                  <CheckIcon className={checked ? "" : "hidden"} />
-                </span>
-              )}
-            </Switch>
-          </Switch.Group>
         </div>
       </div>
 

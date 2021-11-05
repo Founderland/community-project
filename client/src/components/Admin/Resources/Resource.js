@@ -26,7 +26,6 @@ const Resource = ({ category, categories }) => {
       .get(resourceUrl + id, config)
       .then((res) => {
         if (res.data) {
-          console.log(res.data)
           const [article] = res.data.articles.filter(
             (article) => article._id === id
           )

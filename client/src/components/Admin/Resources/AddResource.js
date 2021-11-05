@@ -8,7 +8,7 @@ import Tags from "../Widgets/Tags"
 import Sources from "../Widgets/Sources"
 import QuillEditor from "../Widgets/QuillEditor"
 import Dropzone from "../Widgets/DropZone"
-import { Image, Transformation } from "cloudinary-react"
+import { Image } from "cloudinary-react"
 
 const types = [
   { name: "Article", value: "article" },

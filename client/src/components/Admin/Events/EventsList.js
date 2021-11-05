@@ -10,260 +10,7 @@ import { EmojiSadIcon } from "@heroicons/react/outline"
 const eventsUrl = "/api/events/"
 
 const EventsList = ({ state }) => {
-  const [data, setData] = useState([
-    {
-      _id: "61717b06b088de36430653a1",
-      title: "Fundraiser",
-      photo: null,
-      description: "Fundraiser for Climate",
-      dateStart: new Date("2021-11-02T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-04T12:00:00.000Z"),
-      address: "Geschwister-Scholl-Straße",
-      city: "Berlin",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "public",
-      link: "",
-      tags: ["#fundraiser", "#climate-change"],
-      annouce: false,
-      zoom: 18,
-      location: "Library",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Victor",
-        lastName: "Isidoro",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a2",
-      title: "Conference",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-11-02T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-04T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#food", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a3",
-      title: "Conference",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-11-04T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-04T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#food", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a4",
-      title: "Conference",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-11-06T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-07T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#health", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a5",
-      title: "Conference",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-11-07T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-07T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#food", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a6",
-      title: "Conference",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-11-06T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-06T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#food", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a7",
-      title: "Conference",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-11-08T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-08T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#food", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a8",
-      title: "Halloween",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-10-31T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-01T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#food", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-    {
-      _id: "61717b06b088de36430653a9",
-      title: "Conference",
-      photo: null,
-      description: "Conference on Food Shortage",
-      dateStart: new Date("2021-11-02T10:00:00.000Z"),
-      dateEnd: new Date("2021-11-04T12:00:00.000Z"),
-      address: "",
-      city: "",
-      geoLocation: {
-        lat: 52.5205888,
-        lng: 13.3912322,
-      },
-      type: "online",
-      link: "https://www.techonthenet.com/js/string_match.php",
-      tags: ["#food", "#speaker", "#online"],
-      annouce: false,
-      zoom: 18,
-      location: "",
-      host: {
-        _id: "61717b06b088de36430653a1",
-        firstName: "Sasmitha",
-        lastName: "Kumar",
-      },
-      interested: [],
-      going: [],
-      canceled: false,
-    },
-  ])
+  const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
@@ -272,14 +19,13 @@ const EventsList = ({ state }) => {
   const [tags, setTags] = useState([])
   const [searchTags, setSearchTags] = useState([])
   const { reload, selectedTab, config } = useContext(AdminContext)
-
   useEffect(() => {
     axios
       .get(eventsUrl + state, config)
       .then((res) => {
-        if (res.data.data.length) setData(res.data.data)
+        if (res.data.data) setData(res.data.data)
         //GET ALL AVAILABLE TAGS
-        const allTags = data
+        const allTags = res.data.data
           .map((item) => item.tags)
           .flat(1)
           .filter((item, i, self) => i === self.indexOf(item))
@@ -290,7 +36,7 @@ const EventsList = ({ state }) => {
       .catch((e) => {
         console.log(e)
       })
-  }, [reload, selectedTab, searchTags])
+  }, [reload, selectedTab])
 
   useEffect(() => {
     let filteredData = [...data]
@@ -304,13 +50,14 @@ const EventsList = ({ state }) => {
       )
     }
     //SORT DATA BY DATES
-    data.sort((a, b) => {
-      return a.dateStart - b.dateStart
-    })
-    const slice = filteredData.slice(
-      offset * perPage,
-      offset * perPage + perPage
-    )
+    const slice = filteredData
+      .slice(offset * perPage, offset * perPage + perPage)
+      .sort((a, b) => {
+        return (
+          new Date(a.dateStart).setHours(0, 0, 0, 0) -
+          new Date(b.dateStart).setHours(0, 0, 0, 0)
+        )
+      })
     setDataToDisplay(slice)
     if (searchTags.length) {
       setPageCount(Math.ceil(dataToDisplay.length / perPage))
@@ -327,11 +74,12 @@ const EventsList = ({ state }) => {
     else newFilter.push(value)
     setSearchTags(newFilter)
   }
+  console.log(data, tags)
   return loading ? (
     <Loading />
   ) : (
     <div className="w-full px-2 ">
-      <div className="max-w-max text-mono flex  space-x-2 items-center overflow-x-auto mt-3 pl-2">
+      <div className="max-w-max text-mono flex  space-x-2 items-center mt-3 pl-2">
         <SearchIcon className="h-5 w-5 text-gray-800" />
         {tags.length ? (
           tags.map((tag) => {
@@ -355,7 +103,7 @@ const EventsList = ({ state }) => {
         )}
       </div>
       <div className="bg-white">
-        <div className="flex w-full justify-start overflow-auto">
+        <div className="flex flex-wrap w-full justify-start overflow-auto">
           {dataToDisplay.length ? (
             dataToDisplay.map((event) => <EventCard event={event} />)
           ) : (
