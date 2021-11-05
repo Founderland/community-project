@@ -9,6 +9,7 @@ import ConfirmModal from "../Widgets/ConfirmModal"
 import Confirm from "./Confirm"
 import AddResource from "./AddResource"
 import LinkPreview from "./LinkPreview"
+import ReactPlayer from "react-player"
 
 const resourceUrl = "/api/resources/id/"
 
@@ -122,7 +123,10 @@ const Resource = ({ category, categories }) => {
                   alt="article cover"
                 />
               ) : (
-                "video"
+                <ReactPlayer
+                  controls={true}
+                  url={data.article.articleContent}
+                ></ReactPlayer>
               )}
             </div>
             {data.article.sources.length > 0 && (
