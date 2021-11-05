@@ -56,7 +56,7 @@ const MemberProfile = () => {
   const [notified, setNotified] = useState(false)
   const [locking, setLocking] = useState(false)
   const [profile, setProfile] = useState(defaultProfile)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const { id } = useParams()
   const { token, reload, setReload } = useContext(AdminContext)
   const config = useMemo(() => {
@@ -111,7 +111,7 @@ const MemberProfile = () => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 2000)
       } else {
         setLocking(false)
         setBanner({
@@ -123,7 +123,7 @@ const MemberProfile = () => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-        }, 3000)
+        }, 4000)
       }
     } catch (e) {
       setLocking(false)
@@ -136,7 +136,7 @@ const MemberProfile = () => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 
@@ -160,7 +160,7 @@ const MemberProfile = () => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 

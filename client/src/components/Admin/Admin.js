@@ -31,6 +31,7 @@ const Admin = () => {
   const [menuToggle, setMenuToggle] = useState(false)
   const [selectedTab, setSelectedTab] = useState(0)
   const [cModal, setCModal] = useState(false)
+  const [cCModal, setCCModal] = useState(false)
   const [notifications, setNotifications] = useState([
     { icon: "user", text: "15 founders applicants pending review" },
     { icon: "pending", text: "4 founders applicants pending approval" },
@@ -104,6 +105,8 @@ const Admin = () => {
         setReload,
         getUuid,
         config,
+        cCModal,
+        setCCModal,
       }}
     >
       {user ? <Main /> : <Login isAdminLogin />}

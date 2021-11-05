@@ -35,7 +35,7 @@ const AddEvent = ({ role }) => {
     zoom: 16,
   })
   const [saving, setSaving] = useState(false)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const [uploadStatus, setUploadStatus] = useState({
     success: false,
     message: "",
@@ -61,7 +61,7 @@ const AddEvent = ({ role }) => {
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
-      }, 3000)
+      }, 4000)
     }
   }
 

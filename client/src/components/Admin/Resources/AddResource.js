@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { useHistory } from "react-router"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
@@ -8,6 +8,7 @@ import Tags from "../Widgets/Tags"
 import Sources from "../Widgets/Sources"
 import QuillEditor from "../Widgets/QuillEditor"
 import Dropzone from "../Widgets/DropZone"
+import { Image, Transformation } from "cloudinary-react"
 
 const types = [
   { name: "Article", value: "article" },
@@ -16,8 +17,9 @@ const types = [
   { name: "Picture", value: "picture" },
 ]
 const addResourceUrl = "/api/resources/add"
+const updateResourceUrl = "/api/resources/update"
 
-const AddResource = ({ categories, category }) => {
+const AddResource = ({ categories, category, article, edit, setEdit }) => {
   const history = useHistory()
   const [data, setData] = useState({
     member: "61814cbf5f7dd7305e7615f5",
@@ -32,12 +34,23 @@ const AddResource = ({ categories, category }) => {
     categoryKey: category,
   })
   const [saving, setSaving] = useState(false)
-  const [banner, setBanner] = useState({})
+  const [banner, setBanner] = useState({ show: false })
   const [required, setRequired] = useState(false)
   const [uploadStatus, setUploadStatus] = useState({
     success: false,
     message: "",
   })
+
+  //EDIT
+  useEffect(() => {
+    if (edit) {
+      setData((prev) => ({
+        ...prev,
+        ...article.article,
+        categoryId: article._id,
+      }))
+    }
+  }, [])
 
   const onEditorChange = (value) => {
     setData((prev) => ({
@@ -46,10 +59,9 @@ const AddResource = ({ categories, category }) => {
     }))
   }
   const { config, reload, setReload } = useContext(AdminContext)
-
   const save = async () => {
-    console.log(data)
     setSaving(true)
+
     if (data.articleTitle && data.articleDescription && data.articleCover) {
       try {
         if (
@@ -64,8 +76,13 @@ const AddResource = ({ categories, category }) => {
         if (data.articleType === "article" && !data.articleContent) {
           await Promise.reject(new Error("missing_field"))
         }
-        const newResource = await axios.post(addResourceUrl, data, config)
-        if (newResource.data.success) {
+        let newResource = null
+        if (edit) {
+          newResource = await axios.put(updateResourceUrl, data, config)
+        } else {
+          newResource = await axios.post(addResourceUrl, data, config)
+        }
+        if (newResource.data.success && !edit) {
           setSaving(false)
           setBanner({
             success: 1,
@@ -76,10 +93,12 @@ const AddResource = ({ categories, category }) => {
             setBanner((prev) => ({ ...prev, show: false }))
             setReload(reload + 1)
             history.goBack()
-          }, 3000)
+          }, 2000)
+        } else {
+          setEdit(false)
+          setReload(reload + 1)
         }
       } catch (e) {
-        console.log(e)
         if (e?.message === "invalid_URL") {
           setSaving(false)
           setBanner({
@@ -90,7 +109,7 @@ const AddResource = ({ categories, category }) => {
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
           }, 5000)
-        } else {
+        } else if (e?.message === "missing_field") {
           setSaving(false)
           setRequired(true)
           setBanner({
@@ -101,6 +120,16 @@ const AddResource = ({ categories, category }) => {
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
             setRequired(false)
+          }, 5000)
+        } else {
+          setSaving(false)
+          setBanner({
+            error: 1,
+            show: true,
+            message: "Error saving to the database",
+          })
+          setTimeout(() => {
+            setBanner((prev) => ({ ...prev, show: false }))
           }, 5000)
         }
       }
@@ -169,6 +198,22 @@ const AddResource = ({ categories, category }) => {
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
         Add new resource
       </div>
+      {data.articleCover?.public_id && (
+        <div className=" w-full px-3">
+          <label
+            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
+              required ? "text-red-600 animate-pulse" : ""
+            }`}
+          >
+            cover
+          </label>
+          <Image
+            cloudName="founderland"
+            publicId={data.articleCover.public_id}
+            className="w-full px-8 pb-8 pt-2"
+          ></Image>
+        </div>
+      )}
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label
@@ -217,7 +262,7 @@ const AddResource = ({ categories, category }) => {
           </div>
         </div>
       </div>
-      <div className="md:flex w-full px-3">
+      <div className="md:flex min-h-0 w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label
             className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
@@ -247,7 +292,7 @@ const AddResource = ({ categories, category }) => {
             autoComplete="off"
           />
         </div>
-        <div className="w-full md:w-1/2 mb-2 px-2">
+        <div className="w-full overflow-none md:w-1/2 mb-2 px-2 pb-6">
           <label
             className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
               required ? "text-red-600 animate-pulse" : ""
@@ -257,7 +302,7 @@ const AddResource = ({ categories, category }) => {
           </label>
           <Dropzone
             classes={
-              "appearance-none outline-none outline-none block w-full border-2 border-gray-300 border-black border-dotted  py-3 px-4 mb-3"
+              "h-full outline-none block w-full border-2 border-gray-300 border-black border-dotted py-2 px-4"
             }
             data={data}
             setData={setData}
@@ -294,9 +339,9 @@ const AddResource = ({ categories, category }) => {
             <div className="w-full">
               <input
                 className={`${
-                  data.link === ""
+                  data.articleContent === ""
                     ? ""
-                    : !isLink(data.link)
+                    : !isLink(data.articleContent)
                     ? "border-l-4 border-fred"
                     : "border-l-4 border-flime"
                 } appearance-none outline-none block w-full border border-grey-lighter py-3 px-4 mb-3  ${
@@ -306,11 +351,10 @@ const AddResource = ({ categories, category }) => {
                 onChange={(e) => {
                   setData((prev) => ({
                     ...prev,
-                    link: e.target.value,
                     articleContent: e.target.value,
                   }))
                 }}
-                value={data.link}
+                value={data.articleContent}
               />
             </div>
           </div>
@@ -388,7 +432,7 @@ const AddResource = ({ categories, category }) => {
         <button
           className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
           onClick={() => {
-            history.goBack()
+            edit ? setEdit(false) : history.goBack()
           }}
         >
           Cancel

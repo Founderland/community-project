@@ -78,6 +78,8 @@ const findAllResource = async (req, res) => {
     ).select({
       categoryKey: 1,
       categoryName: 1,
+      categoryIcon: 1,
+      categoryColor: 1,
     })
     res.status(200).json(result)
   } catch (error) {
@@ -101,7 +103,6 @@ const findResourcesByCategory = async (req, res) => {
 }
 const findResourceById = async (req, res) => {
   const { id } = req.params
-  console.log(id)
   try {
     const result = await Resource.findOne({
       articles: { $elemMatch: { _id: id } },
@@ -110,7 +111,6 @@ const findResourceById = async (req, res) => {
       model: "Member",
       select: ["firstName", "lastName", "role", "photo"],
     })
-    console.log(result)
     res.status(200).json(result)
   } catch (error) {
     console.log(error)
@@ -118,45 +118,73 @@ const findResourceById = async (req, res) => {
 }
 // Update Resource
 const editResource = async (req, res) => {
-  const { id } = req.params
+  const {
+    member,
+    articleTitle,
+    articleDescription,
+    articleContent,
+    articleCover,
+    articleFile,
+    articleType,
+    articleSubmittedDate,
+    sources,
+    tags,
+    _id,
+  } = req.body
   try {
-    const updated = await Resource.findByIdAndUpdate(id, {
-      totalScore: score,
-    })
-    if (!updated) await Promise.reject("NOT_FOUND")
-    res.json({ message: "Update successful" })
-  } catch (e) {
-    if (e === "NOT_FOUND") {
-      res.status(404).send({
-        message:
-          "The question you're trying to update is no longer in the database",
-      })
-    } else {
-      res.status(500).json({ message: "Sorry something went wrong" })
+    const article = {
+      _id,
+      member: member._id,
+      articleTitle,
+      articleDescription,
+      articleContent,
+      articleCover,
+      articleFile,
+      articleType,
+      articleSubmittedDate,
+      sources,
+      tags,
+      articleLastUpdateDate: new Date(),
     }
+    const updatedResource = await Resource.updateOne(
+      { articles: { $elemMatch: { _id } } },
+      { $set: { "articles.$": { ..."articles.$", ...article } } },
+      { new: true }
+    )
+    if (!updatedResource) {
+      await Promise.reject("Error saving resource")
+    }
+    return res.status(200).json({ success: true, resource: updatedResource })
+  } catch (e) {
+    console.log(e)
+    return res.status(404).json({ e })
   }
 }
 //Delete Resource
 const deleteResource = async (req, res) => {
-  const { id, commentId } = req.params
+  const { id, article } = req.params
   try {
-    const updatedList = await Resource.findByIdAndUpdate(
-      id,
-      {
-        $pull: { comments: { _id: commentId } },
-      },
-      { new: true }
-    )
-
-    if (!updatedList) await Promise.reject("NOT_FOUND")
-    res.json({
+    let deletedResource = null
+    if (article !== "folder") {
+      deletedResource = await Resource.findByIdAndUpdate(
+        { _id: id },
+        {
+          $pull: { articles: { _id: article } },
+        },
+        { new: true }
+      )
+    } else {
+      deletedResource = await Resource.deleteOne({ _id: id })
+    }
+    if (!deletedResource) await Promise.reject("NOT_FOUND")
+    res.status(200).json({
+      success: true,
       message: "Resource has been deleted",
     })
   } catch (e) {
     console.log(e)
-
     if (e === "NOT_FOUND") {
-      res.status(404).json({ message: "Sorry we couldn't find any comments" })
+      res.status(404).json({ message: "Sorry we couldn't find the ressource" })
     } else {
       res.status(500).json({ message: "Something went wrong" })
     }

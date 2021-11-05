@@ -6,8 +6,7 @@ import {
   VideoCameraIcon,
   CollectionIcon,
 } from "@heroicons/react/outline"
-import { useHistory, useLocation } from "react-router-dom"
-import moment from "moment"
+import { useHistory } from "react-router-dom"
 
 const types = {
   article: <CollectionIcon className="w-4 h-4 text-black" />,
@@ -17,9 +16,7 @@ const types = {
 }
 
 const ResourceCard = ({ resource }) => {
-  const location = useLocation()
   const history = useHistory()
-  console.log(resource, location)
   return (
     <div className="group py-5 px-3">
       <div

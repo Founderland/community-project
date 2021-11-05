@@ -1,11 +1,25 @@
 import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline"
+import { useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import Tooltip from "./Tooltip"
 const avatarInitials = (first, last) => {
   let initials = first[0].toUpperCase() + last[0].toUpperCase()
   return initials
 }
 
+
 const RowsWidget = ({ headers, item, styles, link }) => {
+  const [isHovered, setisHovered] = useState(false)
+  
+  const handleMouseOver = () => {
+
+      setisHovered(true)
+  
+  }
+  const handleMouseExit = () => {
+    
+      setisHovered(false)
+  }
   const { view } = useParams()
   const displayReviews = (reviews) => {
     const extra = reviews.length - 3
@@ -53,7 +67,11 @@ const RowsWidget = ({ headers, item, styles, link }) => {
   }
 
   return (
-    <tr className="border-b border-gray-200 hover:bg-gray-100">
+    <>
+    <tr className="border-b border-gray-200 hover:bg-gray-100"
+    onMouseOver={handleMouseOver}
+    onMouseOut={handleMouseExit}
+    >
       {headers.map((header) => {
         if (header.key !== "-") {
           if (Array.isArray(item[header.key])) {
@@ -68,7 +86,12 @@ const RowsWidget = ({ headers, item, styles, link }) => {
             )
           } else {
             return (
-              <td className={`capitalize py-3 px-5 ${header.style}`}>
+
+                <td className={`relative capitalize py-3 px-5  max-w-sm ${header.style}`}
+                                  // {header.key === "interests" &&
+                                  
+                
+                >
                 <p
                   className={
                     styles[
@@ -81,12 +104,19 @@ const RowsWidget = ({ headers, item, styles, link }) => {
                             .replace(/[^a-zA-Z0-9]/g, "")
                             .toLowerCase()
                         ]
-                      : ""
+                      : "test"
                   }
+
+                
                 >
+                
                   {item[header.key]}
+
                 </p>
+                { isHovered && header.key === "interests" && <Tooltip message={item["interests"]} /> }
               </td>
+                
+
             )
           }
         } else {
@@ -104,7 +134,11 @@ const RowsWidget = ({ headers, item, styles, link }) => {
           )
         }
       })}
+            
     </tr>
+
+    </>
+  
   )
 }
 

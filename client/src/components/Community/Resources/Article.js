@@ -1,23 +1,19 @@
 import { useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
-import { TrashIcon } from "@heroicons/react/outline"
-import Loading from "../Widgets/Loading"
+import Loading from "../../Admin/Widgets/Loading"
 import moment from "moment"
 import axios from "axios"
-import AdminContext from "../../../contexts/Admin"
-import ConfirmModal from "../Widgets/ConfirmModal"
-import Confirm from "./Confirm"
-import AddResource from "./AddResource"
-import LinkPreview from "./LinkPreview"
+import UserContext from "../../../contexts/User"
+import LinkPreview from "../../Admin/Resources/LinkPreview"
 import ReactPlayer from "react-player"
+import SlideShow from "./SlideShow"
 
 const resourceUrl = "/api/resources/id/"
 
-const Resource = ({ category, categories }) => {
+const Article = () => {
   const { id } = useParams()
-  const { config, reload, setCCModal, user } = useContext(AdminContext)
+  const { config } = useContext(UserContext)
   const [data, setData] = useState({})
-  const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   //GET DATA FROM DB WITH resourceId FROM URL
@@ -26,7 +22,6 @@ const Resource = ({ category, categories }) => {
       .get(resourceUrl + id, config)
       .then((res) => {
         if (res.data) {
-          console.log(res.data)
           const [article] = res.data.articles.filter(
             (article) => article._id === id
           )
@@ -39,25 +34,17 @@ const Resource = ({ category, categories }) => {
       .catch((err) => {
         console.log(err)
       })
-  }, [id, reload])
+  }, [id])
 
   return (
-    <section className=" h-full py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6">
-      <ConfirmModal>
-        <Confirm data={data} />
-      </ConfirmModal>
+    <section className=" h-full py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6 overflow-auto">
       {loading ? (
         <Loading />
       ) : error ? (
         error
-      ) : edit ? (
-        <AddResource
-          categories={categories}
-          category={category}
-          article={data}
-          edit={edit}
-          setEdit={setEdit}
-        />
+      ) : data.article.articleType === "link" &&
+        data.article.articleContent.includes("docs.google.com/presentation") ? (
+        <SlideShow url={data.article.articleContent} />
       ) : (
         <>
           <article className="py-2 px-4">
@@ -150,33 +137,10 @@ const Resource = ({ category, categories }) => {
               </p>
             </footer>
           </article>
-          <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-            <button
-              className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-              onClick={() => {
-                setEdit(true)
-              }}
-            >
-              Edit
-            </button>
-            {user.role.includes("admin") ? (
-              <button
-                className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
-                onClick={() => {
-                  setCCModal(true)
-                }}
-              >
-                <TrashIcon className="h-5 w-5" />
-                Delete
-              </button>
-            ) : (
-              ""
-            )}
-          </div>
         </>
       )}
     </section>
   )
 }
 
-export default Resource
+export default Article
