@@ -108,7 +108,7 @@ const Dropzone = ({
           >
             <p>Drag and drop your file here, or click to select it</p>
             {type.match(regex) ? (
-              <p className="text-xs">(optimal ratio: 2:1)</p>
+              <p className="text-xs">(optimal ratio: 3:1)</p>
             ) : (
               ""
             )}

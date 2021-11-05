@@ -43,6 +43,9 @@ const DisplayArticles = ({ category }) => {
       } catch (e) {
         setLoading(false)
         setError("error loading the resources")
+        setTimeout(() => {
+          setError("")
+        }, 3000)
       }
     }
     getData()
@@ -67,12 +70,14 @@ const DisplayArticles = ({ category }) => {
       offset * perPage + perPage
     )
     setDataToDisplay(slice)
-    setPageCount(Math.ceil(data.length / perPage))
-
+    if (searchTags.length)
+      setPageCount(Math.ceil(dataToDisplay.length / perPage))
+    else setPageCount(Math.ceil(data.length / perPage))
     return () => {
       setDataToDisplay([])
     }
   }, [data, offset, searchTags])
+
   const filterTag = (value) => {
     let newFilter = [...searchTags]
     if (newFilter.includes(value))
@@ -83,12 +88,16 @@ const DisplayArticles = ({ category }) => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="w-full h-full ">
+    <>
       <div
-        className={`flex h-20 md:h-40 xl:h-48 w-full justify-between bg-${category.color} bg-opacity-90 shadow-lg items-center`}
+        className={`flex h-16 md:h-40 xl:h-48 w-full justify-between bg-${category.color} bg-opacity-90 shadow-lg items-center`}
       >
         <div className="">
-          <h1 className="text-base sm:text-lg md:text-2xl lg:text-4xl text-white text-grotesk font-bold uppercase ml-5 sm:ml-10 md:ml-18">
+          <h1
+            className={`text-base sm:text-lg md:text-2xl lg:text-4xl text-${
+              category.color !== "flime" ? "white" : "black"
+            } text-grotesk font-bold uppercase ml-5 sm:ml-10 md:ml-18`}
+          >
             {category.name}
           </h1>
         </div>
@@ -104,8 +113,8 @@ const DisplayArticles = ({ category }) => {
         error
       ) : (
         <>
-          <div className="text-mono flex space-x-2 items-center overflow-auto mt-3 pl-2">
-            <SearchIcon className="h-5 w-5 text-gray-800" />
+          <div className="max-w-max text-mono flex  space-x-2 items-center overflow-x-auto mt-3 pl-2">
+            <SearchIcon className="h-8 w-8 text-gray-800" />
             {tags.length ? (
               tags.map((tag) => {
                 const selected = searchTags.includes(tag)
@@ -116,10 +125,10 @@ const DisplayArticles = ({ category }) => {
                       selected
                         ? "bg-flime-300 text-black"
                         : "bg-gray-200 text-gray-600"
-                    } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
+                    } group flex items-center space-x-2 py-1 px-2 mx-auto text-center cursor-pointer`}
                     onClick={() => filterTag(tag)}
                   >
-                    <p className=" text-xs">{tag}</p>
+                    <p className="mx-auto text-xs">{tag}</p>
                   </div>
                 )
               })
@@ -127,18 +136,20 @@ const DisplayArticles = ({ category }) => {
               <p className="text-xs">No tags available</p>
             )}
           </div>
-          <div className=" h-2/3 lg:h-3/4 flex justify-betweeen flex-wrap">
+          <div className=" flex justify-betweeen flex-wrap pl-4">
             {dataToDisplay.length ? (
               dataToDisplay.map((article) => <ArticleCard article={article} />)
             ) : (
               <span className="font-medium flex space-x-4 items-center my-2 ml-2">
-                <p>Nothing to display</p>
+                <p className="text-mono text-lg">
+                  Nothing to display in this category
+                </p>
               </span>
             )}
           </div>
         </>
       )}
-      {data.length > perPage && (
+      {data.length > perPage && searchTags.length === 0 ? (
         <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
           <div className="flex items-center justify-center">
             <Pagination
@@ -148,8 +159,20 @@ const DisplayArticles = ({ category }) => {
             />
           </div>
         </div>
+      ) : dataToDisplay.length > perPage ? (
+        <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
+          <div className="flex items-center justify-center">
+            <Pagination
+              setPage={setOffset}
+              currentPage={offset}
+              pageCount={pageCount}
+            />
+          </div>
+        </div>
+      ) : (
+        ""
       )}
-    </div>
+    </>
   )
 }
 

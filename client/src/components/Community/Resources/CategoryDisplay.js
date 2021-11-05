@@ -11,8 +11,12 @@ const CategoryDisplay = ({ category, isActive }) => {
       >
         <div className="flex w-10 h-10 sm:w-20 sm:h-20 xl:w-36 xl:h-36 items-center justify-center">
           {icons[category.icon](
-            `w-10 h-10 sm:w-20 sm:h-20 xl:w-36 xl:h-36 text-${
-              isActive ? "white" : category.color
+            `w-10 h-full sm:w-20 xl:w-36 text-${
+              isActive && category.color !== "flime"
+                ? "white"
+                : category.color === "flime" && isActive
+                ? "black"
+                : category.color
             } fill-current `,
             isActive
               ? "text-" + category.color
@@ -28,7 +32,9 @@ const CategoryDisplay = ({ category, isActive }) => {
         >
           <h1
             className={` ${
-              isActive ? "text-white" : "text-black"
+              isActive && category.color !== "flime"
+                ? "text-white"
+                : "text-black"
             } text-grotesk font-semibold text-lg sm:text-lg md:text-xl p-2`}
           >
             {category.name}
