@@ -21,30 +21,31 @@ const EventsList = ({ state, filter }) => {
   const [searchTags, setSearchTags] = useState([])
   const { config, user } = useContext(UserContext)
   useEffect(() => {
-    axios
-      .get(eventsUrl + state, config)
-      .then((res) => {
-        if (res.data.data) {
-          let result
-          if (filter) {
-            result = res.data.data.filter((item) => item.member._id === user.id)
-          } else {
-            result = [...res.data.data]
-          }
-          setData(result)
+    const getData = async () => {
+      try {
+        const response = await axios.get(eventsUrl + state, config)
+        let eventsFiltered
+        if (filter) {
+          eventsFiltered = response.data.data.filter(
+            (item) => item.member._id === user.id
+          )
+        } else {
+          eventsFiltered = [...response.data.data]
         }
-        //GET ALL AVAILABLE TAGS
-        const allTags = res.data.data
+        setData(eventsFiltered)
+        const allEvents = await axios.get(eventsUrl + "all", config)
+        const allTags = allEvents.data.data
           .map((item) => item.tags)
           .flat(1)
           .filter((item, i, self) => i === self.indexOf(item))
           .sort((a, b) => a.substring(1).length - b.substring(1).length)
         setTags(allTags)
         setLoading(false)
-      })
-      .catch((e) => {
+      } catch (e) {
         console.log(e)
-      })
+      }
+    }
+    getData()
   }, [state, filter])
 
   useEffect(() => {
