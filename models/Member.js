@@ -67,7 +67,11 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     public_id: { type: String },
-    url: { type: String },
+    url: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/founderland/image/upload/v1636210452/default_image_btevla.jpg",
+    },
   },
   hashedPassword: { type: String },
   created: {

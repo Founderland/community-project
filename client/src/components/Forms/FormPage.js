@@ -15,8 +15,7 @@ const FormPage = (props) => {
 
   const history = useHistory()
 
-  const submit = (e) => {
-    e.preventDefault()
+  const submit = async () => {
     submitHandler(true)
     setGify(true)
     const timer = setTimeout(() => {
@@ -31,7 +30,6 @@ const FormPage = (props) => {
 
   const previous = () => {
     submitHandler(false)
-    console.log("previous")
     props.previousStep()
     prevHandler(true)
   }
@@ -41,12 +39,9 @@ const FormPage = (props) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    // console.log(questions)
     const questionType = questions.filter(
       (item) => item.type === "choice" || item.type === "list"
     )
-    // console.log("questionType", questionType.length)
-    // console.log("selected", selected.length)
     if (
       questionType.length <= selected.length ||
       prev ||
@@ -59,13 +54,12 @@ const FormPage = (props) => {
     } else {
       setSelectValidation(false)
     }
+    if (isLast) submit()
   }
 
   const selectedAnswer = (answer) => {
     selected.push(answer)
     setSelected([...selected])
-    // setAnswerData({ id: _id, value: answer })
-    // console.log(answer)
   }
 
   return (
@@ -102,7 +96,6 @@ const FormPage = (props) => {
               </div>
             </div>
             <div>
-              {/* {console.log(questions)} */}
               {questions.map((question, i) => (
                 <Question
                   key={i}
@@ -133,7 +126,7 @@ const FormPage = (props) => {
                     : "bg-fblue hover:bg-fblue-dark focus:ring-fblue") +
                   (isLast && props.questionPreview && " opacity-30")
                 }
-                onClick={isLast ? submit : nextClicked}
+                onClick={isLast ? handleSubmit : nextClicked}
               >
                 {isLast ? "Submit" : "next"}
               </button>

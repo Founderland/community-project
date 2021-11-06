@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { useHistory, useParams } from "react-router"
-import { UserAddIcon } from "@heroicons/react/outline"
+import { UserAddIcon, CloudDownloadIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
 import Tabs from "../Widgets/Tabs"
 import MembersList from "./MembersList"
@@ -44,10 +44,6 @@ const Members = () => {
   const handleTask = () => {
     history.push("members/id/new")
   }
-  // const exportButtonHandler = () => {
-  //   setExportButton(true)
-  //   console.log("export clicked")
-  // }
 
   const newsletterDataHandler = (val) => {
     setNewsLetterData(val)
@@ -75,13 +71,13 @@ const Members = () => {
             )}
             {selectedTab === 3 ? (
               <>
-                <button className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white">
-                  {" "}
+                <button className="flex items-center px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white">
+                  <CloudDownloadIcon className="h-5 w-5" />
                   <CsvDownload
                     data={newsLetterData}
-                    filename="Newsletter.csv"
-                  />{" "}
-                </button>{" "}
+                    filename="newsletter.csv"
+                  />
+                </button>
               </>
             ) : (
               <button

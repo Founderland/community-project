@@ -46,7 +46,7 @@ const Forms = () => {
             <FormsList role={tabs[selectedTab].role} reload={reload} />
             <button
               className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-              onClick={() => history.push("forms/id/new")}
+              onClick={() => history.push("/admin/forms/id/new")}
             >
               <PlusIcon className="h-5 w-5" />
               <p className="text-mono text-sm">Add new</p>

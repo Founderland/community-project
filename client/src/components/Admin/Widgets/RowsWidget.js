@@ -7,18 +7,14 @@ const avatarInitials = (first, last) => {
   return initials
 }
 
-
 const RowsWidget = ({ headers, item, styles, link }) => {
   const [isHovered, setisHovered] = useState(false)
-  
-  const handleMouseOver = () => {
 
-      setisHovered(true)
-  
+  const handleMouseOver = () => {
+    setisHovered(true)
   }
   const handleMouseExit = () => {
-    
-      setisHovered(false)
+    setisHovered(false)
   }
   const { view } = useParams()
   const displayReviews = (reviews) => {
@@ -68,77 +64,68 @@ const RowsWidget = ({ headers, item, styles, link }) => {
 
   return (
     <>
-    <tr className="border-b border-gray-200 hover:bg-gray-100"
-    onMouseOver={handleMouseOver}
-    onMouseOut={handleMouseExit}
-    >
-      {headers.map((header) => {
-        if (header.key !== "-") {
-          if (Array.isArray(item[header.key])) {
-            return (
-              <td className={`py-3 px-5 ${header.style}`}>
-                <div className={`flex items-center px-2 ${header.style}`}>
-                  <div class="flex flex-row-reverse items-center">
-                    {displayReviews(item[header.key])}
+      <tr
+        className="border-b border-gray-200 hover:bg-gray-100"
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseExit}
+      >
+        {headers.map((header) => {
+          if (header.key !== "-") {
+            if (Array.isArray(item[header.key])) {
+              return (
+                <td className={`py-3 px-5 ${header.style}`}>
+                  <div className={`flex items-center px-2 ${header.style}`}>
+                    <div class="flex flex-row-reverse items-center">
+                      {displayReviews(item[header.key])}
+                    </div>
                   </div>
+                </td>
+              )
+            } else {
+              return (
+                <td className={`relative  py-3 px-5  max-w-sm ${header.style}`}>
+                  <p
+                    className={
+                      styles[
+                        String(item[header.key])
+                          .replace(/[^a-zA-Z0-9]/g, "")
+                          .toLowerCase()
+                      ]
+                        ? styles[
+                            String(item[header.key])
+                              .replace(/[^a-zA-Z0-9]/g, "")
+                              .toLowerCase()
+                          ]
+                        : "test"
+                    }
+                  >
+                    {item[header.key]}
+                  </p>
+                  {isHovered && header.key === "interests" && (
+                    <Tooltip message={item["interests"]} />
+                  )}
+                </td>
+              )
+            }
+          } else {
+            return (
+              <td className="max-w p-3 text-center">
+                <div className="flex justify-center items-center">
+                  <Link
+                    to={
+                      link ? link + item._id : `/admin/${view}/id/${item._id}`
+                    }
+                    className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
+                  >
+                    {view === "forms" ? <PencilAltIcon /> : <EyeIcon />}
+                  </Link>
                 </div>
               </td>
             )
-          } else {
-            return (
-
-                <td className={`relative capitalize py-3 px-5  max-w-sm ${header.style}`}
-                                  // {header.key === "interests" &&
-                                  
-                
-                >
-                <p
-                  className={
-                    styles[
-                      String(item[header.key])
-                        .replace(/[^a-zA-Z0-9]/g, "")
-                        .toLowerCase()
-                    ]
-                      ? styles[
-                          String(item[header.key])
-                            .replace(/[^a-zA-Z0-9]/g, "")
-                            .toLowerCase()
-                        ]
-                      : "test"
-                  }
-
-                
-                >
-                
-                  {item[header.key]}
-
-                </p>
-                { isHovered && header.key === "interests" && <Tooltip message={item["interests"]} /> }
-              </td>
-                
-
-            )
           }
-        } else {
-          return (
-            <td className="max-w p-3 text-center">
-              <div className="flex justify-center items-center">
-                <Link
-                  to={link ? link + item._id : `/admin/${view}/id/${item._id}`}
-                  className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
-                >
-                  {view === "forms" ? <PencilAltIcon /> : <EyeIcon />}
-                </Link>
-              </div>
-            </td>
-          )
-        }
-      })}
-            
-    </tr>
-
+        })}
+      </tr>
     </>
-  
   )
 }
 
