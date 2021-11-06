@@ -1,14 +1,21 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect, useContext } from "react"
-import Loading from "../Widgets/Loading"
-import MapDisplay from "./MapDisplay"
-import AdminContext from "../../../contexts/Admin"
-import LinkPreview from "../Resources/LinkPreview"
-import ConfirmModal from "../Widgets/ConfirmModal"
+import Loading from "../../Admin/Widgets/Loading"
+import MapDisplay from "../../Admin/Events/MapDisplay"
+import UserContext from "../../../contexts/User"
+import LinkPreview from "../../Admin/Resources/LinkPreview"
+import ConfirmModal from "..//Widgets/ConfirmModal"
 import ConfirmDelete from "./ConfirmDelete"
 import ConfirmCancel from "./ConfirmCancel"
 import ComponentModal from "../Widgets/ComponentModal"
-import { EmojiSadIcon, TrashIcon, XCircleIcon } from "@heroicons/react/outline"
+import Banner from "../../Admin/Widgets/Banner"
+
+import {
+  EmojiSadIcon,
+  PlusCircleIcon,
+  TrashIcon,
+  XCircleIcon,
+} from "@heroicons/react/outline"
 import axios from "axios"
 import moment from "moment"
 import AddEvent from "./AddEvent"
@@ -23,15 +30,19 @@ const styles = {
   private: "bg-fred-100 text-black border-fred-900 border p-1 px-2 text-sm",
 }
 const eventUrl = "/api/events/"
+const attendenceUrl = "/api/events/attendance"
 
 const Event = () => {
   const { id } = useParams()
-  const { config, reload, setCCModal, setCModal, user } =
-    useContext(AdminContext)
+  const { config, reload, setReload, setCCModal, setCModal, user } =
+    useContext(UserContext)
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [interested, setInterested] = useState(false)
+  const [banner, setBanner] = useState({ show: false })
+  const [going, setGoing] = useState(false)
   //GET DATA FROM DB WITH APPLICATIONID FROM URL
   useEffect(() => {
     axios
@@ -39,6 +50,14 @@ const Event = () => {
       .then((res) => {
         if (res.data.data) {
           setData(res.data.data)
+          const memberInterested = res.data.data.interested.filter(
+            (interested) => interested._id === user.id
+          )
+          if (memberInterested.length) setInterested(true)
+          const memberGoing = res.data.data.going.filter(
+            (going) => going._id === user.id
+          )
+          if (memberGoing.length) setGoing(true)
           setLoading(false)
         } else {
           setError("No event found with this ID")
@@ -49,9 +68,54 @@ const Event = () => {
         console.log(err)
       })
   }, [id, reload])
-  console.log(edit)
+  const handleAttendance = async (task) => {
+    let updateData
+    if (task === "going") {
+      updateData = {
+        id: data._id,
+        going: !going,
+        interested: false,
+        member: user.id,
+      }
+    } else {
+      updateData = {
+        id: data._id,
+        going: false,
+        interested: !interested,
+        member: user.id,
+      }
+    }
+    try {
+      const updateAttendance = await axios.put(
+        attendenceUrl,
+        updateData,
+        config
+      )
+      if (updateAttendance) {
+        if (task === "going") {
+          setGoing(!going)
+          setInterested(false)
+        } else {
+          setGoing(false)
+          setInterested(!interested)
+        }
+        setReload(reload + 1)
+      } else {
+        await Promise.reject(new Error("not_updated"))
+      }
+    } catch (e) {
+      setBanner({
+        error: 1,
+        show: true,
+        message: "Sorry, couldn't update attendance...",
+      })
+      setTimeout(() => {
+        setBanner((prev) => ({ ...prev, show: false }))
+      }, 4000)
+    }
+  }
   return (
-    <section className="h-full py-1 bg-white flex flex-col justify-center w-full lg:w-5/6 px-4 mx-auto mt-6">
+    <section className="relative flex flex-col items-center justify-center w-full lg:w-5/6 px-4 mx-auto">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -68,14 +132,10 @@ const Event = () => {
         <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
-          <div className="relative self-center flex flex-col w-full xl:w-5/6 mb-6 shadow-lg border-0">
+          <div className="relative flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
             <img
               className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
-              src={
-                data.eventCover?.url
-                  ? data.eventCover.url
-                  : `https://www.si.com/.image/t_share/MTY4MTkyMjczODM4OTc0ODQ5/cfp-trophy-deitschjpg.jpg`
-              }
+              src={data.eventCover?.url}
               alt="cover"
             />
             {data.isCanceled && (
@@ -187,20 +247,45 @@ const Event = () => {
               <div className="px-3 bg-white text-lg text-mono w-full ease-linear transition-all duration-150">
                 {data.description}
               </div>
-              <h6 className="text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
-                Going
+              <Banner message={banner} />
+
+              <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
+                <p>Going</p>
+                {going ? (
+                  <button
+                    className="h-4 w-4"
+                    onClick={() => {
+                      handleAttendance("going")
+                    }}
+                  >
+                    <XCircleIcon className="h-4 w-4 text-fred" />
+                  </button>
+                ) : (
+                  <button
+                    className="h-4 w-4"
+                    onClick={() => {
+                      handleAttendance("going")
+                    }}
+                  >
+                    <PlusCircleIcon className="h-4 w-4 text-green-500" />
+                  </button>
+                )}
               </h6>
               <div className="px-3 bg-white text-base text-mono w-full ease-linear transition-all duration-150">
-                {data.going.length
-                  ? data.going.map((attendee) => {
-                      return (
+                {data.going.length ? (
+                  <div className="w-full flex items-center space-x-2">
+                    <p className="mr-2 text-lg text-grotesk">
+                      {data.going.length}
+                    </p>
+                    <div className="w-full flex items-center px-4 overflow-x-auto">
+                      {data.going.map((attendee) => (
                         <div
-                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border-2 border-white object-cover object-center`}
                         >
                           {attendee.photo?.public_id ? (
                             <img
                               src={attendee.photo?.url}
-                              className="h-10 w-10 rounded-full mr-2 object-cover"
+                              className="rounded-full"
                               alt="user profile"
                             />
                           ) : (
@@ -210,24 +295,50 @@ const Event = () => {
                             )
                           )}
                         </div>
-                      )
-                    })
-                  : "No confirmations yet"}
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  "No confirmations yet"
+                )}
               </div>
-              <h6 className="text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
-                Interested
+              <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
+                <p>Interested</p>
+                {interested ? (
+                  <button
+                    className="h-4 w-4"
+                    onClick={() => {
+                      handleAttendance("interested")
+                    }}
+                  >
+                    <XCircleIcon className="h-4 w-4 text-fred" />
+                  </button>
+                ) : (
+                  <button
+                    className="h-4 w-4"
+                    onClick={() => {
+                      handleAttendance("interested")
+                    }}
+                  >
+                    <PlusCircleIcon className="h-4 w-4 text-green-500" />
+                  </button>
+                )}
               </h6>
               <div className="px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150">
-                {data.interested.length
-                  ? data.interested.map((attendee) => {
-                      return (
+                {data.interested.length ? (
+                  <div className="w-full flex items-center space-x-2">
+                    <p className="mr-2 text-lg text-grotesk">
+                      {data.interested.length}
+                    </p>
+                    <div className="w-full flex items-center px-4 overflow-x-auto">
+                      {data.interested.map((attendee) => (
                         <div
-                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border-2 border-white object-cover object-center`}
                         >
                           {attendee.photo?.public_id ? (
                             <img
                               src={attendee.photo?.url}
-                              className="h-10 w-10 rounded-full mr-2 object-cover"
+                              className="rounded-full"
                               alt="user profile"
                             />
                           ) : (
@@ -237,9 +348,12 @@ const Event = () => {
                             )
                           )}
                         </div>
-                      )
-                    })
-                  : "No confirmations yet"}
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  "No confirmations yet"
+                )}
               </div>
               {data.type !== "online" && (
                 <div className="px-3 bg-white text-lg w-full border-t-2 border-b-2 border-gray-300 mt-2">
@@ -268,7 +382,8 @@ const Event = () => {
                   </p>
                 </div>
               )}
-              <div className="flex pt-2 px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150">
+              <div className="flex mt-2 pt-2 px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150 items-center">
+                <p className="text-xs">Event Tags:</p>
                 {data.tags.length
                   ? data.tags.map((tag) => (
                       <div
@@ -282,7 +397,7 @@ const Event = () => {
               </div>
             </div>
             <footer className="flex p-4 mt-2 justify-center items-center">
-              {!data.isCanceled && (
+              {!data.isCanceled && user.id === data.member._id && (
                 <button
                   class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                   onClick={() => {
@@ -294,8 +409,8 @@ const Event = () => {
               )}
             </footer>
           </div>
-          {!edit && (
-            <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+          {!edit && user.id === data.member._id && (
+            <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
               <button
                 className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                 onClick={() => {
@@ -304,7 +419,7 @@ const Event = () => {
               >
                 Edit
               </button>
-              {user.role.includes("admin") ? (
+              {user.id === data.member._id ? (
                 <button
                   className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
                   onClick={() => {

@@ -5,7 +5,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  photo: {
+  eventCover: {
     public_id: { type: String },
     url: { type: String },
   },
@@ -29,7 +29,13 @@ const eventSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  geoLocation: { lat: { type: Number }, lon: { type: Number } },
+  member: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Members",
+    default: null,
+  },
+  geoLocation: { lat: { type: Number }, lng: { type: Number } },
+  zoom: { type: Number, default: 15 },
   type: {
     type: String,
     enum: ["online", "public", "private"],
@@ -38,6 +44,7 @@ const eventSchema = new mongoose.Schema({
   link: { type: String },
   tags: [{ type: String }],
   announce: { type: Boolean, default: false },
+  isCanceled: { type: Boolean, default: false },
 })
 
 const Event = mongoose.model("Event", eventSchema)

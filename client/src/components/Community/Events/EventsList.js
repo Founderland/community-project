@@ -1,15 +1,16 @@
 import { useEffect, useState, useContext } from "react"
 import axios from "axios"
-import AdminContext from "../../../contexts/Admin"
-import Loading from "../Widgets/Loading"
+import UserContext from "../../../contexts/User"
+import Loading from "../../Admin/Widgets/Loading"
 import EventCard from "./EventCard"
-import Pagination from "../Widgets/Pagination"
+import Pagination from "../../Admin/Widgets/Pagination"
+import { useParams } from "react-router-dom"
 import { SearchIcon } from "@heroicons/react/solid"
 import { EmojiSadIcon } from "@heroicons/react/outline"
 
 const eventsUrl = "/api/events/"
 
-const EventsList = ({ state }) => {
+const EventsList = ({ state, filter }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
@@ -18,12 +19,20 @@ const EventsList = ({ state }) => {
   const [pageCount, setPageCount] = useState(0)
   const [tags, setTags] = useState([])
   const [searchTags, setSearchTags] = useState([])
-  const { reload, selectedTab, config } = useContext(AdminContext)
+  const { config, user } = useContext(UserContext)
   useEffect(() => {
     axios
       .get(eventsUrl + state, config)
       .then((res) => {
-        if (res.data.data) setData(res.data.data)
+        if (res.data.data) {
+          let result
+          if (filter) {
+            result = res.data.data.filter((item) => item.member._id === user.id)
+          } else {
+            result = [...res.data.data]
+          }
+          setData(result)
+        }
         //GET ALL AVAILABLE TAGS
         const allTags = res.data.data
           .map((item) => item.tags)
@@ -36,7 +45,7 @@ const EventsList = ({ state }) => {
       .catch((e) => {
         console.log(e)
       })
-  }, [reload, selectedTab])
+  }, [state, filter])
 
   useEffect(() => {
     let filteredData = [...data]
@@ -74,7 +83,6 @@ const EventsList = ({ state }) => {
     else newFilter.push(value)
     setSearchTags(newFilter)
   }
-  console.log(data, tags)
   return loading ? (
     <Loading />
   ) : (

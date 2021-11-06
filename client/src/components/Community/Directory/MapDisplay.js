@@ -64,12 +64,13 @@ export default function MapDisplay(props) {
   // const [isSidebarSelected, setIssideSelected] = useState(false)
 
   useEffect(() => {
-    console.log(memberDetails)
+
     const coOrdinates = []
     for (let index = 0; index < memberDetails?.length; index++) {
+
       coOrdinates.push({
-        lat: memberDetails[index].lat,
-        lng: memberDetails[index].lng,
+        lat: memberDetails[index].geoLocation.lat,
+        lng: memberDetails[index].geoLocation.lng,
       })
     }
     setLatLong([...coOrdinates])
@@ -115,7 +116,7 @@ export default function MapDisplay(props) {
 
     let count = 0
     for (let i = 0; i < memberDetails.length; i++) {
-      if (memberDetails[i].lat === lat && memberDetails[i].lat) {
+      if (memberDetails[i].geoLocation.lat === lat && memberDetails[i].geoLocation.lat) {
         count++
       }
     }
@@ -148,11 +149,11 @@ export default function MapDisplay(props) {
       <div className="absolute left-0 right-0 z-40 md:w-1/2 m-4 h-14">
         <Autocomplete
           className=""
-          getItemValue={(item) => `${item.firstname} ${item.lasname}`}
+          getItemValue={(item) => `${item.firstName} ${item.lastName}`}
           items={memberDetails}
           shouldItemRender={(item, value) =>
-            item.firstname.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
-            item.lasname.toLowerCase().indexOf(value.toLowerCase()) > -1
+            item.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+            item.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1
           }
           wrapperStyle={{
             display: "inline-block",
@@ -180,7 +181,7 @@ export default function MapDisplay(props) {
               className="p-4 border-b border-gray-400 text-lg md:text-xl 2xl:text-3xl"
               style={{ background: isHighlighted ? "lightgray" : "white" }}
             >
-              {item.firstname + " " + item.lasname}
+              {item.firstName + " " + item.lastName}
             </div>
           )}
           value={searchValue}

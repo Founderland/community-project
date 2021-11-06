@@ -34,13 +34,13 @@ const Events = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <tab className="flex justify-center bg-white outline-none md:border border-black pt-4 pb-8">
+      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
         {!id ? (
           <div className="w-full px-4 outline-none">
             <EventsList state={tabs[selectedTab].role} />
             <button
               className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-              onClick={() => history.push("events/id/new")}
+              onClick={() => history.push("/admin/events/id/new")}
             >
               <PlusIcon className="h-5 w-5" />
               <p className="text-mono text-sm">Add New</p>
@@ -51,7 +51,7 @@ const Events = () => {
         ) : (
           <Event />
         )}
-      </tab>
+      </section>
     </div>
   )
 }

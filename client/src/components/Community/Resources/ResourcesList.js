@@ -39,39 +39,34 @@ export default function ResourcesList() {
   return loading ? (
     <Loading />
   ) : (
-    <div className="relative">
-      <div className="md:flex w-full h-screen">
-        <div className="w-full md:w-1/4 md:flex flex-col pt-2 md:pt-10 pl-6 bg-gray-50 bg-opacity-50">
-          <div className="pt-5 pr-2">
-            {categories.map((item) => (
-              <CategoryDisplay
-                category={item}
-                isActive={item.key === category}
-              />
-            ))}
-          </div>
+    <>
+      <div className="w-full h-full md:flex bg-gray-50 bg-opacity-50">
+        <div className="w-full md:w-1/4 pt-2 md:pt-10 pl-6 ">
+          {categories.map((item) => (
+            <CategoryDisplay category={item} isActive={item.key === category} />
+          ))}
         </div>
-        {!category ? (
-          <div className="w-full md:w-3/4 relative">
-            <img
-              className="w-full h-full object-cover"
-              src={Resourcebg}
-              alt="resource"
-            />
-            <div className="absolute top-0 flex items-center justify-center w-full h-full">
-              <h1 className="text-hanson lg:text-7xl  2xl:text-8xl text-white p-36 ">
-                The Founderland Library
-              </h1>
+        <div className=" w-full md:w-3/4">
+          {!category ? (
+            <div className="relative w-full h-full flex">
+              <img
+                className="w-full h-full object-cover"
+                src={Resourcebg}
+                alt="resource"
+              />
+              <div className="absolute top-0 flex items-center justify-center w-full h-full">
+                <h1 className="text-hanson text-lg lg:text-4xl  2xl:text-6xl text-white p-36 ">
+                  The Founderland Library
+                </h1>
+              </div>
             </div>
-          </div>
-        ) : id ? (
-          <Article />
-        ) : (
-          <div className="w-full md:w-3/4 relative">
-            {<DisplayArticles category={selectedCategory} />}
-          </div>
-        )}
+          ) : id ? (
+            <Article />
+          ) : (
+            <DisplayArticles category={selectedCategory} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

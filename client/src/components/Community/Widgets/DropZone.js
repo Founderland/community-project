@@ -1,7 +1,7 @@
-import { useState, useCallback, useContext, useEffect } from "react"
+import { useState, useCallback, useContext } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
-import AdminContext from "../../../contexts/Admin"
+import UserContext from "../../../contexts/User"
 
 const Dropzone = ({
   data,
@@ -15,7 +15,7 @@ const Dropzone = ({
 }) => {
   const [previewSource, setPreviewSource] = useState(null)
   const [loading, setLoading] = useState(false)
-  const { getUuid, config } = useContext(AdminContext)
+  const { getUuid, config } = useContext(UserContext)
   const regex = new RegExp("(?:Cover)", "g")
 
   // CLOUDINARY

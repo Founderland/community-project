@@ -16,7 +16,7 @@ const EventCard = ({ event }) => {
   return (
     <Link
       className=" flex items-center justify-center my-3 mx-2"
-      to={`/admin/events/id/${event._id}`}
+      to={`/community/events/id/${event._id}`}
     >
       <div className="max-w-sm group cursor-pointer flex flex-col bg-white shadow-lg hover:shadow-xl">
         <div className="flex w-full relative ">

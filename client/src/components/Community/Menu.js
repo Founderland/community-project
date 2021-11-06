@@ -22,7 +22,11 @@ const Menu = () => {
   let selectedView = view
   if (!view) selectedView = "community"
   return (
-    <div className="fixed bottom-0 w-full z-50">
+    <div
+      className="fixed
+    inset-x-0
+    bottom-0 w-full z-50"
+    >
       <div className="md:hidden bottom-0 w-full bg-black text-xs">
         <div className="flex items-center justify-center text-white text-center">
           {Object.keys(views).map((key) =>
