@@ -455,14 +455,15 @@ const Profile = () => {
                   Interested/Going
                 </div>
                 <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
-                  {events.going.length ? (
-                    events.going.map((event) => (
-                      <EventPreview key={event._id} event={event} />
-                    ))
-                  ) : events.interested.length ? (
-                    events.interested.map((event) => (
-                      <EventPreview key={event._id} event={event} />
-                    ))
+                  {events.going.length || events.interested.length ? (
+                    <>
+                      {events.going.map((event) => (
+                        <EventPreview key={event._id} event={event} />
+                      ))}
+                      {events.interested.map((event) => (
+                        <EventPreview key={event._id} event={event} />
+                      ))}
+                    </>
                   ) : (
                     <p className="text-xs text-mono">
                       Not participating in any future event
