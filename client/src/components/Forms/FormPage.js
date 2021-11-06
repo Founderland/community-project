@@ -1,8 +1,6 @@
 import Question from "./Question"
 import smallLogo from "../../assets/images/smallLogo.svg"
-
 import { useHistory } from "react-router-dom"
-
 import { useState, useContext } from "react"
 import { AnswersContext } from "../../contexts/AnswersProvider"
 import gif from "../../assets/images/loadingGif.gif"
