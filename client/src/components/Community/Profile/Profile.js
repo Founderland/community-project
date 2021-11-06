@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useMemo } from "react"
+import { useState, useContext, useEffect, useMemo, useRef } from "react"
 import { useLocation, useHistory, useRouteMatch, Link } from "react-router-dom"
 import UserContext from "../../../contexts/User"
 import axios from "axios"
@@ -61,6 +61,7 @@ const Profile = () => {
   const [profile, setProfile] = useState({
     ...defaultProfile,
   })
+  const initialData = useRef(null)
 
   const triggerBanner = ({ message, success }) => {
     setBanner({
@@ -97,16 +98,17 @@ const Profile = () => {
           `/api/users/community/profile/${id}`,
           config
         )
-        console.log(id, data.data)
+
         setProfile({
           ...data.data,
         })
+        initialData.current = { ...data.data }
       } catch (error) {
         console.log(error)
       }
     }
     getProfileInfo()
-  }, [id])
+  }, [id, banner])
 
   useEffect(() => {
     axios
@@ -142,24 +144,39 @@ const Profile = () => {
 
   const submitChanges = async (e) => {
     e.preventDefault()
-    try {
-      const result = await axios.put(
-        `/api/users/community/profile/update`,
-        profile,
-        config
-      )
-      if (result) {
-        console.log(result)
-        setUser((prev) => ({ ...prev, photo: profile.photo }))
-        triggerBanner(result.data)
+
+    if (
+      profile.title.length &&
+      profile.companyName.length &&
+      profile.companyLink.length &&
+      profile.bio.length &&
+      profile.city.length &&
+      profile.country.length &&
+      profile.companyBio.length
+    ) {
+      try {
+        const result = await axios.put(
+          `/api/users/community/profile/update`,
+          profile,
+          config
+        )
+        if (result) {
+          console.log(result)
+          setUser((prev) => ({ ...prev, photo: profile.photo }))
+          triggerBanner(result.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
+    } else {
+      triggerBanner({ success: 0, message: "Please fill out all the fields" })
+      setProfile({ ...initialData.current })
     }
   }
+
   return (
     <>
-      <div className='w-full flex items-center justify-center z-20'>
+      <div className='w-full flex items-center justify-center absolute  '>
         <Banner message={banner} />
       </div>
       <form
@@ -235,6 +252,7 @@ const Profile = () => {
             />
           </div>
         </div>
+
         <div
           className='w-full sm:w-1/2 md:w-9/12  shadow bg-white p-3 border-t-8 border-fpink 
             '>
