@@ -1,5 +1,6 @@
 import axios from "axios"
 import { createContext, useState, useEffect } from "react"
+import { useLocation } from "react-router-dom"
 
 // creating a context and exporting it
 export const AnswersContext = createContext(null)
@@ -11,7 +12,8 @@ function AnswersProvider({ children }) {
   const [prev, setPrev] = useState(false)
   const [viewButton, setViewButton] = useState(false)
   const [viewId, setViewId] = useState({})
-
+  const location = useLocation()
+  const role = location.pathname.split("/form/")[1]
   let totalscore = 0
   const answerHandler = (inputValue) => {
     answers[inputValue.id] = inputValue.value
@@ -64,24 +66,23 @@ function AnswersProvider({ children }) {
       let total = 0
       for (let i = 0; i < answers.length; i++) {
         if (answers[i].score !== "") {
-          console.log(answers[i].score)
           total += parseInt(answers[i].score)
         }
       }
-      // const total=answers.map(item=>parseInt(item.score)).reduce((prev,curr)=>prev+curr,0)
-      console.log("total", total)
-      console.log("total", answers)
+      const responseData = {
+        firstName: answers.filter(
+          (answer) => answer.question.toLowerCase().trim() === "first name"
+        )[0].answer_value,
+        lastName: answers.filter(
+          (answer) => answer.question.toLowerCase().trim() === "last name"
+        )[0].answer_value,
+        totalScore: total,
+        role: role,
+        answerData: answers,
+      }
       axios
-        .post("/api/applicants/response", {
-          firstName: answers[0].answer_value,
-          lastName: answers[1].answer_value,
-          totalScore: total,
-          role: "founder",
-          answerData: answers,
-        })
-        //axios.post("/api/form/founder/response", { data: JSON.stringify(answers) })
+        .post("/api/applicants/response", responseData)
         .then((result) => {
-          console.log(result)
           setAnswers([])
         })
         .catch((e) => {

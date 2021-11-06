@@ -199,7 +199,11 @@ const Application = () => {
                                   styles[item.rank]?.text
                                 } px-3 py-3 bg-white text-lg w-full ease-linear transition-all duration-150`}
                               >
-                                {item.answer_value}
+                                {item.answer_value.length ? (
+                                  item.answer_value
+                                ) : (
+                                  <p className="text-xs">No answer</p>
+                                )}
                               </div>
                             </div>
                           </div>

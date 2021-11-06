@@ -4,26 +4,18 @@ const Response = require("../models/Response")
 // Add Founders Response
 
 const addResponse = async (req, res, next) => {
-  const { firstName, lastName, totalScore, answerData } = req.body
+  const { firstName, lastName, totalScore, answerData, role } = req.body
   try {
-    //  data.map(async (item) => {
     const newResponse = await Response.create({
       firstName,
       lastName,
       totalScore,
       answerData,
+      role,
     })
-
-    // {
-    //   // question_id: `${item.question_id}`,
-    //   // answerId: `${item.answer_id}`,
-    //   // score : `${item.score}`
-    // }
-
     if (!newResponse) {
       await Promise.reject("founder response error") //reject promise with error
     }
-    // })
 
     return res.status(200).json("Succesful attempt")
   } catch (e) {

@@ -23,6 +23,12 @@ const views = {
   forms: { icon: "emptydoc", name: "Forms" },
   settings: { icon: "set", name: "Settings" },
 }
+const rolesLabel = {
+  sadmin: "Supervisor",
+  admin: "Administrator",
+  user: "Reviewer",
+}
+
 const Admin = () => {
   const history = useHistory()
   const { isExact } = useRouteMatch()
@@ -107,6 +113,7 @@ const Admin = () => {
         config,
         cCModal,
         setCCModal,
+        rolesLabel,
       }}
     >
       {user ? <Main /> : <Login isAdminLogin />}
