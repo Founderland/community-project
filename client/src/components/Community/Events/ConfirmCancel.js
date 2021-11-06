@@ -10,7 +10,6 @@ const Confirm = ({ data }) => {
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({ show: false })
   const { setCModal, config, reload, setReload } = useContext(UserContext)
-  console.log(data)
   const save = async () => {
     setSaving(true)
     try {
@@ -19,7 +18,6 @@ const Confirm = ({ data }) => {
         { isCanceled: true },
         config
       )
-      console.log(canceled)
       if (canceled.data) {
         setSaving(false)
         setBanner({

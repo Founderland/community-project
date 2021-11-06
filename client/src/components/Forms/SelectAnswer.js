@@ -34,7 +34,6 @@ export default function SelectAnswer({
   }, [handleClickOutside])
 
   const itemClicked = (item, index) => {
-    // console.log("ITEM",item)
     setSelectedItem(item.answer)
     setShowList(!showList)
     selectedAnswer(item.answer, item._id, item.points)
@@ -55,7 +54,6 @@ export default function SelectAnswer({
       </div>
     </li>
   )
-  // console.log(selectValidation)
   return (
     <div className="flex flex-col md:flex-row">
       <div className="w-11/12 md:w-3/5">

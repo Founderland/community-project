@@ -51,7 +51,6 @@ const BusinessAreaSelect = ({ profile, setProfile }) => {
   }
 
   const addNewField = (inputRef) => {
-    console.log(inputRef)
     setbusinessAreas([
       ...businessAreas,
       {
@@ -66,7 +65,7 @@ const BusinessAreaSelect = ({ profile, setProfile }) => {
   }
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <ListOption
         options={businessAreas}
         required={true}
@@ -89,25 +88,27 @@ const BusinessAreaSelect = ({ profile, setProfile }) => {
           !isSelectionIncluded(businessAreas)
             ? "w-full py-2 absolute "
             : "hidden"
-        }>
+        }
+      >
         {(profile.businessArea === "Other" ||
           !isSelectionIncluded(businessAreas)) && (
           <input
             ref={inputRef}
-            type='text'
+            type="text"
             // placeholder='Enter your business area'
             defaultValue={
               isSelectionIncluded(businessAreas) ? null : profile.businessArea
             }
-            className='w-full text-sm appearance-none bg-grey-50 text-grey-500 border p-2 outline-none absolute '
+            className="w-full text-sm appearance-none bg-grey-50 text-grey-500 border p-2 outline-none absolute "
             onChange={""}
           />
         )}
         <button
-          type='button'
-          className=' absolute right-0 top-2 p-2 '
-          onClick={() => addNewField(inputRef)}>
-          <PlusCircleIcon className='w-6 h-6 hover:text-flime-900' />
+          type="button"
+          className=" absolute right-0 top-2 p-2 "
+          onClick={() => addNewField(inputRef)}
+        >
+          <PlusCircleIcon className="w-6 h-6 hover:text-flime-900" />
         </button>
       </div>
     </div>

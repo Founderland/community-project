@@ -85,7 +85,6 @@ const NewsLetter = () => {
       }
     }
   }
-  console.log(answerValue)
   return (
     <section className="h-full p-4 bg-gray-100 bg-opacity-50 ">
       <form

@@ -6,15 +6,6 @@ const addNew = async (req, res) => {
   const { category, question, rank, type, answers, categoryPage, mandatory } =
     req.body
   try {
-    console.log(
-      category,
-      question,
-      rank,
-      type,
-      answers,
-      categoryPage,
-      mandatory
-    )
     const newFoundersForm = await FoundersForm.create({
       category,
       categoryPage,

@@ -80,12 +80,10 @@ const ApplicationComments = ({
         setRefreshCommList(!refreshCommList)
         triggerBanner(res.data.message, 1)
         scrollDown()
-        console.log(data.data.status)
 
         changeToReviewed()
       })
       .catch((e) => {
-        console.log(e.response, "running")
         triggerBanner(
           e.response.data.message || "Sorry something went wrong",
           0

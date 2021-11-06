@@ -19,12 +19,8 @@ const addResponse = async (req, res, next) => {
 
     return res.status(200).json("Succesful attempt")
   } catch (e) {
-    if (e === "founder response error") {
-      console.log("founder response error")
-    } else {
-      console.log(e)
-      return res.status(404).json({ e })
-    }
+    console.log(e)
+    return res.status(404).json({ e })
   }
 }
 // Find Founders Response
@@ -180,7 +176,6 @@ const getComments = async (req, res) => {
     })
     if (!allComments) await Promise.reject("NOT_FOUND")
     res.json({ comments: allComments.comments })
-    // console.log(allComments.comments)
   } catch (e) {
     console.log(e)
 

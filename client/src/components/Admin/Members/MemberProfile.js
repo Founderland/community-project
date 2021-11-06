@@ -1,10 +1,12 @@
-import { useHistory, useParams } from "react-router"
+import { useParams } from "react-router"
 import { Link } from "react-router-dom"
-import { useEffect, useState, useContext, useMemo } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
 import Loading from "../Widgets/Loading"
+import EventPreview from "../../Community/Profile/EventPreview"
+
 import moment from "moment"
 import {
   ShieldCheckIcon,
@@ -17,6 +19,7 @@ import {
 const memberUrl = "/api/users/community/profile/"
 const notifyUrl = "/api/users/community/notify/"
 const lockUrl = "/api/users/community/lock"
+const eventsUrl = "/api/events/future"
 
 const defaultProfile = {
   photo: null,
@@ -50,23 +53,17 @@ const styles = {
 }
 
 const MemberProfile = () => {
-  const history = useHistory()
   const [loading, setLoading] = useState(true)
   const [notifying, setNotifying] = useState(false)
   const [notified, setNotified] = useState(false)
   const [locking, setLocking] = useState(false)
   const [profile, setProfile] = useState(defaultProfile)
+  const [events, setEvents] = useState({ own: [], interested: [], going: [] })
+
   const [banner, setBanner] = useState({ show: false })
   const { id } = useParams()
-  const { token, reload, setReload } = useContext(AdminContext)
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
+  const { config, user, reload, setReload } = useContext(AdminContext)
+
   useEffect(() => {
     setLoading(true)
     axios
@@ -90,6 +87,31 @@ const MemberProfile = () => {
       setProfile(defaultProfile)
     }
   }, [reload])
+
+  useEffect(() => {
+    axios
+      .get(eventsUrl, config)
+      .then((res) => {
+        let searchId = id
+        if (res.data.data) {
+          let own = res.data.data.filter((item) => item.member._id === searchId)
+          let going = res.data.data.filter(
+            (item) =>
+              item.going.filter((going) => going._id === searchId).length
+          )
+          let interested = res.data.data.filter(
+            (item) =>
+              item.interested.filter(
+                (interested) => interested._id === searchId
+              ).length
+          )
+          setEvents((prev) => ({ ...prev, own, going, interested }))
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [id])
 
   const lock = async () => {
     setLocking(true)
@@ -144,14 +166,12 @@ const MemberProfile = () => {
     setNotifying(true)
     try {
       const notified = await axios.post(notifyUrl + id, { _id: id }, config)
-      console.log(notified)
       if (notified) {
         setNotified(true)
         setReload(reload + 1)
         setNotifying(false)
       }
     } catch (e) {
-      console.log(e)
       setNotifying(false)
       setBanner({
         error: 1,
@@ -165,7 +185,7 @@ const MemberProfile = () => {
   }
 
   return (
-    <section className="h-full py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-4">
+    <section className="h-full py-1 bg-white w-full xl:w-5/6 px-4 mx-auto mt-4">
       {loading ? (
         <Loading />
       ) : (
@@ -237,27 +257,27 @@ const MemberProfile = () => {
                   <div className="w-full grid grid-cols-2 gap-x-2">
                     <div className="ml-auto w-full text-center">
                       <p className="text-xs text-grotesk">Approved on</p>
-                      <p className="font-bold">
+                      <p className="font-bold text-xs md:text-sm">
                         {moment(profile.created).format("DD/M/YYYY")}
                       </p>
                     </div>
                     {profile.confirmed && (
                       <div className="ml-auto w-full text-center">
                         <p className="text-xs text-grotesk">Confirmed on</p>
-                        <p className="font-bold">
+                        <p className="font-bold text-xs md:text-sm">
                           {moment(profile.confirmed).format("DD/M/YYYY")}
                         </p>
                       </div>
                     )}
                   </div>
                 </div>
-                <div className="flex items-center py-3">
-                  <p className="uppercase text-sm text-grotesk">Application</p>
+                <div className="flex flex-col justify-center py-3">
+                  <p className="uppercase text-sm text-grotesk ">Application</p>
                   <div className="ml-auto">
                     {profile.applicationId ? (
                       <Link
                         to={`/admin/applicants/id/${profile.applicationId}`}
-                        className="flex items-center justify-center hover:text-sky-600"
+                        className="flex items-center justify-center font-bold hover:text-sky-600 text-sm"
                       >
                         Go to Application <ChevronRightIcon className="h-4" />
                       </Link>
@@ -267,11 +287,11 @@ const MemberProfile = () => {
                   </div>
                 </div>
                 {profile.notified && (
-                  <div className="flex items-center py-3">
+                  <div className="flex flex-col justify-center py-3">
                     <p className="uppercase text-sm text-grotesk">
                       Notified to Join
                     </p>
-                    <p className="ml-auto font-bold">
+                    <p className="ml-auto font-bold text-sm">
                       {moment(profile.notified).format("DD/M/YYYY")}
                     </p>
                   </div>
@@ -308,7 +328,7 @@ const MemberProfile = () => {
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Email
                     </div>
-                    <div className="p-2 text-base">
+                    <div className="p-2 text-sm break-all">
                       <a
                         href={`mailto:${profile.email}`}
                         className="hover:text-sky-600"
@@ -363,18 +383,43 @@ const MemberProfile = () => {
                   />
                   <span className="tracking-wider text-grotesk">Events</span>
                 </div>
-                <div className="grid md:grid-cols-1 gap-2">
+                <div className="grid md:grid-cols-2 gap-2">
                   <div className="grid grid-cols-1">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
-                      hosted
+                      Host
                     </div>
-                    <div className="p-2">No events</div>
+                    <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                      {events.own.length ? (
+                        events.own.map((event) => (
+                          <EventPreview key={event._id} event={event} />
+                        ))
+                      ) : (
+                        <p className="text-xs text-mono">
+                          Not hosting any future event
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <div className="grid grid-cols-1">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
-                      Attended
+                      Interested/Going
                     </div>
-                    <div className="p-2">No events</div>
+                    <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                      {events.going.length || events.interested.length ? (
+                        <>
+                          {events.going.map((event) => (
+                            <EventPreview key={event._id} event={event} />
+                          ))}
+                          {events.interested.map((event) => (
+                            <EventPreview key={event._id} event={event} />
+                          ))}
+                        </>
+                      ) : (
+                        <p className="text-xs text-mono">
+                          Not participating in any future event
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -409,23 +454,25 @@ const MemberProfile = () => {
             ) : (
               ""
             )}
-            <button
-              className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
-              onClick={() => lock()}
-            >
-              {locking ? (
-                <div className="flex justify-center">
-                  <div
-                    style={{ borderTopColor: "transparent" }}
-                    className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                  ></div>
-                </div>
-              ) : profile.locked ? (
-                "Unlock Access"
-              ) : (
-                "Lock Access"
-              )}
-            </button>
+            {user.role.search("admin") && (
+              <button
+                className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
+                onClick={() => lock()}
+              >
+                {locking ? (
+                  <div className="flex justify-center">
+                    <div
+                      style={{ borderTopColor: "transparent" }}
+                      className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
+                    ></div>
+                  </div>
+                ) : profile.locked ? (
+                  "Unlock Access"
+                ) : (
+                  "Lock Access"
+                )}
+              </button>
+            )}
           </div>
         </>
       )}

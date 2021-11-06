@@ -78,7 +78,6 @@ const ResourcesList = ({ categories, category }) => {
     else newFilter.push(value)
     setSearchTags(newFilter)
   }
-  console.log(data)
   return loading ? (
     <Loading />
   ) : (

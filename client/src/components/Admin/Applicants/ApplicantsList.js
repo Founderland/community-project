@@ -46,7 +46,6 @@ const ApplicantsList = ({ status, role, reload }) => {
           applicantsURL + category + "/" + role,
           config
         )
-        console.log(result)
         const userData = result.data.map((item) => {
           // Getting first and last name
           const firstName = item.firstName.length

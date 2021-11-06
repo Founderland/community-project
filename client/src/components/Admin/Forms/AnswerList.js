@@ -13,7 +13,6 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
 
     setAnswersList([...updatedList])
   }
-  console.log(memberType)
   return (
     <>
       {answersList?.map((answer, i) => (

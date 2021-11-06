@@ -22,7 +22,6 @@ const Answer = ({
   const [disabled, setDisabled] = useState(true)
   const [updated, setUpdated] = useState({ ...answer })
   const answerInput = useRef()
-  console.log(answer)
   return (
     <div
       className={`flex flex-col xl:flex-row text-center justify-between items-center w-full bg-gray-200 py-3 px-5 ${

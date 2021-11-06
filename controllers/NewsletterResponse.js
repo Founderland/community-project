@@ -32,44 +32,6 @@ const findNewsletterResponse = async (req, res) => {
   }
 }
 
-//  const findResponsesByStatus = async (req, res) => {
-//    const { status, role } = req.params
-//    try {
-//      if (status === "allpending" && role) {
-//        const result = await Response.find({
-//          status: { $in: ["new", "pending"] },
-//        })
-//          .sort({
-//            totalScore: "desc", //order responses by score
-//          })
-//          .populate({
-//            path: "comments.user",
-//            model: "User",
-//            select: ["firstName", "lastName", "role", "avatar"],
-//          })
-//        res.status(200).json(result)
-//      } else if (role !== "null") {
-//        const result = await Response.find({ status, role })
-//          .sort({
-//            totalScore: "desc", //order responses by score
-//          })
-//          .populate({
-//            path: "comments.user",
-//            model: "User",
-//            select: ["firstName", "lastName", "role", "avatar"],
-//          })
-//        res.status(200).json(result)
-//      } else {
-//        const result = await Response.find({ status }).sort({
-//          totalScore: "desc", //order responses by score
-//        })
-//        res.status(200).json(result)
-//      }
-//    } catch (error) {
-//      console.log(error)
-//    }
-//  }
-
 module.exports = {
   addNewsletterResponse,
   findNewsletterResponse,

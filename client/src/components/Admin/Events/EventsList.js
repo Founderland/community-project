@@ -20,22 +20,23 @@ const EventsList = ({ state }) => {
   const [searchTags, setSearchTags] = useState([])
   const { reload, selectedTab, config } = useContext(AdminContext)
   useEffect(() => {
-    axios
-      .get(eventsUrl + state, config)
-      .then((res) => {
-        if (res.data.data) setData(res.data.data)
-        //GET ALL AVAILABLE TAGS
-        const allTags = res.data.data
+    const getData = async () => {
+      try {
+        const eventsFiltered = await axios.get(eventsUrl + state, config)
+        if (eventsFiltered.data.data) setData(eventsFiltered.data.data)
+        const allEvents = await axios.get(eventsUrl + "all", config)
+        const allTags = allEvents.data.data
           .map((item) => item.tags)
           .flat(1)
           .filter((item, i, self) => i === self.indexOf(item))
           .sort((a, b) => a.substring(1).length - b.substring(1).length)
         setTags(allTags)
         setLoading(false)
-      })
-      .catch((e) => {
+      } catch (e) {
         console.log(e)
-      })
+      }
+    }
+    getData()
   }, [reload, selectedTab])
 
   useEffect(() => {
@@ -74,7 +75,6 @@ const EventsList = ({ state }) => {
     else newFilter.push(value)
     setSearchTags(newFilter)
   }
-  console.log(data, tags)
   return loading ? (
     <Loading />
   ) : (
