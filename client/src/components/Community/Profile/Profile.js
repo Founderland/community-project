@@ -112,24 +112,28 @@ const Profile = () => {
     axios
       .get(eventsUrl, config)
       .then((res) => {
+        let searchId = isMyProfile ? user.id : id
         if (res.data.data) {
-          let mine = res.data.data.filter((item) => item.member._id === user.id)
+          let mine = res.data.data.filter(
+            (item) => item.member._id === searchId
+          )
           let going = res.data.data.filter(
-            (item) => item.going.filter((going) => going._id === user.id).length
+            (item) =>
+              item.going.filter((going) => going._id === searchId).length
           )
           let interested = res.data.data.filter(
             (item) =>
-              item.interested.filter((interested) => interested._id === user.id)
-                .length
+              item.interested.filter(
+                (interested) => interested._id === searchId
+              ).length
           )
-          console.log(mine, going, interested)
           setEvents((prev) => ({ ...prev, mine, going, interested }))
         }
       })
       .catch((e) => {
         console.log(e)
       })
-  }, [])
+  }, [id])
 
   const formatValue = (value) => {
     const newValue = value.trimStart()
