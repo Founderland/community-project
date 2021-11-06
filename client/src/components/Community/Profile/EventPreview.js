@@ -1,13 +1,17 @@
 import moment from "moment"
-import { useHistory } from "react-router"
+import { useHistory, useLocation, useParams } from "react-router"
 
 const EventPreview = ({ event }) => {
   const history = useHistory()
+  const { pathname } = useLocation()
+  const local = pathname.split("/")[1]
   return (
     <div
       class="cursor-pointer flex shadow w-full mt-2 hover:shadow-xl "
       onClick={() => {
-        history.push(`/community/events/view/` + event._id)
+        history.push(
+          `/${local}/events/${local === "admin" ? "id" : "view"}/` + event._id
+        )
       }}
     >
       <div class="w-20 bg-fblue py-4 px-4 block h-full">
