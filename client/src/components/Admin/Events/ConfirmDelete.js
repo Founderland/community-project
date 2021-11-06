@@ -5,7 +5,7 @@ import AdminContext from "../../../contexts/Admin"
 
 import Banner from "../Widgets/Banner"
 
-const deleteUrl = "/api/resources/"
+const deleteUrl = "/api/events/delete/"
 
 const Confirm = ({ data }) => {
   const [saving, setSaving] = useState(false)
@@ -16,20 +16,17 @@ const Confirm = ({ data }) => {
   const save = async () => {
     setSaving(true)
     try {
-      const deleted = await axios.delete(
-        deleteUrl + data._id + "/" + data.article._id,
-        config
-      )
+      const deleted = await axios.delete(deleteUrl + data._id, config)
       if (deleted.data.success) {
         setSaving(false)
         setBanner({
           success: 1,
           show: true,
-          message: "Resource deleted! Redirecting..",
+          message: "Event deleted! Redirecting..",
         })
         setTimeout(() => {
           setCCModal(false)
-          history.push("/admin/resources/")
+          history.push("/admin/events/")
           setReload(reload + 1)
         }, 2000)
       } else {
@@ -41,7 +38,7 @@ const Confirm = ({ data }) => {
         setBanner({
           error: 1,
           show: true,
-          message: "Ressource is locked by system and cannot be deleted",
+          message: "Event is locked by system and cannot be deleted",
         })
       } else {
         setBanner({
@@ -63,7 +60,7 @@ const Confirm = ({ data }) => {
       <div className="md:flex w-full px-3">
         <div className="w-full mb-2 px-2 flex flex-col justify-center items-center">
           <label className="block uppercase tracking-wide text-grey-darker text-md font-bold mb-2">
-            Are you sure you want to delete this resource
+            Are you sure you want to delete this event
           </label>
         </div>
       </div>

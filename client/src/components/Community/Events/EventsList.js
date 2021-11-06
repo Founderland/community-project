@@ -1,15 +1,16 @@
 import { useEffect, useState, useContext } from "react"
+import axios from "axios"
+import UserContext from "../../../contexts/User"
+import Loading from "../../Admin/Widgets/Loading"
+import EventCard from "./EventCard"
+import Pagination from "../../Admin/Widgets/Pagination"
+import { useParams } from "react-router-dom"
 import { SearchIcon } from "@heroicons/react/solid"
 import { EmojiSadIcon } from "@heroicons/react/outline"
-import AdminContext from "../../../contexts/Admin"
-import axios from "axios"
-import Loading from "../Widgets/Loading"
-import ResourceCard from "./ResourceCard"
-import Pagination from "../Widgets/Pagination"
 
-const resourcesUrl = "/api/resources/category/"
+const eventsUrl = "/api/events/"
 
-const ResourcesList = ({ categories, category }) => {
+const EventsList = ({ state, filter }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
@@ -18,30 +19,33 @@ const ResourcesList = ({ categories, category }) => {
   const [pageCount, setPageCount] = useState(0)
   const [tags, setTags] = useState([])
   const [searchTags, setSearchTags] = useState([])
-  const { reload, selectedTab, config } = useContext(AdminContext)
-
+  const { config, user } = useContext(UserContext)
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get(resourcesUrl + category, config)
-        if (data) {
-          const articles = [...data[0].articles]
-          setData(articles)
-          let allTags = articles
-            .map((article) => article.tags)
-            .flat(1)
-            .filter((item, i, self) => i === self.indexOf(item))
-            .sort((a, b) => a.substring(1).length - b.substring(1).length)
-
-          setTags(allTags)
-          setLoading(false)
+    axios
+      .get(eventsUrl + state, config)
+      .then((res) => {
+        if (res.data.data) {
+          let result
+          if (filter) {
+            result = res.data.data.filter((item) => item.member._id === user.id)
+          } else {
+            result = [...res.data.data]
+          }
+          setData(result)
         }
-      } catch (e) {
+        //GET ALL AVAILABLE TAGS
+        const allTags = res.data.data
+          .map((item) => item.tags)
+          .flat(1)
+          .filter((item, i, self) => i === self.indexOf(item))
+          .sort((a, b) => a.substring(1).length - b.substring(1).length)
+        setTags(allTags)
+        setLoading(false)
+      })
+      .catch((e) => {
         console.log(e)
-      }
-    }
-    getData()
-  }, [reload, selectedTab])
+      })
+  }, [state, filter])
 
   useEffect(() => {
     let filteredData = [...data]
@@ -55,13 +59,14 @@ const ResourcesList = ({ categories, category }) => {
       )
     }
     //SORT DATA BY DATES
-    data.sort((a, b) => {
-      return a.dateStart - b.dateStart
-    })
-    const slice = filteredData.slice(
-      offset * perPage,
-      offset * perPage + perPage
-    )
+    const slice = filteredData
+      .slice(offset * perPage, offset * perPage + perPage)
+      .sort((a, b) => {
+        return (
+          new Date(a.dateStart).setHours(0, 0, 0, 0) -
+          new Date(b.dateStart).setHours(0, 0, 0, 0)
+        )
+      })
     setDataToDisplay(slice)
     if (searchTags.length) {
       setPageCount(Math.ceil(dataToDisplay.length / perPage))
@@ -78,40 +83,37 @@ const ResourcesList = ({ categories, category }) => {
     else newFilter.push(value)
     setSearchTags(newFilter)
   }
-  console.log(data)
   return loading ? (
     <Loading />
   ) : (
     <div className="w-full px-2 ">
-      <>
-        <div className="max-w-max text-mono flex  space-x-2 items-center overflow-x-auto mt-3 pl-2">
-          <SearchIcon className="h-8 w-8 text-gray-800" />
-          {tags.length ? (
-            tags.map((tag) => {
-              const selected = searchTags.includes(tag)
-              return (
-                <div
-                  key={tag}
-                  className={`${
-                    selected
-                      ? "bg-green-300 text-green-600"
-                      : "bg-gray-200 text-gray-600"
-                  } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
-                  onClick={() => filterTag(tag)}
-                >
-                  <p className=" text-xs">{tag}</p>
-                </div>
-              )
-            })
-          ) : (
-            <p className="text-xs">No tags available</p>
-          )}
-        </div>
-        <div className="flex flex-wrap w-full justify-start overflow-auto mt-2">
+      <div className="max-w-max text-mono flex  space-x-2 items-center mt-3 pl-2">
+        <SearchIcon className="h-5 w-5 text-gray-800" />
+        {tags.length ? (
+          tags.map((tag) => {
+            const selected = searchTags.includes(tag)
+            return (
+              <div
+                key={tag}
+                className={`${
+                  selected
+                    ? "bg-green-300 text-green-600"
+                    : "bg-gray-200 text-gray-600"
+                } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
+                onClick={() => filterTag(tag)}
+              >
+                <p className=" text-xs">{tag}</p>
+              </div>
+            )
+          })
+        ) : (
+          <p className="text-xs">No tags available</p>
+        )}
+      </div>
+      <div className="bg-white">
+        <div className="flex flex-wrap w-full justify-start overflow-auto">
           {dataToDisplay.length ? (
-            dataToDisplay.map((article) => (
-              <ResourceCard key={article.articleTitle} resource={article} />
-            ))
+            dataToDisplay.map((event) => <EventCard event={event} />)
           ) : (
             <span className="font-medium flex space-x-4 items-center my-2 ml-2">
               <EmojiSadIcon className="h-6 w-6" />
@@ -142,9 +144,9 @@ const ResourcesList = ({ categories, category }) => {
         ) : (
           ""
         )}
-      </>
+      </div>
     </div>
   )
 }
 
-export default ResourcesList
+export default EventsList

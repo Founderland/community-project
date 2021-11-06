@@ -1,36 +1,35 @@
 import axios from "axios"
 import { useState, useContext } from "react"
-import { useHistory } from "react-router-dom"
 import AdminContext from "../../../contexts/Admin"
 
 import Banner from "../Widgets/Banner"
 
-const deleteUrl = "/api/resources/"
+const cancelUrl = "/api/events/cancel/"
 
 const Confirm = ({ data }) => {
   const [saving, setSaving] = useState(false)
-  const history = useHistory()
   const [banner, setBanner] = useState({ show: false })
-  const { setCCModal, config, reload, setReload } = useContext(AdminContext)
-
+  const { setCModal, config, reload, setReload } = useContext(AdminContext)
+  console.log(data)
   const save = async () => {
     setSaving(true)
     try {
-      const deleted = await axios.delete(
-        deleteUrl + data._id + "/" + data.article._id,
+      const canceled = await axios.put(
+        cancelUrl + data._id,
+        { isCanceled: true },
         config
       )
-      if (deleted.data.success) {
+      console.log(canceled)
+      if (canceled.data) {
         setSaving(false)
         setBanner({
           success: 1,
           show: true,
-          message: "Resource deleted! Redirecting..",
+          message: "Event canceled!",
         })
         setTimeout(() => {
-          setCCModal(false)
-          history.push("/admin/resources/")
           setReload(reload + 1)
+          setCModal(false)
         }, 2000)
       } else {
         throw new Error("Sorry, something went wrong while saving")
@@ -41,7 +40,7 @@ const Confirm = ({ data }) => {
         setBanner({
           error: 1,
           show: true,
-          message: "Ressource is locked by system and cannot be deleted",
+          message: "Event is locked by system and cannot be canceled",
         })
       } else {
         setBanner({
@@ -63,7 +62,7 @@ const Confirm = ({ data }) => {
       <div className="md:flex w-full px-3">
         <div className="w-full mb-2 px-2 flex flex-col justify-center items-center">
           <label className="block uppercase tracking-wide text-grey-darker text-md font-bold mb-2">
-            Are you sure you want to delete this resource
+            Are you sure you want to cancel this event
           </label>
         </div>
       </div>
@@ -71,7 +70,7 @@ const Confirm = ({ data }) => {
         <button
           className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
           onClick={() => {
-            setCCModal(false)
+            setCModal(false)
           }}
         >
           Cancel

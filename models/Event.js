@@ -34,7 +34,8 @@ const eventSchema = new mongoose.Schema({
     ref: "Members",
     default: null,
   },
-  geoLocation: { lat: { type: Number }, lon: { type: Number } },
+  geoLocation: { lat: { type: Number }, lng: { type: Number } },
+  zoom: { type: Number, default: 15 },
   type: {
     type: String,
     enum: ["online", "public", "private"],

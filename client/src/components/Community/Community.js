@@ -14,7 +14,19 @@ const views = {
 const Community = () => {
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
+  const [reload, setReload] = useState(0)
+  const [cModal, setCModal] = useState(false)
+  const [cCModal, setCCModal] = useState(false)
   const history = useHistory()
+  const config = useMemo(() => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  }, [token])
+
   useEffect(() => {
     if (localStorage.authToken) {
       setToken(localStorage.authToken)
@@ -33,20 +45,20 @@ const Community = () => {
       }
     }
   }, [token])
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
 
   const logout = () => {
     localStorage.authToken = ""
     setUser(null)
     setToken(null)
     history.push("/community")
+  }
+  const getUuid = () => {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16)
+    )
   }
   return (
     <UserContext.Provider
@@ -58,6 +70,13 @@ const Community = () => {
         token,
         setToken,
         config,
+        reload,
+        setReload,
+        getUuid,
+        cModal,
+        setCModal,
+        cCModal,
+        setCCModal,
       }}
     >
       {user ? <Main /> : <Login />}

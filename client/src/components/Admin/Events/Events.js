@@ -40,7 +40,7 @@ const Events = () => {
             <EventsList state={tabs[selectedTab].role} />
             <button
               className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-              onClick={() => history.push("events/id/new")}
+              onClick={() => history.push("/admin/events/id/new")}
             >
               <PlusIcon className="h-5 w-5" />
               <p className="text-mono text-sm">Add New</p>

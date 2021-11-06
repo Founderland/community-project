@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect, useContext } from "react"
-import Loading from "../Widgets/Loading"
-import MapDisplay from "./MapDisplay"
-import AdminContext from "../../../contexts/Admin"
-import LinkPreview from "../Resources/LinkPreview"
-import ConfirmModal from "../Widgets/ConfirmModal"
+import Loading from "../../Admin/Widgets/Loading"
+import MapDisplay from "../../Admin/Events/MapDisplay"
+import UserContext from "../../../contexts/User"
+import LinkPreview from "../../Admin/Resources/LinkPreview"
+import ConfirmModal from "..//Widgets/ConfirmModal"
 import ConfirmDelete from "./ConfirmDelete"
 import ConfirmCancel from "./ConfirmCancel"
 import ComponentModal from "../Widgets/ComponentModal"
@@ -27,7 +27,7 @@ const eventUrl = "/api/events/"
 const Event = () => {
   const { id } = useParams()
   const { config, reload, setCCModal, setCModal, user } =
-    useContext(AdminContext)
+    useContext(UserContext)
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -49,9 +49,9 @@ const Event = () => {
         console.log(err)
       })
   }, [id, reload])
-  console.log(edit)
+  console.log(user, data)
   return (
-    <section className="h-full py-1 bg-white flex flex-col justify-center w-full lg:w-5/6 px-4 mx-auto mt-6">
+    <section className="relative flex flex-col items-center justify-center w-full lg:w-5/6 px-4 mx-auto">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -68,7 +68,7 @@ const Event = () => {
         <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
-          <div className="relative self-center flex flex-col w-full xl:w-5/6 mb-6 shadow-lg border-0">
+          <div className="relative flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
             <img
               className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
               src={
@@ -282,7 +282,7 @@ const Event = () => {
               </div>
             </div>
             <footer className="flex p-4 mt-2 justify-center items-center">
-              {!data.isCanceled && (
+              {!data.isCanceled && user.id === data.member._id && (
                 <button
                   class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                   onClick={() => {
@@ -294,8 +294,8 @@ const Event = () => {
               )}
             </footer>
           </div>
-          {!edit && (
-            <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+          {!edit && user.id === data.member._id && (
+            <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
               <button
                 className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                 onClick={() => {
@@ -304,7 +304,7 @@ const Event = () => {
               >
                 Edit
               </button>
-              {user.role.includes("admin") ? (
+              {user.id === data.member._id ? (
                 <button
                   className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
                   onClick={() => {
