@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useMemo } from "react"
+import { useState, useContext, useEffect, useMemo, useRef } from "react"
 import { useLocation, useHistory, useRouteMatch, Link } from "react-router-dom"
 import UserContext from "../../../contexts/User"
 import axios from "axios"
@@ -48,7 +48,7 @@ const eventsUrl = "/api/events/future"
 const Profile = () => {
   const [disableEdit, setDisableEdit] = useState(true)
 
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const history = useHistory()
   const { id } = useRouteMatch("/community/profile/:id").params
   const [banner, setBanner] = useState({ show: false })
@@ -61,6 +61,7 @@ const Profile = () => {
   const [profile, setProfile] = useState({
     ...defaultProfile,
   })
+  const initialData = useRef(null)
 
   const triggerBanner = ({ message, success }) => {
     setBanner({
@@ -97,16 +98,17 @@ const Profile = () => {
           `/api/users/community/profile/${id}`,
           config
         )
-        console.log(id, data.data)
+
         setProfile({
           ...data.data,
         })
+        initialData.current = { ...data.data }
       } catch (error) {
         console.log(error)
       }
     }
     getProfileInfo()
-  }, [id])
+  }, [id, banner])
 
   useEffect(() => {
     axios
@@ -142,32 +144,47 @@ const Profile = () => {
 
   const submitChanges = async (e) => {
     e.preventDefault()
-    try {
-      const result = await axios.put(
-        `/api/users/community/profile/update`,
-        profile,
-        config
-      )
-      if (result) {
-        console.log(result)
-        triggerBanner(result.data)
+
+    if (
+      profile.title.length &&
+      profile.companyName.length &&
+      profile.companyLink.length &&
+      profile.bio.length &&
+      profile.city.length &&
+      profile.country.length &&
+      profile.companyBio.length
+    ) {
+      try {
+        const result = await axios.put(
+          `/api/users/community/profile/update`,
+          profile,
+          config
+        )
+        if (result) {
+          console.log(result)
+          setUser((prev) => ({ ...prev, photo: profile.photo }))
+          triggerBanner(result.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
+    } else {
+      triggerBanner({ success: 0, message: "Please fill out all the fields" })
+      setProfile({ ...initialData.current })
     }
   }
+
   return (
     <>
-      <div className="w-full flex items-center justify-center z-20">
+      <div className='w-full flex items-center justify-center absolute  '>
         <Banner message={banner} />
       </div>
       <form
         onSubmit={(e) => submitChanges(e)}
-        className="sm:flex w-full md:w-10/12 justify-center m-auto overflow-hidden"
-      >
-        <div className="w-full sm:w-1/2 md:w-4/12 xl:w-3/12 shadow bg-white p-3 border-t-8 border-fpink ">
+        className='sm:flex w-full md:w-10/12 justify-center m-auto overflow-hidden'>
+        <div className='w-full sm:w-1/2 md:w-4/12 xl:w-3/12 shadow bg-white p-3 border-t-8 border-fpink '>
           <button
-            type="button"
+            type='button'
             onClick={() => {
               history.goBack()
             }}
@@ -175,56 +192,54 @@ const Profile = () => {
               !isMyProfile
                 ? "group mb-5 lg:w-1/4 px-4 py-2 text-mono bg-flime transition-colors ease-in-out duration-500 hover:bg-fblue text-lg text-black hover:text-white flex justify-center items-center  "
                 : "hidden"
-            }
-          >
-            <ArrowLeftIcon className="w-5 h-5 mr-1" />
-            <span className="hidden xl:block text-sm">Back</span>
+            }>
+            <ArrowLeftIcon className='w-5 h-5 mr-1' />
+            <span className='hidden xl:block text-sm'>Back</span>
           </button>
-          <div className="image overflow-hidden">
+          <div className='image overflow-hidden'>
             <img
-              className="h-auto w-full mx-auto"
+              className='h-auto w-full mx-auto'
               src={profile.photo ? profile.photo.url : "null"}
-              alt="profile"
+              alt='profile'
             />
             {!disableEdit && (
-              <div className="w-full flex justify-center">
+              <div className='w-full flex justify-center'>
                 <DropzoneCloudinary
                   data={profile}
                   setData={setProfile}
-                  type="profilePicture"
+                  type='profilePicture'
                   setUploadStatus={setUploadStatus}
                   noPreview
                 />
               </div>
             )}
           </div>
-          <h1 className="text-gray-900 uppercase font-bold text-xl my-2">
+          <h1 className='text-gray-900 uppercase font-bold text-xl my-2'>
             {profile.firstName} {profile.lastName}
           </h1>
-          <h3 className="text-gray-600 text-ls font-semibold mb-1">
+          <h3 className='text-gray-600 text-ls font-semibold mb-1'>
             {profile.title}
           </h3>
-          <h4 className="text-gray-600 text-base">{profile.companyName}</h4>
-          <h4 className="mb-1">
+          <h4 className='text-gray-600 text-base'>{profile.companyName}</h4>
+          <h4 className='mb-1'>
             {profile.companyLink ? (
               <a
-                target="_blank"
+                target='_blank'
                 href={profile.companyLink}
-                className="text-xs text-gray-600 hover:text-sky-600"
-                rel="noreferrer"
-              >
+                className='text-xs text-gray-600 hover:text-sky-600'
+                rel='noreferrer'>
                 {profile.companyLink}
               </a>
             ) : (
               ""
             )}
           </h4>
-          <div className=" text-gray-700 py-1 px-3 mt-3 divide-y ">
-            <div className="flex flex-row items-start justify-center py-3">
-              <p className="w-1/2 uppercase text-sm text-grotesk">
+          <div className=' text-gray-700 py-1 px-3 mt-3 divide-y '>
+            <div className='flex flex-row items-start justify-center py-3'>
+              <p className='w-1/2 uppercase text-sm text-grotesk'>
                 Member since
               </p>
-              <p className="w-1/2 h-full text-sm text-grotesk text-right">
+              <p className='w-1/2 h-full text-sm text-grotesk text-right'>
                 {" "}
                 {new Date(profile.created).toLocaleDateString("de-DE")}
               </p>
@@ -237,13 +252,13 @@ const Profile = () => {
             />
           </div>
         </div>
+
         <div
-          className="w-full sm:w-1/2 md:w-9/12  shadow bg-white p-3 border-t-8 border-fpink 
-            "
-        >
-          <div className="bg-white p-3 text-base text-gray-700 ">
-            <div className="flex items-center justify-between space-x-2 font-semibold uppercase text-sm my-2 ">
-              <span className=" text-grotesk flex">
+          className='w-full sm:w-1/2 md:w-9/12  shadow bg-white p-3 border-t-8 border-fpink 
+            '>
+          <div className='bg-white p-3 text-base text-gray-700 '>
+            <div className='flex items-center justify-between space-x-2 font-semibold uppercase text-sm my-2 '>
+              <span className=' text-grotesk flex'>
                 <UserIcon className={`h-5 w-5 mr-2 text-fpink`} />
                 Details
               </span>
@@ -255,17 +270,16 @@ const Profile = () => {
                   }
                   onClick={() => {
                     setDisableEdit((prev) => !prev)
-                  }}
-                >
+                  }}>
                   {disableEdit ? (
                     <>
                       Edit
-                      <PencilAltIcon className="ml-1 w-6 h-6" />
+                      <PencilAltIcon className='ml-1 w-6 h-6' />
                     </>
                   ) : (
                     <>
                       Confirm
-                      <CheckCircleIcon className=" ml-1 w-6 h-6" />
+                      <CheckCircleIcon className=' ml-1 w-6 h-6' />
                     </>
                   )}
                 </button>
@@ -274,47 +288,45 @@ const Profile = () => {
             <div
               className={`grid ${
                 isMyProfile ? "md:grid-cols-3" : "md:grid-cols-2"
-              } `}
-            >
-              <div className="grid grid-cols-2 md:grid-cols-1">
-                <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
+              } `}>
+              <div className='grid grid-cols-2 md:grid-cols-1'>
+                <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center'>
                   First Name
                 </label>
                 <input
                   disabled
-                  className="p-2 text-base bg-white "
+                  className='p-2 text-base bg-white '
                   value={profile.firstName}
                 />
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-1 md:px-1">
-                <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
+              <div className='grid grid-cols-2 md:grid-cols-1 md:px-1'>
+                <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center'>
                   Last Name
                 </label>
                 <input
                   disabled
                   required
-                  className="p-2 text-base bg-white "
+                  className='p-2 text-base bg-white '
                   value={profile.lastName}
                 />
               </div>
 
               {isMyProfile && (
                 <>
-                  <div className="grid grid-cols-2 md:grid-cols-1  ">
-                    <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
+                  <div className='grid grid-cols-2 md:grid-cols-1  '>
+                    <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center'>
                       Email
                     </label>
                     <div
                       className={`p-2 text-base ${
                         !disableEdit && "cursor-not-allowed"
-                      }`}
-                    >
+                      }`}>
                       {profile.email}
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-1 ">
+                  <div className='grid grid-cols-2 md:grid-cols-1 '>
                     <Input
-                      label="Position"
+                      label='Position'
                       value={"title"}
                       disableEdit={disableEdit}
                       profile={profile}
@@ -322,9 +334,9 @@ const Profile = () => {
                       format
                     />
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-1 md:px-1 ">
+                  <div className='grid grid-cols-2 md:grid-cols-1 md:px-1 '>
                     <Input
-                      label="company"
+                      label='company'
                       value={"companyName"}
                       disableEdit={disableEdit}
                       profile={profile}
@@ -332,25 +344,24 @@ const Profile = () => {
                       format
                     />
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-1 ">
+                  <div className='grid grid-cols-2 md:grid-cols-1 '>
                     {disableEdit ? (
                       <>
-                        <label className="p-2  uppercase text-xs font-bold text-gray-400 flex items-center">
+                        <label className='p-2  uppercase text-xs font-bold text-gray-400 flex items-center'>
                           Company Website
                         </label>
 
                         <a
-                          target="_blank"
+                          target='_blank'
                           href={profile.companyLink}
-                          className="text-base text-gray-600 hover:text-sky-600 p-2"
-                          rel="noreferrer"
-                        >
+                          className='text-base text-gray-600 hover:text-sky-600 p-2'
+                          rel='noreferrer'>
                           {profile.companyLink}
                         </a>
                       </>
                     ) : (
                       <Input
-                        label="company Website"
+                        label='company Website'
                         value={"companyLink"}
                         isLink
                         disableEdit={disableEdit}
@@ -366,11 +377,11 @@ const Profile = () => {
                 profile={profile}
                 setProfile={setProfile}
               />
-              <div className="grid grid-cols-2 md:grid-cols-1 ">
-                <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
+              <div className='grid grid-cols-2 md:grid-cols-1 '>
+                <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center'>
                   Business Area
                   {!disableEdit && (
-                    <PencilIcon className="w-4 h-4 ml-2 text-black " />
+                    <PencilIcon className='w-4 h-4 ml-2 text-black ' />
                   )}
                 </label>
                 {!disableEdit ? (
@@ -379,22 +390,22 @@ const Profile = () => {
                     setProfile={setProfile}
                   />
                 ) : (
-                  <div className="p-2 text-base">{profile.businessArea}</div>
+                  <div className='p-2 text-base'>{profile.businessArea}</div>
                 )}
               </div>
             </div>
           </div>
-          <div className="bg-white p-3 text-base text-gray-700">
-            <div className="flex items-center space-x-2 font-semibold uppercase text-sm my-2">
+          <div className='bg-white p-3 text-base text-gray-700'>
+            <div className='flex items-center space-x-2 font-semibold uppercase text-sm my-2'>
               <HashtagIcon className={`h-5 w-5 text-fpink`} />
-              <span className="tracking-wider text-grotesk">About</span>
+              <span className='tracking-wider text-grotesk'>About</span>
             </div>
-            <div className="grid md:grid-cols-1 gap-2">
-              <div className="grid grid-cols-1">
-                <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
+            <div className='grid md:grid-cols-1 gap-2'>
+              <div className='grid grid-cols-1'>
+                <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center'>
                   Bio
                   {!disableEdit && (
-                    <PencilIcon className="w-4 h-4 ml-2 text-black " />
+                    <PencilIcon className='w-4 h-4 ml-2 text-black ' />
                   )}
                 </label>
                 <textarea
@@ -409,14 +420,13 @@ const Profile = () => {
                   }
                   className={`p-2 text-base resize-none ${
                     disableEdit ? "bg-white " : "bg-sky-50"
-                  }`}
-                ></textarea>
+                  }`}></textarea>
               </div>
-              <div className="grid grid-cols-1">
-                <label className="p-2 uppercase text-xs font-bold text-gray-400 flex">
+              <div className='grid grid-cols-1'>
+                <label className='p-2 uppercase text-xs font-bold text-gray-400 flex'>
                   Company Bio
                   {!disableEdit && (
-                    <PencilIcon className="w-4 h-4 ml-2 text-black " />
+                    <PencilIcon className='w-4 h-4 ml-2 text-black ' />
                   )}
                 </label>
                 <textarea
@@ -431,38 +441,37 @@ const Profile = () => {
                   }
                   className={`p-2 text-base resize-none ${
                     disableEdit ? "bg-white " : "bg-sky-50"
-                  }`}
-                ></textarea>
+                  }`}></textarea>
               </div>
             </div>
           </div>
-          <div className="bg-white p-3 text-base text-gray-700">
-            <div className="flex items-center space-x-2 font-semibold uppercase text-sm my-2">
+          <div className='bg-white p-3 text-base text-gray-700'>
+            <div className='flex items-center space-x-2 font-semibold uppercase text-sm my-2'>
               <CalendarIcon className={`h-5 w-5 text-fpink`} />
-              <span className="tracking-wider text-grotesk">Future Events</span>
+              <span className='tracking-wider text-grotesk'>Future Events</span>
             </div>
-            <div className="grid md:grid-cols-2 gap-2">
-              <div className="grid grid-cols-1">
-                <div className="p-2 uppercase text-xs font-bold text-gray-400">
+            <div className='grid md:grid-cols-2 gap-2'>
+              <div className='grid grid-cols-1'>
+                <div className='p-2 uppercase text-xs font-bold text-gray-400'>
                   Host
                 </div>
-                <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                <div className='w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden'>
                   {events.mine.length ? (
                     events.mine.map((event) => (
                       <EventPreview key={event._id} event={event} />
                     ))
                   ) : (
-                    <p className="text-xs text-mono">
+                    <p className='text-xs text-mono'>
                       Not hosting any future event
                     </p>
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-1">
-                <div className="p-2 uppercase text-xs font-bold text-gray-400">
+              <div className='grid grid-cols-1'>
+                <div className='p-2 uppercase text-xs font-bold text-gray-400'>
                   Interested/Going
                 </div>
-                <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                <div className='w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden'>
                   {events.going.length || events.interested.length ? (
                     <>
                       {events.going.map((event) => (
@@ -473,7 +482,7 @@ const Profile = () => {
                       ))}
                     </>
                   ) : (
-                    <p className="text-xs text-mono">
+                    <p className='text-xs text-mono'>
                       Not participating in any future event
                     </p>
                   )}
