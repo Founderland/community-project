@@ -41,6 +41,7 @@ const Input = ({
 
       <input
         disabled={disableEdit}
+        required
         onChange={(e) =>
           setProfile({
             ...profile,

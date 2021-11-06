@@ -136,7 +136,8 @@ const Profile = () => {
     return newValue.replace(value[0], value[0]?.toUpperCase())
   }
 
-  const submitChanges = async () => {
+  const submitChanges = async (e) => {
+    e.preventDefault()
     try {
       const result = await axios.put(
         `/api/users/community/profile/update`,
@@ -156,7 +157,10 @@ const Profile = () => {
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
-      <div className="sm:flex w-full md:w-10/12 justify-center m-auto overflow-hidden mb-20">
+      <form
+        onSubmit={(e) => submitChanges(e)}
+        className="sm:flex w-full md:w-10/12 justify-center m-auto overflow-hidden"
+      >
         <div className="w-full sm:w-1/2 md:w-4/12 xl:w-3/12 shadow bg-white p-3 border-t-8 border-fpink ">
           <button
             type="button"
@@ -241,15 +245,12 @@ const Profile = () => {
               </span>
               {isMyProfile && (
                 <button
-                  type="button"
+                  type={!disableEdit ? "button" : "submit"}
                   className={
                     "flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 px-4 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                   }
                   onClick={() => {
                     setDisableEdit((prev) => !prev)
-                    if (!disableEdit) {
-                      submitChanges()
-                    }
                   }}
                 >
                   {disableEdit ? (
@@ -287,6 +288,7 @@ const Profile = () => {
                 </label>
                 <input
                   disabled
+                  required
                   className="p-2 text-base bg-white "
                   value={profile.lastName}
                 />
@@ -392,6 +394,7 @@ const Profile = () => {
                   )}
                 </label>
                 <textarea
+                  required
                   disabled={disableEdit}
                   value={profile.bio}
                   onChange={(e) =>
@@ -413,6 +416,7 @@ const Profile = () => {
                   )}
                 </label>
                 <textarea
+                  required
                   disabled={disableEdit}
                   value={profile.companyBio}
                   onChange={(e) =>
@@ -474,7 +478,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </>
   )
 }
