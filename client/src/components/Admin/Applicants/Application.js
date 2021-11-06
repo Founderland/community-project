@@ -225,13 +225,13 @@ const Application = () => {
               {data.data.status === "new" || data.data.status === "pending" ? (
                 <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                   <button
-                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                     onClick={() => updateApplication("rejected")}
                   >
                     Reject
                   </button>
                   <button
-                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                     onClick={() => updateApplication("approved")}
                   >
                     Approve
@@ -240,7 +240,7 @@ const Application = () => {
               ) : data.data.status === "rejected" ? (
                 <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                   <button
-                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                     onClick={() => updateApplication("approved")}
                   >
                     Approve

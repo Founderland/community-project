@@ -36,7 +36,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
       } else {
         if (extra > 0) {
           reviewsDisplay.push(
-            <div class="cursor-default flex relative w-8 h-8 bg-gray-500 justify-center items-center m-1 mr-2 -ml-3 rounded-full border-r-2 border-white text-sm font-bold text-white">
+            <div className="cursor-default flex relative w-8 h-8 bg-gray-500 justify-center items-center m-1 mr-2 -ml-3 rounded-full border-r-2 border-white text-sm font-bold text-white">
               + {extra}
             </div>
           )
@@ -75,7 +75,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
               return (
                 <td className={`py-3 px-5 ${header.style}`}>
                   <div className={`flex items-center px-2 ${header.style}`}>
-                    <div class="flex flex-row-reverse items-center">
+                    <div className="flex flex-row-reverse items-center">
                       {displayReviews(item[header.key])}
                     </div>
                   </div>
