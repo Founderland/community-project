@@ -22,9 +22,11 @@ const addEventUrl = "/api/events/add"
 const updateEventUrl = "/api/events/update/"
 
 const AddEvent = ({ event, edit, setEdit }) => {
+  const { config, user } = useContext(UserContext)
+
   const history = useHistory()
   const [data, setData] = useState({
-    member: "61814cbf5f7dd7305e7615f5",
+    member: user.id,
     title: "",
     eventCover: null,
     description: "",
@@ -47,7 +49,6 @@ const AddEvent = ({ event, edit, setEdit }) => {
     success: false,
     message: "",
   })
-  const { config } = useContext(UserContext)
 
   //EDIT
   useEffect(() => {
