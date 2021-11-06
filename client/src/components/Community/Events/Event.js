@@ -277,23 +277,16 @@ const Event = () => {
                     <p className="mr-2 text-lg text-grotesk">
                       {data.going.length}
                     </p>
-                    <div className="w-full flex items-center px-4 overflow-x-auto">
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
                       {data.going.map((attendee) => (
                         <div
-                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border-2 border-white object-cover object-center`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="rounded-full"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
                       ))}
                     </div>
@@ -330,23 +323,16 @@ const Event = () => {
                     <p className="mr-2 text-lg text-grotesk">
                       {data.interested.length}
                     </p>
-                    <div className="w-full flex items-center px-4 overflow-x-auto">
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
                       {data.interested.map((attendee) => (
                         <div
-                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border-2 border-white object-cover object-center`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="rounded-full"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
                       ))}
                     </div>
