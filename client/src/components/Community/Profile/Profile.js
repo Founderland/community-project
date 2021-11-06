@@ -19,6 +19,7 @@ import CityandCountryInput from "./CityandCountryInput"
 import Banner from "../../Admin/Widgets/Banner"
 import DropzoneCloudinary from "../SignUp/DropzoneCloudinary"
 import BusinessAreaSelect from "./BusinessAreaSelect"
+import EventPreview from "./EventPreview"
 
 const defaultProfile = {
   photo: null,
@@ -42,6 +43,7 @@ const defaultProfile = {
     twitter: null,
   },
 }
+const eventsUrl = "/api/events/future"
 
 const Profile = () => {
   const [disableEdit, setDisableEdit] = useState(true)
@@ -50,6 +52,7 @@ const Profile = () => {
   const history = useHistory()
   const { id } = useRouteMatch("/community/profile/:id").params
   const [banner, setBanner] = useState({ show: false })
+  const [events, setEvents] = useState({ mine: [], interested: [], going: [] })
   const [uploadStatus, setUploadStatus] = useState({
     success: false,
     message: "",
@@ -105,6 +108,29 @@ const Profile = () => {
     getProfileInfo()
   }, [id])
 
+  useEffect(() => {
+    axios
+      .get(eventsUrl, config)
+      .then((res) => {
+        if (res.data.data) {
+          let mine = res.data.data.filter((item) => item.member._id === user.id)
+          let going = res.data.data.filter(
+            (item) => item.going.filter((going) => going._id === user.id).length
+          )
+          let interested = res.data.data.filter(
+            (item) =>
+              item.interested.filter((interested) => interested._id === user.id)
+                .length
+          )
+          console.log(mine, going, interested)
+          setEvents((prev) => ({ ...prev, mine, going, interested }))
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [])
+
   const formatValue = (value) => {
     const newValue = value.trimStart()
     return newValue.replace(value[0], value[0]?.toUpperCase())
@@ -125,13 +151,12 @@ const Profile = () => {
       console.log(error)
     }
   }
-
   return (
     <>
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
-      <div className="sm:flex w-full md:w-10/12 justify-center m-auto overflow-hidden">
+      <div className="sm:flex w-full md:w-10/12 justify-center m-auto overflow-hidden mb-20">
         <div className="w-full sm:w-1/2 md:w-4/12 xl:w-3/12 shadow bg-white p-3 border-t-8 border-fpink ">
           <button
             type="button"
@@ -406,20 +431,44 @@ const Profile = () => {
           <div className="bg-white p-3 text-base text-gray-700">
             <div className="flex items-center space-x-2 font-semibold uppercase text-sm my-2">
               <CalendarIcon className={`h-5 w-5 text-fpink`} />
-              <span className="tracking-wider text-grotesk">Events</span>
+              <span className="tracking-wider text-grotesk">Future Events</span>
             </div>
             <div className="grid md:grid-cols-2 gap-2">
               <div className="grid grid-cols-1">
                 <div className="p-2 uppercase text-xs font-bold text-gray-400">
-                  hosted
+                  Host
                 </div>
-                <div className="p-2">No events</div>
+                <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                  {events.mine.length ? (
+                    events.mine.map((event) => (
+                      <EventPreview key={event._id} event={event} />
+                    ))
+                  ) : (
+                    <p className="text-xs text-mono">
+                      Not hosting any future event
+                    </p>
+                  )}
+                </div>
               </div>
               <div className="grid grid-cols-1">
                 <div className="p-2 uppercase text-xs font-bold text-gray-400">
-                  Attended
+                  Interested/Going
                 </div>
-                <div className="p-2">No events</div>
+                <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                  {events.going.length ? (
+                    events.going.map((event) => (
+                      <EventPreview key={event._id} event={event} />
+                    ))
+                  ) : events.interested.length ? (
+                    events.interested.map((event) => (
+                      <EventPreview key={event._id} event={event} />
+                    ))
+                  ) : (
+                    <p className="text-xs text-mono">
+                      Not participating in any future event
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
