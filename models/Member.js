@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
   businessArea: { type: String, trim: true },
-  geoLocation: { lat: { type: Number }, lon: { type: Number } },
+  geoLocation: { lat: { type: Number }, lng: { type: Number } },
   email: {
     type: String,
     trim: true,

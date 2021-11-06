@@ -11,7 +11,7 @@ import { AnswersContext } from "../contexts/AnswersProvider"
 import { useContext } from "react"
 
 const Form = ({ match, memberType, questionPreview }) => {
-  const { submit } = useContext(AnswersContext)
+  const  {submit}  = useContext(AnswersContext)
 
   if (match?.params.memberType) {
     memberType = match.params.memberType

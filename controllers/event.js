@@ -249,7 +249,57 @@ const deleteEvent = async (req, res, next) => {
   }
 }
 const updateAttendance = async (req, res, next) => {
-  console.log("Update Attendance for User")
+  const { id, member, interested, going } = req.body
+  try {
+    let updateGoing
+    let updateInterested
+    let updateBoth
+    if (going) {
+      updateGoing = await Event.findByIdAndUpdate(id, {
+        $push: { going: member },
+      })
+      updateInterested = await Event.findByIdAndUpdate(
+        id,
+        {
+          $pull: { interested: member },
+        },
+        { new: true }
+      )
+      if (!updateGoing || !updateInterested)
+        await Promise.reject("UPDATE_FAILED")
+    } else if (interested) {
+      updateGoing = await Event.findByIdAndUpdate(
+        id,
+        {
+          $pull: { going: member },
+        },
+        { new: true }
+      )
+      updateInterested = await Event.findByIdAndUpdate(id, {
+        $push: { interested: member },
+      })
+      if (!updateGoing || !updateInterested)
+        await Promise.reject("UPDATE_FAILED")
+    } else {
+      updateBoth = await Event.findByIdAndUpdate(
+        id,
+        {
+          $pull: { going: member, interested: member },
+        },
+        { new: true }
+      )
+      if (!updateBoth) await Promise.reject("UPDATE_FAILED")
+    }
+    res.status(200).json({ message: "attendance has been updated" })
+  } catch (e) {
+    if (e === "UPDATE_FAILED") {
+      res.status(400).send({
+        message: "we couldn't add you to the event",
+      })
+    } else {
+      res.status(500).json({ message: "Sorry something went wrong" })
+    }
+  }
 }
 
 module.exports = {
