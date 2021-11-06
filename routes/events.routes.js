@@ -35,6 +35,11 @@ eventRouter.put(
   passport.authenticate("jwt", { session: false }),
   eventController.updateEvent
 )
+eventRouter.put(
+  "/attendance",
+  passport.authenticate("jwt", { session: false }),
+  eventController.updateAttendance
+)
 //Cancel event
 eventRouter.put(
   "/cancel/:id",
