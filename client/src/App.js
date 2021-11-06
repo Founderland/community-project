@@ -16,20 +16,20 @@ function App() {
       <AnswersProvider>
         <Route
           exact
-          path="/join-our-community"
+          path='/join-our-community'
           component={ApplicantsDispatcher}
         />
-        <Route exact path="/newsletter" component={NewsLetter} />
-        <Route exact path="/form/:memberType" component={Form} />
-        <Route exact path="/thankyou" component={Thankyou} />
+        <Route exact path='/newsletter' component={NewsLetter} />
+        <Route exact path='/form/:memberType' component={Form} />
+        <Route exact path='/thankyou' component={Thankyou} />
+        <Route path='/admin' component={Admin} />
       </AnswersProvider>
 
-      <Route path="/admin" component={Admin} />
-      <Route exact path="/signup/:token" component={SignUp} />
-      <Route exact path="/verify/:token" component={Verify} />
+      <Route exact path='/signup/:token' component={SignUp} />
+      <Route exact path='/verify/:token' component={Verify} />
 
       <CommunityProvider>
-        <Route path="/community" component={Community} />
+        <Route path='/community' component={Community} />
       </CommunityProvider>
     </Router>
   )
