@@ -38,10 +38,7 @@ const Admin = () => {
   const [selectedTab, setSelectedTab] = useState(0)
   const [cModal, setCModal] = useState(false)
   const [cCModal, setCCModal] = useState(false)
-  const [notifications, setNotifications] = useState([
-    { icon: "user", text: "15 founders applicants pending review" },
-    { icon: "pending", text: "4 founders applicants pending approval" },
-  ])
+
   const [status, setStatus] = useState("")
   const [reload, setReload] = useState("")
   const getUuid = () => {
@@ -100,8 +97,6 @@ const Admin = () => {
         setSelectedTab,
         cModal,
         setCModal,
-        notifications,
-        setNotifications,
         logout,
         token,
         setToken,

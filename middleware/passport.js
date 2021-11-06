@@ -7,20 +7,6 @@ const User = require("../models/User")
 const { authenticateUser, isAuthorized } = require("../controllers/auth")
 
 const passportMiddleware = (app) => {
-  passport.serializeUser((user, done) => {
-    done(null, user.id)
-  })
-
-  passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-      const userInformation = {
-        id: user._id,
-        username: user.username,
-      }
-      done(err, userInformation)
-    })
-  })
-
   //EMAIL AND PASSWORD
   passport.use(
     new LocalStrategy(
