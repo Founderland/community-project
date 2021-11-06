@@ -8,7 +8,7 @@ import Community from "./components/Community/Community"
 import SignUp from "./components/Community/SignUp/SignUp"
 import CommunityProvider from "./contexts/CommunityProvider"
 import Verify from "./components/Verify"
-import NewsLetter from "./components/Forms/NewsLetters"
+import NewsLetter from "./components/Forms/NewsLetter"
 
 function App() {
   return (

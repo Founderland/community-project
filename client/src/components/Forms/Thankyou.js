@@ -19,8 +19,7 @@ const Thankyou = () => {
             </div>
             <div className="w-full text-hanson  pr-6  text-right md:text-left py-10 md:py-5 md:pl-24 ">
               <h1 className="text-5xl md:text-6xl lg:text-7 xl:lg:text-7  2xl:text-9xl">
-                {" "}
-                THANK YOU{" "}
+                THANK YOU
               </h1>
             </div>
             <div className="w-full text-grotesk pr-6 text-right md:text-left  md:px-24">
