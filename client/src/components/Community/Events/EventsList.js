@@ -4,7 +4,6 @@ import UserContext from "../../../contexts/User"
 import Loading from "../../Admin/Widgets/Loading"
 import EventCard from "./EventCard"
 import Pagination from "../../Admin/Widgets/Pagination"
-import { useParams } from "react-router-dom"
 import { SearchIcon } from "@heroicons/react/solid"
 import { EmojiSadIcon } from "@heroicons/react/outline"
 

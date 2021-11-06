@@ -49,7 +49,6 @@ const Event = () => {
         console.log(err)
       })
   }, [id, reload])
-  console.log(edit)
   return (
     <section className="h-full py-1 bg-white flex flex-col justify-center w-full lg:w-5/6 px-4 mx-auto mt-6">
       <ConfirmModal>
@@ -80,7 +79,6 @@ const Event = () => {
             />
             {data.isCanceled && (
               <>
-                {" "}
                 <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
                 <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
                   Event Canceled
@@ -187,59 +185,60 @@ const Event = () => {
               <div className="px-3 bg-white text-lg text-mono w-full ease-linear transition-all duration-150">
                 {data.description}
               </div>
-              <h6 className="text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
+
+              <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
                 Going
               </h6>
               <div className="px-3 bg-white text-base text-mono w-full ease-linear transition-all duration-150">
-                {data.going.length
-                  ? data.going.map((attendee) => {
-                      return (
+                {data.going.length ? (
+                  <div className="w-full flex items-center space-x-2">
+                    <p className="mr-2 text-lg text-grotesk">
+                      {data.going.length}
+                    </p>
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
+                      {data.going.map((attendee) => (
                         <div
-                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="h-10 w-10 rounded-full mr-2 object-cover"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
-                      )
-                    })
-                  : "No confirmations yet"}
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  "No confirmations yet"
+                )}
               </div>
-              <h6 className="text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
+              <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
                 Interested
               </h6>
               <div className="px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150">
-                {data.interested.length
-                  ? data.interested.map((attendee) => {
-                      return (
+                {data.interested.length ? (
+                  <div className="w-full flex items-center space-x-2">
+                    <p className="mr-2 text-lg text-grotesk">
+                      {data.interested.length}
+                    </p>
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
+                      {data.interested.map((attendee) => (
                         <div
-                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="h-10 w-10 rounded-full mr-2 object-cover"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
-                      )
-                    })
-                  : "No confirmations yet"}
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  "No confirmations yet"
+                )}
               </div>
               {data.type !== "online" && (
                 <div className="px-3 bg-white text-lg w-full border-t-2 border-b-2 border-gray-300 mt-2">
@@ -264,7 +263,6 @@ const Event = () => {
                   </p>
                   <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
                     {data.city}
-                    {edit && "edit"}
                   </p>
                 </div>
               )}

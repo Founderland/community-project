@@ -19,10 +19,6 @@ import {
 import axios from "axios"
 import moment from "moment"
 import AddEvent from "./AddEvent"
-const avatarInitials = (first, last) => {
-  let initials = first[0].toUpperCase() + last[0].toUpperCase()
-  return initials
-}
 
 const styles = {
   online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
@@ -140,7 +136,6 @@ const Event = () => {
             />
             {data.isCanceled && (
               <>
-                {" "}
                 <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
                 <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
                   Event Canceled
@@ -364,7 +359,6 @@ const Event = () => {
                   </p>
                   <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
                     {data.city}
-                    {edit && "edit"}
                   </p>
                 </div>
               )}
