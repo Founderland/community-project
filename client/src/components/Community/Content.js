@@ -1,5 +1,5 @@
 import ResourcesList from "./Resources/ResourcesList"
-import Events from "./Events"
+import Events from "./Events/Events"
 import Profile from "./Profile/Profile"
 import MapDisplay from "./Directory/MapDisplay"
 import { useParams } from "react-router-dom"

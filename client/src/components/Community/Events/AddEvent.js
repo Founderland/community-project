@@ -2,13 +2,13 @@ import axios from "axios"
 import { useState, useContext, useEffect } from "react"
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker"
 import { useHistory } from "react-router"
-import AdminContext from "../../../contexts/Admin"
-import ListOption from "../Widgets/ListOption"
-import Banner from "../Widgets/Banner"
+import UserContext from "../../../contexts/User"
+import ListOption from "../../Admin/Widgets/ListOption"
+import Banner from "../../Admin/Widgets/Banner"
 import { SearchIcon } from "@heroicons/react/outline"
-import Places from "./Places"
-import MapDisplay from "./MapDisplay"
-import Tags from "../Widgets/Tags"
+import Places from "../../Admin/Events/Places"
+import MapDisplay from "../../Admin/Events/MapDisplay"
+import Tags from "../../Admin/Widgets/Tags"
 import Dropzone from "../Widgets/DropZone"
 import { Image } from "cloudinary-react"
 
@@ -47,7 +47,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
     success: false,
     message: "",
   })
-  const { config, reload, setReload } = useContext(AdminContext)
+  const { config } = useContext(UserContext)
 
   //EDIT
   useEffect(() => {
@@ -85,12 +85,10 @@ const AddEvent = ({ event, edit, setEdit }) => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-          setReload(reload + 1)
           history.goBack()
         }, 2000)
       } else {
         setEdit(false)
-        setReload(reload + 1)
       }
     } catch (e) {
       if (e?.message.includes("missing_fields")) {
