@@ -11,6 +11,7 @@ const uploadFile = async (req, res) => {
   const uploadedResponse = await cloudinary.uploader.upload(data, {
     folder: folder,
     public_id: public_id,
+    invalidate: true,
   })
   res.json({
     message: "Picture uploaded succesfully",
