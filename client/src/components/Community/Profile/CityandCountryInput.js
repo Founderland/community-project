@@ -96,7 +96,7 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
           {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
         </label>
         <input
-          required={true}
+          required
           list='cities'
           disabled={disableEdit}
           className={`p-2 text-base outline-none my-1 md:my-0 ${
@@ -125,7 +125,7 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
         </label>
 
         <input
-          required={true}
+          required
           list='countries'
           disabled={disableEdit}
           className={`p-2 text-base outline-none my-1 md:my-0 ${

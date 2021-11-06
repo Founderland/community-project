@@ -26,7 +26,7 @@ const ListOption = ({ options, choice, setChoice, format, color }) => {
           leave='transition ease-in duration-100'
           leaveFrom='opacity-100'
           leaveTo='opacity-0'>
-          <Listbox.Options className='absolute z-20 w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+          <Listbox.Options className='absolute z-40 w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
             {options.map((choice) => (
               <Listbox.Option
                 key={choice.value}
