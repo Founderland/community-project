@@ -1,9 +1,18 @@
 import axios from "axios";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect,useMemo } from "react";
 
 export const CommunityContext = createContext(null);
 
 function CommunityProvider({ children }) {
+
+   const config = useMemo(() => {
+      return {
+        headers: {
+          Authorization: `Bearer ${localStorage.authToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    }, [])
 
    const memberData = [
       {
@@ -125,6 +134,25 @@ function CommunityProvider({ children }) {
     ];
 
 
+    useEffect(()=>{
+       const getAllFounders = async()=>{
+          try {
+         const allFounders = await axios.get('/api/users/community/members/founder',config)
+             if (allFounders) {
+                console.log("from community provider",allFounders.data.data)
+               setMemberDetails(allFounders.data.data)
+         console.log(allFounders);
+         }else{
+
+         }      }
+         catch(error){
+
+         }
+       }
+       getAllFounders()
+    },[])
+
+
    const [category, setCategory] = useState(false)
    const [memberDetails, setMemberDetails] = useState([])
    const [isSidebarSelected, setIssideSelected] = useState(false)
@@ -133,9 +161,9 @@ function CommunityProvider({ children }) {
 
 
 
- useEffect(() => {
-   setMemberDetails(memberData)
- }, [])
+//  useEffect(() => {
+//    setMemberDetails(memberData)
+//  }, [])
    
   const  isNameSelectedEvent = (val) =>{
    setIsNameselected(val)

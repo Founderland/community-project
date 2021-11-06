@@ -22,12 +22,11 @@ function App() {
         <Route exact path="/newsletter" component={NewsLetter} />
         <Route exact path="/form/:memberType" component={Form} />
         <Route exact path="/thankyou" component={Thankyou} />
-      </AnswersProvider>
-
-      <Route path="/admin" component={Admin} />
+        <Route path="/admin" component={Admin} />
+        </AnswersProvider>
       <Route exact path="/signup/:token" component={SignUp} />
       <Route exact path="/verify/:token" component={Verify} />
-
+      
       <CommunityProvider>
         <Route path="/community" component={Community} />
       </CommunityProvider>
