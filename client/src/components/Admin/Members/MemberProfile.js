@@ -1,6 +1,6 @@
-import { useHistory, useParams } from "react-router"
+import { useParams } from "react-router"
 import { Link } from "react-router-dom"
-import { useEffect, useState, useContext, useMemo } from "react"
+import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
@@ -50,7 +50,6 @@ const styles = {
 }
 
 const MemberProfile = () => {
-  const history = useHistory()
   const [loading, setLoading] = useState(true)
   const [notifying, setNotifying] = useState(false)
   const [notified, setNotified] = useState(false)
@@ -58,15 +57,8 @@ const MemberProfile = () => {
   const [profile, setProfile] = useState(defaultProfile)
   const [banner, setBanner] = useState({ show: false })
   const { id } = useParams()
-  const { token, reload, setReload } = useContext(AdminContext)
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
+  const { config, user, reload, setReload } = useContext(AdminContext)
+
   useEffect(() => {
     setLoading(true)
     axios
@@ -409,23 +401,25 @@ const MemberProfile = () => {
             ) : (
               ""
             )}
-            <button
-              className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
-              onClick={() => lock()}
-            >
-              {locking ? (
-                <div className="flex justify-center">
-                  <div
-                    style={{ borderTopColor: "transparent" }}
-                    className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                  ></div>
-                </div>
-              ) : profile.locked ? (
-                "Unlock Access"
-              ) : (
-                "Lock Access"
-              )}
-            </button>
+            {user.role.search("admin") && (
+              <button
+                className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
+                onClick={() => lock()}
+              >
+                {locking ? (
+                  <div className="flex justify-center">
+                    <div
+                      style={{ borderTopColor: "transparent" }}
+                      className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
+                    ></div>
+                  </div>
+                ) : profile.locked ? (
+                  "Unlock Access"
+                ) : (
+                  "Lock Access"
+                )}
+              </button>
+            )}
           </div>
         </>
       )}

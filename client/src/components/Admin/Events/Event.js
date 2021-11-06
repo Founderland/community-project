@@ -12,10 +12,6 @@ import { EmojiSadIcon, TrashIcon, XCircleIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import moment from "moment"
 import AddEvent from "./AddEvent"
-const avatarInitials = (first, last) => {
-  let initials = first[0].toUpperCase() + last[0].toUpperCase()
-  return initials
-}
 
 const styles = {
   online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
