@@ -268,6 +268,18 @@ const Event = () => {
                   </p>
                 </div>
               )}
+              <div className="flex pt-2 px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150">
+                {data.tags.length
+                  ? data.tags.map((tag) => (
+                      <div
+                        key={tag}
+                        className="bg-gray-200 text-gray-600  group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
+                      >
+                        <p className=" text-xs">{tag}</p>
+                      </div>
+                    ))
+                  : ""}
+              </div>
             </div>
             <footer className="flex p-4 mt-2 justify-center items-center">
               {!data.isCanceled && (
@@ -282,32 +294,32 @@ const Event = () => {
               )}
             </footer>
           </div>
-        </>
-      )}
-      {!edit && (
-        <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-          <button
-            className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-            onClick={() => {
-              setEdit(true)
-            }}
-          >
-            Edit
-          </button>
-          {user.role.includes("admin") ? (
-            <button
-              className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
-              onClick={() => {
-                setCCModal(true)
-              }}
-            >
-              <TrashIcon className="h-5 w-5" />
-              Delete
-            </button>
-          ) : (
-            ""
+          {!edit && (
+            <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+              <button
+                className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                onClick={() => {
+                  setEdit(true)
+                }}
+              >
+                Edit
+              </button>
+              {user.role.includes("admin") ? (
+                <button
+                  className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+                  onClick={() => {
+                    setCCModal(true)
+                  }}
+                >
+                  <TrashIcon className="h-5 w-5" />
+                  Delete
+                </button>
+              ) : (
+                ""
+              )}
+            </div>
           )}
-        </div>
+        </>
       )}
     </section>
   )

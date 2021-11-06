@@ -107,7 +107,7 @@ const ResourcesList = ({ categories, category }) => {
             <p className="text-xs">No tags available</p>
           )}
         </div>
-        <div className="flex w-full justify-start overflow-auto mt-2">
+        <div className="flex flex-wrap w-full justify-start overflow-auto mt-2">
           {dataToDisplay.length ? (
             dataToDisplay.map((article) => (
               <ResourceCard key={article.articleTitle} resource={article} />
