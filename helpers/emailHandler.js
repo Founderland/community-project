@@ -232,7 +232,6 @@ const sendThankYou = async (req, res, next) => {
 
 const sendResetEmail = async (req, res, next) => {
   const { email, _id: id, firstName, lastName, avatar } = req.user
-  console.log("sending email", req.user)
   const token = jwt.sign(
     {
       email,

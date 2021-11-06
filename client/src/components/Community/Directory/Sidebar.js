@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { CommunityContext } from "../../../contexts/CommunityProvider"
 import mapCard from "../../../assets/images/mapCard.svg"
-import horizontalSymbols from "../../../assets/images/SymbolsHorizontal.png"
-import { Link } from "react-router-dom"
 import { useHistory } from "react-router"
 
 export default function Sidebar(props) {
@@ -42,12 +40,7 @@ export default function Sidebar(props) {
   const memberBackHandler = () => {
     setIsCardSelected(false)
   }
-  // const cardHandler = (value) => {
-  //   console.log("SELECTED MEMBER", value);
-  //   setIsCardSelected(true);
-  //   setSelectedMember(value);
 
-  // };
   const profileButtonHandler = (id) => {
     history.push(`/community/profile/${id}`)
     sidebarHandler(false)

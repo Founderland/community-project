@@ -16,7 +16,6 @@ const Events = () => {
   useEffect(() => {
     if (category === "member") setHosting(true)
   }, [category])
-  console.log(category)
   return (
     <div className="relative flex flex-col w-full justify-center items-center">
       {!id && category !== "new" ? (

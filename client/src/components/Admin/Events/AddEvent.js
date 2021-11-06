@@ -123,8 +123,6 @@ const AddEvent = ({ event, edit, setEdit }) => {
     setData((prev) => ({ ...prev, type: value }))
   }
   const setDate = (value) => {
-    console.log(value)
-    console.log(Date.now())
     if (value)
       setData((prev) => ({ ...prev, dateStart: value[0], dateEnd: value[1] }))
     else setData((prev) => ({ ...prev, dateStart: null, dateEnd: null }))
@@ -150,7 +148,6 @@ const AddEvent = ({ event, edit, setEdit }) => {
       link
     )
   }
-  console.log(data)
   return (
     <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col w-full xl:w-5/6">
       <div className="w-full flex items-center justify-center z-20">

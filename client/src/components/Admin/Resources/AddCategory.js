@@ -40,7 +40,6 @@ const AddCategory = ({ data }) => {
           category,
           config
         )
-        console.log(createCategory)
         if (createCategory.data.success) {
           setSaving(false)
           setBanner({

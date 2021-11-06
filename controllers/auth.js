@@ -12,7 +12,6 @@ const authenticateUser = async (req, username, password, done) => {
     // Check that user exists by email
     if (isAdminLogin) {
       const user = await User.findOne({ email: username }).lean()
-      console.log(user)
       if (user && (await bcrypt.compare(password, user.hashedPassword))) {
         delete user.hashedPassword
         if (user.isVerified && !user.isLocked) {

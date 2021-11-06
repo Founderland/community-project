@@ -64,17 +64,14 @@ export default function MapDisplay(props) {
   // const [isSidebarSelected, setIssideSelected] = useState(false)
 
   useEffect(() => {
-
     const coOrdinates = []
     for (let index = 0; index < memberDetails?.length; index++) {
-
       coOrdinates.push({
         lat: memberDetails[index].geoLocation.lat,
         lng: memberDetails[index].geoLocation.lng,
       })
     }
     setLatLong([...coOrdinates])
-    console.log(coOrdinates)
   }, [memberDetails])
 
   // Emptying search value
@@ -116,7 +113,10 @@ export default function MapDisplay(props) {
 
     let count = 0
     for (let i = 0; i < memberDetails.length; i++) {
-      if (memberDetails[i].geoLocation.lat === lat && memberDetails[i].geoLocation.lat) {
+      if (
+        memberDetails[i].geoLocation.lat === lat &&
+        memberDetails[i].geoLocation.lat
+      ) {
         count++
       }
     }
@@ -226,7 +226,6 @@ export default function MapDisplay(props) {
             {isHovered && index === hoverElement?.index && (
               <InfoWindow>
                 <div>
-                  {console.log("hoveLat,hoverLng", hoverElement)}
                   <div className="flex">
                     <img className="w-8" src={womenImg} alt="icon" />
                     <div className="flex flex-col justify-end items-end w-8">

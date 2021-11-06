@@ -17,7 +17,6 @@ const DropzoneAWS = ({ data, setData, type }) => {
   const onDrop = useCallback((acceptedFiles) => {
     // type: "image/jpeg"
     // type: "application/pdf"
-    console.log(acceptedFiles)
     acceptedFiles.forEach((element) => {
       handleUpload(element)
     })
@@ -27,7 +26,6 @@ const DropzoneAWS = ({ data, setData, type }) => {
     const now = Date.now()
     let newFileName = `${data._id}-${type}-${data.firstName}-${data.lastName}-${now}`
     ReactS3Client.uploadFile(file, newFileName).then((res) => {
-      console.log(res.location)
       data.photo.push(res.location)
       setData({ ...data, photo: [...data.photo] })
       if (res.status === 204) {
@@ -43,7 +41,8 @@ const DropzoneAWS = ({ data, setData, type }) => {
   return (
     <div
       {...getRootProps()}
-      className=' h-full w-3/4   flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl'>
+      className=" h-full w-3/4   flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl"
+    >
       <input {...getInputProps()} multiple />
 
       {/* {previewSource && (
@@ -53,7 +52,7 @@ const DropzoneAWS = ({ data, setData, type }) => {
             className='h-3/4 w-full md:w-3/4 p-4 object-scale-down'
           />
         )} */}
-      <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
+      <p className="block uppercase text-gray-600 text-md font-bold mb-2">
         Drag and drop some files here, or click to select files
       </p>
     </div>
