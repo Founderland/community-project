@@ -4,6 +4,7 @@ const NewsLetterResponse = require("../models/NewsLetterResponse")
 
 const addNewsletterResponse = async (req, res, next) => {
   const { firstName, lastName, email, interests } = req.body
+ 
   try {
     const subscribed = await NewsLetterResponse.findOne({ email })
     if (subscribed) await Promise.reject(new Error("Already Registered"))
@@ -17,8 +18,8 @@ const addNewsletterResponse = async (req, res, next) => {
     if (!newResponse) {
       await Promise.reject("newsletter response error") //reject promise with error
     }
-    req.newResponse = newResponse
-    return next()
+
+    res.status(200).json(newResponse)
   } catch (e) {
     return res.status(404).json({ error: e.message })
   }
