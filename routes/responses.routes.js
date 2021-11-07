@@ -2,11 +2,7 @@ const responseRouter = require("express").Router()
 const responseController = require("../controllers/response")
 const newsletterController = require("../controllers/NewsletterResponse")
 const memberController = require("../controllers/member")
-const {
-  sendConnectEmail,
-  sendRejected,
-  sendThankYou,
-} = require("../helpers/emailHandler")
+const { sendThankYou, sendApplicantEmail } = require("../helpers/emailHandler")
 const { registerCommunityValidation } = require("../helpers/validators")
 const passport = require("passport")
 
@@ -84,14 +80,14 @@ responseRouter.put(
   registerCommunityValidation,
   memberController.addMember,
   responseController.updateStatus,
-  sendConnectEmail,
+  sendApplicantEmail,
   memberController.updateNotified
 )
 responseRouter.put(
   "/response/reject/",
   passport.authenticate("jwt", { session: false }),
   responseController.updateStatus,
-  sendRejected,
+  sendApplicantEmail,
   responseController.updateNotified
 )
 responseRouter.put(
