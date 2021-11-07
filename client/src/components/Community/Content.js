@@ -9,7 +9,7 @@ const Content = () => {
   let selectedView = view
   if (!view) selectedView = "community"
   return (
-    <main className="overflow-x-hidden overflow-none w-full h-screen">
+    <main className="overflow-x-hidden overflow-none w-full ">
       {selectedView === "community" && <MapDisplay />}
       {selectedView === "events" && <Events />}
       {selectedView === "resources" && <ResourcesList />}

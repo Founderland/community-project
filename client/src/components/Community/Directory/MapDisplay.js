@@ -71,7 +71,11 @@ export default function MapDisplay(props) {
       })
     }
     setLatLong([...coOrdinates])
+    return ()=>{
+      sidebarHandler(false)
+    }
   }, [memberDetails])
+ 
 
   // Emptying search value
   useEffect(() => {
@@ -131,8 +135,9 @@ export default function MapDisplay(props) {
     setOpenSearchMenu(false)
     isNameSelectedEvent(true)
     // selectedNameEvent(item)
-    sidebarHandler(false)
+    // sidebarHandler(true)
     history.push(`/community/profile/${item._id}`)
+    isNameSelectedEvent(false)
   }
 
   const onSearchTypeHandler = (event) => {
