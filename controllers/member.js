@@ -61,7 +61,6 @@ const addMember = async (req, res, next) => {
       throw new Error("VALIDATION_FAILED")
     }
     const existing = await Member.findOne({ email })
-    if (existing) throw new Error("USER_EXISTS_ALREADY")
     let data = {
       firstName,
       lastName,
@@ -74,7 +73,12 @@ const addMember = async (req, res, next) => {
       role,
       applicationId,
     }
-    const newMember = await Member.create(data)
+    let newMember
+    if (!existing) {
+      newMember = await Member.create(data)
+    } else {
+      newMember = existing
+    }
     if (newMember) {
       req.newMember = newMember
       return next()

@@ -12,10 +12,6 @@ import { EmojiSadIcon, TrashIcon, XCircleIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import moment from "moment"
 import AddEvent from "./AddEvent"
-const avatarInitials = (first, last) => {
-  let initials = first[0].toUpperCase() + last[0].toUpperCase()
-  return initials
-}
 
 const styles = {
   online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
@@ -49,7 +45,6 @@ const Event = () => {
         console.log(err)
       })
   }, [id, reload])
-  console.log(edit)
   return (
     <section className="h-full py-1 bg-white flex flex-col justify-center w-full lg:w-5/6 px-4 mx-auto mt-6">
       <ConfirmModal>
@@ -80,7 +75,6 @@ const Event = () => {
             />
             {data.isCanceled && (
               <>
-                {" "}
                 <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
                 <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
                   Event Canceled
@@ -119,23 +113,23 @@ const Event = () => {
             <div className="w-full px-4 pt-2 grid grid-cols-2 lg:grid-cols-5 md:grid-cols-4 text-xs justify-center items-center">
               <div className="mb-2">
                 <p className="text-xs text-grotesk">From</p>
-                <div class="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
-                  <div class="block rounded-t overflow-hidden  text-center ">
-                    <div class="bg-fblue text-white py-1">
+                <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                  <div className="block rounded-t overflow-hidden  text-center ">
+                    <div className="bg-fblue text-white py-1">
                       {moment(data.dateStart).format("MMMM")}
                     </div>
-                    <div class="pt-1 border-l border-r border-white bg-white">
-                      <span class="text-5xl font-bold leading-tight">
+                    <div className="pt-1 border-l border-r border-white bg-white">
+                      <span className="text-5xl font-bold leading-tight">
                         {moment(data.dateStart).format("DD")}
                       </span>
                     </div>
-                    <div class="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
-                      <span class="text-sm">
+                    <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
+                      <span className="text-sm">
                         {moment(data.dateStart).format("dddd")}
                       </span>
                     </div>
-                    <div class="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
-                      <span class="text-xs leading-normal">
+                    <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
+                      <span className="text-xs leading-normal">
                         {moment(data.dateStart).format("HH:mm")}
                       </span>
                     </div>
@@ -144,23 +138,23 @@ const Event = () => {
               </div>
               <div className="mb-2">
                 <p className=" text-xs text-grotesk">To</p>
-                <div class="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
-                  <div class="block rounded-t overflow-hidden text-center ">
-                    <div class="bg-fred text-white py-1">
+                <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                  <div className="block rounded-t overflow-hidden text-center ">
+                    <div className="bg-fred text-white py-1">
                       {moment(data.dateEnd).format("MMMM")}
                     </div>
-                    <div class="pt-1 border-l border-r border-white bg-white">
-                      <span class="text-5xl font-bold leading-tight">
+                    <div className="pt-1 border-l border-r border-white bg-white">
+                      <span className="text-5xl font-bold leading-tight">
                         {moment(data.dateEnd).format("DD")}
                       </span>
                     </div>
-                    <div class="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
-                      <span class="text-sm">
+                    <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
+                      <span className="text-sm">
                         {moment(data.dateEnd).format("dddd")}
                       </span>
                     </div>
-                    <div class="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
-                      <span class="text-xs leading-normal">
+                    <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
+                      <span className="text-xs leading-normal">
                         {moment(data.dateEnd).format("HH:mm")}
                       </span>
                     </div>
@@ -187,59 +181,60 @@ const Event = () => {
               <div className="px-3 bg-white text-lg text-mono w-full ease-linear transition-all duration-150">
                 {data.description}
               </div>
-              <h6 className="text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
+
+              <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
                 Going
               </h6>
               <div className="px-3 bg-white text-base text-mono w-full ease-linear transition-all duration-150">
-                {data.going.length
-                  ? data.going.map((attendee) => {
-                      return (
+                {data.going.length ? (
+                  <div className="w-full flex items-center space-x-2">
+                    <p className="mr-2 text-lg text-grotesk">
+                      {data.going.length}
+                    </p>
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
+                      {data.going.map((attendee) => (
                         <div
-                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="h-10 w-10 rounded-full mr-2 object-cover"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
-                      )
-                    })
-                  : "No confirmations yet"}
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  "No confirmations yet"
+                )}
               </div>
-              <h6 className="text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
+              <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
                 Interested
               </h6>
               <div className="px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150">
-                {data.interested.length
-                  ? data.interested.map((attendee) => {
-                      return (
+                {data.interested.length ? (
+                  <div className="w-full flex items-center space-x-2">
+                    <p className="mr-2 text-lg text-grotesk">
+                      {data.interested.length}
+                    </p>
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
+                      {data.interested.map((attendee) => (
                         <div
-                          className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="h-10 w-10 rounded-full mr-2 object-cover"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
-                      )
-                    })
-                  : "No confirmations yet"}
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  "No confirmations yet"
+                )}
               </div>
               {data.type !== "online" && (
                 <div className="px-3 bg-white text-lg w-full border-t-2 border-b-2 border-gray-300 mt-2">
@@ -264,7 +259,6 @@ const Event = () => {
                   </p>
                   <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
                     {data.city}
-                    {edit && "edit"}
                   </p>
                 </div>
               )}
@@ -284,7 +278,7 @@ const Event = () => {
             <footer className="flex p-4 mt-2 justify-center items-center">
               {!data.isCanceled && (
                 <button
-                  class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                   onClick={() => {
                     setCModal(true)
                   }}

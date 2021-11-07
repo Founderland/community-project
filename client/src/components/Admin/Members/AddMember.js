@@ -84,7 +84,6 @@ const AddMember = ({ role }) => {
       if (data.firstName.length > 1 && data.lastName.length > 1) {
         try {
           const response = await axios.post(addMemberURL, data, config)
-          console.log(response)
           if (response.data.success) {
             setSaving(false)
             setBanner({
@@ -161,7 +160,6 @@ const AddMember = ({ role }) => {
       .get(`https://api.countrystatecity.in/v1/countries`, configuration)
       .then((res) => {
         setCountryList(res.data)
-        console.log(res.data)
       })
       .catch((e) => console.log(e))
   }, [])
@@ -171,8 +169,7 @@ const AddMember = ({ role }) => {
     setSelectedCounty(
       countryList.find((country) => country.name === data.country)
     )
-    console.log("countrz")
-    console.log(countryList.find((country) => country.name === data.country))
+
     // get list of cities in the selected country
     if (selectedCountry) {
       axios

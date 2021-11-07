@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const responseSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
+  email: { type: String },
   totalScore: { type: Number },
   submissionDate: { type: Date, default: Date.now(), required: true },
   evaluatedOn: { type: Date },

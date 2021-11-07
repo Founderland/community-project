@@ -35,6 +35,7 @@ const Application = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [commentsArray, setCommentsArray] = useState([])
+  const [confirm, setConfirm] = useState("")
   //GET DATA FROM DB WITH APPLICATIONID FROM URL
   useEffect(() => {
     axios
@@ -56,7 +57,7 @@ const Application = () => {
   }, [id, commentsArray])
 
   const updateApplication = (status) => {
-    setData((prev) => ({ ...prev, task: status }))
+    setConfirm(status)
     setCModal(true)
   }
 
@@ -69,7 +70,7 @@ const Application = () => {
       ) : (
         <>
           <ComponentModal>
-            <ApproveApplicant data={data} />
+            <ApproveApplicant data={data} confirm={confirm} />
           </ComponentModal>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg border-0">
             <div
@@ -199,7 +200,11 @@ const Application = () => {
                                   styles[item.rank]?.text
                                 } px-3 py-3 bg-white text-lg w-full ease-linear transition-all duration-150`}
                               >
-                                {item.answer_value}
+                                {item.answer_value.length ? (
+                                  item.answer_value
+                                ) : (
+                                  <p className="text-xs">No answer</p>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -221,13 +226,13 @@ const Application = () => {
               {data.data.status === "new" || data.data.status === "pending" ? (
                 <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                   <button
-                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                     onClick={() => updateApplication("rejected")}
                   >
                     Reject
                   </button>
                   <button
-                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                     onClick={() => updateApplication("approved")}
                   >
                     Approve
@@ -236,7 +241,7 @@ const Application = () => {
               ) : data.data.status === "rejected" ? (
                 <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                   <button
-                    class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                     onClick={() => updateApplication("approved")}
                   >
                     Approve

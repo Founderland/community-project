@@ -26,9 +26,7 @@ const DisplayArticles = ({ category }) => {
     const getData = async () => {
       try {
         const { data } = await axios.get(resourcesUrl + category.key, config)
-        console.log(data)
         if (data) {
-          console.log(data)
           const articles = [...data[0].articles]
           setData(articles)
           let allTags = articles

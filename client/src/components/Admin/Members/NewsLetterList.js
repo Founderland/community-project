@@ -1,5 +1,4 @@
-
-import { useState, useEffect, useContext, useMemo } from "react"
+import { useState, useEffect, useContext } from "react"
 import AdminContext from "../../../contexts/Admin"
 import ListWidget from "../Widgets/ListWidget"
 import Loading from "../Widgets/Loading"
@@ -20,48 +19,45 @@ const styles = {
   user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
-const NewsLetterList = ({ role,newsletterDataHandler }) => {
+const NewsLetterList = ({ role, newsletterDataHandler }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-   const { token, reload } = useContext(AdminContext)
-
-   
-//   const config = useMemo(() => {
-//     return {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   }, [token])
-//   const membersAPI = "/api/users/community/members/"
+  const { config, reload } = useContext(AdminContext)
 
   //FETCH DATA
   useEffect(() => {
     axios
-      .get( "/api/applicants/response/newsletter")
+      .get("/api/applicants/response/newsletter", config)
       .then((res) => {
         const header = {
           header: [
             { title: "Name", key: "firstName", style: "text-right text-sm" },
             { title: " ", key: "lastName", style: "text-left text-sm" },
             { title: "Email", key: "email", style: "text-center text-sm" },
-              { title: "Interest", key: "interests", style: "text-center text-sm" },
-              { title: "Subscribed On", key: "subscriptionDate", style: "text-center text-sm" },
-            
+            {
+              title: "Interest",
+              key: "interests",
+              style: "text-center text-sm",
+            },
+            {
+              title: "Subscribed On",
+              key: "subscriptionDate",
+              style: "text-center text-sm",
+            },
           ],
-         }
-      
+        }
+
         const data = res
         data.data.forEach((element) => {
           if (element.subscriptionDate) {
-            element.subscriptionDate = moment(element.subscriptionDate).format("DD/M/YYYY")
+            element.subscriptionDate = moment(element.subscriptionDate).format(
+              "DD/M/YYYY"
+            )
           }
-        
         })
         setData({ ...header, ...data })
-         setLoading(false)
-         newsletterDataHandler(res.data)
+        setLoading(false)
+        newsletterDataHandler(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -71,14 +67,10 @@ const NewsLetterList = ({ role,newsletterDataHandler }) => {
   return loading ? (
     <Loading />
   ) : (
-        <> 
-        <ListWidget title="" data={data} styles={styles} showing={10} />
-           {/* <TootlTip message={data}/> */}
-           </>
+    <>
+      <ListWidget title="" data={data} styles={styles} showing={10} />
+    </>
   )
 }
 
 export default NewsLetterList
-
-
-

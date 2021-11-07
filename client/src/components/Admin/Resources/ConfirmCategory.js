@@ -11,7 +11,6 @@ const Confirm = ({ data }) => {
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({ show: false })
   const { setCCModal, config, reload, setReload } = useContext(AdminContext)
-  console.log(data)
   const save = async () => {
     setSaving(true)
     try {
@@ -19,7 +18,6 @@ const Confirm = ({ data }) => {
         deleteUrl + data.id + "/folder",
         config
       )
-      console.log(deleted)
       if (deleted.data.success) {
         setSaving(false)
         setBanner({

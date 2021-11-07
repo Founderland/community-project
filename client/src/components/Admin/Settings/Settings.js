@@ -11,11 +11,12 @@ import Tabs from "../Widgets/Tabs"
 const usersAPI = "/api/users/all"
 
 const styles = {
-  sadmin:
+  supervisor:
     "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-green-700 bg-green-100 border border-green-300 bg-opacity-30",
-  admin:
+  administrator:
     "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fblue-700 bg-fblue-100 border border-fblue-300 bg-opacity-30",
-  user: "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fpink-700 bg-fpink-100 border border-fpink-300 bg-opacity-30",
+  reviewer:
+    "flex justify-center items-center w-min m-1 font-medium py-1 px-2 rounded-full text-fpink-700 bg-fpink-100 border border-fpink-300 bg-opacity-30",
 }
 
 const Settings = () => {
@@ -23,7 +24,7 @@ const Settings = () => {
   const { id } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const { token, selectedTab, setSelectedTab, user, reload } =
+  const { config, rolesLabel, selectedTab, setSelectedTab, user, reload } =
     useContext(AdminContext)
   const tabs = [
     {
@@ -58,14 +59,6 @@ const Settings = () => {
       ),
     },
   ]
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
 
   //Get all registered Users and set the result as data
   useEffect(() => {
@@ -74,18 +67,23 @@ const Settings = () => {
       .then((res) => {
         let response = {
           header: [
-            { title: "Name", key: "firstName", style: "text-xs md:text-sm" },
-            { title: "", key: "lastName", style: "text-xs md:text-sm" },
+            { title: "Name", key: "name", style: "text-xs md:text-sm" },
             { title: "Email", key: "email", style: "text-xs md:text-sm" },
             {
               title: "Role",
               key: "role",
-              style: "text-xs md:text-sm sm:block hidden",
+              style: "flex text-xs md:text-sm sm:flex hidden justify-center",
             },
             { title: "Actions", key: "-", style: "text-xs md:text-sm" },
           ],
         }
-        const userList = res.data.data.filter((item) => item._id !== user.id)
+        const userList = res.data.data
+          .filter((item) => item._id !== user.id)
+          .map((item) => ({
+            ...item,
+            name: item.firstName + " " + item.lastName,
+            role: rolesLabel[item.role],
+          }))
         response.data = userList
         setData(response)
         setLoading(false)

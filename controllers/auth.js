@@ -11,7 +11,7 @@ const authenticateUser = async (req, username, password, done) => {
   try {
     // Check that user exists by email
     if (isAdminLogin) {
-      const user = await User.findOne({ email: username })
+      const user = await User.findOne({ email: username }).lean()
       if (user && (await bcrypt.compare(password, user.hashedPassword))) {
         delete user.hashedPassword
         if (user.isVerified && !user.isLocked) {
@@ -19,6 +19,8 @@ const authenticateUser = async (req, username, password, done) => {
         } else {
           done(null, false, { message: "User unverified or locked" })
         }
+      } else {
+        done(null, false, { message: "Wrong Credentials" })
       }
     } else {
       const user = await Member.findOne({ email: username }).lean()

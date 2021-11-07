@@ -13,24 +13,18 @@ const AnswerList = ({ answersList, setAnswersList, memberType }) => {
 
     setAnswersList([...updatedList])
   }
-  console.log(memberType)
   return (
     <>
-      {answersList?.map((answer, i) => {
-        console.log(answer)
-        {
-          return (
-            <Answer
-              key={i + answer.answer}
-              handleAnswerChange={handleAnswerChange}
-              answer={answer}
-              memberType={memberType}
-              handleDelete={handleDelete}
-              i={i}
-            />
-          )
-        }
-      })}
+      {answersList?.map((answer, i) => (
+        <Answer
+          key={i + answer.answer}
+          handleAnswerChange={handleAnswerChange}
+          answer={answer}
+          memberType={memberType}
+          handleDelete={handleDelete}
+          i={i}
+        />
+      ))}
     </>
   )
 }

@@ -46,34 +46,14 @@ const ApplicantsList = ({ status, role, reload }) => {
           applicantsURL + category + "/" + role,
           config
         )
-        console.log(result)
         const userData = result.data.map((item) => {
-          // Getting first and last name
-          const firstName = item.firstName.length
-            ? item.firstName
-            : item.answerData.find((x) => x.question === "First name")
-                ?.answer_value
-
-          const lastName = item.lastName.length
-            ? item.lastName
-            : item.answerData.find((x) => x.question === "Last name")
-                ?.answer_value
-          const questionLocation = item.answerData.find(
-            (x) =>
-              x.question === "City and Country" || x.question === "Location"
+          const userLocation = item.answerData.filter(
+            (x) => x.question.search("City") === 0
           )
-          const questionEmail = item.answerData.find(
-            (x) => x.question === "email" || x.question === "Email"
-          )
-
-          const location = questionLocation?.answer_value
-          const email = questionEmail?.answer_value
-
           let finalObject = {
             ...item,
-            applicantName: `${firstName} ${lastName}`,
-            userLocation: location,
-            userEmail: email,
+            applicantName: `${item.firstName} ${item.lastName}`,
+            userLocation: userLocation[0].answer_value,
             submitted: getTimeDifference(item.submissionDate),
           }
 
@@ -87,17 +67,13 @@ const ApplicantsList = ({ status, role, reload }) => {
 
           return finalObject
         })
+
         setListData({
           header: [
             {
               title: "Name",
               key: "applicantName",
               style: "py-3 px-6 text-left ",
-            },
-            {
-              title: "Email",
-              key: "userEmail",
-              style: "hidden md:table-cell text-left",
             },
             {
               title: "Location",

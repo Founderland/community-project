@@ -1,7 +1,6 @@
 import { MenuIcon } from "@heroicons/react/solid"
 import { useContext } from "react"
 import AdminContext from "../../contexts/Admin"
-// import Notifications from "./Widgets/Notifications"
 import ProfileMenu from "./ProfileMenu"
 import { useParams, useHistory } from "react-router"
 import { ChevronLeftIcon } from "@heroicons/react/outline"
@@ -45,7 +44,6 @@ const AdminHeader = () => {
         </div>
       </div>
       <div className="flex items-center space-x-8">
-        {/* <Notifications /> */}
         <ProfileMenu />
       </div>
     </div>

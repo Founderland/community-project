@@ -19,8 +19,7 @@ const Thankyou = () => {
             </div>
             <div className="w-full text-hanson  pr-6  text-right md:text-left py-10 md:py-5 md:pl-24 ">
               <h1 className="text-5xl md:text-6xl lg:text-7 xl:lg:text-7  2xl:text-9xl">
-                {" "}
-                THANK YOU{" "}
+                THANK YOU
               </h1>
             </div>
             <div className="w-full text-grotesk pr-6 text-right md:text-left  md:px-24">
@@ -32,7 +31,7 @@ const Thankyou = () => {
             <div className="flex justify-start pl-24 py-10 mt-4 pr-6 md:mt-10">
               <a
                 href="https://www.founderland.org"
-                class="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono md:text-lg xl:text-2xl "
+                className="bg-fblue hover:bg-fblue-dark transition ease-in-out duration-600  text-white font-bold py-2 px-2 md:py-4 md:px-4 border border-black-700 text-mono md:text-lg xl:text-2xl "
               >
                 RETURN TO HOMEPAGE
               </a>

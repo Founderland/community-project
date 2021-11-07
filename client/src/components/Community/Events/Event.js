@@ -9,7 +9,7 @@ import ConfirmDelete from "./ConfirmDelete"
 import ConfirmCancel from "./ConfirmCancel"
 import ComponentModal from "../Widgets/ComponentModal"
 import Banner from "../../Admin/Widgets/Banner"
-
+import AddToCalendar from "../Widgets/AddToCalendar"
 import {
   EmojiSadIcon,
   PlusCircleIcon,
@@ -19,10 +19,6 @@ import {
 import axios from "axios"
 import moment from "moment"
 import AddEvent from "./AddEvent"
-const avatarInitials = (first, last) => {
-  let initials = first[0].toUpperCase() + last[0].toUpperCase()
-  return initials
-}
 
 const styles = {
   online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
@@ -132,21 +128,25 @@ const Event = () => {
         <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
-          <div className="relative flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
-            <img
-              className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
-              src={data.eventCover?.url}
-              alt="cover"
-            />
-            {data.isCanceled && (
-              <>
-                {" "}
-                <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
-                <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
-                  Event Canceled
-                </p>
-              </>
-            )}
+          <div className=" flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
+            <div className="relative flex w-full justify-between">
+              <img
+                className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
+                src={data.eventCover?.url}
+                alt="cover"
+              />
+              {data.isCanceled && (
+                <>
+                  <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
+                  <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
+                    Event Canceled
+                  </p>
+                </>
+              )}
+              {!data.isCanceled && new Date(data.dateEnd) > new Date() && (
+                <AddToCalendar event={data} />
+              )}
+            </div>
             <div className="flex w-full justify-between">
               <div className="flex flex-grow p-4 text-mono">
                 <p className="text-2xl tracking-wider self-center font-bold uppercase">
@@ -179,23 +179,23 @@ const Event = () => {
             <div className="w-full px-4 pt-2 grid grid-cols-2 lg:grid-cols-5 md:grid-cols-4 text-xs justify-center items-center">
               <div className="mb-2">
                 <p className="text-xs text-grotesk">From</p>
-                <div class="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
-                  <div class="block rounded-t overflow-hidden  text-center ">
-                    <div class="bg-fblue text-white py-1">
+                <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                  <div className="block rounded-t overflow-hidden  text-center ">
+                    <div className="bg-fblue text-white py-1">
                       {moment(data.dateStart).format("MMMM")}
                     </div>
-                    <div class="pt-1 border-l border-r border-white bg-white">
-                      <span class="text-5xl font-bold leading-tight">
+                    <div className="pt-1 border-l border-r border-white bg-white">
+                      <span className="text-5xl font-bold leading-tight">
                         {moment(data.dateStart).format("DD")}
                       </span>
                     </div>
-                    <div class="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
-                      <span class="text-sm">
+                    <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
+                      <span className="text-sm">
                         {moment(data.dateStart).format("dddd")}
                       </span>
                     </div>
-                    <div class="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
-                      <span class="text-xs leading-normal">
+                    <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
+                      <span className="text-xs leading-normal">
                         {moment(data.dateStart).format("HH:mm")}
                       </span>
                     </div>
@@ -204,23 +204,23 @@ const Event = () => {
               </div>
               <div className="mb-2">
                 <p className=" text-xs text-grotesk">To</p>
-                <div class="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
-                  <div class="block rounded-t overflow-hidden text-center ">
-                    <div class="bg-fred text-white py-1">
+                <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                  <div className="block rounded-t overflow-hidden text-center ">
+                    <div className="bg-fred text-white py-1">
                       {moment(data.dateEnd).format("MMMM")}
                     </div>
-                    <div class="pt-1 border-l border-r border-white bg-white">
-                      <span class="text-5xl font-bold leading-tight">
+                    <div className="pt-1 border-l border-r border-white bg-white">
+                      <span className="text-5xl font-bold leading-tight">
                         {moment(data.dateEnd).format("DD")}
                       </span>
                     </div>
-                    <div class="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
-                      <span class="text-sm">
+                    <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
+                      <span className="text-sm">
                         {moment(data.dateEnd).format("dddd")}
                       </span>
                     </div>
-                    <div class="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
-                      <span class="text-xs leading-normal">
+                    <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
+                      <span className="text-xs leading-normal">
                         {moment(data.dateEnd).format("HH:mm")}
                       </span>
                     </div>
@@ -250,8 +250,12 @@ const Event = () => {
               <Banner message={banner} />
 
               <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
-                <p>Going</p>
-                {going ? (
+                <p>{new Date(data.dateEnd) > new Date() ? "Going" : "Went"}</p>
+                {data.member._id === user.id ? (
+                  ""
+                ) : new Date(data.dateEnd) < new Date() ? (
+                  ""
+                ) : going ? (
                   <button
                     className="h-4 w-4"
                     onClick={() => {
@@ -277,34 +281,31 @@ const Event = () => {
                     <p className="mr-2 text-lg text-grotesk">
                       {data.going.length}
                     </p>
-                    <div className="w-full flex items-center px-4 overflow-x-auto">
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
                       {data.going.map((attendee) => (
                         <div
-                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border-2 border-white object-cover object-center`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="rounded-full"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  "No confirmations yet"
+                  "No confirmations"
                 )}
               </div>
               <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
                 <p>Interested</p>
-                {interested ? (
+                {data.member._id === user.id ? (
+                  ""
+                ) : new Date(data.dateEnd) < new Date() ? (
+                  ""
+                ) : interested ? (
                   <button
                     className="h-4 w-4"
                     onClick={() => {
@@ -330,29 +331,22 @@ const Event = () => {
                     <p className="mr-2 text-lg text-grotesk">
                       {data.interested.length}
                     </p>
-                    <div className="w-full flex items-center px-4 overflow-x-auto">
+                    <div className="flex items-center overflow-hidden pl-3 py-2">
                       {data.interested.map((attendee) => (
                         <div
-                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border-2 border-white object-cover object-center`}
+                          className={`-ml-2 inline-block h-8 w-8 rounded-full text-white border border-fblue object-cover object-center`}
                         >
-                          {attendee.photo?.public_id ? (
-                            <img
-                              src={attendee.photo?.url}
-                              className="rounded-full"
-                              alt="user profile"
-                            />
-                          ) : (
-                            avatarInitials(
-                              attendee.firstName,
-                              attendee.lastName
-                            )
-                          )}
+                          <img
+                            src={attendee.photo?.url}
+                            className="w-full h-full rounded-full"
+                            alt="user profile"
+                          />
                         </div>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  "No confirmations yet"
+                  "No confirmations"
                 )}
               </div>
               {data.type !== "online" && (
@@ -378,62 +372,67 @@ const Event = () => {
                   </p>
                   <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
                     {data.city}
-                    {edit && "edit"}
                   </p>
                 </div>
               )}
               <div className="flex mt-2 pt-2 px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150 items-center">
                 <p className="text-xs">Event Tags:</p>
-                {data.tags.length
-                  ? data.tags.map((tag) => (
-                      <div
-                        key={tag}
-                        className="bg-gray-200 text-gray-600  group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
-                      >
-                        <p className=" text-xs">{tag}</p>
-                      </div>
-                    ))
-                  : ""}
+                {data.tags.length ? (
+                  data.tags.map((tag) => (
+                    <div
+                      key={tag}
+                      className="bg-gray-200 text-gray-600  group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
+                    >
+                      <p className=" text-xs">{tag}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs ml-2">No tags</p>
+                )}
               </div>
             </div>
             <footer className="flex p-4 mt-2 justify-center items-center">
-              {!data.isCanceled && user.id === data.member._id && (
-                <button
-                  class="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
-                  onClick={() => {
-                    setCModal(true)
-                  }}
-                >
-                  Cancel Event
-                </button>
-              )}
+              {!data.isCanceled &&
+                user.id === data.member._id &&
+                new Date(data.dateEnd) > new Date() && (
+                  <button
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                    onClick={() => {
+                      setCModal(true)
+                    }}
+                  >
+                    Cancel Event
+                  </button>
+                )}
             </footer>
           </div>
-          {!edit && user.id === data.member._id && (
-            <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-              <button
-                className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                onClick={() => {
-                  setEdit(true)
-                }}
-              >
-                Edit
-              </button>
-              {user.id === data.member._id ? (
+          {!edit &&
+            user.id === data.member._id &&
+            new Date(data.dateEnd) > new Date() && (
+              <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                 <button
-                  className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => {
-                    setCCModal(true)
+                    setEdit(true)
                   }}
                 >
-                  <TrashIcon className="h-5 w-5" />
-                  Delete
+                  Edit
                 </button>
-              ) : (
-                ""
-              )}
-            </div>
-          )}
+                {user.id === data.member._id ? (
+                  <button
+                    className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+                    onClick={() => {
+                      setCCModal(true)
+                    }}
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                    Delete
+                  </button>
+                ) : (
+                  ""
+                )}
+              </div>
+            )}
         </>
       )}
     </section>

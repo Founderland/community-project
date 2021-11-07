@@ -11,7 +11,7 @@ import { AnswersContext } from "../contexts/AnswersProvider"
 import { useContext } from "react"
 
 const Form = ({ match, memberType, questionPreview }) => {
-  const  {submit}  = useContext(AnswersContext)
+  const { submit } = useContext(AnswersContext)
 
   if (match?.params.memberType) {
     memberType = match.params.memberType
@@ -75,12 +75,6 @@ const Form = ({ match, memberType, questionPreview }) => {
           pageArray.push(catArray.filter((item) => item.categoryPage === i))
         }
 
-        //output Array:
-        // QuestionsArray = [cat1,cat2,cat3]
-        // cat1 = [[pg1],[pg2]]
-        // cat2 = [[pg1],[pg2]]
-        // cat3 = [[pg1],[pg2]]
-        // pg1 = question object with page 1 ...
         QuestionsArray.push(pageArray)
 
         pagesInEachCategory.push(maxPageNumber)
@@ -91,12 +85,8 @@ const Form = ({ match, memberType, questionPreview }) => {
     }
   }, [questions])
 
-  //eg:pagesInCategory=[[3],[2],1[]]
-  // activeStep = 4
-  // setactiveStep(2)
   const getActiveStep = (activeStep) => {
     let sum = 0
-    // console.log(pagesInCategory)
     for (let i = 0; i < pagesInCategory.length; i++) {
       sum = sum + pagesInCategory[i]
       if (activeStep <= sum) {
@@ -117,7 +107,11 @@ const Form = ({ match, memberType, questionPreview }) => {
       >
         <ul>
           {categoryNames.map((item, index) => (
-            <CategoryItem text={item} isActive={activeStep === index} />
+            <CategoryItem
+              key={item}
+              text={item}
+              isActive={activeStep === index}
+            />
           ))}
         </ul>
       </div>
@@ -156,6 +150,7 @@ const Form = ({ match, memberType, questionPreview }) => {
             {formatedQuestions.map((catItems, catIndex, catArray) =>
               catItems.map((pagesItems, pageIndex, pageArray) => (
                 <FormPage
+                  role={memberType}
                   questionPreview={questionPreview}
                   questions={pagesItems}
                   isFirst={pageIndex === 0 && catIndex === 0}
@@ -170,7 +165,7 @@ const Form = ({ match, memberType, questionPreview }) => {
           </StepWizard>
         </>
       )}
-      <WizardNav activeStep={activeStep} />
+      {!submit && <WizardNav activeStep={activeStep} />}
     </div>
   )
 }
