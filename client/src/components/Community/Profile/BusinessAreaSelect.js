@@ -39,7 +39,7 @@ const formatValue = (value) => {
   return newValue.replace(value[0], value[0]?.toUpperCase())
 }
 
-const BusinessAreaSelect = ({ profile, setProfile }) => {
+const BusinessAreaSelect = ({ profile, setProfile, required }) => {
   const [businessAreas, setbusinessAreas] = useState([...defaultBusinessAreas])
   const inputRef = useRef(null)
 
@@ -65,11 +65,11 @@ const BusinessAreaSelect = ({ profile, setProfile }) => {
   }
 
   return (
-    <div className="relative">
+    <div className='relative h-auto top-0.5'>
       <ListOption
         options={businessAreas}
         required={true}
-        color={" bg-sky-50 "}
+        color={required ? "bg-red-200 animate-pulse " : "bg-sky-50 "}
         choice={
           isSelectionIncluded(businessAreas)
             ? profile.businessArea || "Select your business area"
@@ -88,27 +88,25 @@ const BusinessAreaSelect = ({ profile, setProfile }) => {
           !isSelectionIncluded(businessAreas)
             ? "w-full py-2 absolute "
             : "hidden"
-        }
-      >
+        }>
         {(profile.businessArea === "Other" ||
           !isSelectionIncluded(businessAreas)) && (
           <input
             ref={inputRef}
-            type="text"
+            type='text'
             // placeholder='Enter your business area'
             defaultValue={
               isSelectionIncluded(businessAreas) ? null : profile.businessArea
             }
-            className="w-full text-sm appearance-none bg-grey-50 text-grey-500 border p-2 outline-none absolute "
+            className='w-full text-sm appearance-none bg-grey-50 text-grey-500 border p-2 outline-none absolute '
             onChange={""}
           />
         )}
         <button
-          type="button"
-          className=" absolute right-0 top-2 p-2 "
-          onClick={() => addNewField(inputRef)}
-        >
-          <PlusCircleIcon className="w-6 h-6 hover:text-flime-900" />
+          type='button'
+          className=' absolute right-0 top-2 p-2 '
+          onClick={() => addNewField(inputRef)}>
+          <PlusCircleIcon className='w-6 h-6 hover:text-flime-900' />
         </button>
       </div>
     </div>

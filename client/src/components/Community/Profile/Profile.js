@@ -157,7 +157,8 @@ const Profile = () => {
         !profile.companyName.length ||
         !profile.companyLink.length ||
         !profile.bio.length ||
-        !profile.companyBio.length
+        !profile.companyBio.length ||
+        profile.businessArea === "Select the business area"
       ) {
         await Promise.reject("Update failed ! Please fill out all the fields")
       } else {
@@ -415,7 +416,7 @@ const Profile = () => {
                 required={required}
               />
               <div className='grid grid-cols-2 md:grid-cols-1 '>
-                <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center'>
+                <label className='p-2 pb-1 uppercase text-xs font-bold text-gray-400 flex items-center'>
                   Business Area
                   {!disableEdit && (
                     <PencilIcon className='w-4 h-4 ml-2 text-black ' />
@@ -425,6 +426,7 @@ const Profile = () => {
                   <BusinessAreaSelect
                     profile={profile}
                     setProfile={setProfile}
+                    required={required}
                   />
                 ) : (
                   <div className='p-2 text-base'>{profile.businessArea}</div>
