@@ -2,7 +2,11 @@ const responseRouter = require("express").Router()
 const responseController = require("../controllers/response")
 const newsletterController = require("../controllers/NewsletterResponse")
 const memberController = require("../controllers/member")
-const { sendConnectEmail, sendRejected } = require("../helpers/emailHandler")
+const {
+  sendConnectEmail,
+  sendRejected,
+  sendThankYou,
+} = require("../helpers/emailHandler")
 const { registerCommunityValidation } = require("../helpers/validators")
 const passport = require("passport")
 
@@ -10,7 +14,11 @@ const passport = require("passport")
 
 responseRouter.post(
   "/response/newsletter",
-  newsletterController.addNewsletterResponse
+  newsletterController.addNewsletterResponse,
+  sendThankYou,
+  async (req, res) => {
+    res.status(200).json({ success: 1, data: req.newResponse })
+  }
 )
 
 // GET NEWSLETTER RESPONSE
@@ -21,7 +29,14 @@ responseRouter.get(
 )
 
 //ADD APPLICANTS RESPONSE
-responseRouter.post("/response", responseController.addResponse)
+responseRouter.post(
+  "/response",
+  responseController.addResponse,
+  sendThankYou,
+  async (req, res) => {
+    res.status(200).json({ success: 1, data: req.newResponse })
+  }
+)
 //GET APPLICANTS RESPONSE
 responseRouter.get(
   "/response",

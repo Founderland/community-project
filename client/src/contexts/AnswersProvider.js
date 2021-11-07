@@ -76,6 +76,9 @@ function AnswersProvider({ children }) {
         lastName: answers.filter(
           (answer) => answer.question.toLowerCase().trim() === "last name"
         )[0].answer_value,
+        email: answers.filter(
+          (answer) => answer.question.toLowerCase().trim().search("email") >= 0
+        )[0].answer_value,
         totalScore: total,
         role: role,
         answerData: answers,

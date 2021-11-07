@@ -4,20 +4,21 @@ const Response = require("../models/Response")
 // Add Founders Response
 
 const addResponse = async (req, res, next) => {
-  const { firstName, lastName, totalScore, answerData, role } = req.body
+  const { firstName, lastName, totalScore, answerData, role, email } = req.body
   try {
     const newResponse = await Response.create({
       firstName,
       lastName,
       totalScore,
       answerData,
+      email,
       role,
     })
     if (!newResponse) {
       await Promise.reject("founder response error") //reject promise with error
     }
-
-    return res.status(200).json("Succesful attempt")
+    req.newResponse = newResponse
+    return next()
   } catch (e) {
     console.log(e)
     return res.status(404).json({ e })

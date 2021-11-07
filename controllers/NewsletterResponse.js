@@ -2,7 +2,7 @@ const NewsLetterResponse = require("../models/NewsLetterResponse")
 
 // Add Founders Response
 
-const addNewsletterResponse = async (req, res) => {
+const addNewsletterResponse = async (req, res, next) => {
   const { firstName, lastName, email, interests } = req.body
   try {
     const subscribed = await NewsLetterResponse.findOne({ email })
@@ -17,7 +17,8 @@ const addNewsletterResponse = async (req, res) => {
     if (!newResponse) {
       await Promise.reject("newsletter response error") //reject promise with error
     }
-    return res.status(200).json("Succesful attempt")
+    req.newResponse = newResponse
+    return next()
   } catch (e) {
     return res.status(404).json({ error: e.message })
   }
