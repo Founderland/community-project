@@ -35,6 +35,7 @@ const Application = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [commentsArray, setCommentsArray] = useState([])
+  const [confirm, setConfirm] = useState("")
   //GET DATA FROM DB WITH APPLICATIONID FROM URL
   useEffect(() => {
     axios
@@ -56,7 +57,7 @@ const Application = () => {
   }, [id, commentsArray])
 
   const updateApplication = (status) => {
-    setData((prev) => ({ ...prev, task: status }))
+    setConfirm(status)
     setCModal(true)
   }
 
@@ -69,7 +70,7 @@ const Application = () => {
       ) : (
         <>
           <ComponentModal>
-            <ApproveApplicant data={data} />
+            <ApproveApplicant data={data} confirm={confirm} />
           </ComponentModal>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg border-0">
             <div

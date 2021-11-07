@@ -124,6 +124,62 @@ const sendVerifyEmail = async (req, res, next) => {
   }
 }
 
+const sendApplicantEmail = async (req, res, next) => {
+  const { email, firstName, lastName, status, custom, body, signOff } = req.body
+  console.log("sending email")
+  let template = status
+  if (custom) template = "generic"
+  // config for mailserver and mail
+  const config = {
+    mailserver: {
+      service: "outlook",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    },
+    mail: {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Update from Founderland!",
+      template: template,
+      context: {
+        firstName,
+        lastName,
+        body,
+        signOff,
+        host: process.env.HOST,
+      },
+    },
+  }
+
+  const sendMail = async ({ mailserver, mail }) => {
+    // create a nodemailer transporter using smtp
+    let transporter = nodemailer.createTransport(mailserver)
+
+    transporter.use(
+      "compile",
+      hbs({
+        viewEngine: {
+          partialsDir: "./emails/",
+          defaultLayout: "",
+        },
+        viewPath: "./emails/",
+        extName: ".hbs",
+      })
+    )
+
+    // send mail using transporter
+    await transporter.sendMail(mail)
+  }
+  const result = await sendMail(config)
+  try {
+    return next()
+  } catch (e) {
+    return next(e)
+  }
+}
+
 const sendRejected = async (req, res, next) => {
   const { email, firstName, lastName } = req.body
   console.log("sending email")
@@ -230,59 +286,7 @@ const sendThankYou = async (req, res, next) => {
     return next(e)
   }
 }
-const sendThankYouNewsLetter = async (req, res, next) => {
-  const { email, firstName, lastName, role } = req.newResponse
-  console.log("sending email")
 
-  // config for mailserver and mail
-  const config = {
-    mailserver: {
-      service: "outlook",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    },
-    mail: {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Thank you!",
-      template: "thankYou",
-      context: {
-        firstName,
-        lastName,
-        host: process.env.HOST,
-      },
-    },
-  }
-
-  const sendMail = async ({ mailserver, mail }) => {
-    // create a nodemailer transporter using smtp
-    let transporter = nodemailer.createTransport(mailserver)
-
-    transporter.use(
-      "compile",
-      hbs({
-        viewEngine: {
-          partialsDir: "./emails/",
-          defaultLayout: "",
-        },
-        viewPath: "./emails/",
-        extName: ".hbs",
-      })
-    )
-
-    // send mail using transporter
-    await transporter.sendMail(mail)
-  }
-
-  const result = await sendMail(config)
-  try {
-    return next()
-  } catch (e) {
-    return next(e)
-  }
-}
 const sendResetEmail = async (req, res, next) => {
   const { email, _id: id, firstName, lastName, avatar } = req.user
   const token = jwt.sign(
@@ -352,4 +356,5 @@ module.exports = {
   sendRejected,
   sendResetEmail,
   sendVerifyEmail,
+  sendApplicantEmail,
 }

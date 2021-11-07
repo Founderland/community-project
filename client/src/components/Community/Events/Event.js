@@ -9,7 +9,7 @@ import ConfirmDelete from "./ConfirmDelete"
 import ConfirmCancel from "./ConfirmCancel"
 import ComponentModal from "../Widgets/ComponentModal"
 import Banner from "../../Admin/Widgets/Banner"
-
+import AddToCalendar from "../Widgets/AddToCalendar"
 import {
   EmojiSadIcon,
   PlusCircleIcon,
@@ -128,20 +128,25 @@ const Event = () => {
         <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
-          <div className="relative flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
-            <img
-              className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
-              src={data.eventCover?.url}
-              alt="cover"
-            />
-            {data.isCanceled && (
-              <>
-                <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
-                <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
-                  Event Canceled
-                </p>
-              </>
-            )}
+          <div className=" flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
+            <div className="relative flex w-full justify-between">
+              <img
+                className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
+                src={data.eventCover?.url}
+                alt="cover"
+              />
+              {data.isCanceled && (
+                <>
+                  <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
+                  <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
+                    Event Canceled
+                  </p>
+                </>
+              )}
+              {!data.isCanceled && new Date(data.dateEnd) > new Date() && (
+                <AddToCalendar event={data} />
+              )}
+            </div>
             <div className="flex w-full justify-between">
               <div className="flex flex-grow p-4 text-mono">
                 <p className="text-2xl tracking-wider self-center font-bold uppercase">
@@ -245,8 +250,12 @@ const Event = () => {
               <Banner message={banner} />
 
               <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-8 mb-4 font-bold uppercase">
-                <p>Going</p>
-                {going ? (
+                <p>{new Date(data.dateEnd) > new Date() ? "Going" : "Went"}</p>
+                {data.member._id === user.id ? (
+                  ""
+                ) : new Date(data.dateEnd) < new Date() ? (
+                  ""
+                ) : going ? (
                   <button
                     className="h-4 w-4"
                     onClick={() => {
@@ -287,12 +296,16 @@ const Event = () => {
                     </div>
                   </div>
                 ) : (
-                  "No confirmations yet"
+                  "No confirmations"
                 )}
               </div>
               <h6 className="flex space-x-4 items-center text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
                 <p>Interested</p>
-                {interested ? (
+                {data.member._id === user.id ? (
+                  ""
+                ) : new Date(data.dateEnd) < new Date() ? (
+                  ""
+                ) : interested ? (
                   <button
                     className="h-4 w-4"
                     onClick={() => {
@@ -333,7 +346,7 @@ const Event = () => {
                     </div>
                   </div>
                 ) : (
-                  "No confirmations yet"
+                  "No confirmations"
                 )}
               </div>
               {data.type !== "online" && (
@@ -364,56 +377,62 @@ const Event = () => {
               )}
               <div className="flex mt-2 pt-2 px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150 items-center">
                 <p className="text-xs">Event Tags:</p>
-                {data.tags.length
-                  ? data.tags.map((tag) => (
-                      <div
-                        key={tag}
-                        className="bg-gray-200 text-gray-600  group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
-                      >
-                        <p className=" text-xs">{tag}</p>
-                      </div>
-                    ))
-                  : ""}
+                {data.tags.length ? (
+                  data.tags.map((tag) => (
+                    <div
+                      key={tag}
+                      className="bg-gray-200 text-gray-600  group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
+                    >
+                      <p className=" text-xs">{tag}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs ml-2">No tags</p>
+                )}
               </div>
             </div>
             <footer className="flex p-4 mt-2 justify-center items-center">
-              {!data.isCanceled && user.id === data.member._id && (
-                <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
-                  onClick={() => {
-                    setCModal(true)
-                  }}
-                >
-                  Cancel Event
-                </button>
-              )}
+              {!data.isCanceled &&
+                user.id === data.member._id &&
+                new Date(data.dateEnd) > new Date() && (
+                  <button
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                    onClick={() => {
+                      setCModal(true)
+                    }}
+                  >
+                    Cancel Event
+                  </button>
+                )}
             </footer>
           </div>
-          {!edit && user.id === data.member._id && (
-            <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-              <button
-                className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                onClick={() => {
-                  setEdit(true)
-                }}
-              >
-                Edit
-              </button>
-              {user.id === data.member._id ? (
+          {!edit &&
+            user.id === data.member._id &&
+            new Date(data.dateEnd) > new Date() && (
+              <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
                 <button
-                  className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => {
-                    setCCModal(true)
+                    setEdit(true)
                   }}
                 >
-                  <TrashIcon className="h-5 w-5" />
-                  Delete
+                  Edit
                 </button>
-              ) : (
-                ""
-              )}
-            </div>
-          )}
+                {user.id === data.member._id ? (
+                  <button
+                    className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+                    onClick={() => {
+                      setCCModal(true)
+                    }}
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                    Delete
+                  </button>
+                ) : (
+                  ""
+                )}
+              </div>
+            )}
         </>
       )}
     </section>
