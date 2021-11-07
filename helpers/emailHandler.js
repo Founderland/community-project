@@ -177,7 +177,61 @@ const sendRejected = async (req, res, next) => {
 }
 
 const sendThankYou = async (req, res, next) => {
-  const { email, firstName, lastName } = data
+  const { email, firstName, lastName, role } = req.newResponse
+  console.log("sending email")
+  let template = "thankyounewsletter"
+  if (role) template = "thankyou"
+  // config for mailserver and mail
+  const config = {
+    mailserver: {
+      service: "outlook",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    },
+    mail: {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Thank you!",
+      template: template,
+      context: {
+        firstName,
+        lastName,
+        host: process.env.HOST,
+      },
+    },
+  }
+
+  const sendMail = async ({ mailserver, mail }) => {
+    // create a nodemailer transporter using smtp
+    let transporter = nodemailer.createTransport(mailserver)
+
+    transporter.use(
+      "compile",
+      hbs({
+        viewEngine: {
+          partialsDir: "./emails/",
+          defaultLayout: "",
+        },
+        viewPath: "./emails/",
+        extName: ".hbs",
+      })
+    )
+
+    // send mail using transporter
+    await transporter.sendMail(mail)
+  }
+
+  const result = await sendMail(config)
+  try {
+    return next()
+  } catch (e) {
+    return next(e)
+  }
+}
+const sendThankYouNewsLetter = async (req, res, next) => {
+  const { email, firstName, lastName, role } = req.newResponse
   console.log("sending email")
 
   // config for mailserver and mail
@@ -229,7 +283,6 @@ const sendThankYou = async (req, res, next) => {
     return next(e)
   }
 }
-
 const sendResetEmail = async (req, res, next) => {
   const { email, _id: id, firstName, lastName, avatar } = req.user
   const token = jwt.sign(

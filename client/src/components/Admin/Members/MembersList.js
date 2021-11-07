@@ -39,9 +39,12 @@ const MembersList = ({ role }) => {
       .then((res) => {
         const header = {
           header: [
-            { title: "Name", key: "firstName", style: "text-right text-sm" },
-            { title: " ", key: "lastName", style: "text-left text-sm" },
-            { title: "Email", key: "email", style: "text-center text-sm" },
+            { title: "Name", key: "name", style: "text-left text-sm" },
+            {
+              title: "Location",
+              key: "location",
+              style: "text-center text-sm",
+            },
             { title: "Added on", key: "created", style: "text-center text-sm" },
             {
               title: "Notified on",
@@ -67,6 +70,8 @@ const MembersList = ({ role }) => {
           if (element.confirmed) {
             element.confirmed = moment(element.confirmed).format("DD/M/YYYY")
           }
+          element.name = element.firstName + " " + element.lastName
+          element.location = element.city + ", " + element.country
         })
         setData({ ...header, ...data })
         setLoading(false)
