@@ -1,9 +1,10 @@
 import axios from "axios"
-import { createContext, useState, useEffect, useMemo } from "react"
+import { createContext, useState, useEffect, useMemo, useRef } from "react"
 
 export const CommunityContext = createContext(null)
 
 function CommunityProvider({ children }) {
+  const pageTop = useRef()
   const config = useMemo(() => {
     return {
       headers: {
@@ -146,6 +147,10 @@ function CommunityProvider({ children }) {
     getAllFounders()
   }, [])
 
+  const scrollUp = () => {
+    pageTop.current.scrollIntoView({ behavior: "smooth" })
+  }
+
   const [category, setCategory] = useState(false)
   const [memberDetails, setMemberDetails] = useState([])
   const [isSidebarSelected, setIssideSelected] = useState(false)
@@ -182,8 +187,9 @@ function CommunityProvider({ children }) {
         isNameSelected: isNameSelected,
         selectedNameEvent: selectedNameEvent,
         selectedName: selectedName,
-      }}
-    >
+        scrollUp,
+      }}>
+      <span ref={pageTop}></span>
       {children}
     </CommunityContext.Provider>
   )
