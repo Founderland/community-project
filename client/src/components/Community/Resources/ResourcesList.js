@@ -8,12 +8,14 @@ import axios from "axios"
 import { useEffect } from "react"
 import Loading from "../../Admin/Widgets/Loading"
 import Article from "./Article"
+import { CommunityContext } from "../../../contexts/CommunityProvider"
 
 export default function ResourcesList() {
   const { config } = useContext(UserContext)
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const { category, id } = useParams()
+  const { scrollUp } = useContext(CommunityContext)
 
   useEffect(() => {
     axios
@@ -35,27 +37,33 @@ export default function ResourcesList() {
         console.log(err)
       })
   }, [])
+
   const [selectedCategory] = categories.filter((item) => item.key === category)
+
+  useEffect(() => {
+    scrollUp()
+  }, [selectedCategory])
+
   return loading ? (
     <Loading />
   ) : (
     <>
-      <div className="w-full h-full md:flex bg-gray-50 bg-opacity-50">
-        <div className="w-full md:w-1/4 pt-2 md:pt-10 pl-6 ">
+      <div className='w-full h-full md:flex bg-gray-50 bg-opacity-50'>
+        <div className='w-full md:w-1/4 pt-2 md:pt-10 pl-6 '>
           {categories.map((item) => (
             <CategoryDisplay category={item} isActive={item.key === category} />
           ))}
         </div>
-        <div className=" w-full md:w-3/4">
+        <div className=' w-full md:w-3/4'>
           {!category ? (
-            <div className="relative w-full h-full flex">
+            <div className='relative w-full h-full flex'>
               <img
-                className="w-full h-full object-cover"
+                className='w-full h-full object-cover'
                 src={Resourcebg}
-                alt="resource"
+                alt='resource'
               />
-              <div className="absolute top-0 flex items-center justify-center w-full h-full">
-                <h1 className="text-hanson text-lg lg:text-4xl  2xl:text-6xl text-white p-36 ">
+              <div className='absolute top-0 flex items-center justify-center w-full h-full'>
+                <h1 className='text-hanson text-lg lg:text-4xl  2xl:text-6xl text-white p-36 '>
                   The Founderland Library
                 </h1>
               </div>

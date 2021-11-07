@@ -1,16 +1,16 @@
 import { useState, useContext, useEffect, useMemo, useRef } from "react"
-import { useLocation, useHistory, useRouteMatch, Link } from "react-router-dom"
+import { useHistory, useRouteMatch } from "react-router-dom"
 import UserContext from "../../../contexts/User"
 import axios from "axios"
 import {
   HashtagIcon,
   UserIcon,
   CalendarIcon,
-  ChevronRightIcon,
   PencilAltIcon,
   PencilIcon,
   CheckCircleIcon,
   ArrowLeftIcon,
+  XCircleIcon,
 } from "@heroicons/react/outline"
 
 import Socialmedia from "./Socialmedia"
@@ -47,8 +47,8 @@ const eventsUrl = "/api/events/future"
 
 const Profile = () => {
   const [disableEdit, setDisableEdit] = useState(true)
+  const { user, setUser, config } = useContext(UserContext)
 
-  const { user, setUser } = useContext(UserContext)
   const history = useHistory()
   const { id } = useRouteMatch("/community/profile/:id").params
   const [banner, setBanner] = useState({ show: false })
@@ -80,17 +80,6 @@ const Profile = () => {
     }
   }, [uploadStatus])
 
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [])
-
-  //   history.goBack()
-
   useEffect(() => {
     const getProfileInfo = async () => {
       try {
@@ -98,7 +87,7 @@ const Profile = () => {
           `/api/users/community/profile/${id}`,
           config
         )
-
+        console.log(data)
         setProfile({
           ...data.data,
         })
@@ -108,7 +97,7 @@ const Profile = () => {
       }
     }
     getProfileInfo()
-  }, [id, banner])
+  }, [id])
 
   useEffect(() => {
     axios
@@ -144,7 +133,6 @@ const Profile = () => {
 
   const submitChanges = async (e) => {
     e.preventDefault()
-
     if (
       profile.title.length &&
       profile.companyName.length &&
@@ -161,7 +149,7 @@ const Profile = () => {
           config
         )
         if (result) {
-          console.log(result)
+          initialData.current = { ...profile }
           setUser((prev) => ({ ...prev, photo: profile.photo }))
           triggerBanner(result.data)
         }
@@ -172,6 +160,12 @@ const Profile = () => {
       triggerBanner({ success: 0, message: "Please fill out all the fields" })
       setProfile({ ...initialData.current })
     }
+  }
+
+  const cancelChanges = () => {
+    setProfile({ ...initialData.current })
+    setDisableEdit(true)
+    triggerBanner({ success: 1, message: "Profile update cancelled" })
   }
 
   return (
@@ -202,6 +196,7 @@ const Profile = () => {
               src={profile.photo ? profile.photo.url : "null"}
               alt='profile'
             />
+            {console.log(profile.photo)}
             {!disableEdit && (
               <div className='w-full flex justify-center'>
                 <DropzoneCloudinary
@@ -263,26 +258,37 @@ const Profile = () => {
                 Details
               </span>
               {isMyProfile && (
-                <button
-                  type={!disableEdit ? "button" : "submit"}
-                  className={
-                    "flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 px-4 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                  }
-                  onClick={() => {
-                    setDisableEdit((prev) => !prev)
-                  }}>
-                  {disableEdit ? (
-                    <>
-                      Edit
-                      <PencilAltIcon className='ml-1 w-6 h-6' />
-                    </>
-                  ) : (
-                    <>
-                      Confirm
-                      <CheckCircleIcon className=' ml-1 w-6 h-6' />
-                    </>
+                <span className='flex flex-row-reverse'>
+                  <button
+                    type={!disableEdit ? "button" : "submit"}
+                    className={
+                      "flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 px-4 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                    }
+                    onClick={() => {
+                      setDisableEdit((prev) => !prev)
+                    }}>
+                    {disableEdit ? (
+                      <>
+                        Edit
+                        <PencilAltIcon className='ml-1 w-6 h-6' />
+                      </>
+                    ) : (
+                      <>
+                        Confirm
+                        <CheckCircleIcon className=' ml-1 w-6 h-6' />
+                      </>
+                    )}
+                  </button>
+                  {!disableEdit && (
+                    <button
+                      type='button'
+                      onClick={cancelChanges}
+                      className='mr-4 flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 px-4 bg-black transition duration-200 text-white hover:bg-fred hover:text-black '>
+                      Cancel
+                      <XCircleIcon className=' ml-1 w-6 h-6' />
+                    </button>
                   )}
-                </button>
+                </span>
               )}
             </div>
             <div
