@@ -11,6 +11,7 @@ import {
   CheckCircleIcon,
   ArrowLeftIcon,
   XCircleIcon,
+  TrendingUpIcon,
 } from "@heroicons/react/outline"
 
 import Socialmedia from "./Socialmedia"
@@ -45,6 +46,12 @@ const defaultProfile = {
 }
 const eventsUrl = "/api/events/future"
 
+const isLink = (link) => {
+  return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/.test(
+    link
+  )
+}
+
 const Profile = () => {
   const [disableEdit, setDisableEdit] = useState(true)
   const { user, setUser, config } = useContext(UserContext)
@@ -62,6 +69,9 @@ const Profile = () => {
     ...defaultProfile,
   })
   const initialData = useRef(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [selectedCity, setSelectedCity] = useState(null)
+  const [required, setRequired] = useState(false)
 
   const triggerBanner = ({ message, success }) => {
     setBanner({
@@ -133,16 +143,24 @@ const Profile = () => {
 
   const submitChanges = async (e) => {
     e.preventDefault()
-    if (
-      profile.title.length &&
-      profile.companyName.length &&
-      profile.companyLink.length &&
-      profile.bio.length &&
-      profile.city.length &&
-      profile.country.length &&
-      profile.companyBio.length
-    ) {
-      try {
+    try {
+      if (!profile.city.length || !selectedCity) {
+        await Promise.reject("Update failed ! Please enter a vaild City")
+      } else if (!profile.country.length || !selectedCountry) {
+        await Promise.reject("Update failed ! Please enter a vaild Country")
+      } else if (!profile.companyLink.length || !isLink(profile.companyLink)) {
+        await Promise.reject(
+          "Update failed ! Please enter vaild link for your company website"
+        )
+      } else if (
+        !profile.title.length ||
+        !profile.companyName.length ||
+        !profile.companyLink.length ||
+        !profile.bio.length ||
+        !profile.companyBio.length
+      ) {
+        await Promise.reject("Update failed ! Please fill out all the fields")
+      } else {
         const result = await axios.put(
           `/api/users/community/profile/update`,
           profile,
@@ -153,18 +171,23 @@ const Profile = () => {
           setUser((prev) => ({ ...prev, photo: profile.photo }))
           triggerBanner(result.data)
         }
-      } catch (error) {
-        console.log(error)
       }
-    } else {
-      triggerBanner({ success: 0, message: "Please fill out all the fields" })
-      setProfile({ ...initialData.current })
+    } catch (error) {
+      console.log(error)
+      setDisableEdit(false)
+      triggerBanner({ success: 0, message: error })
+      if (error.includes("fill out")) {
+        setRequired(true)
+        setTimeout(() => {
+          setRequired(false)
+        }, 4000)
+      }
     }
   }
 
   const cancelChanges = () => {
-    setProfile({ ...initialData.current })
     setDisableEdit(true)
+    setProfile({ ...initialData.current })
     triggerBanner({ success: 1, message: "Profile update cancelled" })
   }
 
@@ -338,6 +361,7 @@ const Profile = () => {
                       profile={profile}
                       setProfile={setProfile}
                       format
+                      required={required}
                     />
                   </div>
                   <div className='grid grid-cols-2 md:grid-cols-1 md:px-1 '>
@@ -348,6 +372,7 @@ const Profile = () => {
                       profile={profile}
                       setProfile={setProfile}
                       format
+                      required={required}
                     />
                   </div>
                   <div className='grid grid-cols-2 md:grid-cols-1 '>
@@ -373,6 +398,7 @@ const Profile = () => {
                         disableEdit={disableEdit}
                         profile={profile}
                         setProfile={setProfile}
+                        required={required}
                       />
                     )}
                   </div>
@@ -382,6 +408,11 @@ const Profile = () => {
                 disableEdit={disableEdit}
                 profile={profile}
                 setProfile={setProfile}
+                setSelectedCity={setSelectedCity}
+                selectedCity={selectedCity}
+                setSelectedCountry={setSelectedCountry}
+                selectedCountry={selectedCountry}
+                required={required}
               />
               <div className='grid grid-cols-2 md:grid-cols-1 '>
                 <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center'>
@@ -425,8 +456,12 @@ const Profile = () => {
                     })
                   }
                   className={`p-2 text-base resize-none ${
-                    disableEdit ? "bg-white " : "bg-sky-50"
-                  }`}></textarea>
+                    disableEdit
+                      ? "bg-white "
+                      : required
+                      ? "bg-red-200 animate-pulse"
+                      : "bg-sky-50"
+                  } `}></textarea>
               </div>
               <div className='grid grid-cols-1'>
                 <label className='p-2 uppercase text-xs font-bold text-gray-400 flex'>
@@ -446,7 +481,11 @@ const Profile = () => {
                     })
                   }
                   className={`p-2 text-base resize-none ${
-                    disableEdit ? "bg-white " : "bg-sky-50"
+                    disableEdit
+                      ? "bg-white "
+                      : required
+                      ? "bg-red-200 animate-pulse"
+                      : "bg-sky-50"
                   }`}></textarea>
               </div>
             </div>
