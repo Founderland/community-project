@@ -27,25 +27,26 @@ const Events = () => {
   ]
 
   return (
-    <div className="flex flex-col w-full ">
+    <div className="flex flex-col w-full overflow-none">
       <Tabs
         tabs={tabs}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
+      <section className="flex flex-col items-center justify-center bg-white outline-none pt-4 pb-8 overflow-y-auto">
         {!id ? (
-          <div className="w-full px-4 outline-none">
+          <>
             <EventsList state={tabs[selectedTab].role} />
+
             <button
-              className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+              className="flex self-start max-w-max px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
               onClick={() => history.push("/admin/events/id/new")}
             >
               <PlusIcon className="h-5 w-5" />
               <p className="text-mono text-sm">Add New</p>
             </button>
-          </div>
+          </>
         ) : id === "new" ? (
           <AddEvent />
         ) : (
