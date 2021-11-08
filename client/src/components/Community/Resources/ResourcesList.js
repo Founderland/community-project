@@ -48,22 +48,22 @@ export default function ResourcesList() {
     <Loading />
   ) : (
     <>
-      <div className='w-full h-full md:flex bg-gray-50 bg-opacity-50'>
-        <div className='w-full md:w-1/4 pt-2 md:pt-10 pl-6 '>
+      <div className="w-full h-full md:flex bg-gray-50 bg-opacity-50">
+        <div className="w-full md:w-1/4 pt-2 md:pt-10 pl-6 ">
           {categories.map((item) => (
             <CategoryDisplay category={item} isActive={item.key === category} />
           ))}
         </div>
-        <div className=' w-full md:w-3/4'>
+        <div className="h-full w-full md:w-3/4">
           {!category ? (
-            <div className='relative w-full h-full flex'>
+            <div className="relative w-full h-full flex">
               <img
-                className='w-full h-full object-cover'
+                className="w-full h-full object-cover"
                 src={Resourcebg}
-                alt='resource'
+                alt="resource"
               />
-              <div className='absolute top-0 flex items-center justify-center w-full h-full'>
-                <h1 className='text-hanson text-lg lg:text-4xl  2xl:text-6xl text-white p-36 '>
+              <div className="absolute top-0 flex items-center justify-center w-full h-full">
+                <h1 className="text-hanson text-lg lg:text-6xl  2xl:text-8xl text-white p-36 ">
                   The Founderland Library
                 </h1>
               </div>

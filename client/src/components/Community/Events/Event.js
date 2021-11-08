@@ -111,7 +111,7 @@ const Event = () => {
     }
   }
   return (
-    <section className="relative flex flex-col items-center justify-center w-full lg:w-5/6 px-4 mx-auto">
+    <section className="relative flex flex-col items-center justify-center w-full h-full lg:w-5/6 px-4 pb-20 mx-auto overflow-y-auto">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -131,7 +131,7 @@ const Event = () => {
           <div className=" flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
             <div className="relative flex w-full justify-between">
               <img
-                className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
+                className="w-full h-40 sm:h-60 lg:h-80 bg-bottom bg-cover"
                 src={data.eventCover?.url}
                 alt="cover"
               />
