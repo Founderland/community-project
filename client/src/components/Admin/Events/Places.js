@@ -45,16 +45,16 @@ const Places = ({ setLocationValues, address }) => {
     } else if (/locality/.test(completeData?.types.join("|"))) {
       setLocationValues("address", "")
       setLocationValues("city", completeData.terms[0].value)
-      setLocationValues("zoom", 12)
+      setLocationValues("zoom", 14)
     } else if (/point_of_interest/.test(completeData?.types.join("|"))) {
       setLocationValues("location", completeData.terms[0].value)
-      setLocationValues("zoom", 18)
+      setLocationValues("zoom", 14)
       const address =
         completeData.structured_formatting.secondary_text.split(", ")
       setLocationValues("address", address[0])
       setLocationValues("city", address[1])
     } else {
-      setLocationValues("zoom", 18)
+      setLocationValues("zoom", 14)
       const address =
         completeData.structured_formatting.secondary_text.split(", ")
       setLocationValues("address", address[0])

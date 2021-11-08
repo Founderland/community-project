@@ -42,7 +42,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
     location: "",
     tags: [],
     annouce: false,
-    zoom: 16,
+    zoom: 15,
   })
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({ show: false })
