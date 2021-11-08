@@ -61,7 +61,7 @@ const CityandCountryInput = ({
     if (profile.country?.length & profile.city?.length) {
       axios
         .get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${profile.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
+          `https://api.openweathermap.org/geo/1.0/direct?q=${profile.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
         )
         .then((res) => {
           setProfile({
