@@ -192,7 +192,7 @@ const AddMember = ({ role }) => {
     if (data.country.length & data.city.length) {
       axios
         .get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${data.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
+          `https://api.openweathermap.org/geo/1.0/direct?q=${data.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
         )
         .then((res) => {
           setData({
@@ -228,17 +228,17 @@ const AddMember = ({ role }) => {
   }
 
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full md:w-5/6 lg:w-2/3">
-      <div className="w-full flex items-center justify-center z-20">
+    <div className='bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full md:w-5/6 lg:w-2/3'>
+      <div className='w-full flex items-center justify-center z-20'>
         <Banner message={banner} />
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
+        <div className='w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4'>
           Add new {role}
         </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+        <div className='md:flex w-full px-3'>
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               First Name
             </label>
             <input
@@ -249,16 +249,16 @@ const AddMember = ({ role }) => {
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
               } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
-              type="text"
+              type='text'
               onChange={(e) =>
                 setData((prev) => ({ ...prev, firstName: e.target.value }))
               }
               value={data.firstName}
-              autoComplete="off"
+              autoComplete='off'
             />
           </div>
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               Last Name
             </label>
             <input
@@ -269,31 +269,31 @@ const AddMember = ({ role }) => {
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
               } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
-              type="text"
+              type='text'
               onChange={(e) =>
                 setData((prev) => ({ ...prev, lastName: e.target.value }))
               }
               value={data.lastName}
-              autoComplete="off"
+              autoComplete='off'
             />
           </div>
         </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+        <div className='md:flex w-full px-3'>
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               Title
             </label>
             <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
-              type="text"
+              className='appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3'
+              type='text'
               onChange={(e) => {
                 setData((prev) => ({ ...prev, title: e.target.value }))
               }}
               value={data.title}
             />
           </div>
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               Email
             </label>
             <input
@@ -304,18 +304,18 @@ const AddMember = ({ role }) => {
                   ? "border-l-4 border-fred"
                   : "border-l-4 border-flime"
               } appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 outline-none`}
-              type="text"
+              type='text'
               onChange={(e) => {
                 setData((prev) => ({ ...prev, email: e.target.value }))
               }}
               value={data.email}
-              autoComplete="email"
+              autoComplete='email'
             />
           </div>
         </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+        <div className='md:flex w-full px-3'>
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               Country
             </label>
             <input
@@ -323,8 +323,8 @@ const AddMember = ({ role }) => {
                 checkCountry() +
                 " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
               }
-              type="text"
-              list="countries"
+              type='text'
+              list='countries'
               onChange={(e) => {
                 setData((prev) => ({
                   ...prev,
@@ -333,7 +333,7 @@ const AddMember = ({ role }) => {
               }}
               value={data.country}
             />
-            <datalist id="countries">
+            <datalist id='countries'>
               {countryList.length > 0 &&
                 countryList
                   .filter((country) => country.name.startsWith(data.country))
@@ -343,8 +343,8 @@ const AddMember = ({ role }) => {
           </div>
 
           {/* City */}
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               City
             </label>
             <input
@@ -352,8 +352,8 @@ const AddMember = ({ role }) => {
                 checkCity() +
                 " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
               }
-              type="text"
-              list="cities"
+              type='text'
+              list='cities'
               onChange={(e) => {
                 setData((prev) => ({
                   ...prev,
@@ -362,7 +362,7 @@ const AddMember = ({ role }) => {
               }}
               value={data.city}
             />
-            <datalist id="cities">
+            <datalist id='cities'>
               {cityList.length > 0 &&
                 cityList
                   .filter((city) => city.name.startsWith(data.city))
@@ -371,25 +371,25 @@ const AddMember = ({ role }) => {
             </datalist>
           </div>
         </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+        <div className='md:flex w-full px-3'>
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               Company Name
             </label>
             <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-              type="text"
+              className='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3'
+              type='text'
               onChange={(e) => {
                 setData((prev) => ({ ...prev, companyName: e.target.value }))
               }}
               value={data.companyName}
             />
           </div>
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+          <div className='w-full md:w-1/2 mb-2 px-2'>
+            <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
               Sector
             </label>
-            <div className="w-full">
+            <div className='w-full'>
               <ListOption
                 options={businessAreas}
                 choice={data.businessArea}
@@ -398,31 +398,28 @@ const AddMember = ({ role }) => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center items-center w-full px-3">
-          <div className="w-full md:w-1/4 mb-2 px-2">
+        <div className='flex justify-center items-center w-full px-3'>
+          <div className='w-full md:w-1/4 mb-2 px-2'>
             <Switch.Group
-              as="div"
-              className="flex md:flex-col mt-2 justify-center items-center py-2"
-            >
-              <Switch.Label className="mt-2 uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+              as='div'
+              className='flex md:flex-col mt-2 justify-center items-center py-2'>
+              <Switch.Label className='mt-2 uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
                 Send Welcome Email
               </Switch.Label>
               <Switch
-                as="button"
+                as='button'
                 checked={data.connect}
                 onChange={() =>
                   setData((prev) => ({ ...prev, connect: !data.connect }))
                 }
                 className={`${
                   data.connect ? "bg-flime-600" : "bg-gray-200"
-                } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}
-              >
+                } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}>
                 {({ checked }) => (
                   <span
                     className={`${
                       checked ? "translate-x-5" : "translate-x-0"
-                    } inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
-                  >
+                    } inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}>
                     <CheckIcon className={checked ? "" : "hidden"} />
                   </span>
                 )}
@@ -431,25 +428,22 @@ const AddMember = ({ role }) => {
           </div>
         </div>
 
-        <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+        <div className='px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around '>
           <button
-            className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+            className='px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4'
             onClick={() => {
               history.goBack()
-            }}
-          >
+            }}>
             Cancel
           </button>
           <button
-            className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-            onClick={save}
-          >
+            className='px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4'
+            onClick={save}>
             {saving ? (
-              <div className="flex justify-center">
+              <div className='flex justify-center'>
                 <div
                   style={{ borderTopColor: "transparent" }}
-                  className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                ></div>
+                  className='w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin'></div>
               </div>
             ) : (
               "Save"

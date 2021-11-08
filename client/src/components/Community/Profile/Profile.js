@@ -97,7 +97,6 @@ const Profile = () => {
           `/api/users/community/profile/${id}`,
           config
         )
-        console.log(data)
         setProfile({
           ...data.data,
         })
@@ -220,7 +219,6 @@ const Profile = () => {
               src={profile.photo ? profile.photo.url : "null"}
               alt='profile'
             />
-            {console.log(profile.photo)}
             {!disableEdit && (
               <div className='w-full flex justify-center'>
                 <DropzoneCloudinary
