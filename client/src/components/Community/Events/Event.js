@@ -19,6 +19,7 @@ import {
 import axios from "axios"
 import moment from "moment"
 import AddEvent from "./AddEvent"
+import { CommunityContext } from "../../../contexts/CommunityProvider"
 
 const styles = {
   online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
@@ -32,6 +33,7 @@ const Event = () => {
   const { id } = useParams()
   const { config, reload, setReload, setCCModal, setCModal, user } =
     useContext(UserContext)
+
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -39,8 +41,11 @@ const Event = () => {
   const [interested, setInterested] = useState(false)
   const [banner, setBanner] = useState({ show: false })
   const [going, setGoing] = useState(false)
+  const { scrollUp } = useContext(CommunityContext)
+
   //GET DATA FROM DB WITH APPLICATIONID FROM URL
   useEffect(() => {
+    scrollUp()
     axios
       .get(eventUrl + id, config)
       .then((res) => {
