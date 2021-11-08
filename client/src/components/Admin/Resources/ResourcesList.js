@@ -94,7 +94,7 @@ const ResourcesList = ({ categories, category }) => {
                   key={tag}
                   className={`${
                     selected
-                      ? "bg-green-300 text-green-600"
+                      ? "bg-green-700 text-flime"
                       : "bg-gray-200 text-gray-600"
                   } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
                   onClick={() => filterTag(tag)}

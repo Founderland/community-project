@@ -267,7 +267,7 @@ const Event = () => {
                   ? data.tags.map((tag) => (
                       <div
                         key={tag}
-                        className="bg-gray-200 text-gray-600  group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
+                        className="bg-gray-200 text-gray-600 group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
                       >
                         <p className=" text-xs">{tag}</p>
                       </div>
