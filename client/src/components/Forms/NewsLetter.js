@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import axios from "axios"
 import banner from "../../assets/images/bannerSymbol.png"
 import logo from "../../assets/images/singleLineLogo.svg"
+import { useHistory } from "react-router"
 const Questions = [
   {
     question: "First Name",
@@ -54,17 +55,25 @@ const NewsLetter = () => {
     consent: "",
   })
   const [submit, setSubmit] = useState("Submit")
+  const history = useHistory()
+  
   const changeHandler = (value, index) => {
+    
     setAnswerValue((prev) => ({ ...prev, [index]: value }))
   }
+
+
+    
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       setSubmit("Submitting")
-      if (answerValue.consent.search("I agree")) {
+      if (answerValue.consent.search("I agree") > 0) {
         await Promise.reject(new Error("You need to agree to submit"))
-      }
-      const response = await axios.post("/api/applicants/response/newsletter", {
+      } else {
+        
+        const response = await axios.post("/api/applicants/response/newsletter", {
         firstName: answerValue.firstName,
         lastName: answerValue.lastName,
         email: answerValue.email,
@@ -73,8 +82,17 @@ const NewsLetter = () => {
             ? answerValue.other
             : answerValue.interests,
       })
-      if (response) setSubmit("Submitted - Thank you")
-      else await Promise.reject(new Error("Sorry, Error saving"))
+      console.log("response",response)
+      if (response) {
+        setSubmit("Submitted - Thank you")
+         setTimeout(() => {
+          history.push(`/join-our-community`)
+        }, 1000)
+ 
+      
+      } 
+        else await Promise.reject(new Error("Sorry, Error saving"))
+      }
     } catch (e) {
       if (e.message.includes("404")) {
         setSubmit(e.response.data.error)

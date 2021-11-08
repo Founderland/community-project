@@ -13,7 +13,7 @@ import {
   InfoWindow,
 } from "@react-google-maps/api"
 import womenImg from "../../../assets/images/women.png"
-
+import { useHistory } from "react-router"
 import "./MapDisplay.css"
 import mapStyles from "./mapStyles"
 import Sidebar from "./Sidebar"
@@ -44,7 +44,6 @@ export default function MapDisplay(props) {
     sidebarHandler,
     isSidebarSelected,
     isNameSelectedEvent,
-    selectedNameEvent,
     isNameSelected,
     mobileScreen,
   } = useContext(CommunityContext)
@@ -60,7 +59,7 @@ export default function MapDisplay(props) {
   const [total, setTotal] = useState(0)
   const [searchValue, setSearchValue] = useState("")
   const [screenwidth, setScreenWidth] = useState(window.innerWidth)
-
+  const history = useHistory()
   // const [isSidebarSelected, setIssideSelected] = useState(false)
 
   useEffect(() => {
@@ -72,7 +71,11 @@ export default function MapDisplay(props) {
       })
     }
     setLatLong([...coOrdinates])
+    return ()=>{
+      sidebarHandler(false)
+    }
   }, [memberDetails])
+ 
 
   // Emptying search value
   useEffect(() => {
@@ -126,13 +129,15 @@ export default function MapDisplay(props) {
     setisHovered(false)
   }
 
-  // when search is selected
+
   const selectHandler = (val, item) => {
     setSearchValue(val)
     setOpenSearchMenu(false)
     isNameSelectedEvent(true)
-    selectedNameEvent(item)
-    sidebarHandler(true)
+    // selectedNameEvent(item)
+    // sidebarHandler(true)
+    history.push(`/community/profile/${item._id}`)
+    isNameSelectedEvent(false)
   }
 
   const onSearchTypeHandler = (event) => {
@@ -162,13 +167,16 @@ export default function MapDisplay(props) {
           }}
           open={openSearchMenu}
           renderInput={(props) => (
+            <div className="relative"> 
             <input
               {...props}
               type="text"
               id="rounded-email"
               className="w-full xl:w-3/4 h-full rounded-md border-fblue-600 border-transparent  shadow-lg flex-1 appearance-none border-2  md:ml-10 py-2 px-6 bg-white text-gray-700 xs:text-md md:text-2xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono "
-              placeholder="Search Founder by name.."
-            />
+                placeholder="Search Founder by name.."
+            
+              />
+                </div>
           )}
           renderMenu={(items, value, style) => (
             <div

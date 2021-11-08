@@ -8,13 +8,12 @@ export default function Sidebar(props) {
     memberDetails,
     sidebarHandler,
     isSidebarSelected,
-    selectedName,
     isNameSelected,
     isNameSelectedEvent,
   } = useContext(CommunityContext)
   const [sidebarDisplay, setSidebarDisplay] = useState([])
   const [isCardSelected, setIsCardSelected] = useState(false)
-  const [selectedMember, setSelectedMember] = useState({})
+  // const [selectedMember, setSelectedMember] = useState({})
   const history = useHistory()
   useEffect(() => {
     setIsCardSelected(false)
@@ -27,11 +26,11 @@ export default function Sidebar(props) {
     setSidebarDisplay(fiteredArray)
   }, [props.data])
 
-  useEffect(() => {
-    if (isNameSelected) {
-      setSelectedMember(selectedName)
-    }
-  }, [selectedName, isNameSelected])
+  // useEffect(() => {
+  //   if (isNameSelected) {
+  //     setSelectedMember(selectedName)
+  //   }
+  // }, [selectedName, isNameSelected])
 
   const closeHandler = () => {
     sidebarHandler(false)
@@ -118,64 +117,7 @@ export default function Sidebar(props) {
         ) : (
           <div></div>
 
-          //   Member Card
-          //   (isCardSelected || isNameSelected) && (
-
-          //   <div className='w-full  h-full max-w-2xl  px-8 py-6 mt-2  bg-gray-900 opacity-90  shadow flex flex-col items-evenly '>
-
-          //     <div className='flex justify-end' onClick={closeHandler}>
-          //     <svg
-          //       xmlns='http://www.w3.org/2000/svg'
-          //       width='16'
-          //       height='16'
-          //       fill='currentColor'
-          //       className='h-6 w-6 text-gray-300'
-          //       viewBox='0 0 1792 1792'
-          //     >
-          //       <path d='M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z'></path>
-          //     </svg>
-          //     </div>
-
-          //     <div className=' overflow-hidden shadow-lg  max-w-md bg-white shadow-lg rounded-sm overflow-hidden m-5'>
-
-          //     <div className='font-bold text-2xl md:text-4xl m-4 flex justify-center'>
-          //       <h1>
-          //         {" "}
-          //         {selectedMember?.firstName} {selectedMember?.lastname}
-          //       </h1>
-          //     </div>
-          //     <div className='w-full h-1/2'>
-          //       <img
-          //         className='w-full h-full object-cover'
-          //         src={selectedMember.img}
-          //         alt='member'
-          //       />
-          //     </div>
-          //     <div className='px-6 py-4'>
-          //       <div className='font-bold text-lg md:text-xl mb-2'>{(selectedMember?.companyname)?.toUpperCase()}</div>
-          //       <p className='text-gray-900 text-base md:text-xl'>
-          //    {selectedMember.city}
-          //         </p>
-          //         <p className='text-gray-700 text-base md:text-xl'>
-          //    {selectedMember.website}
-          //         </p>
-          //         <p className='text-gray-700 text-base md:text-xl'>
-          //    {selectedMember.vertical}
-          //       </p>
-          //     </div>
-          //      <div className='w-full h-20'>
-          //       {/* <span className='inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700  m-2'>
-          //         #photography
-          //       </span> */}
-          //         <img className="w-full h-full object-cover" src ={horizontalSymbols} alt="symbols" />
-          //     </div>
-          //       </div>
-          //       {
-          //        !isNameSelected &&
-
-          //     <div className="flex  mt-4 justify-center">
-          //     <button className="w-2/3 py-2  bg-fblue-700 hover:bg-fblue-800 focus:ring-fblue-500 focus:ring-offset-red-200 text-white  transition ease-in duration-200 text-center text-grotesk   font-semibold text-base md:text-lg font-semibold  focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-mds" onClick={memberBackHandler} > Go BACK </button> </div>   }
-          // </div>)
+         
         )}
       </div>
     </div>
