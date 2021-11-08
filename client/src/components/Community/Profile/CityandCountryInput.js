@@ -66,12 +66,12 @@ const CityandCountryInput = ({
         .then((res) => {
           setProfile({
             ...profile,
-            geoLocation: { lat: res.data[0].lat, lon: res.data[0].lon },
+            geoLocation: { lat: res.data[0].lat, lng: res.data[0].lon },
           })
         })
         .catch((e) => console.log(e))
     }
-  }, [profile.city, cityList, selectedCountry])
+  }, [profile.city, profile.country, cityList, selectedCountry, selectedCity])
 
   const checkCountry = () => {
     if (disableEdit) return null
