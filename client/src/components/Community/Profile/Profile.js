@@ -447,6 +447,7 @@ const Profile = () => {
                 </label>
                 <textarea
                   required
+                  rows='4'
                   disabled={disableEdit}
                   value={profile.bio}
                   onChange={(e) =>
@@ -472,6 +473,7 @@ const Profile = () => {
                 </label>
                 <textarea
                   required
+                  rows='4'
                   disabled={disableEdit}
                   value={profile.companyBio}
                   onChange={(e) =>
