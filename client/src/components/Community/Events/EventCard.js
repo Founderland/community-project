@@ -46,7 +46,7 @@ const EventCard = ({ event }) => {
           {event.title}
         </p>
 
-        <div className="w-80 my-2 text-sm text-gray-500 font-normal max-h-10 block overflow-ellipsis overflow-hidden break-words text-justify">
+        <div className="w-full my-2 text-sm text-gray-500 font-normal max-h-10 block overflow-ellipsis overflow-hidden break-words text-justify">
           {event.description}
         </div>
 
