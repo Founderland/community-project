@@ -276,7 +276,7 @@ const Event = () => {
               </div>
             </div>
             <footer className="flex p-4 mt-2 justify-center items-center">
-              {!data.isCanceled && (
+              {!data.isCanceled && new Date(data.dateEnd) > new Date() && (
                 <button
                   className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                   onClick={() => {
