@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from "react"
 import DateTimeRangePicker from "@wojtekmaj/react-datetimerange-picker"
 import { useHistory } from "react-router"
 import UserContext from "../../../contexts/User"
+import { CommunityContext } from "../../../contexts/CommunityProvider"
 import ListOption from "../../Admin/Widgets/ListOption"
 import Banner from "../../Admin/Widgets/Banner"
 import { SearchIcon } from "@heroicons/react/outline"
@@ -22,7 +23,8 @@ const addEventUrl = "/api/events/add"
 const updateEventUrl = "/api/events/update/"
 
 const AddEvent = ({ event, edit, setEdit }) => {
-  const { config, user } = useContext(UserContext)
+  const { config, user, reload, setReload } = useContext(UserContext)
+  const { scrollUp } = useContext(CommunityContext)
 
   const history = useHistory()
   const [data, setData] = useState({
@@ -30,8 +32,8 @@ const AddEvent = ({ event, edit, setEdit }) => {
     title: "",
     eventCover: null,
     description: "",
-    dateStart: new Date(Date.now()),
-    dateEnd: new Date(Date.now() + 1000),
+    dateStart: new Date(Date.now() + 3600000),
+    dateEnd: new Date(Date.now() + 7200000),
     address: "",
     city: "",
     geoLocation: { lat: 52.51621460823984, lng: 13.378192013711518 },
@@ -62,6 +64,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
 
   const save = async () => {
     setSaving(true)
+    scrollUp()
     try {
       if (!data.title.length && !data.description.length)
         await Promise.reject(new Error("missing_fields_title_Description"))
@@ -86,10 +89,20 @@ const AddEvent = ({ event, edit, setEdit }) => {
         })
         setTimeout(() => {
           setBanner((prev) => ({ ...prev, show: false }))
-          history.goBack()
+          history.push(`/community/events/id/${newEvent.data.resource._id}`)
         }, 2000)
       } else {
-        setEdit(false)
+        setSaving(false)
+        setReload(reload + 1)
+        setBanner({
+          success: 1,
+          show: true,
+          message: "Event saved! Redirecting...",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+          setEdit(false)
+        }, 2000)
       }
     } catch (e) {
       if (e?.message.includes("missing_fields")) {

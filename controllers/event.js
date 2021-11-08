@@ -78,22 +78,29 @@ const findOne = async (req, res, next) => {
   if (!id) {
     id = req.body.id
   }
-  const event = await Event.findOne({ _id: id })
-    .populate({
-      path: "member",
-      model: "Member",
-      select: ["firstName", "lastName", "role", "photo"],
+  let event = null
+  if (id) {
+    event = await Event.findOne({ _id: id })
+      .populate({
+        path: "member",
+        model: "Member",
+        select: ["firstName", "lastName", "role", "photo"],
+      })
+      .populate({
+        path: "interested",
+        model: "Member",
+        select: ["firstName", "lastName", "role", "photo"],
+      })
+      .populate({
+        path: "going",
+        model: "Member",
+        select: ["firstName", "lastName", "role", "photo"],
+      })
+  } else {
+    res.status(404).json({
+      message: "Event not found",
     })
-    .populate({
-      path: "interested",
-      model: "Member",
-      select: ["firstName", "lastName", "role", "photo"],
-    })
-    .populate({
-      path: "going",
-      model: "Member",
-      select: ["firstName", "lastName", "role", "photo"],
-    })
+  }
   if (event) {
     if (req.body.task) {
       return next()
