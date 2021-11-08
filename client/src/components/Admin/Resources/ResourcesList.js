@@ -35,6 +35,7 @@ const ResourcesList = ({ categories, category }) => {
 
           setTags(allTags)
           setLoading(false)
+          setOffset(0)
         }
       } catch (e) {
         console.log(e)

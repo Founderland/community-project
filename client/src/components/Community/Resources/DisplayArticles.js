@@ -37,6 +37,7 @@ const DisplayArticles = ({ category }) => {
           setTags(allTags)
           setSearchTags([])
           setLoading(false)
+          setOffset(0)
         }
       } catch (e) {
         setLoading(false)
