@@ -58,7 +58,12 @@ const CityandCountryInput = ({
     setSelectedCity(cityList.find((city) => city.name === profile.city))
 
     // get city coordinates
-    if (profile.country?.length & profile.city?.length) {
+    if (
+      profile.country?.length &&
+      selectedCity &&
+      selectedCountry &&
+      profile.city?.length
+    ) {
       axios
         .get(
           `https://api.openweathermap.org/geo/1.0/direct?q=${profile.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
