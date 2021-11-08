@@ -110,6 +110,7 @@ const Event = () => {
       }, 4000)
     }
   }
+  console.log(reload)
   return (
     <section className="relative flex flex-col items-center justify-center w-full lg:w-5/6 px-4 mx-auto">
       <ConfirmModal>
