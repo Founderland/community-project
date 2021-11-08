@@ -51,7 +51,7 @@ const FirstStep = ({ data, setData, nextStep }) => {
     if (data.country.length & data.city.length) {
       axios
         .get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${data.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
+          `https://api.openweathermap.org/geo/1.0/direct?q=${data.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
         )
         .then((res) => {
           setData({

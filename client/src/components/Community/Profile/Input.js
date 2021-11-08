@@ -8,6 +8,7 @@ const Input = ({
   setProfile,
   format,
   isLink,
+  required,
 }) => {
   const formatValue = (value) => {
     const newValue = value.trimStart()
@@ -48,9 +49,15 @@ const Input = ({
             [value]: formatValue(e.target.value),
           })
         }
-        className={`p-2 my-1 md:my-0 text-base outline-none ${
+        className={`p-2 my-1 md:my-0 text-base outline-none  ${
           isLink && getLinkstyle(profile[value])
-        } ${disableEdit ? "bg-white " : "bg-sky-50"}`}
+        } ${
+          disableEdit
+            ? "bg-white "
+            : required
+            ? "bg-red-200 animate-pulse"
+            : "bg-sky-50"
+        }`}
         value={profile[value]}
       />
     </>

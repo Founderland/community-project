@@ -126,7 +126,7 @@ const FormPage = (props) => {
                     : "bg-fblue hover:bg-fblue-dark focus:ring-fblue") +
                   (isLast && props.questionPreview && " opacity-30")
                 }
-                onClick={isLast ? handleSubmit : nextClicked}
+                onClick={nextClicked}
               >
                 {isLast ? "Submit" : "next"}
               </button>

@@ -19,6 +19,7 @@ import {
 import axios from "axios"
 import moment from "moment"
 import AddEvent from "./AddEvent"
+import { CommunityContext } from "../../../contexts/CommunityProvider"
 
 const styles = {
   online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
@@ -32,6 +33,7 @@ const Event = () => {
   const { id } = useParams()
   const { config, reload, setReload, setCCModal, setCModal, user } =
     useContext(UserContext)
+
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -39,8 +41,11 @@ const Event = () => {
   const [interested, setInterested] = useState(false)
   const [banner, setBanner] = useState({ show: false })
   const [going, setGoing] = useState(false)
+  const { scrollUp } = useContext(CommunityContext)
+
   //GET DATA FROM DB WITH APPLICATIONID FROM URL
   useEffect(() => {
+    scrollUp()
     axios
       .get(eventUrl + id, config)
       .then((res) => {
@@ -110,8 +115,9 @@ const Event = () => {
       }, 4000)
     }
   }
+  console.log(reload)
   return (
-    <section className="relative flex flex-col items-center justify-center w-full lg:w-5/6 px-4 mx-auto">
+    <section className="relative flex flex-col items-center justify-center w-full h-full lg:w-5/6 px-4 pb-20 mx-auto overflow-y-auto">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -131,7 +137,7 @@ const Event = () => {
           <div className=" flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
             <div className="relative flex w-full justify-between">
               <img
-                className="w-full h-1/3 sm:h-80 lg:h-96 bg-bottom bg-cover"
+                className="w-full h-40 sm:h-60 lg:h-80 bg-bottom bg-cover"
                 src={data.eventCover?.url}
                 alt="cover"
               />

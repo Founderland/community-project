@@ -9,11 +9,20 @@ const config = {
   },
 }
 
-const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
+const CityandCountryInput = ({
+  disableEdit,
+  profile,
+  setProfile,
+  selectedCity,
+  selectedCountry,
+  setSelectedCity,
+  setSelectedCountry,
+  required,
+}) => {
   const [countryList, setCountryList] = useState([])
   const [cityList, setCityList] = useState([])
-  const [selectedCountry, setSelectedCounty] = useState(null)
-  const [selectedCity, setSelectedCity] = useState(null)
+  // const [selectedCountry, setSelectedCountry] = useState(null)
+  // const [selectedCity, setSelectedCity] = useState(null)
 
   // get all the cities
   useEffect(() => {
@@ -27,7 +36,7 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
 
   useEffect(() => {
     // check if the country entered is in our list
-    setSelectedCounty(
+    setSelectedCountry(
       countryList.find((country) => country.name === profile.country)
     )
     // get list of cities in the selected country
@@ -49,20 +58,25 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
     setSelectedCity(cityList.find((city) => city.name === profile.city))
 
     // get city coordinates
-    if (profile.country?.length & profile.city?.length) {
+    if (
+      profile.country?.length &&
+      selectedCity &&
+      selectedCountry &&
+      profile.city?.length
+    ) {
       axios
         .get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${profile.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
+          `https://api.openweathermap.org/geo/1.0/direct?q=${profile.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
         )
         .then((res) => {
           setProfile({
             ...profile,
-            geoLocation: { lat: res.data[0].lat, lon: res.data[0].lon },
+            geoLocation: { lat: res.data[0].lat, lng: res.data[0].lon },
           })
         })
         .catch((e) => console.log(e))
     }
-  }, [profile.city, cityList, selectedCountry])
+  }, [profile.city, profile.country, cityList, selectedCountry, selectedCity])
 
   const checkCountry = () => {
     if (disableEdit) return null
@@ -99,9 +113,13 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
           required
           list='cities'
           disabled={disableEdit}
-          className={`p-2 text-base outline-none my-1 md:my-0 ${
-            disableEdit ? "bg-white " : "bg-sky-50"
-          } ${checkCity()}`}
+          className={`p-2 text-base outline-none my-1 md:my-0  ${checkCity()} ${
+            disableEdit
+              ? "bg-white "
+              : required
+              ? "bg-red-200 animate-pulse"
+              : "bg-sky-50"
+          }`}
           value={profile.city}
           onChange={(e) => {
             setProfile({
@@ -128,9 +146,13 @@ const CityandCountryInput = ({ disableEdit, profile, setProfile }) => {
           required
           list='countries'
           disabled={disableEdit}
-          className={`p-2 text-base outline-none my-1 md:my-0 ${
-            disableEdit ? "bg-white " : "bg-sky-50"
-          } ${checkCountry()}`}
+          className={`p-2 text-base outline-none my-1 md:my-0  ${checkCountry()} ${
+            disableEdit
+              ? "bg-white "
+              : required
+              ? "bg-red-200 animate-pulse"
+              : "bg-sky-50"
+          }`}
           value={profile.country}
           onChange={(e) => {
             setProfile({

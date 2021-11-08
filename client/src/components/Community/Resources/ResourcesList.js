@@ -8,12 +8,14 @@ import axios from "axios"
 import { useEffect } from "react"
 import Loading from "../../Admin/Widgets/Loading"
 import Article from "./Article"
+import { CommunityContext } from "../../../contexts/CommunityProvider"
 
 export default function ResourcesList() {
   const { config } = useContext(UserContext)
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const { category, id } = useParams()
+  const { scrollUp } = useContext(CommunityContext)
 
   useEffect(() => {
     axios
@@ -35,7 +37,13 @@ export default function ResourcesList() {
         console.log(err)
       })
   }, [])
+
   const [selectedCategory] = categories.filter((item) => item.key === category)
+
+  useEffect(() => {
+    scrollUp()
+  }, [selectedCategory])
+
   return loading ? (
     <Loading />
   ) : (
@@ -46,7 +54,7 @@ export default function ResourcesList() {
             <CategoryDisplay category={item} isActive={item.key === category} />
           ))}
         </div>
-        <div className=" w-full md:w-3/4">
+        <div className="h-full w-full md:w-3/4">
           {!category ? (
             <div className="relative w-full h-full flex">
               <img
@@ -55,7 +63,7 @@ export default function ResourcesList() {
                 alt="resource"
               />
               <div className="absolute top-0 flex items-center justify-center w-full h-full">
-                <h1 className="text-hanson text-lg lg:text-4xl  2xl:text-6xl text-white p-36 ">
+                <h1 className="text-hanson text-lg lg:text-6xl  2xl:text-8xl text-white p-36 ">
                   The Founderland Library
                 </h1>
               </div>
