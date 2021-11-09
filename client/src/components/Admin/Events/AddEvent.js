@@ -341,25 +341,6 @@ const AddEvent = ({ event, edit, setEdit }) => {
           </div>
         </div>
       </div>
-      {data.eventCover?.public_id && (
-        <div className=" w-full px-3">
-          <label
-            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
-              required ? "text-red-600 animate-pulse" : ""
-            }`}
-          >
-            cover
-          </label>
-          <div
-            className="w-full h-20 sm:h-64 lg:h-72 xl:h-80 bg-top bg-cover"
-            style={{
-              backgroundImage: `url(${
-                data.eventCover?.url ? data.eventCover.url : null
-              }`,
-            }}
-          ></div>
-        </div>
-      )}
       <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row w-full items-center justify-around ">
         <button
           className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"

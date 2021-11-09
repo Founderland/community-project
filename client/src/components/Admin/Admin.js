@@ -61,6 +61,26 @@ const Admin = () => {
       },
     }
   }, [token])
+  const avatarInitials = (first, last) => {
+    let initials
+    let lastInitial
+    if (first && last) {
+      lastInitial =
+        last.split(" ").length === 1
+          ? last[0].toUpperCase()
+          : last.split(" ")[0][0] + last.split(" ")[1][0]?.toUpperCase()
+      initials = first[0]?.toUpperCase() + lastInitial
+    } else {
+      initials = ""
+    }
+    return initials
+  }
+  const clearTimeOut = () => {
+    let timeOutIds = window.setTimeout(function () {}, 0)
+    while (timeOutIds--) {
+      window.clearTimeout(timeOutIds)
+    }
+  }
 
   useEffect(() => {
     if (localStorage.authToken) {
@@ -115,6 +135,8 @@ const Admin = () => {
         cCModal,
         setCCModal,
         rolesLabel,
+        avatarInitials,
+        clearTimeOut,
       }}
     >
       {user ? <Main /> : <Login isAdminLogin />}

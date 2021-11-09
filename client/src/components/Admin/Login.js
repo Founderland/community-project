@@ -32,7 +32,7 @@ const Login = ({ isAdminLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    var timeOutIds = window.setTimeout(function () {}, 0)
+    let timeOutIds = window.setTimeout(function () {}, 0)
     while (timeOutIds--) {
       window.clearTimeout(timeOutIds)
     }

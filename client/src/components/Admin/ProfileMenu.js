@@ -8,9 +8,12 @@ const ProfileMenu = () => {
   const { user, setSelectedTab, logout } = useContext(AdminContext)
   const history = useHistory()
   const avatarInitials = () => {
-    let initials =
-      user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()
-    return initials
+    const lastName =
+      user.lastName.split(" ").length === 1
+        ? user.lastName[0].toUpperCase()
+        : user.lastName.split(" ")[0] +
+          user.lastName.split(" ")[1].toUpperCase()
+    return user.firstName[0].toUpperCase() + lastName
   }
   const goToProfile = () => {
     setSelectedTab(0)

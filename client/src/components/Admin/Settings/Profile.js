@@ -36,7 +36,7 @@ const addUserURL = "/api/users/add"
 const lockUrl = "/api/users/lock"
 
 const Profile = () => {
-  const { token, selectedTab, setUser, reload, setReload } =
+  const { config, selectedTab, setUser, reload, setReload, avatarInitials } =
     useContext(AdminContext)
   const history = useHistory()
   const { id } = useParams()
@@ -57,37 +57,43 @@ const Profile = () => {
   const [locking, setLocking] = useState(false)
   const [banner, setBanner] = useState({ show: false })
   const [notified, setNotified] = useState(false)
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
+  const [update, setUpdate] = useState(false)
 
   //PROFILE API CALLS
   useEffect(() => {
-    if (id !== "new") {
-      setLoading(true)
-      axios
-        .get(id ? profileUrl + id : profileUrl + "user", config)
-        .then((res) => {
-          setProfile(res.data.data)
-          setLoading(false)
+    setBanner((prev) => ({ ...prev, show: false }))
+    const loadProfile = async () => {
+      try {
+        if (id !== "new") {
+          console.log("reloading")
+          setLoading(true)
+          const getUser = await axios.get(
+            id ? profileUrl + id : profileUrl + "user",
+            config
+          )
+          if (getUser.data) {
+            setProfile(getUser.data.data)
+            setLoading(false)
+            setUpdate(false)
+          } else {
+            await Promise.reject(new Error("error_getting_profile"))
+          }
+          setUpdate(false)
+        }
+      } catch (e) {
+        setLoading(false)
+        setBanner({
+          error: 1,
+          show: true,
+          message: "Error loading profile data",
         })
-        .catch((err) => {
-          setLoading(false)
-          setBanner({
-            error: 1,
-            show: true,
-            message: "Error getting profile data!",
-          })
-          setTimeout(() => {
-            setBanner((prev) => ({ ...prev, show: false }))
-          }, 4000)
-        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 4000)
+        return null
+      }
     }
+    loadProfile()
     return () => {
       setProfile({
         avatar: "bg-gradient-to-t from-red-300 to-red-500 bg-cover",
@@ -100,18 +106,18 @@ const Profile = () => {
         role: "sadmin",
       })
     }
-  }, [selectedTab])
+  }, [selectedTab, id, reload])
 
   const save = async () => {
     setSaving(true)
-    if (profile.password !== profile.confirmPassword) {
-      setBanner({ error: 1, show: true, message: "Password do not match!" })
-      setSaving(false)
-      setTimeout(() => {
-        setBanner((prev) => ({ ...prev, show: false }))
-      }, 4000)
-    } else {
-      try {
+    try {
+      if (
+        !id &&
+        (profile.password !== profile.confirmPassword ||
+          !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(profile.password))
+      ) {
+        await Promise.reject(new Error("Password does not match requirement"))
+      } else {
         let result = null
         if (profile._id) result = await axios.put(profileUrl, profile, config)
         else {
@@ -122,22 +128,11 @@ const Profile = () => {
           if (Object.values(profile).every((value) => value.length > 0)) {
             result = await axios.post(addUserURL, profile, config)
           } else {
-            setSaving(false)
-            setBanner({
-              error: 1,
-              show: true,
-              message: "All fields are required",
-            })
-            setTimeout(() => {
-              setBanner((prev) => ({ ...prev, show: false }))
-            }, 4000)
-            return null
+            await Promise.reject(new Error("All fields are required"))
           }
         }
-
         if (result) {
           setSaving(false)
-          setReload(reload + 1)
           if (!id) {
             setUser((prev) => ({
               ...prev,
@@ -156,21 +151,23 @@ const Profile = () => {
               : "User saved and notified! Redirecting..",
           })
           setTimeout(() => {
+            setReload(reload + 1)
             setBanner((prev) => ({ ...prev, show: false }))
             if (id) history.goBack()
-          }, 2000)
+          }, 1000)
         }
-      } catch (e) {
-        setSaving(false)
-        setBanner({
-          error: 1,
-          show: true,
-          message: "Error saving profile!",
-        })
-        setTimeout(() => {
-          setBanner((prev) => ({ ...prev, show: false }))
-        }, 4000)
       }
+    } catch (e) {
+      setBanner({
+        error: 1,
+        show: true,
+        message:
+          e?.response?.status === 403 ? "Email already registerd" : e.message,
+      })
+      setSaving(false)
+      setTimeout(() => {
+        setBanner((prev) => ({ ...prev, show: false }))
+      }, 4000)
     }
   }
 
@@ -241,16 +238,13 @@ const Profile = () => {
   }
 
   //HELPER FUNCTIONS
-  const setRole = (v) => {
-    setProfile((prev) => ({ ...prev, role: v }))
+  const handleChange = (v, target) => {
+    console.log(v, target)
+    setUpdate(true)
+    if (target) setProfile((prev) => ({ ...prev, [target]: v }))
+    else setProfile((prev) => ({ ...prev, role: v }))
   }
-  const avatarInitials = () => {
-    let initials = profile.firstName.length
-      ? profile.firstName[0].toUpperCase()
-      : ""
-    initials += profile.lastName.length ? profile.lastName[0].toUpperCase() : ""
-    return initials
-  }
+
   const checkPassword = () => {
     if (profile.password) {
       return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(
@@ -271,18 +265,20 @@ const Profile = () => {
       return "border-l-4 border-gray"
     }
   }
-
+  const checkEmail = (email) => {
+    return /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(email)
+  }
   //COMPONENT RENDER
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <div className=" w-full md:w-5/6 lg:w-3/4">
-          <div className="relative bg-white px-8 pt-4 pb-8 mb-4 flex flex-col my-2">
-            <div className="w-full flex items-center justify-center z-20">
-              <Banner message={banner} />
-            </div>
+        <div className=" h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6">
+          <div className="w-full flex items-center justify-center">
+            <Banner message={banner} />
+          </div>
+          <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-3/6 mb-6 shadow-lg border-0 px-4 md:px-6 ">
             <div className="w-full px-3 flex items-center justify-center mb-2">
               <Popover className="relative group">
                 <Popover.Button
@@ -293,7 +289,7 @@ const Profile = () => {
                     className={`rounded-full w-36 h-36 md:w-48 md:h-48 ${profile.avatar} flex justify-center items-center`}
                   >
                     <p className="text-6xl md:text-8xl text-mono">
-                      {avatarInitials()}
+                      {avatarInitials(profile.firstName, profile.lastName)}
                     </p>
                   </div>
                 </Popover.Button>
@@ -309,9 +305,7 @@ const Profile = () => {
                           ? "border-green-600"
                           : "border-white"
                       }`}
-                      onClick={(e) =>
-                        setProfile((prev) => ({ ...prev, avatar: color }))
-                      }
+                      onClick={(e) => handleChange(color, "avatar")}
                     ></span>
                   ))}
                 </Popover.Panel>
@@ -331,12 +325,7 @@ const Profile = () => {
                   disabled={profile.isLocked}
                   type="text"
                   value={profile.firstName}
-                  onChange={(e) =>
-                    setProfile((prev) => ({
-                      ...prev,
-                      firstName: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => handleChange(e.target.value, "firstName")}
                 />
               </div>
               <div className="md:w-1/2 px-3">
@@ -352,12 +341,7 @@ const Profile = () => {
                   disabled={profile.isLocked}
                   type="text"
                   value={profile.lastName}
-                  onChange={(e) =>
-                    setProfile((prev) => ({
-                      ...prev,
-                      lastName: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => handleChange(e.target.value, "lastName")}
                 />
               </div>
             </div>
@@ -371,7 +355,7 @@ const Profile = () => {
                     Email
                   </label>
                   <input
-                    className=" appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3"
+                    className="appearance-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4"
                     id="email"
                     type="text"
                     value={profile.email}
@@ -389,10 +373,16 @@ const Profile = () => {
                     Email
                   </label>
                   <input
-                    className="appearance-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4"
+                    className={`${
+                      selectedTab === 0
+                        ? ""
+                        : !checkEmail(profile.email)
+                        ? "border-l-4 border-fred"
+                        : "border-l-4 border-flime"
+                    } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3`}
                     type="text"
                     onChange={(e) => {
-                      setProfile((prev) => ({ ...prev, email: e.target.value }))
+                      handleChange(e.target.value, "email")
                     }}
                     value={profile.email}
                   />
@@ -422,12 +412,7 @@ const Profile = () => {
                       id="password"
                       type="password"
                       autocomplete="new-password"
-                      onChange={(e) =>
-                        setProfile((prev) => ({
-                          ...prev,
-                          password: e.target.value,
-                        }))
-                      }
+                      onChange={(e) => handleChange(e.target.value, "password")}
                       placeholder="******************"
                     />
                   </div>
@@ -444,10 +429,7 @@ const Profile = () => {
                       type="password"
                       autocomplete="new-password"
                       onChange={(e) =>
-                        setProfile((prev) => ({
-                          ...prev,
-                          confirmPassword: e.target.value,
-                        }))
+                        handleChange(e.target.value, "confirmPassword")
                       }
                       placeholder="******************"
                     />
@@ -473,7 +455,7 @@ const Profile = () => {
                     <ListOption
                       options={roles}
                       choice={profile.role}
-                      setChoice={setRole}
+                      setChoice={handleChange}
                     />
                   </div>
                 </div>
@@ -507,7 +489,7 @@ const Profile = () => {
                 </button>
               ) : id === "new" ? (
                 <button
-                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                   onClick={() => {
                     history.goBack()
                   }}
@@ -519,7 +501,7 @@ const Profile = () => {
               )}
               {id !== "new" && id ? (
                 <button
-                  className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
+                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
                   onClick={() => lock()}
                 >
                   {locking ? (
@@ -538,7 +520,7 @@ const Profile = () => {
               ) : (
                 ""
               )}
-              {!profile.isLocked && (
+              {!profile.isLocked && update && (
                 <button
                   className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => save()}
