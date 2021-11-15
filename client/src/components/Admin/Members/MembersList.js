@@ -18,7 +18,7 @@ const styles = {
   user: "bg-fpink bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 
-const MembersList = ({ role }) => {
+const MembersList = ({ role, setMembersData }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const { token, reload } = useContext(AdminContext)
@@ -60,6 +60,7 @@ const MembersList = ({ role }) => {
           ],
         }
         const data = res.data
+        setMembersData(data.data)
         data.data.forEach((element) => {
           if (element.created) {
             element.created = moment(element.created).format("DD/M/YYYY")
@@ -84,7 +85,7 @@ const MembersList = ({ role }) => {
   return loading ? (
     <Loading />
   ) : (
-    <ListWidget title="" data={data} styles={styles} showing={10} />
+    <ListWidget title='' data={data} styles={styles} showing={10} />
   )
 }
 
