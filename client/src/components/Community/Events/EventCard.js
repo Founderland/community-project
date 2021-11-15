@@ -21,20 +21,24 @@ const EventCard = ({ event }) => {
         history.push(`/community/events/id/${event._id}`)
       }}
     >
-      <div className="flex w-full relative ">
-        <img
-          className="w-full h-40 bg-top bg-cover"
-          src={event.eventCover?.url}
-          alt="cover"
-        />
+      <div
+        className="relative w-full h-28 bg-top bg-cover"
+        style={{
+          backgroundImage: `url(${event.eventCover?.url}`,
+        }}
+      >
         {event.isCanceled && (
-          <div className="w-full h-full bg-white bg-opacity-40 tracking-wider absolute flex space-x-2 text-hanson">
-            <XCircleIcon className="ml-2 w-10 h-10 text-red-600" />
-            <p className="mt-2 w-full text-lg text-red-600">Event Cancelled</p>
+          <div className="absolute w-full h-full bg-white bg-opacity-30 ">
+            <div className="absolute bottom-0 tracking-wider flex space-x-2 text-hanson">
+              <XCircleIcon className="ml-2 w-10 h-10 text-red-600" />
+              <p className="mt-2 w-full text-lg text-red-600">
+                Event Cancelled
+              </p>
+            </div>
           </div>
         )}
       </div>
-      <div className="w-full flex flex-col justify-between px-6 py-3">
+      <div className="w-full h-40 flex flex-col justify-between px-6 py-3">
         <div className="w-full flex justify-between">
           <p className="text-sm font-semibold text-red-400">
             {moment(event.dateStart).format("DD/M/YYYY HH:mm")}
@@ -46,7 +50,7 @@ const EventCard = ({ event }) => {
           {event.title}
         </p>
 
-        <div className="w-80 my-2 text-sm text-gray-500 font-normal max-h-10 block overflow-ellipsis overflow-hidden break-words text-justify">
+        <div className="w-full my-2 text-sm text-gray-500 font-normal max-h-10 block overflow-ellipsis overflow-hidden break-words text-justify">
           {event.description}
         </div>
 

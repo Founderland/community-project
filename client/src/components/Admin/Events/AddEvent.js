@@ -10,7 +10,6 @@ import Places from "./Places"
 import MapDisplay from "./MapDisplay"
 import Tags from "../Widgets/Tags"
 import Dropzone from "../Widgets/DropZone"
-import { Image } from "cloudinary-react"
 
 let types = [
   { name: "Online", value: "online" },
@@ -38,7 +37,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
     location: "",
     tags: [],
     annouce: false,
-    zoom: 16,
+    zoom: 15,
   })
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({ show: false })
@@ -47,7 +46,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
     success: false,
     message: "",
   })
-  const { config, reload, setReload } = useContext(AdminContext)
+  const { config, reload, setReload, scrollUp } = useContext(AdminContext)
 
   //EDIT
   useEffect(() => {
@@ -55,12 +54,15 @@ const AddEvent = ({ event, edit, setEdit }) => {
       setData((prev) => ({
         ...prev,
         ...event,
+        dateStart: new Date(event.dateStart),
+        dateEnd: new Date(event.dateEnd),
       }))
     }
   }, [])
 
   const save = async () => {
     setSaving(true)
+    scrollUp()
     try {
       if (!data.title.length && !data.description.length)
         await Promise.reject(new Error("missing_fields_title_Description"))
@@ -89,8 +91,17 @@ const AddEvent = ({ event, edit, setEdit }) => {
           history.goBack()
         }, 2000)
       } else {
-        setEdit(false)
-        setReload(reload + 1)
+        setSaving(false)
+        setBanner({
+          success: 1,
+          show: true,
+          message: "Event saved! Redirecting...",
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+          setReload(reload + 1)
+          setEdit(false)
+        }, 2000)
       }
     } catch (e) {
       if (e?.message.includes("missing_fields")) {
@@ -148,30 +159,16 @@ const AddEvent = ({ event, edit, setEdit }) => {
       link
     )
   }
+  console.log(data)
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col w-full xl:w-5/6">
+    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-3/6">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
         Add new event
       </div>
-      {data.eventCover?.public_id && (
-        <div className=" w-full px-3">
-          <label
-            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
-              required ? "text-red-600 animate-pulse" : ""
-            }`}
-          >
-            cover
-          </label>
-          <Image
-            cloudName="founderland"
-            publicId={data.eventCover.public_id}
-            className="w-full px-8 pb-8 pt-2"
-          ></Image>
-        </div>
-      )}
+
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">
@@ -201,7 +198,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
             Date
           </label>
           <DateTimeRangePicker
-            className="text-sm appearance-none outline-none outline-none block w-full bg-grey-lighter border py-0.5 px-1 mb-3"
+            className="flex flex-col sm:flex-row text-sm appearance-none outline-none outline-none block w-full bg-grey-lighter border py-0.5 px-1 mb-3"
             onChange={setDate}
             value={[data.dateStart, data.dateEnd]}
             disableClock={true}
@@ -344,8 +341,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
           </div>
         </div>
       </div>
-
-      <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+      <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row w-full items-center justify-around ">
         <button
           className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
           onClick={() => {

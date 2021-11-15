@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator")
+const ObjectId = require("mongoose").Types.ObjectId
 const User = require("../models/User")
 const { generateHashedPassword, calculateToken } = require("../helpers/user")
 
@@ -17,15 +18,22 @@ const findOne = async (req, res, next) => {
   } else if (!id) {
     id = req.body.id
   }
-  const profile = await User.findOne({ _id: id })
-  if (profile) {
-    profile["hashedPassword"] = ""
-    if (req.originalUrl.includes("notify")) {
-      req.unverified = profile
-      return next()
+  let profile
+  if (ObjectId.isValid(id)) {
+    profile = await User.findOne({ _id: id })
+    if (profile) {
+      profile["hashedPassword"] = ""
+      if (req.originalUrl.includes("notify")) {
+        req.unverified = profile
+        return next()
+      } else {
+        res.status(200).json({
+          data: profile,
+        })
+      }
     } else {
-      res.status(200).json({
-        data: profile,
+      res.status(404).json({
+        message: "Profile not found",
       })
     }
   } else {

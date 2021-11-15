@@ -44,7 +44,7 @@ const ArticleCard = ({ article }) => {
           <div className="font-bold text-black text-xl mb-2  font-mono">
             {article.articleTitle}
           </div>
-          <p className="h-10 px-2 text-black text-sm text-mono overflow-ellipsis text-justify">
+          <p className="h-10 px-2 text-black text-sm text-mono overflow-ellipsis text-justify truncate">
             {article.articleDescription}
           </p>
         </div>

@@ -30,33 +30,12 @@ const Settings = () => {
     {
       index: 0,
       name: "Profile",
-      component: <Profile />,
       restricted: "",
     },
     {
       index: 1,
       name: "Users",
       restricted: "sadmin",
-      component: !id ? (
-        <div className="w-full px-4 outline-none">
-          <ListWidget
-            title=""
-            data={data}
-            showing={10}
-            styles={styles}
-            cellAlignment={"justify-center"}
-          />
-          <button
-            className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-            onClick={() => history.push("settings/id/new")}
-          >
-            <UserAddIcon className="h-5 w-5" />
-            <p className="text-mono text-sm">Add user</p>
-          </button>
-        </div>
-      ) : (
-        <Profile />
-      ),
     },
   ]
 
@@ -91,18 +70,39 @@ const Settings = () => {
       .catch((err) => {
         console.log(err)
       })
-  }, [reload])
+  }, [selectedTab, reload])
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full overflow-none">
       <Tabs
         tabs={tabs}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
-        {loading ? <Loading /> : tabs[selectedTab].component}
+      <section className="flex flex-col items-center justify-center bg-white outline-none pt-4 pb-8 overflow-y-auto">
+        {loading ? (
+          <Loading />
+        ) : !id && selectedTab !== 0 ? (
+          <div className="w-full px-4 outline-none">
+            <ListWidget
+              title=""
+              data={data}
+              showing={10}
+              styles={styles}
+              cellAlignment={"justify-center"}
+            />
+            <button
+              className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+              onClick={() => history.push("settings/id/new")}
+            >
+              <UserAddIcon className="h-5 w-5" />
+              <p className="text-mono text-sm">Add user</p>
+            </button>
+          </div>
+        ) : (
+          <Profile />
+        )}
       </section>
     </div>
   )

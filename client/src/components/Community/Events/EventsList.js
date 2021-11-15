@@ -40,6 +40,7 @@ const EventsList = ({ state, filter }) => {
           .sort((a, b) => a.substring(1).length - b.substring(1).length)
         setTags(allTags)
         setLoading(false)
+        setOffset(0)
       } catch (e) {
         console.log(e)
       }

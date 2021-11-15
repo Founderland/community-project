@@ -74,7 +74,7 @@ const Resource = ({ category, categories }) => {
                 alt="article cover"
               />
               <div
-                className="absolute w-full left-0 bottom-0 p-4 bottom-0 left-0 z-20  "
+                className="absolute w-full left-0 bottom-0 p-4 bottom-0 left-0 z-10  "
                 style={{
                   backgroundImage:
                     "linear-gradient(180deg,transparent,rgba(0,0,0,.7))",

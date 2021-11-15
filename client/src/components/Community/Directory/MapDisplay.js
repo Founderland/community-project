@@ -25,7 +25,7 @@ import Autocomplete from "react-autocomplete"
 const libraries = ["places"]
 const mapContainerStyle = {
   width: "100vw",
-  height: "91vh",
+  height: "100%",
   overflow: "hidden",
 }
 const center = {
@@ -71,11 +71,10 @@ export default function MapDisplay(props) {
       })
     }
     setLatLong([...coOrdinates])
-    return ()=>{
+    return () => {
       sidebarHandler(false)
     }
   }, [memberDetails])
- 
 
   // Emptying search value
   useEffect(() => {
@@ -129,7 +128,6 @@ export default function MapDisplay(props) {
     setisHovered(false)
   }
 
-
   const selectHandler = (val, item) => {
     setSearchValue(val)
     setOpenSearchMenu(false)
@@ -150,7 +148,7 @@ export default function MapDisplay(props) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <div className="absolute left-0 right-0 z-40 md:w-1/2 m-4 h-14">
         <Autocomplete
           className=""
@@ -167,16 +165,15 @@ export default function MapDisplay(props) {
           }}
           open={openSearchMenu}
           renderInput={(props) => (
-            <div className="relative"> 
-            <input
-              {...props}
-              type="text"
-              id="rounded-email"
-              className="w-full xl:w-3/4 h-full rounded-md border-fblue-600 border-transparent  shadow-lg flex-1 appearance-none border-2  md:ml-10 py-2 px-6 bg-white text-gray-700 xs:text-md md:text-2xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono "
+            <div className="relative">
+              <input
+                {...props}
+                type="text"
+                id="rounded-email"
+                className="w-full xl:w-3/4 h-full border-flime-500 shadow-lg flex-1 appearance-none border-2  md:ml-10 py-2 px-6 bg-white text-gray-700 xs:text-md md:text-xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono "
                 placeholder="Search Founder by name.."
-            
               />
-                </div>
+            </div>
           )}
           renderMenu={(items, value, style) => (
             <div

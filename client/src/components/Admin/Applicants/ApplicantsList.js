@@ -22,13 +22,21 @@ const ApplicantsList = ({ status, role, reload }) => {
   const getTimeDifference = (DateToCompare) => {
     const today = Date.now()
     const compareDate = Date.parse(DateToCompare)
+    //getting hours
     let timeDifference = (today - compareDate) / 1000 / 60 / 60
-
     if (timeDifference >= 24) {
-      timeDifference = parseInt((timeDifference /= 24)) + " d ago"
+      //getting days
+      timeDifference /= 24
+      //if less than 60 days shows num of days, if more shows the full date
+      timeDifference =
+        timeDifference <= 60
+          ? parseInt(timeDifference) + " d ago"
+          : new Date(DateToCompare).toLocaleDateString("de-DE")
     } else if (timeDifference < 24 && timeDifference > 0.99) {
+      //shows hours
       timeDifference = Math.round(timeDifference) + " h ago"
     } else {
+      //shouws minutes
       timeDifference = parseInt((timeDifference *= 60)) + " m ago"
       if (timeDifference === "0 m ago") {
         timeDifference = "now"

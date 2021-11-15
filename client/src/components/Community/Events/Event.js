@@ -117,7 +117,7 @@ const Event = () => {
   }
   console.log(reload)
   return (
-    <section className="relative flex flex-col items-center justify-center w-full h-full lg:w-5/6 px-4 pb-20 mx-auto overflow-y-auto">
+    <div className="h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -134,30 +134,34 @@ const Event = () => {
         <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
-          <div className=" flex flex-col w-full xl:w-5/6 mb-2 shadow-lg border-0">
-            <div className="relative flex w-full justify-between">
-              <img
-                className="w-full h-40 sm:h-60 lg:h-80 bg-bottom bg-cover"
-                src={data.eventCover?.url}
-                alt="cover"
-              />
+          <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 mb-6 shadow-lg border-0">
+            <div
+              className="relative w-full h-40 sm:h-64 lg:h-72 xl:h-80 bg-top bg-cover"
+              style={{
+                backgroundImage: `url(${data.eventCover?.url}`,
+              }}
+            >
               {data.isCanceled && (
-                <>
-                  <XCircleIcon className="sm:h-32 sm:w-32 sm:mt-4 sm:ml-4 mt-2 ml-2 h-20 w-20 text-red-500 absolute" />
-                  <p className="absolute top-10 left-28 font-bold text-red-600 text-lg sm:hidden text-hanson">
-                    Event Canceled
-                  </p>
-                </>
+                <div className="absolute w-full h-full bg-white bg-opacity-30 ">
+                  <div className="absolute bottom-0 flex items-center justify-end space-x-2">
+                    <XCircleIcon className="sm:h-28 sm:w-28 h-16 w-16 text-red-600" />
+                    <p className="hidden mt-2 text-hanson tracking-wider sm:block text-lg xl:text-xl 2xl:text-2xl text-red-600">
+                      Event Cancelled
+                    </p>
+                  </div>
+                </div>
               )}
-              {!data.isCanceled && new Date(data.dateEnd) > new Date() && (
-                <AddToCalendar event={data} />
-              )}
+              <div className="absolute mr-4 justify-end bottom-0 right-0 w-full mb-4 flex">
+                <p className={styles[data.type]}>{data.type}</p>
+              </div>
             </div>
-            <div className="flex w-full justify-between">
-              <div className="flex flex-grow p-4 text-mono">
-                <p className="text-2xl tracking-wider self-center font-bold uppercase">
+            <div className="flex flex-col md:flex-row px-4 pt-2  w-full justify-between">
+              <div className="w-full mb-2 mx-auto">
+                <p className="text-xl xl:text-2xl 2xl:text-3xl text-mono tracking-wider self-center font-bold uppercase">
                   {data.title}
                 </p>
+              </div>
+              <div className="flex justify-end w-full colspan-1 mb-2 mx-auto">
                 <img
                   src={data.member.photo?.url}
                   className="h-10 w-10 ml-4 rounded-full mr-2 object-cover"
@@ -169,21 +173,10 @@ const Event = () => {
                     {data.member.firstName} {data.member.lastName}
                   </p>
                 </div>
-                {data.isCanceled && (
-                  <div className="hidden sm:flex items-center space-x-2 ml-4 self-end text-grotesk">
-                    <XCircleIcon className="w-8 h-8 text-red-600" />
-                    <p className="w-full text-lg text-red-600">
-                      Event Cancelled
-                    </p>
-                  </div>
-                )}
-              </div>
-              <div className="hidden sm:flex sm:flex-grow-0 justify-center sm:justify-start items-center p-4">
-                <p className={styles[data.type]}>{data.type}</p>
               </div>
             </div>
-            <div className="w-full px-4 pt-2 grid grid-cols-2 lg:grid-cols-5 md:grid-cols-4 text-xs justify-center items-center">
-              <div className="mb-2">
+            <div className="w-full px-4 pt-2 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 text-xs justify-center items-center">
+              <div className="colspan-1 mb-2 mx-auto">
                 <p className="text-xs text-grotesk">From</p>
                 <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
                   <div className="block rounded-t overflow-hidden  text-center ">
@@ -208,7 +201,7 @@ const Event = () => {
                   </div>
                 </div>
               </div>
-              <div className="mb-2">
+              <div className="colspan-1 mb-2 mx-auto">
                 <p className=" text-xs text-grotesk">To</p>
                 <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
                   <div className="block rounded-t overflow-hidden text-center ">
@@ -235,12 +228,12 @@ const Event = () => {
               </div>
               <div className="p-2 hidden lg:block"></div>
               {data.type !== "online" && (
-                <div className="h-full mb-2 col-span-2 py-2 px-4 hidden md:block">
+                <div className="md:col-start-3 xl:col-start-4 h-full mb-2 col-span-2 py-2 block items-center pt-8 ">
                   <MapDisplay location={data.geoLocation} zoom={data.zoom} />
                 </div>
               )}
               {data.type === "online" && (
-                <div className="h-full mb-2 col-span-2 py-2 hidden md:block">
+                <div className="md:col-start-3 xl:col-start-4 h-full mb-2 col-span-2 py-2 block items-center pt-8">
                   <LinkPreview url={data.link} />
                 </div>
               )}
@@ -249,6 +242,9 @@ const Event = () => {
             <div className="w-full flex flex-col px-4 py-2">
               <h6 className="text-gray-400 text-sm mt-3 mb-4 font-bold uppercase">
                 About
+                {data.isCanceled && (
+                  <p className="w-full text-lg text-red-600">Event Cancelled</p>
+                )}
               </h6>
               <div className="px-3 bg-white text-lg text-mono w-full ease-linear transition-all duration-150">
                 {data.description}
@@ -397,7 +393,7 @@ const Event = () => {
                 )}
               </div>
             </div>
-            <footer className="flex p-4 mt-2 justify-center items-center">
+            <footer className="w-full px-4 my-4 flex flex-col sm:flex-row items-center justify-around ">
               {!data.isCanceled &&
                 user.id === data.member._id &&
                 new Date(data.dateEnd) > new Date() && (
@@ -410,38 +406,34 @@ const Event = () => {
                     Cancel Event
                   </button>
                 )}
-            </footer>
-          </div>
-          {!edit &&
-            user.id === data.member._id &&
-            new Date(data.dateEnd) > new Date() && (
-              <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+              {!edit && user.id === data.member._id && !data.isCanceled && (
                 <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => {
                     setEdit(true)
                   }}
                 >
                   Edit
                 </button>
-                {user.id === data.member._id ? (
-                  <button
-                    className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
-                    onClick={() => {
-                      setCCModal(true)
-                    }}
-                  >
-                    <TrashIcon className="h-5 w-5" />
-                    Delete
-                  </button>
-                ) : (
-                  ""
-                )}
-              </div>
-            )}
+              )}
+              {user.id === data.member._id ? (
+                <button
+                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
+                  onClick={() => {
+                    setCCModal(true)
+                  }}
+                >
+                  <TrashIcon className="h-5 w-5" />
+                  Delete
+                </button>
+              ) : (
+                ""
+              )}
+            </footer>
+          </div>
         </>
       )}
-    </section>
+    </div>
   )
 }
 export default Event

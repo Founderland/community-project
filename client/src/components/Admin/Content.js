@@ -6,11 +6,15 @@ import Members from "./Members/Members"
 import Forms from "./Forms/Forms"
 import { useParams } from "react-router"
 import Events from "./Events/Events"
+import { useContext } from "react"
+import AdminContext from "../../contexts/Admin"
 
 const Content = () => {
   let { view } = useParams()
+  const { pageTop } = useContext(AdminContext)
   return (
     <main className="overflow-x-hidden w-full h-screen md:px-4 ">
+      <span ref={pageTop}></span>
       {view === "dashboard" && <Dashboard />}
       {view === "resources" && <Resources />}
       {view === "events" && <Events />}

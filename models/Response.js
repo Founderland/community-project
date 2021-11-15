@@ -5,7 +5,7 @@ const responseSchema = new mongoose.Schema({
   lastName: { type: String },
   email: { type: String },
   totalScore: { type: Number },
-  submissionDate: { type: Date, default: Date.now(), required: true },
+  submissionDate: { type: Date },
   evaluatedOn: { type: Date },
   evaluatedBy: { type: String },
   status: {

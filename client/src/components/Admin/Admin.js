@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { useHistory, useRouteMatch } from "react-router-dom"
 import Main from "./Main"
 import Login from "./Login"
@@ -32,15 +32,19 @@ const rolesLabel = {
 const Admin = () => {
   const history = useHistory()
   const { isExact } = useRouteMatch()
+  const pageTop = useRef()
   const [token, setToken] = useState()
   const [user, setUser] = useState(null)
   const [menuToggle, setMenuToggle] = useState(false)
   const [selectedTab, setSelectedTab] = useState(0)
   const [cModal, setCModal] = useState(false)
   const [cCModal, setCCModal] = useState(false)
-
   const [status, setStatus] = useState("")
   const [reload, setReload] = useState("")
+
+  const scrollUp = () => {
+    pageTop.current.scrollIntoView({ behavior: "smooth" })
+  }
   const getUuid = () => {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
       (
@@ -57,6 +61,26 @@ const Admin = () => {
       },
     }
   }, [token])
+  const avatarInitials = (first, last) => {
+    let initials
+    let lastInitial
+    if (first && last) {
+      lastInitial =
+        last.split(" ").length === 1
+          ? last[0].toUpperCase()
+          : last.split(" ")[0][0] + last.split(" ")[1][0]?.toUpperCase()
+      initials = first[0]?.toUpperCase() + lastInitial
+    } else {
+      initials = ""
+    }
+    return initials
+  }
+  const clearTimeOut = () => {
+    let timeOutIds = window.setTimeout(function () {}, 0)
+    while (timeOutIds--) {
+      window.clearTimeout(timeOutIds)
+    }
+  }
 
   useEffect(() => {
     if (localStorage.authToken) {
@@ -88,6 +112,8 @@ const Admin = () => {
   return (
     <AdminContext.Provider
       value={{
+        pageTop,
+        scrollUp,
         menuToggle,
         setMenuToggle,
         user,
@@ -109,6 +135,8 @@ const Admin = () => {
         cCModal,
         setCCModal,
         rolesLabel,
+        avatarInitials,
+        clearTimeOut,
       }}
     >
       {user ? <Main /> : <Login isAdminLogin />}

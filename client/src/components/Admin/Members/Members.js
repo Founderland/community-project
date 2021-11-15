@@ -14,6 +14,7 @@ const Members = () => {
   const { id } = useParams()
   const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
   const [newsLetterData, setNewsLetterData] = useState([])
+  const [membersData, setMembersData] = useState([])
   const tabs = [
     {
       index: 0,
@@ -48,8 +49,31 @@ const Members = () => {
   const newsletterDataHandler = (val) => {
     setNewsLetterData(val)
   }
+
+  const formatData = (val) => {
+    return val.map((el) => {
+      let newObj = {
+        Name: el.firstName,
+        "Last name": el.lastName,
+        Email: el.email,
+        location: el.location,
+      }
+
+      if (tabs[selectedTab].role === "founder") {
+        newObj = {
+          ...newObj,
+          Bio: el.bio,
+          Company: el.companyName,
+          Website: el.companyLink,
+          "Company Bio": el.companyBio,
+        }
+      }
+      return newObj
+    })
+  }
+
   return (
-    <div className="flex flex-col w-full ">
+    <div className='flex flex-col w-full '>
       <Tabs
         tabs={tabs}
         selectedTab={selectedTab}
@@ -57,9 +81,9 @@ const Members = () => {
         id={id}
       />
 
-      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
+      <section className='flex justify-center bg-white outline-none pt-4 pb-8'>
         {!id ? (
-          <div className="w-full px-4 outline-none">
+          <div className='w-full px-4 outline-none'>
             {selectedTab === 3 ? (
               <NewsLetterList
                 reload={reload}
@@ -67,27 +91,37 @@ const Members = () => {
                 newsletterDataHandler={newsletterDataHandler}
               />
             ) : (
-              <MembersList reload={reload} role={tabs[selectedTab].role} />
+              <MembersList
+                reload={reload}
+                role={tabs[selectedTab].role}
+                setMembersData={setMembersData}
+              />
             )}
-            {selectedTab === 3 ? (
-              <>
-                <button className="flex items-center px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white">
-                  <CloudDownloadIcon className="h-5 w-5" />
-                  <CsvDownload
-                    data={newsLetterData}
-                    filename="newsletter.csv"
-                  />
-                </button>
-              </>
-            ) : (
-              <button
-                className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-                onClick={() => handleTask()}
-              >
-                <UserAddIcon className="h-5 w-5" />
-                <p className="text-mono text-sm">Add New</p>
+
+            <div className='flex '>
+              <button className='flex items-center px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white text-mono text-sm'>
+                <CloudDownloadIcon className='h-5 w-5' />
+                <CsvDownload
+                  data={
+                    selectedTab === 3 ? newsLetterData : formatData(membersData)
+                  }
+                  filename={
+                    selectedTab === 3
+                      ? "newsletter.csv"
+                      : `${tabs[selectedTab].role}.csv`
+                  }
+                />
               </button>
-            )}
+
+              {selectedTab !== 3 && (
+                <button
+                  className='flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white'
+                  onClick={() => handleTask()}>
+                  <UserAddIcon className='h-5 w-5' />
+                  <p className='text-mono text-sm'>Add New</p>
+                </button>
+              )}
+            </div>
           </div>
         ) : id === "new" ? (
           <AddMember role={tabs[selectedTab].role} />

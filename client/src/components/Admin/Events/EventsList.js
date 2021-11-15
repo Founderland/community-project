@@ -32,6 +32,7 @@ const EventsList = ({ state }) => {
           .sort((a, b) => a.substring(1).length - b.substring(1).length)
         setTags(allTags)
         setLoading(false)
+        setOffset(0)
       } catch (e) {
         console.log(e)
       }
@@ -78,7 +79,7 @@ const EventsList = ({ state }) => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="w-full px-2 ">
+    <div className="w-full px-2">
       <div className="max-w-max text-mono flex  space-x-2 items-center mt-3 pl-2">
         <SearchIcon className="h-5 w-5 text-gray-800" />
         {tags.length ? (

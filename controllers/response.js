@@ -13,6 +13,7 @@ const addResponse = async (req, res, next) => {
       answerData,
       email,
       role,
+      submissionDate: new Date(),
     })
     if (!newResponse) {
       await Promise.reject("founder response error") //reject promise with error
