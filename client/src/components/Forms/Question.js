@@ -20,7 +20,7 @@ const Question = ({
     question: question,
     rank: rank,
     category: category,
-    value: "",
+    value: [],
     answer_id: "",
     score: "",
   })
@@ -49,20 +49,48 @@ const Question = ({
   }
   const [checked, setChecked] = useState(false)
 
+  const handleCheck = (item) => {
+    let scoreSum = Number(answerData.score)
+    //search for the selected checkbox value index
+    const selectedIndex = checkBoxValues.findIndex((el) => el === item.answer)
+    //selectedIndex > 0 means the option was already there (so it's being deselected)
+    if (selectedIndex === -1) {
+      //add the answer to the array + sum its points
+      checkBoxValues.push(item.answer)
+      scoreSum += Number(item.points)
+    } else {
+      //removes it from the array and subtract  points
+      checkBoxValues.splice(selectedIndex, 1)
+      scoreSum -= Number(item.points)
+    }
+    if (scoreSum < 0) scoreSum = 0
+    setCheckBoxValues([...checkBoxValues])
+    //updates the answer values
+    setAnswerData({
+      id: _id,
+      question: question,
+      rank: rank,
+      category: category,
+      value: [...checkBoxValues],
+      answer_id: item[0]?._id,
+      score: scoreSum,
+    })
+  }
+
   const handleChange = () => {
     setChecked(!checked)
   }
   return (
-    <div className="p-2 text-grotesk text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl mt-1 xl:mt-5">
-      <label className=" ">{question}</label>
-      <div className="">
+    <div className='p-2 text-grotesk text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl mt-1 xl:mt-5'>
+      <label className=' '>{question}</label>
+      <div className=''>
         {type === "open" || question === "Email" ? (
           <input
             required={questionPreview ? false : mandatory}
             type={question === "Email" ? "email" : "text"}
-            className="flex-1 md:text-lg xl:text-xl appearance-none border border-gray-300 w-11/12 md:w-3/5 mt-1 xl:mt-3 px-2 py-1 md:py-2 md:px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fblue-light focus:border-transparent"
-            name="firstname"
-            placeholder="Your answer"
+            className='flex-1 md:text-lg xl:text-xl appearance-none border border-gray-300 w-11/12 md:w-3/5 mt-1 xl:mt-3 px-2 py-1 md:py-2 md:px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fblue-light focus:border-transparent'
+            name='firstname'
+            placeholder='Your answer'
             id={answers[0]?._id}
             onChange={(e) =>
               setAnswerData({
@@ -77,33 +105,24 @@ const Question = ({
             }
           />
         ) : type === "multiple" ? (
-          <div className=" flex flex-col">
+          <div className=' flex flex-col'>
             {answers.map((item, index) => (
               <div key={item.answer}>
                 <input
-                  type="checkbox"
-                  id="scales"
-                  name="scales"
-                  required={questionPreview ? false : mandatory}
-                  onChange={(e) => {
-                    checkBoxValues[index] = checkBoxValues[index]
-                      ? ""
-                      : item.answer
-                    setCheckBoxValues([...checkBoxValues])
-
-                    setAnswerData({
-                      id: _id,
-                      question: question,
-                      rank: rank,
-                      category: category,
-                      value: [...checkBoxValues],
-                      answer_id: item[0]?._id,
-                      score: "",
-                    })
-                  }}
+                  type='checkbox'
+                  id='scales'
+                  name='scales'
+                  required={
+                    questionPreview
+                      ? false
+                      : mandatory && !checkBoxValues.length
+                      ? true
+                      : false
+                  }
+                  onChange={() => handleCheck(item)}
                 />
 
-                <label className=" ml-4">{item.answer}</label>
+                <label className=' ml-4'>{item.answer}</label>
               </div>
             ))}
           </div>
