@@ -33,7 +33,7 @@ const Forms = () => {
   ]
 
   return (
-    <div className="w-full flex flex-col ">
+    <div className="w-full flex flex-col">
       <Tabs
         tabs={tabs}
         selectedTab={selectedTab}
@@ -44,13 +44,15 @@ const Forms = () => {
         {!id ? (
           <div className="w-full px-4 outline-none">
             <FormsList role={tabs[selectedTab].role} reload={reload} />
-            <button
-              className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-              onClick={() => history.push("/admin/forms/id/new")}
-            >
-              <PlusIcon className="h-5 w-5" />
-              <p className="text-mono text-sm">Add new</p>
-            </button>
+            <div className="flex ">
+              <button
+                className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                onClick={() => history.push("/admin/forms/id/new")}
+              >
+                <PlusIcon className="h-5 w-5" />
+                <p className="text-mono text-sm">Add new</p>
+              </button>
+            </div>
           </div>
         ) : (
           <Question role={tabs[selectedTab].role} />
