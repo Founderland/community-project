@@ -115,7 +115,7 @@ const Login = ({ isAdminLogin }) => {
   }
   return (
     <div className="flex h-screen justify-center items-center w-full ">
-      <div className="flex bg-white shadow-lg md:w-5/6 lg:w-2/3 xl:w-1/3">
+      <div className="flex bg-white shadow-lg max-w-2xl md:w-5/6">
         <div className={`relative hidden md:block md:w-1/2 bg-${color}`}>
           <SmallLogo className="absolute bottom-0 h-20 w-20 text-white fill-current" />
         </div>

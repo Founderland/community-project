@@ -41,15 +41,12 @@ const Members = () => {
       restricted: "",
     },
   ]
-
   const handleTask = () => {
     history.push("members/id/new")
   }
-
   const newsletterDataHandler = (val) => {
     setNewsLetterData(val)
   }
-
   const formatData = (val) => {
     return val.map((el) => {
       let newObj = {
@@ -73,17 +70,16 @@ const Members = () => {
   }
 
   return (
-    <div className='flex flex-col w-full '>
+    <div className="flex flex-col w-full">
       <Tabs
         tabs={tabs}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
         id={id}
       />
-
-      <section className='flex justify-center bg-white outline-none pt-4 pb-8'>
+      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
         {!id ? (
-          <div className='w-full px-4 outline-none'>
+          <div className="w-full px-4 outline-none">
             {selectedTab === 3 ? (
               <NewsLetterList
                 reload={reload}
@@ -97,10 +93,9 @@ const Members = () => {
                 setMembersData={setMembersData}
               />
             )}
-
-            <div className='flex '>
-              <button className='flex items-center px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white text-mono text-sm'>
-                <CloudDownloadIcon className='h-5 w-5' />
+            <div className="flex ">
+              <button className="flex items-center px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white text-mono text-sm">
+                <CloudDownloadIcon className="h-5 w-5" />
                 <CsvDownload
                   data={
                     selectedTab === 3 ? newsLetterData : formatData(membersData)
@@ -112,13 +107,13 @@ const Members = () => {
                   }
                 />
               </button>
-
               {selectedTab !== 3 && (
                 <button
-                  className='flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white'
-                  onClick={() => handleTask()}>
-                  <UserAddIcon className='h-5 w-5' />
-                  <p className='text-mono text-sm'>Add New</p>
+                  className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                  onClick={() => handleTask()}
+                >
+                  <UserAddIcon className="h-5 w-5" />
+                  <p className="text-mono text-sm">Add New</p>
                 </button>
               )}
             </div>

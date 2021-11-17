@@ -14,7 +14,6 @@ import ConfirmCategory from "./ConfirmCategory.js"
 
 const Resources = () => {
   const history = useHistory()
-
   const {
     selectedTab,
     setSelectedTab,
@@ -71,18 +70,12 @@ const Resources = () => {
         console.log(err)
       })
   }, [reload])
-
   const handleTask = () => {
     history.push("/admin/resources/id/new")
   }
+
   return (
     <div className="w-full flex flex-col ">
-      <ComponentModal>
-        <AddCategory />
-      </ComponentModal>
-      <ConfirmModal>
-        <ConfirmCategory data={tabs[selectedTab]} />
-      </ConfirmModal>
       {tabs.length > 0 ? (
         <>
           <Tabs
