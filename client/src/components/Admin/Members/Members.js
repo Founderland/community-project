@@ -53,9 +53,9 @@ const Members = () => {
         Name: el.firstName,
         "Last name": el.lastName,
         Email: el.email,
-        location: el.location,
+        City: el.city,
+        Country: el.country,
       }
-
       if (tabs[selectedTab].role === "founder") {
         newObj = {
           ...newObj,

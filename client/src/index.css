@@ -38,6 +38,20 @@ Hanson body {
   line-height: 1rem;
 }
 
+@layer utilities {
+  @variants responsive {
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
+
 @media (min-width: 640px) {
   .react-datetimerange-picker__wrapper {
     border: 0 !important;
