@@ -12,7 +12,10 @@ const ApproveApplicant = ({ data, confirm }) => {
   const [notify, setNotify] = useState({
     connect: false,
     template: confirm,
-    subject: "",
+    subject:
+      confirm !== "approved"
+        ? "Update from Founderland!"
+        : "Welcome to Founderland!",
     body: "",
     signOff: "",
   })

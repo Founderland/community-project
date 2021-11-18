@@ -1,122 +1,94 @@
-export default[
-    {
-        "featureType": "administrative",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                 "color": "#444444"
-           
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "all",
-        "stylers": [
-            {
-                // "color": "#f2f2f2"
-                "color":  "#fffaf0"
-               
-              
-            
-                
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color":"#f89dbf"
-            },
-            {
-                "saturation": -70
-            },
-            {
-                "lightness": 45
-            }, 
-
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                 
-                 "color": "#0066b2"
-                // "color":  "#5072A7"
-                
-            },
-            {
-                "visibility": "on"
-            },
-            {
-                "saturation": -30
-            },
-            {
-                "lightness": 20            },
-        ]
-    }
+export default [
+  {
+    featureType: "administrative",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#444444",
+      },
+    ],
+  },
+  {
+    featureType: "landscape",
+    elementType: "all",
+    stylers: [
+      {
+        // "color": "#f2f2f2"
+        color: "#fffaf0",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "all",
+    stylers: [
+      {
+        color: "#f89dbf",
+      },
+      {
+        saturation: -70,
+      },
+      {
+        lightness: 45,
+      },
+    ],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "simplified",
+      },
+    ],
+  },
+  {
+    featureType: "road.arterial",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "transit",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "water",
+    elementType: "all",
+    stylers: [
+      {
+        color: "#0063e2",
+        // "color": #0066b2  "#5072A7"
+      },
+      {
+        visibility: "on",
+      },
+      {
+        saturation: -30,
+      },
+      {
+        lightness: 20,
+      },
+    ],
+  },
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // export default[
 //     {
@@ -148,7 +120,7 @@ export default[
 //             },
 //             {
 //                 "lightness": 45.599999999999994
-        
+
 //             },
 //             {
 //                 "gamma": 1
@@ -195,7 +167,7 @@ export default[
 //             {
 //                 //  "hue": "#46bcec"
 //                  "hue": "#1e81ff"
-                
+
 //             },
 //             {
 //                 "saturation": 20.200000000000003

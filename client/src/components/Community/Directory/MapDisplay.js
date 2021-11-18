@@ -66,8 +66,8 @@ export default function MapDisplay(props) {
     const coOrdinates = []
     for (let index = 0; index < memberDetails?.length; index++) {
       coOrdinates.push({
-        lat: memberDetails[index].geoLocation.lat,
-        lng: memberDetails[index].geoLocation.lng,
+        lat: memberDetails[index].geoLocation?.lat,
+        lng: memberDetails[index].geoLocation?.lng,
       })
     }
     setLatLong([...coOrdinates])
@@ -116,8 +116,8 @@ export default function MapDisplay(props) {
     let count = 0
     for (let i = 0; i < memberDetails.length; i++) {
       if (
-        memberDetails[i].geoLocation.lat === lat &&
-        memberDetails[i].geoLocation.lat
+        memberDetails[i].geoLocation?.lat === lat &&
+        memberDetails[i].geoLocation?.lat
       ) {
         count++
       }
