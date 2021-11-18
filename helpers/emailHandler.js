@@ -89,6 +89,7 @@ const sendConnectEmail = async (req, res, next) => {
       template: "connect",
       context: {
         token,
+        subject: "Welcome to Founderland!",
         firstName,
         lastName,
         host: process.env.HOST,
@@ -150,6 +151,7 @@ const sendVerifyEmail = async (req, res, next) => {
       template: "verify",
       context: {
         token,
+        subject: "Email Verification!",
         firstName,
         lastName,
         host: process.env.HOST,
@@ -207,6 +209,7 @@ const sendApplicantEmail = async (req, res, next) => {
       context: {
         firstName,
         lastName,
+        subject: "Update from Founderland!",
         body,
         signOff,
         host: process.env.HOST,
@@ -261,6 +264,7 @@ const sendRejected = async (req, res, next) => {
       context: {
         firstName,
         lastName,
+        subject: "Update from Founderland!",
         host: process.env.HOST,
       },
     },
@@ -315,6 +319,7 @@ const sendThankYou = async (req, res, next) => {
       context: {
         firstName,
         lastName,
+        subject: "Thank you!",
         host: process.env.HOST,
       },
     },
@@ -379,6 +384,7 @@ const sendResetEmail = async (req, res, next) => {
         token,
         firstName,
         lastName,
+        subject: "Password reset",
         avatar,
         host: process.env.HOST,
       },
