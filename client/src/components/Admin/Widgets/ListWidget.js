@@ -12,7 +12,7 @@ const ListWidget = ({ title, data, styles, showing, colSize, link }) => {
   useEffect(() => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
-    setPageCount(Math.ceil(data.data.length / perPage))
+    setPageCount(Math.ceil(data?.data.length / perPage))
 
     return () => {
       setDataToDisplay([])
@@ -27,14 +27,14 @@ const ListWidget = ({ title, data, styles, showing, colSize, link }) => {
           {colSize}
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              {data.header.map((header) => (
+              {data.header?.map((header) => (
                 <th key={header.title} className={`py-3 px-4 ${header.style}`}>
                   {header.title}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="text-gray-600 text-sm font-light text-lg">
+          <tbody className="text-gray-600 text-sm font-light">
             {dataToDisplay?.length ? (
               dataToDisplay.map((item) => (
                 <RowsWidget
@@ -47,7 +47,7 @@ const ListWidget = ({ title, data, styles, showing, colSize, link }) => {
             ) : (
               <tr className="border-b border-gray-200 hover:bg-gray-100">
                 <td
-                  colSpan={data.header.length}
+                  colSpan={data.header?.length}
                   className="py-3 px-5 text-left"
                 >
                   <div className="flex items-center">
