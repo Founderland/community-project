@@ -21,15 +21,7 @@ const styles = {
 const MembersList = ({ role, setMembersData }) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const { token, reload } = useContext(AdminContext)
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
+  const { config, reload } = useContext(AdminContext)
   const membersAPI = "/api/users/community/members/"
 
   //FETCH DATA
@@ -72,7 +64,10 @@ const MembersList = ({ role, setMembersData }) => {
             element.confirmed = moment(element.confirmed).format("DD/M/YYYY")
           }
           element.name = element.firstName + " " + element.lastName
-          element.location = element.city + ", " + element.country
+          element.location = element.city.length ? element.city : ""
+          element.location += element.country.length
+            ? ", " + element.country
+            : ""
         })
         setData({ ...header, ...data })
         setLoading(false)
@@ -85,7 +80,7 @@ const MembersList = ({ role, setMembersData }) => {
   return loading ? (
     <Loading />
   ) : (
-    <ListWidget title='' data={data} styles={styles} showing={10} />
+    <ListWidget title="" data={data} styles={styles} showing={10} />
   )
 }
 

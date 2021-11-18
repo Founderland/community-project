@@ -4,6 +4,68 @@ const nodemailer = require("nodemailer")
 const hbs = require("nodemailer-express-handlebars")
 
 //Send the connect email template
+const sendCustomEmail = async (req, res, next) => {
+  console.log("sending email")
+  const { email, _id, firstName, lastName } = req.newMember
+  const { subject, body, signOff, template } = req.body
+  const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
+    expiresIn: "5d",
+  })
+
+  // config for mailserver and mail
+  const config = {
+    mailserver: {
+      service: "outlook",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    },
+    mail: {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: subject,
+      template: template,
+      context: {
+        token,
+        subject,
+        firstName,
+        lastName,
+        body,
+        signOff,
+        host: process.env.HOST,
+      },
+    },
+  }
+
+  const sendMail = async ({ mailserver, mail }) => {
+    // create a nodemailer transporter using smtp
+    let transporter = nodemailer.createTransport(mailserver)
+
+    transporter.use(
+      "compile",
+      hbs({
+        viewEngine: {
+          partialsDir: "./emails/",
+          defaultLayout: "",
+        },
+        viewPath: "./emails/",
+        extName: ".hbs",
+      })
+    )
+
+    // send mail using transporter
+    return await transporter.sendMail(mail)
+  }
+
+  const result = await sendMail(config)
+  try {
+    return next()
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 const sendConnectEmail = async (req, res, next) => {
   console.log("sending email")
   const { email, _id, firstName, lastName } = req.newMember
@@ -61,7 +123,6 @@ const sendConnectEmail = async (req, res, next) => {
     console.log(e)
   }
 }
-
 const sendVerifyEmail = async (req, res, next) => {
   console.log("sending email")
   const { email, _id, firstName, lastName } = req.unverified
@@ -351,6 +412,7 @@ const sendResetEmail = async (req, res, next) => {
 }
 
 module.exports = {
+  sendCustomEmail,
   sendConnectEmail,
   sendThankYou,
   sendRejected,

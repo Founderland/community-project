@@ -66,9 +66,10 @@ const Admin = () => {
     let lastInitial
     if (first && last) {
       lastInitial =
-        last.split(" ").length === 1
-          ? last[0].toUpperCase()
-          : last.split(" ")[0][0] + last.split(" ")[1][0]?.toUpperCase()
+        last.trim().split(" ").length === 1
+          ? last.trim()[0].toUpperCase()
+          : last.trim().split(" ")[0][0] +
+            last.trim().split(" ")[1][0]?.toUpperCase()
       initials = first[0]?.toUpperCase() + lastInitial
     } else {
       initials = ""

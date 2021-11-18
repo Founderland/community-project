@@ -1,7 +1,11 @@
 const UserRouter = require("express").Router()
 const userController = require("../controllers/user")
 const memberController = require("../controllers/member")
-const { sendConnectEmail, sendVerifyEmail } = require("../helpers/emailHandler")
+const {
+  sendConnectEmail,
+  sendVerifyEmail,
+  sendCustomEmail,
+} = require("../helpers/emailHandler")
 const passport = require("passport")
 
 const {
@@ -60,7 +64,7 @@ UserRouter.post(
   passport.authenticate("jwt", { session: false }),
   registerCommunityValidation,
   memberController.addMember,
-  sendConnectEmail,
+  sendCustomEmail,
   memberController.updateNotified
 )
 UserRouter.post(
