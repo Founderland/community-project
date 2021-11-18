@@ -28,6 +28,14 @@ const Applicants = ({ status }) => {
       restricted: "",
     },
   ]
+  const foo = {
+    bar() {
+      console.log("Hello, world!")
+    },
+    name: "Albert",
+    age: 26,
+  }
+
   return (
     <div className="w-full flex flex-col ">
       <Tabs

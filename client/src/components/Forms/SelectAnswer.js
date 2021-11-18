@@ -41,6 +41,7 @@ export default function SelectAnswer({
 
   const listItem = (item, index) => (
     <li
+      key={item + index}
       id="listbox-item-0"
       role="option"
       aria-selected

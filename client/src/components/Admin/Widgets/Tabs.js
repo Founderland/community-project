@@ -1,6 +1,5 @@
 import { useContext } from "react"
 import AdminContext from "../../../contexts/Admin"
-import { Transition } from "@headlessui/react"
 
 const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
   const { user } = useContext(AdminContext)
@@ -13,7 +12,7 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
           id ? "cursor-not-allowed opacity-20" : "cursor-pointer"
         }  transition ease-in-out duration-200 max-w-max flex p-1 bg-${color} outline-none justify-start overflow-x-auto`}
       >
-        {tabs.map((tab) =>
+        {tabs?.map((tab) =>
           user.role.includes(tab.restricted) ? (
             <div
               className={`min-w-max transition ease-in-out duration-200 px-3 py-0.5 text-${color} text-mono tracking-wide breaksfont-medium outline-none flex justify-center items-center ${

@@ -84,7 +84,8 @@ const findResponseById = async (req, res) => {
 }
 // Update Founders Status
 const updateStatus = async (req, res, next) => {
-  const { status, applicationId, connect } = req.body
+  const { firstName, lastName, email, status, applicationId, connect } =
+    req.body
   try {
     const updateData = {
       status: status,
@@ -92,6 +93,7 @@ const updateStatus = async (req, res, next) => {
       evaluatedBy: req.user.firstName + " " + req.user.lastName,
     }
     if (req.newMember) updateData.memberId = req.newMember.id
+    else req.newMember = { firstName, lastName, email }
     const result = await Response.findByIdAndUpdate(
       { _id: applicationId },
       updateData,

@@ -464,7 +464,7 @@ const Profile = () => {
             <div className="-mx-3 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around -mb-3">
               {!profile.isVerified && id !== "new" ? (
                 <button
-                  className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                  className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
                   onClick={() => notify()}
                   disabled={notified}
                 >
@@ -489,7 +489,7 @@ const Profile = () => {
                 </button>
               ) : id === "new" ? (
                 <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                  className="px-8 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
                   onClick={() => {
                     history.goBack()
                   }}
@@ -501,7 +501,7 @@ const Profile = () => {
               )}
               {id !== "new" && id ? (
                 <button
-                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
+                  className="px-10 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
                   onClick={() => lock()}
                 >
                   {locking ? (
@@ -522,7 +522,7 @@ const Profile = () => {
               )}
               {!profile.isLocked && update && (
                 <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                  className="px-8 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => save()}
                 >
                   {saving ? (

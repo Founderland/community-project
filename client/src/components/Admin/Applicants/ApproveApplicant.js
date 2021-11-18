@@ -5,23 +5,31 @@ import AdminContext from "../../../contexts/Admin"
 import { Switch } from "@headlessui/react"
 import { CheckIcon } from "@heroicons/react/outline"
 import Banner from "../Widgets/Banner"
+import EmailNotification from "../Widgets/EmailNotification"
 
 const ApproveApplicant = ({ data, confirm }) => {
   const [saving, setSaving] = useState(false)
-  const [notify, setNotify] = useState(false)
-  const [custom, setCustom] = useState(false)
+  const [notify, setNotify] = useState({
+    connect: false,
+    template: confirm,
+    subject: "",
+    body: "",
+    signOff: "",
+  })
   const [required, setRequired] = useState(false)
-
-  const [body, setBody] = useState("")
-  const [signOff, setSignOff] = useState("")
   const history = useHistory()
   const [banner, setBanner] = useState({ show: false })
   const { setCModal, config, reload, setReload } = useContext(AdminContext)
 
   const save = async () => {
     setSaving(true)
-
     try {
+      if (
+        notify.connect &&
+        notify.template === "generic" &&
+        (notify.subject === "" || notify.body === "" || notify.signOff === "")
+      )
+        await Promise.reject(new Error("missing email fields"))
       const updateData = {
         firstName: data.data.firstName,
         lastName: data.data.lastName,
@@ -39,15 +47,15 @@ const ApproveApplicant = ({ data, confirm }) => {
           .filter((item) => item.question.includes("City"))[0]
           .answer_value.split(",")[0],
         role: data.data.role,
-        connect: notify,
+        connect: notify.connect,
         applicationId: data.data._id,
         status: confirm,
-        custom: custom,
-        body: body,
-        signOff: signOff,
+        template: notify.template,
+        subject: notify.subject,
+        body: notify.body,
+        signOff: notify.signOff,
       }
       console.log(updateData)
-
       const updateUrl =
         confirm === "approved"
           ? "/api/applicants/response/approve/"
@@ -60,7 +68,7 @@ const ApproveApplicant = ({ data, confirm }) => {
           success: 1,
           show: true,
           message: `Application updated${
-            notify ? " and applicant notified" : ""
+            notify.connect ? " and applicant notified" : ""
           }! Redirecting..`,
         })
         setTimeout(() => {
@@ -82,6 +90,13 @@ const ApproveApplicant = ({ data, confirm }) => {
           show: true,
           message: "Email already exists as Member",
         })
+      } else if (e.message === "missing email fields") {
+        setRequired(true)
+        setBanner({
+          error: 1,
+          show: true,
+          message: "All fields for the custom email are required",
+        })
       } else {
         setBanner({
           error: 1,
@@ -91,10 +106,19 @@ const ApproveApplicant = ({ data, confirm }) => {
       }
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
+        setRequired(false)
       }, 4000)
     }
   }
-
+  const setTemplate = (template, subject) => {
+    setNotify((prev) => ({ ...prev, template: template, subject: subject }))
+  }
+  const setEmail = (target, value) => {
+    setNotify((prev) => ({ ...prev, [target]: value }))
+  }
+  const setConnect = (value) => {
+    setNotify((prev) => ({ ...prev, connect: value }))
+  }
   return (
     <div className="bg-white px-8 pt-8 pb-4 flex rounded flex-col w-full shadow-lg">
       <div className="w-full flex justify-center items-center">
@@ -116,10 +140,10 @@ const ApproveApplicant = ({ data, confirm }) => {
             </Switch.Label>
             <Switch
               as="button"
-              checked={notify}
-              onChange={setNotify}
+              checked={notify.connect}
+              onChange={setConnect}
               className={`${
-                notify ? "bg-flime-600" : "bg-gray-200"
+                notify.connect ? "bg-flime-600" : "bg-gray-200"
               } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}
             >
               {({ checked }) => (
@@ -133,118 +157,18 @@ const ApproveApplicant = ({ data, confirm }) => {
               )}
             </Switch>
           </Switch.Group>
-          {notify && (
-            <>
-              <Switch.Group
-                as="div"
-                className="flex justify-center items-center space-x-6 py-2"
-              >
-                <Switch.Label className="mt-2 uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-                  Custom Email
-                </Switch.Label>
-                <Switch
-                  as="button"
-                  checked={custom}
-                  onChange={setCustom}
-                  className={`${
-                    custom ? "bg-flime-600" : "bg-gray-200"
-                  } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}
-                >
-                  {({ checked }) => (
-                    <span
-                      className={`${
-                        checked ? "translate-x-5" : "translate-x-0"
-                      } inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
-                    >
-                      <CheckIcon className={checked ? "" : "hidden"} />
-                    </span>
-                  )}
-                </Switch>
-              </Switch.Group>
-
-              <div className="w-full">
-                <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-                  Email
-                </label>
-                <div className="w-full mb-1 px-2 text-xs text-mono">
-                  <p>
-                    Hello {data.data.firstName} {data.data.lastName},
-                  </p>
-                  <p>
-                    {" "}
-                    Thank you for your interest in joining Founderland's growing
-                    community.
-                  </p>
-                </div>
-                {custom ? (
-                  <>
-                    <div className="w-full mb-2 px-2">
-                      <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-                        Body
-                      </label>
-                      <textarea
-                        className={`appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
-                          required
-                            ? "bg-red-200 animate-pulse"
-                            : "bg-grey-lighter "
-                        }`}
-                        type="text"
-                        onChange={(e) => {
-                          setBody(e.target.value)
-                        }}
-                        value={body}
-                      />
-                    </div>
-                    <div className="w-full mb-2 px-2">
-                      <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-                        Sign Off
-                      </label>
-                      <textarea
-                        className={`appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
-                          required
-                            ? "bg-red-200 animate-pulse"
-                            : "bg-grey-lighter "
-                        }`}
-                        type="text"
-                        onChange={(e) => {
-                          setSignOff(e.target.value)
-                        }}
-                        value={signOff}
-                      />
-                    </div>
-                  </>
-                ) : confirm === "rejected" ? (
-                  <div className="w-full mb-1 px-2 text-xs text-mono">
-                    <p>
-                      However, after reviewing your application, we inform you
-                      we were unable to approve your request to join.
-                    </p>
-                    <p>We will contact you shortly with further information.</p>
-                  </div>
-                ) : (
-                  <div className="w-full mb-1 px-2 text-xs text-mono">
-                    <p>
-                      We are thrilled to welcome you to the Founderland
-                      community.
-                    </p>
-                    <p>
-                      In order to have access to our Community resources and
-                      connect with other members, please follow the link below
-                      and confirm your registration. Link:'Connect with the
-                      Community'
-                    </p>
-                    <p>
-                      This link is valid for 5 days, if you have any trouble in
-                      the steps to confirm your registration, don't hesitate to
-                      contact us: community@founderland.org
-                    </p>
-                  </div>
-                )}
-                <div className="w-full mb-1 px-2 text-xs text-mono">
-                  Sincerely, The Founderland team
-                </div>
-              </div>
-            </>
+          {notify.connect && (
+            <EmailNotification
+              firstName={data.data.firstName}
+              lastName={data.data.lastName}
+              template={notify.template}
+              setTemplate={setTemplate}
+              setEmail={setEmail}
+              subject={notify.subject}
+              body={notify.body}
+              signOff={notify.signOff}
+              required={required}
+            />
           )}
         </div>
       </div>
