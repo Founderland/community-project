@@ -343,7 +343,8 @@ const MemberProfile = () => {
                       Location
                     </div>
                     <div className="p-2 text-base">
-                      {profile.city}, {profile.country}
+                      {profile.city}
+                      {profile.country.length ? `, ${profile.country}` : ""}
                     </div>
                   </div>
                   <div className="grid grid-cols-2">
