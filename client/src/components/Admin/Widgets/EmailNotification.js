@@ -31,7 +31,7 @@ const EmailNotification = ({
       signOff: `However, after reviewing your application, we inform you we were unable to approve your request to join.
           We will contact you shortly with further information.
           Sincerely,
-          The Founderland team`,
+          Team Founderland`,
       note: ``,
     },
     {
@@ -53,7 +53,7 @@ const EmailNotification = ({
       signOff: `Please be patient while we review your application, as we are currently a small team, and we will contact you back within 4 weeks.
      
           Sincerely,
-          The Founderland team`,
+          Team Founderland`,
       note: `If you didn't request to sign up, please click here to unsubscribe`,
     },
     {
@@ -64,7 +64,7 @@ const EmailNotification = ({
       body: `Thank you for your interest in joining Founderland's growing community.`,
       signOff: `You have been subscribed to our newsletter.
           Sincerely,
-          The Founderland team`,
+          Team Founderland`,
       note: `If you didn't request to sign up, please click here to unsubscribe`,
     },
     {
@@ -90,12 +90,12 @@ const EmailNotification = ({
   }
   return (
     <>
-      <div className="flex justify-center items-center w-full px-3">
-        <div className="w-full md:w-1/2 mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+      <div className='flex justify-center items-center w-full px-3'>
+        <div className='w-full md:w-1/2 mb-2 px-2'>
+          <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
             Template
           </label>
-          <div className="w-full">
+          <div className='w-full'>
             <ListOption
               options={templates}
               choice={template}
@@ -104,88 +104,88 @@ const EmailNotification = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center w-full px-3">
-        <div className="w-full mb-2 px-2">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+      <div className='flex justify-center items-center w-full px-3'>
+        <div className='w-full mb-2 px-2'>
+          <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
             Email
           </label>
 
-          <div className="w-full">
+          <div className='w-full'>
             {template !== "generic" ? (
               <>
-                <div className="w-full font-bold">
+                <div className='w-full font-bold'>
                   {
                     templates.filter((item) => item.value === template)[0]
                       .subject
                   }
                 </div>
-                <div className="w-full text-base text-mono">
+                <div className='w-full text-base text-mono'>
                   {templates.filter((item) => item.value === template)[0].top}
                 </div>
-                <div className="w-full text-sm text-mono text-justify">
+                <div className='w-full text-sm text-mono text-justify'>
                   {templates.filter((item) => item.value === template)[0].body}
                 </div>
-                <div className="w-full text-sm text-mono text-justify">
+                <div className='w-full text-sm text-mono text-justify'>
                   {
                     templates.filter((item) => item.value === template)[0]
                       .signOff
                   }
                 </div>
-                <div className="w-full text-xs text-mono">
+                <div className='w-full text-xs text-mono'>
                   {templates.filter((item) => item.value === template)[0].note}
                 </div>
               </>
             ) : (
               <>
-                <div className="w-full mb-2 px-2">
-                  <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+                <div className='w-full mb-2 px-2'>
+                  <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
                     Subject
                   </label>
                   <input
                     className={`appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
                       required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
                     }`}
-                    type="text"
+                    type='text'
                     onChange={(e) => {
                       setEmail("subject", e.target.value)
                     }}
                     value={subject}
                   />
                 </div>
-                <div className="w-full text-sm text-mono py-2">
+                <div className='w-full text-sm text-mono py-2'>
                   Hello {firstName} {lastName},
                 </div>
 
-                <div className="w-full mb-2 px-2">
-                  <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+                <div className='w-full mb-2 px-2'>
+                  <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
                     Body
                   </label>
                   <textarea
                     className={`appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
                       required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
                     }`}
-                    type="text"
+                    type='text'
                     onChange={(e) => {
                       setEmail("body", e.target.value)
                     }}
                     value={body}
                   />
                 </div>
-                <div className="w-full mb-2 px-2">
-                  <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+                <div className='w-full mb-2 px-2'>
+                  <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
                     Sign Off
                   </label>
                   <textarea
                     className={`appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
                       required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
                     }`}
-                    type="text"
+                    type='text'
                     onChange={(e) => {
                       setEmail("signOff", e.target.value)
                     }}
                     value={signOff}
                   />
-                  Sincerely, The Founderland team
+                  Sincerely, <br /> Team Founderland
                 </div>
               </>
             )}
