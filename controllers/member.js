@@ -61,6 +61,7 @@ const addMember = async (req, res, next) => {
       throw new Error("VALIDATION_FAILED")
     }
     const existing = await Member.findOne({ email })
+    if (existing) await Promise.reject(new Error("USER_EXISTS_ALREADY"))
     let data = {
       firstName,
       lastName,
@@ -73,18 +74,13 @@ const addMember = async (req, res, next) => {
       role,
       applicationId,
     }
-    let newMember
-    if (!existing) {
-      newMember = await Member.create(data)
-    } else {
-      newMember = existing
-    }
+    let newMember = await Member.create(data)
     if (newMember) {
       req.newMember = newMember
-      return next()
-    } else throw new Error("DATABASE_ERROR")
+      if (connect) return next()
+      res.status(200).json({ success: 1, member: newMember })
+    } else await Promise.reject(new Error("DATABASE_ERROR"))
   } catch (e) {
-    console.log(e)
     if (e.message === "USER_EXISTS_ALREADY") {
       res.status(403).json({
         error: 403,

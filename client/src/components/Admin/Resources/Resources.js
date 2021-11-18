@@ -75,7 +75,13 @@ const Resources = () => {
   }
 
   return (
-    <div className="w-full flex flex-col ">
+    <div className="w-full flex flex-col">
+      <ComponentModal>
+        <AddCategory />
+      </ComponentModal>
+      <ConfirmModal>
+        <ConfirmCategory data={tabs[selectedTab]} />
+      </ConfirmModal>
       {tabs.length > 0 ? (
         <>
           <Tabs

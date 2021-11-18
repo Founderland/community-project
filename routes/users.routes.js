@@ -71,7 +71,7 @@ UserRouter.post(
   "/community/notify/:id",
   passport.authenticate("jwt", { session: false }),
   memberController.findMember,
-  sendConnectEmail,
+  sendCustomEmail,
   memberController.updateNotified
 )
 UserRouter.put(

@@ -56,7 +56,7 @@ const AddMember = ({ role }) => {
     businessArea: "Select the business area",
     connect: false,
     template: "approved",
-    subject: "",
+    subject: "Welcome to Founderland!",
     body: "",
     signOff: "",
   })

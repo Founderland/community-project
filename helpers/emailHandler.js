@@ -157,27 +157,27 @@ const sendVerifyEmail = async (req, res, next) => {
     },
   }
 
-  // const sendMail = async ({ mailserver, mail }) => {
-  //   // create a nodemailer transporter using smtp
-  //   let transporter = nodemailer.createTransport(mailserver)
+  const sendMail = async ({ mailserver, mail }) => {
+    // create a nodemailer transporter using smtp
+    let transporter = nodemailer.createTransport(mailserver)
 
-  //   transporter.use(
-  //     "compile",
-  //     hbs({
-  //       viewEngine: {
-  //         partialsDir: "./emails/",
-  //         defaultLayout: "",
-  //       },
-  //       viewPath: "./emails/",
-  //       extName: ".hbs",
-  //     })
-  //   )
+    transporter.use(
+      "compile",
+      hbs({
+        viewEngine: {
+          partialsDir: "./emails/",
+          defaultLayout: "",
+        },
+        viewPath: "./emails/",
+        extName: ".hbs",
+      })
+    )
 
-  //   // send mail using transporter
-  //   return await transporter.sendMail(mail)
-  // }
+    // send mail using transporter
+    return await transporter.sendMail(mail)
+  }
 
-  // const result = await sendMail(config)
+  const result = await sendMail(config)
   try {
     return next()
   } catch (e) {

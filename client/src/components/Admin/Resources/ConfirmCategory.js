@@ -1,6 +1,5 @@
 import axios from "axios"
 import { useState, useContext } from "react"
-import { useHistory } from "react-router-dom"
 import AdminContext from "../../../contexts/Admin"
 
 import Banner from "../Widgets/Banner"
@@ -10,7 +9,8 @@ const deleteUrl = "/api/resources/"
 const Confirm = ({ data }) => {
   const [saving, setSaving] = useState(false)
   const [banner, setBanner] = useState({ show: false })
-  const { setCCModal, config, reload, setReload } = useContext(AdminContext)
+  const { setCCModal, config, reload, setReload, setSelectedTab } =
+    useContext(AdminContext)
   const save = async () => {
     setSaving(true)
     try {
@@ -27,6 +27,7 @@ const Confirm = ({ data }) => {
         })
         setTimeout(() => {
           setReload(reload + 1)
+          setSelectedTab(0)
           setCCModal(false)
         }, 2000)
       } else {

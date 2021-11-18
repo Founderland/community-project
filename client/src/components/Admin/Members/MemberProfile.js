@@ -6,6 +6,8 @@ import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
 import Loading from "../Widgets/Loading"
 import EventPreview from "../../Community/Profile/EventPreview"
+import ComponentModal from "../Widgets/ComponentModal"
+import Notify from "./Notify"
 
 import moment from "moment"
 import {
@@ -17,7 +19,6 @@ import {
 } from "@heroicons/react/outline"
 
 const memberUrl = "/api/users/community/profile/"
-const notifyUrl = "/api/users/community/notify/"
 const lockUrl = "/api/users/community/lock"
 const eventsUrl = "/api/events/future"
 
@@ -54,15 +55,13 @@ const styles = {
 
 const MemberProfile = () => {
   const [loading, setLoading] = useState(true)
-  const [notifying, setNotifying] = useState(false)
-  const [notified, setNotified] = useState(false)
   const [locking, setLocking] = useState(false)
   const [profile, setProfile] = useState(defaultProfile)
   const [events, setEvents] = useState({ own: [], interested: [], going: [] })
 
   const [banner, setBanner] = useState({ show: false })
   const { id } = useParams()
-  const { config, user, reload, setReload } = useContext(AdminContext)
+  const { config, user, reload, setCModal } = useContext(AdminContext)
 
   useEffect(() => {
     setLoading(true)
@@ -162,28 +161,6 @@ const MemberProfile = () => {
     }
   }
 
-  const notify = async () => {
-    setNotifying(true)
-    try {
-      const notified = await axios.post(notifyUrl + id, { _id: id }, config)
-      if (notified) {
-        setNotified(true)
-        setReload(reload + 1)
-        setNotifying(false)
-      }
-    } catch (e) {
-      setNotifying(false)
-      setBanner({
-        error: 1,
-        show: true,
-        message: "Error notifying the user!",
-      })
-      setTimeout(() => {
-        setBanner((prev) => ({ ...prev, show: false }))
-      }, 4000)
-    }
-  }
-
   return (
     <section className="h-full py-1 bg-white w-full xl:w-5/6 px-4 mx-auto mt-4">
       {loading ? (
@@ -193,6 +170,9 @@ const MemberProfile = () => {
           <div className="w-full flex items-center justify-center z-20">
             <Banner message={banner} />
           </div>
+          <ComponentModal>
+            <Notify member={profile} />
+          </ComponentModal>
           <div className="sm:flex no-wrap md:-mx-2">
             <div
               className={`w-full sm:w-1/2 md:w-3/12 md:mx-2 shadow bg-white p-3 border-t-8 ${
@@ -430,27 +410,10 @@ const MemberProfile = () => {
             {!profile.confirmed ? (
               <button
                 className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
-                onClick={() => notify()}
-                disabled={notified}
+                onClick={() => setCModal(true)}
               >
-                {notifying ? (
-                  <div className="flex justify-center">
-                    <div
-                      style={{ borderTopColor: "transparent" }}
-                      className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                    ></div>
-                  </div>
-                ) : notified ? (
-                  <>
-                    <ShieldCheckIcon className="w-6 h-6" />
-                    <p>User notified</p>
-                  </>
-                ) : (
-                  <>
-                    <ShieldCheckIcon className="w-6 h-6" />
-                    <p>Notify Member</p>
-                  </>
-                )}
+                <ShieldCheckIcon className="w-6 h-6" />
+                <p>Notify Member</p>
               </button>
             ) : (
               ""
