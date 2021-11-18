@@ -39,14 +39,14 @@ const ResourceCard = ({ resource }) => {
           </div>
         </div>
         <div className="px-2 py-2">
-          <div className="font-bold text-black text-xl mb-2  font-mono">
+          <div className="flex justify-center items-center font-bold text-black text-xl mb-2 h-16 font-mono">
             {resource.articleTitle}
           </div>
-          <p className="h-10 px-2 text-black text-sm text-mono overflow-ellipsis text-justify truncate">
+          <p className="h-10 w-full px-2 text-black text-sm text-mono text-justify truncate">
             {resource.articleDescription}
           </p>
         </div>
-        <div className=" pl-6 pr-2 pt-4 pb-2 flex justify-between">
+        <div className=" pl-6 pr-2 pt-2 pb-2 flex justify-between">
           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mr-2 mb-2">
             {types[resource.articleType]}
           </span>

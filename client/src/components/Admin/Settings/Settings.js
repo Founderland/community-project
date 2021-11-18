@@ -22,7 +22,19 @@ const styles = {
 const Settings = () => {
   const history = useHistory()
   const { id } = useParams()
-  const [data, setData] = useState([])
+  const [data, setData] = useState({
+    header: [
+      { title: "Name", key: "name", style: "text-xs md:text-sm" },
+      { title: "Email", key: "email", style: "text-xs md:text-sm" },
+      {
+        title: "Role",
+        key: "role",
+        style: "flex text-xs md:text-sm sm:flex hidden justify-center",
+      },
+      { title: "Actions", key: "-", style: "text-xs md:text-sm" },
+    ],
+    data: [],
+  })
   const [loading, setLoading] = useState(false)
   const { config, rolesLabel, selectedTab, setSelectedTab, user, reload } =
     useContext(AdminContext)
@@ -44,18 +56,6 @@ const Settings = () => {
     axios
       .get(usersAPI, config)
       .then((res) => {
-        let response = {
-          header: [
-            { title: "Name", key: "name", style: "text-xs md:text-sm" },
-            { title: "Email", key: "email", style: "text-xs md:text-sm" },
-            {
-              title: "Role",
-              key: "role",
-              style: "flex text-xs md:text-sm sm:flex hidden justify-center",
-            },
-            { title: "Actions", key: "-", style: "text-xs md:text-sm" },
-          ],
-        }
         const userList = res.data.data
           .filter((item) => item._id !== user.id)
           .map((item) => ({
@@ -63,8 +63,7 @@ const Settings = () => {
             name: item.firstName + " " + item.lastName,
             role: rolesLabel[item.role],
           }))
-        response.data = userList
-        setData(response)
+        setData({ ...data, data: [...userList] })
         setLoading(false)
       })
       .catch((err) => {

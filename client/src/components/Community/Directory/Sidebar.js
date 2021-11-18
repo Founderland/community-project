@@ -19,8 +19,8 @@ export default function Sidebar(props) {
     setIsCardSelected(false)
     const fiteredArray = memberDetails.filter((items) => {
       return (
-        props.data?.lat === items.geoLocation.lat &&
-        props.data?.lng === items.geoLocation.lng
+        props.data?.lat === items.geoLocation?.lat &&
+        props.data?.lng === items.geoLocation?.lng
       )
     })
     setSidebarDisplay(fiteredArray)
@@ -116,8 +116,6 @@ export default function Sidebar(props) {
           </div>
         ) : (
           <div></div>
-
-         
         )}
       </div>
     </div>

@@ -91,7 +91,7 @@ const Application = () => {
                     {data.data.role}
                   </span>
                 </div>
-                <div className=" hidden md:block flex-grow flex flex-col justify-center items-center"></div>
+                <div className="hidden md:block flex-grow flex flex-col justify-center items-center"></div>
                 <div className="flex items-center">
                   {data.data.totalScore ? (
                     <div
