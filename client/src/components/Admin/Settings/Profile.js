@@ -113,6 +113,7 @@ const Profile = () => {
     try {
       if (
         !id &&
+        profile.password &&
         (profile.password !== profile.confirmPassword ||
           !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(profile.password))
       ) {
@@ -296,7 +297,7 @@ const Profile = () => {
                 <Popover.Button className="absolute bottom-0 outline-none right-0 bg-flime p-1 h-8 w-8 text-center rounded-full cursor-pointer transition duration-200 group-hover:bg-fblue group-hover:text-white">
                   <ChevronDownIcon className="h-6 w-6" />
                 </Popover.Button>
-                <Popover.Panel className="absolute -bottom-32 right-3 md:right-2 rounded shadow-lg bg-white w-32 h-32 p-2 flex flex-wrap justify-between ">
+                <Popover.Panel className="absolute -bottom-32 z-20 right-3 md:right-2 rounded shadow-lg bg-white w-32 h-32 p-2 flex flex-wrap justify-between ">
                   {avatarColors.map((color) => (
                     <span
                       key={color}
