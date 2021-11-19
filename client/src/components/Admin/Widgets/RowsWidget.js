@@ -1,22 +1,11 @@
 import { EyeIcon, PencilAltIcon } from "@heroicons/react/outline"
-import { useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import Tooltip from "./Tooltip"
-const avatarInitials = (first, last) => {
-  let initials = first[0].toUpperCase() + last[0].toUpperCase()
-  return initials
-}
+import { useContext } from "react"
+import AdminContext from "../../../contexts/Admin"
 
 const RowsWidget = ({ headers, item, styles, link }) => {
-  const [isHovered, setisHovered] = useState(false)
-
-  const handleMouseOver = () => {
-    setisHovered(true)
-  }
-  const handleMouseExit = () => {
-    setisHovered(false)
-  }
   const { view } = useParams()
+  const { avatarInitials } = useContext(AdminContext)
   const displayReviews = (reviews) => {
     const extra = reviews.length - 3
     let reviewsDisplay = []
@@ -64,11 +53,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
 
   return (
     <>
-      <tr
-        className="border-b border-gray-200 hover:bg-gray-100"
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseExit}
-      >
+      <tr className="border-b border-gray-200 hover:bg-gray-100">
         {headers.map((header) => {
           if (header.key !== "-") {
             if (Array.isArray(item[header.key])) {
@@ -101,9 +86,6 @@ const RowsWidget = ({ headers, item, styles, link }) => {
                   >
                     {item[header.key]}
                   </p>
-                  {isHovered && header.key === "interests" && (
-                    <Tooltip message={item["interests"]} />
-                  )}
                 </td>
               )
             }

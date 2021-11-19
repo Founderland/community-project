@@ -37,7 +37,11 @@ const AdminDashboard = () => {
     alliesWidget: true,
     pendingApplicants: true,
   })
-
+  const [filter, setFilter] = useState([
+    { key: "name", search: "", show: false, type: "text" },
+    { key: "email", search: "", show: false, type: "text" },
+    { key: "role", search: "", show: false, type: "list" },
+  ])
   const lastWeek = new Date()
   lastWeek.setDate(lastWeek.getDate() - 8)
   //GET FOUNDERS COUNT
@@ -196,6 +200,8 @@ const AdminDashboard = () => {
             showing={5}
             styles={styles}
             link="applicants/id/"
+            filter={filter}
+            setFilter={setFilter}
           />
         )}
       </div>

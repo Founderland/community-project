@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react"
 import AdminContext from "../../../contexts/Admin"
 import ListWidget from "../Widgets/ListWidget"
 import Loading from "../Widgets/Loading"
-import TootlTip from "../Widgets/Tooltip"
 import axios from "axios"
 import moment from "moment"
 
@@ -20,55 +19,80 @@ const styles = {
 }
 
 const NewsLetterList = ({ role, newsletterDataHandler }) => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState({
+    header: [
+      { title: "Name", key: "name", style: "text-right text-sm" },
+      { title: "Email", key: "email", style: "text-center text-sm" },
+      {
+        title: "Interest",
+        key: "interests",
+        style: "text-center text-sm",
+      },
+      {
+        title: "Subscribed On",
+        key: "subscribedOn",
+        style: "text-center text-sm",
+      },
+    ],
+    data: [],
+  })
   const [loading, setLoading] = useState(true)
   const { config, reload } = useContext(AdminContext)
-
+  const [filter, setFilter] = useState([
+    { key: "name", search: "", show: false, type: "text" },
+    { key: "email", search: "", show: false, type: "text" },
+    { key: "interests", search: "", show: false, type: "text" },
+  ])
   //FETCH DATA
   useEffect(() => {
-    axios
-      .get("/api/applicants/response/newsletter", config)
-      .then((res) => {
-        const header = {
-          header: [
-            { title: "Name", key: "firstName", style: "text-right text-sm" },
-            { title: " ", key: "lastName", style: "text-left text-sm" },
-            { title: "Email", key: "email", style: "text-center text-sm" },
-            {
-              title: "Interest",
-              key: "interests",
-              style: "text-center text-sm",
-            },
-            {
-              title: "Subscribed On",
-              key: "subscriptionDate",
-              style: "text-center text-sm",
-            },
-          ],
-        }
-
-        const data = res
-        data.data.forEach((element) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "/api/applicants/response/newsletter",
+          config
+        )
+        response.data.forEach((element) => {
           if (element.subscriptionDate) {
-            element.subscriptionDate = moment(element.subscriptionDate).format(
+            element.subscribedOn = moment(element.subscriptionDate).format(
               "DD/M/YYYY"
             )
+            element.name = element.firstName + " " + element.lastName
           }
         })
-        setData({ ...header, ...data })
+        let filteredData = [...response.data]
+        filter.forEach(
+          (term) =>
+            (filteredData = [
+              ...filteredData.filter((item) => {
+                console.log(item, term)
+                return item[term.key]
+                  ?.toLowerCase()
+                  .includes(term.search?.toLowerCase())
+              }),
+            ])
+        )
+        setData({ ...data, data: filteredData })
         setLoading(false)
-        newsletterDataHandler(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [reload, role])
+        newsletterDataHandler(filteredData)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchData()
+  }, [reload, role, filter])
 
   return loading ? (
     <Loading />
   ) : (
     <>
-      <ListWidget title="" data={data} styles={styles} showing={10} />
+      <ListWidget
+        title=""
+        data={data}
+        styles={styles}
+        showing={10}
+        filter={filter}
+        setFilter={setFilter}
+      />
     </>
   )
 }

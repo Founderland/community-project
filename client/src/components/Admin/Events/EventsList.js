@@ -90,7 +90,7 @@ const EventsList = ({ state }) => {
                 key={tag}
                 className={`${
                   selected
-                    ? "bg-green-300 text-green-600"
+                    ? "bg-green-700 text-flime"
                     : "bg-gray-200 text-gray-600"
                 } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
                 onClick={() => filterTag(tag)}
@@ -106,7 +106,9 @@ const EventsList = ({ state }) => {
       <div className="bg-white">
         <div className="flex flex-wrap w-full justify-start overflow-auto">
           {dataToDisplay.length ? (
-            dataToDisplay.map((event) => <EventCard event={event} />)
+            dataToDisplay.map((event) => (
+              <EventCard key={event._id} event={event} />
+            ))
           ) : (
             <span className="font-medium flex space-x-4 items-center my-2 ml-2">
               <EmojiSadIcon className="h-6 w-6" />

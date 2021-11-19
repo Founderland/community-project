@@ -19,49 +19,51 @@ const styles = {
 }
 
 const MembersList = ({ role, setMembersData }) => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState({
+    header: [
+      { title: "Name", key: "name", style: "text-left text-sm" },
+      {
+        title: "Location",
+        key: "location",
+        style: "text-center text-sm",
+      },
+      { title: "Added on", key: "createdOn", style: "text-center text-sm" },
+      {
+        title: "Notified on",
+        key: "notifiedOn",
+        style: "text-center text-sm",
+      },
+      {
+        title: "Signed up on",
+        key: "confirmedOn",
+        style: "text-center text-sm",
+      },
+      { title: "", key: "-", style: "text-center text-sm" },
+    ],
+    data: [],
+  })
   const [loading, setLoading] = useState(true)
   const { config, reload } = useContext(AdminContext)
   const membersAPI = "/api/users/community/members/"
-
+  const [filter, setFilter] = useState([
+    { key: "name", search: "", show: false, type: "text" },
+    { key: "location", search: "", show: false, type: "text" },
+  ])
   //FETCH DATA
   useEffect(() => {
-    axios
-      .get(membersAPI + role, config)
-      .then((res) => {
-        const header = {
-          header: [
-            { title: "Name", key: "name", style: "text-left text-sm" },
-            {
-              title: "Location",
-              key: "location",
-              style: "text-center text-sm",
-            },
-            { title: "Added on", key: "created", style: "text-center text-sm" },
-            {
-              title: "Notified on",
-              key: "notified",
-              style: "text-center text-sm",
-            },
-            {
-              title: "Signed up on",
-              key: "confirmed",
-              style: "text-center text-sm",
-            },
-            { title: "", key: "-", style: "text-center text-sm" },
-          ],
-        }
-        const data = res.data
-        setMembersData(data.data)
-        data.data.forEach((element) => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(membersAPI + role, config)
+        console.log(result)
+        result.data.data.forEach((element) => {
           if (element.created) {
-            element.created = moment(element.created).format("DD/M/YYYY")
+            element.createdOn = moment(element.created).format("DD/M/YYYY")
           }
           if (element.notified) {
-            element.notified = moment(element.notified).format("DD/M/YYYY")
+            element.notifiedOn = moment(element.notified).format("DD/M/YYYY")
           }
           if (element.confirmed) {
-            element.confirmed = moment(element.confirmed).format("DD/M/YYYY")
+            element.confirmedOn = moment(element.confirmed).format("DD/M/YYYY")
           }
           element.name = element.firstName + " " + element.lastName
           element.location = element.city.length ? element.city : ""
@@ -69,18 +71,36 @@ const MembersList = ({ role, setMembersData }) => {
             ? ", " + element.country
             : ""
         })
-        setData({ ...header, ...data })
+        let filteredData = [...result.data.data]
+        filter.forEach(
+          (term) =>
+            (filteredData = [
+              ...filteredData.filter((item) =>
+                item[term.key].toLowerCase().includes(term.search.toLowerCase())
+              ),
+            ])
+        )
+        setMembersData([...filteredData])
+        setData({ ...data, data: [...filteredData] })
         setLoading(false)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [reload, role])
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchData()
+  }, [reload, role, filter])
 
   return loading ? (
     <Loading />
   ) : (
-    <ListWidget title="" data={data} styles={styles} showing={10} />
+    <ListWidget
+      title=""
+      data={data}
+      styles={styles}
+      showing={10}
+      filter={filter}
+      setFilter={setFilter}
+    />
   )
 }
 

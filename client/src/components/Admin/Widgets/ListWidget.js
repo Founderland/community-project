@@ -1,35 +1,117 @@
-import { EmojiSadIcon } from "@heroicons/react/outline"
-import { useState, useEffect } from "react"
+import {
+  EmojiSadIcon,
+  FilterIcon,
+  SearchCircleIcon,
+  XIcon,
+} from "@heroicons/react/outline"
+import { useState, useEffect, useContext } from "react"
 import RowsWidget from "./RowsWidget"
 import Pagination from "./Pagination"
+import AdminContext from "../../../contexts/Admin"
 
-const ListWidget = ({ title, data, styles, showing, colSize, link }) => {
+const ListWidget = ({
+  title,
+  data,
+  styles,
+  showing,
+  colSize,
+  link,
+  filter,
+  setFilter,
+}) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
   const [pageCount, setPageCount] = useState(0)
-
+  const { selectedTab } = useContext(AdminContext)
+  useEffect(() => {
+    let newFilter = [...filter]
+    newFilter.forEach((item) => (item.show = false))
+    setFilter(newFilter)
+  }, [selectedTab])
   useEffect(() => {
     const slice = data.data.slice(offset * perPage, offset * perPage + perPage)
     setDataToDisplay(slice)
     setPageCount(Math.ceil(data?.data.length / perPage))
-
     return () => {
       setDataToDisplay([])
     }
   }, [data, offset])
-
   return (
     <div className="w-full px-2 ">
       <p className="text-mono">{title}</p>
+      <div className="flex items-center">
+        {filter.filter((filter) => filter.search !== "").length > 0 && (
+          <SearchCircleIcon className="h-6 w-6" />
+        )}
+        {filter?.map((item, index) =>
+          item.search.length ? (
+            <div
+              key={item.key}
+              className={`bg-green-700 text-flime group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
+              onClick={() => {
+                let newFilter = [...filter]
+                newFilter[index].search = ""
+                newFilter.forEach((item) => (item.show = false))
+                setFilter(newFilter)
+              }}
+            >
+              <p className="uppercase text-xs">
+                {item.key}
+                {item.type === "text" ? ":" : ">="}
+              </p>
+              <p className=" text-xs">{item.search}</p>
+              <XIcon className="group-hover:text-red-500 text-black font-bold h-3" />
+            </div>
+          ) : (
+            ""
+          )
+        )}
+      </div>
       <div className="bg-white shadow-md my-4 overflow-auto">
         <table className="min-w-max w-full table-auto">
           {colSize}
           <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              {data.header?.map((header) => (
-                <th key={header.title} className={`py-3 px-4 ${header.style}`}>
-                  {header.title}
+            <tr className=" bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              {data.header?.map((header, index) => (
+                <th key={header.title} className={`py-2 ${header.style}`}>
+                  <div className="flex relative items-center justify-center space-x-4">
+                    <p>{header.title}</p>
+                    {header.key !== "-" && !header.key?.includes("On") && (
+                      <>
+                        <button
+                          className={`group p-1`}
+                          onClick={() => {
+                            let newFilter = [...filter]
+                            newFilter.forEach((item) =>
+                              item.key === header.key
+                                ? (item.show = !item.show)
+                                : (item.show = false)
+                            )
+                            setFilter(newFilter)
+                          }}
+                        >
+                          <FilterIcon className="h-4 w-4 group-hover:text-fblue" />
+                        </button>
+                        <div
+                          className={`absolute z-20 top-6 shadow-xl p-1 ${
+                            filter[index]?.show ? "block" : "hidden"
+                          } bg-white`}
+                        >
+                          <input
+                            type="text"
+                            className="w-20 border border-gray-400 p-1"
+                            onChange={(e) => {
+                              let newFilter = [...filter]
+                              newFilter[index].search = e.target.value
+                              setFilter(newFilter)
+                            }}
+                            value={filter[index]?.search}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>

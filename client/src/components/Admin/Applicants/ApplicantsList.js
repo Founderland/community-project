@@ -14,11 +14,19 @@ const styles = {
 
 const applicantsURL = "/api/applicants/response/"
 
-const ApplicantsList = ({ status, role, reload }) => {
+const ApplicantsList = ({ role }) => {
   const [loading, setLoading] = useState(true)
-  const { config, selectedTab } = useContext(AdminContext)
-  let { category } = useParams()
-
+  const { category } = useParams()
+  const [listData, setListData] = useState({
+    data: [],
+    header: [],
+  })
+  const { config, selectedTab, reload } = useContext(AdminContext)
+  const [filter, setFilter] = useState([
+    { key: "name", search: "", show: false, type: "text" },
+    { key: "location", search: "", show: false, type: "text" },
+    { key: "totalScore", search: "", show: false, type: "number" },
+  ])
   const getTimeDifference = (DateToCompare) => {
     const today = Date.now()
     const compareDate = Date.parse(DateToCompare)
@@ -44,8 +52,6 @@ const ApplicantsList = ({ status, role, reload }) => {
     }
     return timeDifference
   }
-  const [listData, setListData] = useState({ data: [], header: [] })
-
   //FETCH DATA
   useEffect(() => {
     const fetchData = async () => {
@@ -54,18 +60,17 @@ const ApplicantsList = ({ status, role, reload }) => {
           applicantsURL + category + "/" + role,
           config
         )
-        const userData = result.data.map((item) => {
+        let userData = result.data.map((item) => {
           const userLocation = item.answerData.filter(
             (x) => x.question.search("City") === 0
           )
           let finalObject = {
             ...item,
-            applicantName: `${item.firstName} ${item.lastName}`,
-            userLocation: userLocation[0].answer_value,
-            submitted: getTimeDifference(item.submissionDate),
+            name: `${item.firstName} ${item.lastName}`,
+            location: userLocation[0].answer_value,
+            submittedOn: getTimeDifference(item.submissionDate),
           }
-
-          if (status !== "new") {
+          if (category !== "new") {
             const date = new Date(item.evaluatedOn)
             finalObject = {
               ...finalObject,
@@ -75,34 +80,44 @@ const ApplicantsList = ({ status, role, reload }) => {
 
           return finalObject
         })
-
+        let header = [
+          {
+            title: "Name",
+            key: "name",
+            style: "py-3 px-6 text-left ",
+          },
+          {
+            title: "Location",
+            key: "location",
+            style: "text-center hidden lg:table-cell",
+          },
+          {
+            title: "Score",
+            key: "totalScore",
+            style: `text-center ${role === "founder" ? "show" : "hidden"}`,
+          },
+          {
+            title: category === "new" ? "Submitted" : "Evaluated On",
+            key: category === "new" ? "submittedOn" : "evaluatedOn",
+            style: "text-center hidden md:table-cell",
+          },
+          { title: "", key: "-", style: "text-center min-w-20" },
+        ]
+        filter.forEach(
+          (term) =>
+            (userData = [
+              ...userData.filter((item) => {
+                if (term.type === "text")
+                  return item[term.key]
+                    .toLowerCase()
+                    .includes(term.search.toLowerCase())
+                return Number(item[term.key]) >= Number(term.search)
+              }),
+            ])
+        )
         setListData({
-          header: [
-            {
-              title: "Name",
-              key: "applicantName",
-              style: "py-3 px-6 text-left ",
-            },
-            {
-              title: "Location",
-              key: "userLocation",
-              style: "text-left hidden lg:table-cell items-center",
-            },
-            {
-              title: status === "new" ? "Submitted" : "Evaluated On",
-              key: status === "new" ? "submitted" : "evaluatedOn",
-              style: "text-left hidden md:table-cell items-center",
-            },
-            role === "founder"
-              ? {
-                  title: "Score",
-                  key: "totalScore",
-                  style: "text-left",
-                }
-              : "null",
-            { title: "", key: "-", style: "text-center" },
-          ],
-          data: userData,
+          header: [...header],
+          data: [...userData],
           colSize: [<colgroup></colgroup>],
         })
         setLoading(false)
@@ -111,7 +126,7 @@ const ApplicantsList = ({ status, role, reload }) => {
       }
     }
     fetchData()
-  }, [category, selectedTab])
+  }, [category, reload, selectedTab, filter])
 
   return loading ? (
     <Loading />
@@ -122,6 +137,8 @@ const ApplicantsList = ({ status, role, reload }) => {
       showing={10}
       colSize={listData.colSize}
       styles={styles}
+      filter={filter}
+      setFilter={setFilter}
     />
   )
 }
