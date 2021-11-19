@@ -40,7 +40,7 @@ const EventPreview = ({ event }) => {
             : event.location + " - " + event.city}
         </div>
       </div>
-      <div className="flex flex-col justify-center items-center flex-none w-30 bg-white px-2 ">
+      <div className="hidden 2xl:block flex flex-col justify-center items-center flex-none w-30 bg-white px-2 ">
         <span className="flex w-full space-x-2 items-center tracking-wider text-gray-600 bg-gray-200 py-2 px-2 text-sm rounded leading-loose mx-auto font-semibold mt-2">
           <p className="flex items-center justify-center text-xs w-6 h-6 rounded-full bg-flime">
             {event.going.length}

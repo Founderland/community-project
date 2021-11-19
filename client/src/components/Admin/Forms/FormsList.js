@@ -15,21 +15,47 @@ const styles = {
 
 const FormsList = ({ role, reload }) => {
   const [loading, setLoading] = useState(true)
-  const { token, selectedTab } = useContext(AdminContext)
-
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
+  const { config, selectedTab } = useContext(AdminContext)
+  const [filter, setFilter] = useState([
+    { key: "question", search: "", show: false, type: "text" },
+    { key: "category", search: "", show: false, type: "text" },
+    { key: "type", search: "", show: false, type: "text" },
+    { key: "rank", search: "", show: false, type: "text" },
+  ])
   const formsURL = `/api/form/${role}/questions`
 
   const [listData, setListData] = useState({
     data: [],
-    header: [],
+    header: [
+      {
+        title: "Question",
+        key: "question",
+        style: "text-left table-cell text-sm break-normal md:break-all",
+      },
+      {
+        title: "Category",
+        key: "category",
+        style: "text-center table-cell text-xs w-20",
+      },
+      {
+        title: "Type",
+        key: "type",
+        style: "text-center hidden md:table-cell text-xs w-20",
+      },
+      {
+        title: "Rank",
+        key: "rank",
+        style:
+          role === "founder"
+            ? "flex justify-center items-center hidden lg:table-cell text-sm w-40"
+            : "hidden",
+      },
+      {
+        title: "Actions",
+        key: "-",
+        style: "text-xs text-center w-20",
+      },
+    ],
     colSize: [
       <colgroup>
         <col style={{ width: "40vw" }} />
@@ -45,48 +71,23 @@ const FormsList = ({ role, reload }) => {
       try {
         const result = await axios.get(formsURL, config)
         if (typeof result.data === "string") return
-        if (result.data)
-          setListData({
-            ...listData,
-            header: [
-              {
-                title: "Question",
-                key: "question",
-                style: "text-left table-cell text-sm break-normal md:break-all",
-              },
-              {
-                title: "Category",
-                key: "category",
-                style: "text-left table-cell text-xs w-20",
-              },
-              {
-                title: "Type",
-                key: "type",
-                style: "text-left hidden md:table-cell text-xs w-20",
-              },
-              {
-                title: "Rank",
-                key: "rank",
-                style:
-                  role === "founder"
-                    ? "flex justify-center items-center hidden lg:table-cell text-sm w-40"
-                    : "hidden",
-              },
-              {
-                title: "Actions",
-                key: "-",
-                style: "text-xs text-center w-20",
-              },
-            ],
-            data: result.data,
-          })
+        let filteredData = [...result.data]
+        filter.forEach(
+          (term) =>
+            (filteredData = [
+              ...filteredData.filter((item) =>
+                item[term.key].toLowerCase().includes(term.search.toLowerCase())
+              ),
+            ])
+        )
+        setListData({ ...listData, data: [...filteredData] })
         setLoading(false)
       } catch (e) {
         console.log(e)
       }
     }
     fetchData()
-  }, [reload, selectedTab])
+  }, [reload, selectedTab, filter])
 
   return loading ? (
     <Loading />
@@ -97,6 +98,8 @@ const FormsList = ({ role, reload }) => {
       showing={10}
       colSize={listData.colSize}
       styles={styles}
+      filter={filter}
+      setFilter={setFilter}
     />
   )
 }

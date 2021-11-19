@@ -46,14 +46,14 @@ const isAuthorized = async (payload, done) => {
     if (err) {
       return done(err, false)
     }
-    if (user) {
+    if (user && !user.isLocked) {
       return done(null, user)
     } else {
       Member.findOne({ _id: payload.id, email: payload.email }, (err, user) => {
         if (err) {
           return done(err, false)
         }
-        if (user) {
+        if (user && !user.locked) {
           return done(null, user)
         } else {
           return done(null, false)

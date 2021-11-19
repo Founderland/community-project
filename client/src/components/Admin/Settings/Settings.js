@@ -22,7 +22,24 @@ const styles = {
 const Settings = () => {
   const history = useHistory()
   const { id } = useParams()
-  const [data, setData] = useState([])
+  const [data, setData] = useState({
+    header: [
+      { title: "Name", key: "name", style: "text-xs md:text-sm" },
+      { title: "Email", key: "email", style: "text-xs md:text-sm" },
+      {
+        title: "Role",
+        key: "role",
+        style: "hidden text-xs md:text-sm sm:block",
+      },
+      { title: "Actions", key: "-", style: "text-xs md:text-sm" },
+    ],
+    data: [],
+  })
+  const [filter, setFilter] = useState([
+    { key: "name", search: "", show: false, type: "text" },
+    { key: "email", search: "", show: false, type: "text" },
+    { key: "role", search: "", show: false, type: "text" },
+  ])
   const [loading, setLoading] = useState(false)
   const { config, rolesLabel, selectedTab, setSelectedTab, user, reload } =
     useContext(AdminContext)
@@ -41,36 +58,32 @@ const Settings = () => {
 
   //Get all registered Users and set the result as data
   useEffect(() => {
-    axios
-      .get(usersAPI, config)
-      .then((res) => {
-        let response = {
-          header: [
-            { title: "Name", key: "name", style: "text-xs md:text-sm" },
-            { title: "Email", key: "email", style: "text-xs md:text-sm" },
-            {
-              title: "Role",
-              key: "role",
-              style: "flex text-xs md:text-sm sm:flex hidden justify-center",
-            },
-            { title: "Actions", key: "-", style: "text-xs md:text-sm" },
-          ],
-        }
-        const userList = res.data.data
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(usersAPI, config)
+        let filteredData = response.data.data
           .filter((item) => item._id !== user.id)
           .map((item) => ({
             ...item,
             name: item.firstName + " " + item.lastName,
             role: rolesLabel[item.role],
           }))
-        response.data = userList
-        setData(response)
+        filter.forEach(
+          (term) =>
+            (filteredData = [
+              ...filteredData.filter((item) =>
+                item[term.key].toLowerCase().includes(term.search.toLowerCase())
+              ),
+            ])
+        )
+        setData({ ...data, data: [...filteredData] })
         setLoading(false)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [selectedTab, reload])
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchData()
+  }, [selectedTab, reload, filter])
 
   return (
     <div className="flex flex-col w-full overflow-none">
@@ -88,9 +101,11 @@ const Settings = () => {
             <ListWidget
               title=""
               data={data}
-              showing={10}
+              showing={8}
               styles={styles}
               cellAlignment={"justify-center"}
+              filter={filter}
+              setFilter={setFilter}
             />
             <button
               className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
