@@ -62,7 +62,7 @@ const ApplicationComments = ({
         })
         .catch((e) => console.log(e))
     }
-  }, [data.data.comments, applicationId, refreshCommList])
+  }, [applicationId, refreshCommList])
 
   const addComment = (user) => {
     const newComment = {
@@ -80,7 +80,6 @@ const ApplicationComments = ({
         setRefreshCommList(!refreshCommList)
         triggerBanner(res.data.message, 1)
         scrollDown()
-
         changeToReviewed()
       })
       .catch((e) => {
