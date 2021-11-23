@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import Loading from "../../Admin/Widgets/Loading"
 import moment from "moment"
@@ -7,11 +7,13 @@ import UserContext from "../../../contexts/User"
 import LinkPreview from "../../Admin/Resources/LinkPreview"
 import ReactPlayer from "react-player"
 import SlideShow from "./SlideShow"
+import { ChevronLeftIcon } from "@heroicons/react/outline"
 
 const resourceUrl = "/api/resources/id/"
 
 const Article = () => {
   const { id } = useParams()
+  const history = useHistory()
   const { config } = useContext(UserContext)
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
@@ -37,7 +39,7 @@ const Article = () => {
   }, [id])
 
   return (
-    <section className="h-full pt-1 pb-28 w-full lg:w-5/6 px-4 mx-auto overflow-auto">
+    <section className="h-full pt-1 w-full lg:w-5/6 px-4 mx-auto overflow-auto">
       {loading ? (
         <Loading />
       ) : error ? (
@@ -47,7 +49,7 @@ const Article = () => {
         <SlideShow url={data.article.articleContent} />
       ) : (
         <>
-          <div className="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative">
+          <div className="w-full max-w-screen-md mx-auto relative">
             <div
               className="absolute letf-0 bottom-0 w-full h-full z-10 "
               style={{
@@ -68,11 +70,19 @@ const Article = () => {
                   "linear-gradient(180deg,transparent,rgba(0,0,0,.7))",
               }}
             >
+              <button
+                onClick={() => history.goBack()}
+                className="flex items-center shadow-2xl space-x-2 px-2 py-1 m-2 bg-flime text-black text-sm text-mono transition ease-in duration-200 hover:bg-fblue hover:text-white"
+              >
+                <ChevronLeftIcon className="w-4 h-4" />
+                <p className="text-mono text-sm">Back</p>
+              </button>
               {data.article.tags.map((tag) => (
                 <p className="mx-1 text-xs px-2 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2">
                   {tag}
                 </p>
               ))}
+
               <h2 className="text-4xl font-semibold text-gray-100 leading-tight">
                 {data.article.articleTitle}
               </h2>

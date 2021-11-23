@@ -106,9 +106,11 @@ const AddCategory = ({ data }) => {
                   <p className="text-6xl md:text-8xl text-mono">
                     {icons[category.categoryIcon](
                       `w-36 h-36 md:w-48 md:h-48 text-${category.categoryColor} fill-current`,
-                      category.categoryColor === "flime"
-                        ? "text-black"
-                        : "text-white"
+                      `${
+                        category.categoryColor === "flime"
+                          ? "text-black"
+                          : "text-white"
+                      } fill-current`
                     )}
                   </p>
                 </div>
@@ -139,7 +141,7 @@ const AddCategory = ({ data }) => {
                   <Popover.Button className="absolute -bottom-2 outline-none right-10 bg-flime p-1 h-8 w-8 text-center rounded-full cursor-pointer transition duration-200 group-hover:bg-fblue group-hover:text-white">
                     <ChevronDownIcon className="h-6 w-6" />
                   </Popover.Button>
-                  <Popover.Panel className="absolute z-20 -bottom-30 right-8 md:right-10 rounded shadow-xl bg-white w-50 min-h-min p-2 flex flex-wrap justify-between ">
+                  <Popover.Panel className="absolute z-20 -bottom-30 right-8 md:right-10 rounded shadow-xl bg-white w-40 min-h-min p-2 flex flex-wrap justify-center ">
                     {Object.keys(icons).map((icon) => (
                       <span
                         key={icon}
@@ -157,7 +159,7 @@ const AddCategory = ({ data }) => {
                       >
                         {icons[icon](
                           `cursor-pointer w-6 h-6 text-black fill-current`,
-                          "text-white"
+                          "text-white fill-current"
                         )}
                       </span>
                     ))}

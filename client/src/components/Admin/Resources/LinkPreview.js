@@ -11,7 +11,7 @@ const LinkPreview = ({ url }) => {
       maxLine={2}
       minLine={1}
       url={url}
-      proxyUrl="https://fl-link-preview.herokuapp.com"
+      proxyUrl={"https://fl-link-preview.herokuapp.com"}
     />
   )
 }

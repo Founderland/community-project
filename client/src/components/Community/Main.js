@@ -7,7 +7,7 @@ const Main = () => {
   return (
     <Switch>
       <Route exact path={`/community/:view?/:category?/:id?/`}>
-        <div className="relative w-full h-screen">
+        <div className="flex flex-col h-screen">
           <Header />
           <Content />
           <Menu />

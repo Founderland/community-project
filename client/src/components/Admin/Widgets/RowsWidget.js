@@ -81,7 +81,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
                               .replace(/[^a-zA-Z0-9]/g, "")
                               .toLowerCase()
                           ]
-                        : "test"
+                        : "text-sm"
                     }
                   >
                     {item[header.key]}
@@ -99,7 +99,11 @@ const RowsWidget = ({ headers, item, styles, link }) => {
                     }
                     className="w-6 flex item-center justify-center transform transition duration-100 hover:text-fblue hover:scale-125"
                   >
-                    {view === "forms" ? <PencilAltIcon /> : <EyeIcon />}
+                    {view === "forms" ? (
+                      <PencilAltIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5" />
+                    )}
                   </Link>
                 </div>
               </td>

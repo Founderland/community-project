@@ -1,18 +1,13 @@
-import React, {
-  useState,
-  useRef,
-  useCallBack,
-  useEffect,
-  useContext,
-} from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { renderToStaticMarkup } from "react-dom/server"
 import {
   GoogleMap,
   useLoadScript,
-  useJsApiLoader,
   Marker,
   InfoWindow,
 } from "@react-google-maps/api"
 import womenImg from "../../../assets/images/women.png"
+import icons from "../../../assets/icons/Icons"
 import { useHistory } from "react-router"
 import "./MapDisplay.css"
 import mapStyles from "./mapStyles"
@@ -45,7 +40,6 @@ export default function MapDisplay(props) {
     isSidebarSelected,
     isNameSelectedEvent,
     isNameSelected,
-    mobileScreen,
   } = useContext(CommunityContext)
   const [latlong, setLatLong] = useState([])
   const [selected, setSelected] = useState(null)
@@ -147,9 +141,20 @@ export default function MapDisplay(props) {
     setSearchValue(event.target.value)
   }
 
+  const fetchIcon = (index) => {
+    return `data:image/svg+xml;utf8,${encodeURIComponent(
+      renderToStaticMarkup(
+        icons[Object.keys(icons)[8]](
+          "cursor-not-allowed w-6 h-6 text-white fill-current",
+          "text-white fill-current"
+        )
+      )
+    )}`
+  }
+
   return (
-    <div className="relative h-full">
-      <div className="absolute left-0 right-0 z-40 md:w-1/2 m-4 h-14">
+    <div className="relative w-full h-full">
+      <div className="absolute w-2/3 sm:w-1/2 z-40 md:w-1/3 m-4">
         <Autocomplete
           className=""
           getItemValue={(item) => `${item.firstName} ${item.lastName}`}
@@ -165,12 +170,12 @@ export default function MapDisplay(props) {
           }}
           open={openSearchMenu}
           renderInput={(props) => (
-            <div className="relative">
+            <div className="relative w-full">
               <input
                 {...props}
                 type="text"
                 id="rounded-email"
-                className="w-full xl:w-3/4 h-full border-flime-500 shadow-lg flex-1 appearance-none border-2  md:ml-10 py-2 px-6 bg-white text-gray-700 xs:text-md md:text-xl placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono "
+                className="w-full h-full border-flime-500 shadow-lg flex-1 appearance-none border-2  md:ml-10 mx-auto py-2 px-2 bg-white text-gray-700 text-sm md:text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono "
                 placeholder="Search Founder by name.."
               />
             </div>
@@ -178,12 +183,12 @@ export default function MapDisplay(props) {
           renderMenu={(items, value, style) => (
             <div
               children={items}
-              className="w-full md:w-3/4 md:ml-10 max-h-64 overflow-y-scroll"
+              className="w-full md:ml-10 max-h-64 overflow-y-scroll"
             />
           )}
           renderItem={(item, isHighlighted) => (
             <div
-              className="p-4 border-b border-gray-400 text-lg md:text-xl 2xl:text-3xl"
+              className="p-4 border-b border-gray-400 text-sm md:text-base 2xl:text-lg cursor-pointer"
               style={{ background: isHighlighted ? "lightgray" : "white" }}
             >
               {item.firstName + " " + item.lastName}
@@ -202,46 +207,44 @@ export default function MapDisplay(props) {
         options={options}
         onLoad={onMapLoad}
       >
-        {latlong.map((latlng, index) => (
-          <Marker
-            key={index}
-            position={{
-              lat: parseFloat(latlng.lat),
-              lng: parseFloat(latlng.lng),
-            }}
-            icon={
-              screenwidth < 600
-                ? {
-                    url: "/dot.png",
-                    scaledSize: new window.google.maps.Size(10, 10),
-                    origin: new window.google.maps.Point(0, 0),
-                    anchor: new window.google.maps.Point(3, 3),
-                  }
-                : {
-                    url: "/redDot.svg",
-                    scaledSize: new window.google.maps.Size(30, 30),
-                    origin: new window.google.maps.Point(0, 0),
-                    anchor: new window.google.maps.Point(8, 6),
-                  }
-            }
-            onClick={() => clickHandler(latlng)}
-            onMouseOver={() => handleMouseOver(latlng.lat, latlng.lng, index)}
-            onMouseOut={handleMouseExit}
-          >
-            {isHovered && index === hoverElement?.index && (
-              <InfoWindow>
-                <div>
-                  <div className="flex">
+        {latlong.map((latlng, index) => {
+          return (
+            <Marker
+              key={index}
+              position={{
+                lat: parseFloat(latlng.lat),
+                lng: parseFloat(latlng.lng),
+              }}
+              icon={
+                screenwidth < 600
+                  ? {
+                      url: "/dot.png",
+                      scaledSize: new window.google.maps.Size(10, 10),
+                      origin: new window.google.maps.Point(0, 0),
+                      anchor: new window.google.maps.Point(3, 3),
+                    }
+                  : {
+                      url: "/redDot.png",
+                      scaledSize: new window.google.maps.Size(30, 30),
+                      origin: new window.google.maps.Point(0, 0),
+                      anchor: new window.google.maps.Point(8, 6),
+                    }
+              }
+              onClick={() => clickHandler(latlng)}
+              onMouseOver={() => handleMouseOver(latlng.lat, latlng.lng, index)}
+              onMouseOut={handleMouseExit}
+            >
+              {isHovered && index === hoverElement?.index && (
+                <InfoWindow>
+                  <div className="flex items-center space-x-2">
                     <img className="w-8" src={womenImg} alt="icon" />
-                    <div className="flex flex-col justify-end items-end w-8">
-                      <h2 className="text-2xl font-semibold "> - {total} </h2>
-                    </div>
+                    <h2 className="text-2xl font-semibold "> {total} </h2>
                   </div>
-                </div>
-              </InfoWindow>
-            )}
-          </Marker>
-        ))}
+                </InfoWindow>
+              )}
+            </Marker>
+          )
+        })}
         {isSidebarSelected && <Sidebar data={selected} />}
       </GoogleMap>
     </div>

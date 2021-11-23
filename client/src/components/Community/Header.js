@@ -36,6 +36,7 @@ const Header = () => {
               ""
             ) : (
               <Link
+                key={key}
                 to={key !== "community" ? `/community/${key}` : "/community"}
                 className={`flex flex-col items-center mx-2 px-2 hover:text-fblue  ${
                   selectedView === key && "border-b-2 border-fblue"
