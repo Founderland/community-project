@@ -34,6 +34,7 @@ const Menu = () => {
               ""
             ) : (
               <Link
+                key={key}
                 to={key !== "community" ? `/community/${key}` : "/community"}
                 className={`flex justify-center p-4 hover:bg-fpink hover:text-black w-1/5 justify-center ${
                   selectedView === key ? "bg-fpink text-black" : ""

@@ -151,6 +151,7 @@ const Event = () => {
                   </div>
                 </div>
               )}
+              <AddToCalendar event={data} />
               <div className="absolute mr-4 justify-end bottom-0 right-0 w-full mb-4 flex">
                 <p className={styles[data.type]}>{data.type}</p>
               </div>
