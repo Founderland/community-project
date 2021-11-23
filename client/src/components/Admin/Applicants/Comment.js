@@ -22,7 +22,9 @@ const Comment = ({
       hour: "2-digit",
       minute: "2-digit",
     })
-    return today === commentDate ? commentTime : commentDate + " " + commentTime
+    return today === commentDate
+      ? "@ " + commentTime
+      : "on " + commentDate + " " + commentTime
   }
 
   const avatarInitials = (user) => {
@@ -44,36 +46,34 @@ const Comment = ({
   return (
     <div
       ref={forwardedRef}
-      className='w-full flex items-center px-1 bg-gray-50 border-b-2 border-fblue-200 rounded-xl shadow my-1'>
-      <div className='min-w-min flex flex-col items-center'>
+      className="w-full flex items-center px-1 bg-gray-50 border-b-2 border-fblue-200 rounded shadow my-1"
+    >
+      <div className="min-w-min hidden sm:flex flex-col items-center self-start mt-1 md:mt-2">
         <span
-          className={`ml-2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-mono text-lg lg:text-xl tracking-wide rounded-full border-2 border-white-400 ${user.avatar}`}>
+          className={`ml-2 w-6 h-6 md:w-10 md:h-10 flex items-center justify-center text-mono text-xs md:text-base lg:text-xl tracking-wide rounded-full border-2 border-white-400 ${user.avatar}`}
+        >
           {avatarInitials(user)}
         </span>
       </div>
-      <div className=' w-full py-1 px-2 mr-4'>
-        <div className='flex items-center'>
-          <h3 className='font-bold text-xs md:text-sm'>
+      <div className=" w-full py-1 px-2 mr-4">
+        <div className="text-gray-600 font-semibold flex space-x-1 text-xs md:text-sm md:space-x-2 items-center">
+          <h3>
             {user.firstName} {user.lastName}
           </h3>
-          <span
-            className={
-              "text-xs px-1 py-0.5 mx-2 flex justify-center items-center w-min m-1 font-medium rounded-full " +
-              getRoleStyle(user.role)
-            }>
-            {user.role}
-          </span>
+          <p>{getCommentDate(timeStamp)}</p>
+        </div>
+        <p className="text-gray-700 py-1 pl-2 text-sm 2xl:text-base text-justify">
+          {text}
+        </p>
+        <div className="text-right mr-2">
           {user._id === currentUser.id && applicationStatus !== "approved" && (
             <button
               onClick={() => deleteComment(commentId)}
-              className='ml-auto hover:text-fred'>
-              <TrashIcon className='w-6 h-6 ' />
+              className="ml-auto hover:text-fred"
+            >
+              <TrashIcon className="w-5 h-5 " />
             </button>
           )}
-        </div>
-        <span className='text-base md:text-lg'>{text}</span>
-        <div className='text-xs text-right mr-2 md:mr-0'>
-          {getCommentDate(timeStamp)}
         </div>
       </div>
     </div>

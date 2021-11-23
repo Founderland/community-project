@@ -1,18 +1,12 @@
-import React, {
-  useState,
-  useRef,
-  useCallBack,
-  useEffect,
-  useContext,
-} from "react"
+import React, { useState, useEffect, useContext } from "react"
 import {
   GoogleMap,
   useLoadScript,
-  useJsApiLoader,
   Marker,
   InfoWindow,
 } from "@react-google-maps/api"
 import womenImg from "../../../assets/images/women.png"
+import icons from "../../../assets/icons/Icons"
 import { useHistory } from "react-router"
 import "./MapDisplay.css"
 import mapStyles from "./mapStyles"
@@ -45,7 +39,6 @@ export default function MapDisplay(props) {
     isSidebarSelected,
     isNameSelectedEvent,
     isNameSelected,
-    mobileScreen,
   } = useContext(CommunityContext)
   const [latlong, setLatLong] = useState([])
   const [selected, setSelected] = useState(null)
@@ -230,13 +223,9 @@ export default function MapDisplay(props) {
           >
             {isHovered && index === hoverElement?.index && (
               <InfoWindow>
-                <div>
-                  <div className="flex">
-                    <img className="w-8" src={womenImg} alt="icon" />
-                    <div className="flex flex-col justify-end items-end w-8">
-                      <h2 className="text-2xl font-semibold "> - {total} </h2>
-                    </div>
-                  </div>
+                <div className="flex items-center space-x-2">
+                  <img className="w-8" src={womenImg} alt="icon" />
+                  <h2 className="text-2xl font-semibold "> {total} </h2>
                 </div>
               </InfoWindow>
             )}

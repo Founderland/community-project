@@ -18,11 +18,13 @@ const CategoryDisplay = ({ category, isActive }) => {
                 ? "black"
                 : category.color
             } fill-current `,
-            isActive
-              ? "text-" + category.color
-              : category.color === "flime"
-              ? "text-black"
-              : "text-white"
+            `${
+              isActive
+                ? "text-" + category.color
+                : category.color === "flime"
+                ? "text-black"
+                : "text-white"
+            } fill-current`
           )}
         </div>
         <div

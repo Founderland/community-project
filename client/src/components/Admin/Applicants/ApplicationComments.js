@@ -117,7 +117,7 @@ const ApplicationComments = ({
           className={
             commentsArray.length > 3
               ? "h-60 overflow-y-auto  "
-              : "h-auto" + " w-full flex flex-col items-center justify-center "
+              : "h-auto w-full flex flex-col items-center justify-center "
           }
         >
           {commentsArray.length > 3 && (
@@ -154,7 +154,7 @@ const ApplicationComments = ({
           >
             <textarea
               type="text"
-              className=" border-0 px-3 py-5 placeholder-blueGray-300 text-blueGray-600 bg-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              className="border px-3 py-5 placeholder-blueGray-300 text-blueGray-600 bg-white  text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               rows="4"
               placeholder="Write a comment"
               value={newCommentText}

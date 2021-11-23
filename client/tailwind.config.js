@@ -64,6 +64,9 @@ module.exports = {
           DEFAULT: "#FCF9F9",
         },
       },
+      fontSize: {
+        xxs: "0.50rem",
+      },
     },
   },
   variants: {
