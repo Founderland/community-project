@@ -2,12 +2,15 @@ import {
   EmojiSadIcon,
   FilterIcon,
   SearchCircleIcon,
+  EyeIcon,
+  PencilAltIcon,
   XIcon,
 } from "@heroicons/react/outline"
 import { useState, useEffect, useContext } from "react"
 import RowsWidget from "./RowsWidget"
 import Pagination from "./Pagination"
 import AdminContext from "../../../contexts/Admin"
+import { useParams } from "react-router"
 
 const ListWidget = ({
   title,
@@ -23,6 +26,7 @@ const ListWidget = ({
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
   const [pageCount, setPageCount] = useState(0)
+  const { view } = useParams()
   const { selectedTab } = useContext(AdminContext)
   useEffect(() => {
     let newFilter = [...filter]
@@ -77,40 +81,42 @@ const ListWidget = ({
                 <th key={header.title} className={`py-2 ${header.style}`}>
                   <div className="flex relative items-center justify-center space-x-4">
                     <p>{header.title}</p>
-                    {header.key !== "-" && !header.key?.includes("On") && (
-                      <>
-                        <button
-                          className={`group p-1`}
-                          onClick={() => {
-                            let newFilter = [...filter]
-                            newFilter.forEach((item) =>
-                              item.key === header.key
-                                ? (item.show = !item.show)
-                                : (item.show = false)
-                            )
-                            setFilter(newFilter)
-                          }}
-                        >
-                          <FilterIcon className="h-4 w-4 group-hover:text-fblue" />
-                        </button>
-                        <div
-                          className={`absolute z-20 top-6 shadow-xl p-1 ${
-                            filter[index]?.show ? "block" : "hidden"
-                          } bg-white`}
-                        >
-                          <input
-                            type="text"
-                            className="w-20 border border-gray-400 p-1"
-                            onChange={(e) => {
+                    {view !== "dashboard" &&
+                      header.key !== "-" &&
+                      !header.key?.includes("On") && (
+                        <>
+                          <button
+                            className={`group p-1`}
+                            onClick={() => {
                               let newFilter = [...filter]
-                              newFilter[index].search = e.target.value
+                              newFilter.forEach((item) =>
+                                item.key === header.key
+                                  ? (item.show = !item.show)
+                                  : (item.show = false)
+                              )
                               setFilter(newFilter)
                             }}
-                            value={filter[index]?.search}
-                          />
-                        </div>
-                      </>
-                    )}
+                          >
+                            <FilterIcon className="h-4 w-4 group-hover:text-fblue" />
+                          </button>
+                          <div
+                            className={`absolute z-20 top-6 shadow-xl p-1 ${
+                              filter[index]?.show ? "block" : "hidden"
+                            } bg-white`}
+                          >
+                            <input
+                              type="text"
+                              className="w-20 border border-gray-400 p-1"
+                              onChange={(e) => {
+                                let newFilter = [...filter]
+                                newFilter[index].search = e.target.value
+                                setFilter(newFilter)
+                              }}
+                              value={filter[index]?.search}
+                            />
+                          </div>
+                        </>
+                      )}
                   </div>
                 </th>
               ))}

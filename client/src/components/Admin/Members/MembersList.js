@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useMemo } from "react"
+import { useState, useEffect, useContext } from "react"
 import AdminContext from "../../../contexts/Admin"
 import ListWidget from "../Widgets/ListWidget"
 import Loading from "../Widgets/Loading"
@@ -54,7 +54,6 @@ const MembersList = ({ role, setMembersData }) => {
     const fetchData = async () => {
       try {
         const result = await axios.get(membersAPI + role, config)
-        console.log(result)
         result.data.data.forEach((element) => {
           if (element.created) {
             element.createdOn = moment(element.created).format("DD/M/YYYY")
