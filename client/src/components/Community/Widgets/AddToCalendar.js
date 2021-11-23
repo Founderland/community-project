@@ -63,7 +63,7 @@ const AddToCalendar = ({ event }) => {
   return (
     <section className="absolute bottom-0 p-4 z-20">
       <button
-        className="flex items-center space-x-2 px-2 py-1 bg-flime text-black text-sm  text-mono  transition ease-in duration-200 hover:bg-fblue hover:text-white"
+        className="flex items-center shadow-2xl space-x-2 px-2 py-1 bg-flime text-black text-sm  text-mono  transition ease-in duration-200 hover:bg-fblue hover:text-white"
         onClick={() => saveCalInvite(event)}
       >
         <CalendarIcon className="w-5 h-5" />

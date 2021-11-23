@@ -51,7 +51,11 @@ export default function ResourcesList() {
       <div className="w-full h-full md:flex bg-gray-50 bg-opacity-50">
         <div className="w-full md:w-1/4 pt-2 md:pt-10 pl-6 ">
           {categories.map((item) => (
-            <CategoryDisplay category={item} isActive={item.key === category} />
+            <CategoryDisplay
+              key={item}
+              category={item}
+              isActive={item.key === category}
+            />
           ))}
         </div>
         <div className="h-full w-full md:w-3/4">

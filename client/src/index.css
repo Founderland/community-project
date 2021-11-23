@@ -6,7 +6,7 @@
   font-family: "Hanson";
   src: url("./assets/font/Hanson-Bold.ttf");
 }
-Hanson body {
+body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -14,14 +14,20 @@ Hanson body {
 
 .text-grotesk {
   font-family: "Space Grotesk", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .text-mono {
   font-family: "Space Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .text-hanson {
   font-family: "Hanson";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .react-datetimerange-picker__wrapper {

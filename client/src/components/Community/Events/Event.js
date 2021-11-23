@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { useState, useEffect, useContext } from "react"
 import Loading from "../../Admin/Widgets/Loading"
 import MapDisplay from "../../Admin/Events/MapDisplay"
@@ -15,6 +15,7 @@ import {
   PlusCircleIcon,
   TrashIcon,
   XCircleIcon,
+  ChevronLeftIcon,
 } from "@heroicons/react/outline"
 import axios from "axios"
 import moment from "moment"
@@ -22,15 +23,16 @@ import AddEvent from "./AddEvent"
 import { CommunityContext } from "../../../contexts/CommunityProvider"
 
 const styles = {
-  online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-sm",
-  public: "bg-fblue-100 text-white border-fblue-900 border p-1 px-2 text-sm",
-  private: "bg-fred-100 text-black border-fred-900 border p-1 px-2 text-sm",
+  online: "bg-flime-200 text-black border-flime-900 border p-1 px-2 text-xs",
+  public: "bg-fblue-200 text-white border-fblue-900 border p-1 px-2 text-xs",
+  private: "bg-fred-200 text-black border-fred-900 border p-1 px-2 text-xs",
 }
 const eventUrl = "/api/events/"
 const attendenceUrl = "/api/events/attendance"
 
 const Event = () => {
   const { id } = useParams()
+  const history = useHistory()
   const { config, reload, setReload, setCCModal, setCModal, user } =
     useContext(UserContext)
 
@@ -115,7 +117,6 @@ const Event = () => {
       }, 4000)
     }
   }
-  console.log(reload)
   return (
     <div className="h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6">
       <ConfirmModal>
@@ -152,8 +153,15 @@ const Event = () => {
                 </div>
               )}
               <AddToCalendar event={data} />
+              <button
+                onClick={() => history.goBack()}
+                className="flex items-center shadow-2xl space-x-2 px-2 py-1 m-2 bg-flime text-black text-sm text-mono transition ease-in duration-200 hover:bg-fblue hover:text-white"
+              >
+                <ChevronLeftIcon className="w-4 h-4" />
+                <p className="text-mono text-sm">Back</p>
+              </button>
               <div className="absolute mr-4 justify-end bottom-0 right-0 w-full mb-4 flex">
-                <p className={styles[data.type]}>{data.type}</p>
+                <p className={`${styles[data.type]} shadow-2xl`}>{data.type}</p>
               </div>
             </div>
             <div className="flex flex-col md:flex-row px-4 pt-2  w-full justify-between">
@@ -176,65 +184,65 @@ const Event = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full px-4 pt-2 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 text-xs justify-center items-center">
-              <div className="colspan-1 mb-2 mx-auto">
-                <p className="text-xs text-grotesk">From</p>
-                <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
-                  <div className="block rounded-t overflow-hidden  text-center ">
-                    <div className="bg-fblue text-white py-1">
-                      {moment(data.dateStart).format("MMMM")}
+            <div className=" w-full px-4 pt-2 flex flex-col md:flex-row text-xs justify-center items-center">
+              <div className="ml-4 flex space-x-6">
+                <div className=" mb-2 mx-auto">
+                  <p className="text-xs text-grotesk">From</p>
+                  <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                    <div className="block rounded-t overflow-hidden  text-center ">
+                      <div className="bg-fblue text-white py-1">
+                        {moment(data.dateStart).format("MMMM")}
+                      </div>
+                      <div className="pt-1 border-l border-r border-white bg-white">
+                        <span className="text-5xl font-bold leading-tight">
+                          {moment(data.dateStart).format("DD")}
+                        </span>
+                      </div>
+                      <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
+                        <span className="text-sm">
+                          {moment(data.dateStart).format("dddd")}
+                        </span>
+                      </div>
+                      <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
+                        <span className="text-xs leading-normal">
+                          {moment(data.dateStart).format("HH:mm")}
+                        </span>
+                      </div>
                     </div>
-                    <div className="pt-1 border-l border-r border-white bg-white">
-                      <span className="text-5xl font-bold leading-tight">
-                        {moment(data.dateStart).format("DD")}
-                      </span>
-                    </div>
-                    <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
-                      <span className="text-sm">
-                        {moment(data.dateStart).format("dddd")}
-                      </span>
-                    </div>
-                    <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
-                      <span className="text-xs leading-normal">
-                        {moment(data.dateStart).format("HH:mm")}
-                      </span>
+                  </div>
+                </div>
+                <div className="mb-2 mx-auto">
+                  <p className=" text-xs text-grotesk">To</p>
+                  <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                    <div className="block rounded-t overflow-hidden text-center ">
+                      <div className="bg-fred text-white py-1">
+                        {moment(data.dateEnd).format("MMMM")}
+                      </div>
+                      <div className="pt-1 border-l border-r border-white bg-white">
+                        <span className="text-5xl font-bold leading-tight">
+                          {moment(data.dateEnd).format("DD")}
+                        </span>
+                      </div>
+                      <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
+                        <span className="text-sm">
+                          {moment(data.dateEnd).format("dddd")}
+                        </span>
+                      </div>
+                      <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
+                        <span className="text-xs leading-normal">
+                          {moment(data.dateEnd).format("HH:mm")}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="colspan-1 mb-2 mx-auto">
-                <p className=" text-xs text-grotesk">To</p>
-                <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
-                  <div className="block rounded-t overflow-hidden text-center ">
-                    <div className="bg-fred text-white py-1">
-                      {moment(data.dateEnd).format("MMMM")}
-                    </div>
-                    <div className="pt-1 border-l border-r border-white bg-white">
-                      <span className="text-5xl font-bold leading-tight">
-                        {moment(data.dateEnd).format("DD")}
-                      </span>
-                    </div>
-                    <div className="border-l border-r border-b rounded-b-lg text-center border-white bg-white -pt-2 -mb-1">
-                      <span className="text-sm">
-                        {moment(data.dateEnd).format("dddd")}
-                      </span>
-                    </div>
-                    <div className="pb-2 border-l border-r border-b rounded-b-lg text-center border-white bg-white mt-1">
-                      <span className="text-xs leading-normal">
-                        {moment(data.dateEnd).format("HH:mm")}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="p-2 hidden lg:block"></div>
-              {data.type !== "online" && (
-                <div className="md:col-start-3 xl:col-start-4 h-full mb-2 col-span-2 py-2 block items-center pt-8 ">
+              {data.type !== "online" ? (
+                <div className="h-40 mb-2 col-span-2 py-2 block items-center pt-8 ">
                   <MapDisplay location={data.geoLocation} zoom={data.zoom} />
                 </div>
-              )}
-              {data.type === "online" && (
-                <div className="md:col-start-3 xl:col-start-4 h-full mb-2 col-span-2 py-2 block items-center pt-8">
+              ) : (
+                <div className="h-full mb-2 col-span-2 py-2 block items-center pt-8">
                   <LinkPreview url={data.link} />
                 </div>
               )}
@@ -247,7 +255,7 @@ const Event = () => {
                   <p className="w-full text-lg text-red-600">Event Cancelled</p>
                 )}
               </h6>
-              <div className="px-3 bg-white text-lg text-mono w-full ease-linear transition-all duration-150">
+              <div className="px-3 bg-white text-base text-gray-800 text-grotesk w-full ease-linear transition-all duration-150">
                 {data.description}
               </div>
               <Banner message={banner} />

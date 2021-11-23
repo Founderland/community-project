@@ -50,7 +50,7 @@ const EventCard = ({ event }) => {
           {event.title}
         </p>
 
-        <div className="w-full my-2 text-sm text-gray-500 font-normal max-h-10 block overflow-ellipsis overflow-hidden break-words text-justify">
+        <div className="w-full my-2 text-sm text-gray-500 font-normal max-h-10 block overflow-ellipsis overflow-hidden text-justify">
           {event.description}
         </div>
 
@@ -58,7 +58,7 @@ const EventCard = ({ event }) => {
           <div className="flex items-center">
             <SpeakerphoneIcon className="w-4 h-4 text-gray-700 mr-2" />
 
-            <p className="text-gray-700 font-normal text-sm text-grotesk">
+            <p className="text-gray-700 font-normal text-xs text-grotesk">
               {event.member.firstName} {event.member.lastName}
             </p>
           </div>

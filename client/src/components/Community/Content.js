@@ -17,7 +17,7 @@ const Content = () => {
   }, [view])
 
   return (
-    <main className="overflow-x-hidden overflow-none w-full h-screen">
+    <main className="relative w-full h-full">
       {selectedView === "community" && <MapDisplay />}
       {selectedView === "events" && <Events />}
       {selectedView === "resources" && <ResourcesList />}
