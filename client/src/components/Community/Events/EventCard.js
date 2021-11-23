@@ -16,7 +16,7 @@ const EventCard = ({ event }) => {
   const history = useHistory()
   return (
     <div
-      className="max-w-xs flex items-center justify-center my-3 mx-2 group cursor-pointer flex flex-col bg-white shadow-lg hover:shadow-xl"
+      className="max-w-xs flex items-center justify-center my-3 mx-2 group cursor-pointer flex-col bg-white shadow-lg hover:shadow-xl"
       onClick={() => {
         history.push(`/community/events/id/${event._id}`)
       }}

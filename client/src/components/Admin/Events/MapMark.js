@@ -7,7 +7,7 @@ const MapMark = ({ location }) => {
         lng: parseFloat(location.lng),
       }}
       icon={{
-        url: "/redDot.svg",
+        url: "/dot.png",
         scaledSize: new window.google.maps.Size(30, 30),
         origin: new window.google.maps.Point(0, 0),
         anchor: new window.google.maps.Point(8, 6),

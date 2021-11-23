@@ -1,5 +1,6 @@
 const affirmative = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     viewBox="0 0 1080 1080"
@@ -19,6 +20,7 @@ const affirmative = (outer, inner) => (
 
 const audible = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     viewBox="0 0 1080 1080"
@@ -42,6 +44,7 @@ const audible = (outer, inner) => (
 
 const balance = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -75,6 +78,7 @@ const balance = (outer, inner) => (
 
 const blooming = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -97,6 +101,7 @@ const blooming = (outer, inner) => (
 
 const calm = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -128,6 +133,7 @@ const calm = (outer, inner) => (
 
 const cents = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -150,6 +156,7 @@ const cents = (outer, inner) => (
 
 const connected = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -172,6 +179,7 @@ const connected = (outer, inner) => (
 
 const connective = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -206,6 +214,7 @@ const connective = (outer, inner) => (
 
 const continuousGrowth = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -232,6 +241,7 @@ const continuousGrowth = (outer, inner) => (
 
 const direction = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -255,6 +265,7 @@ const direction = (outer, inner) => (
 
 const emerging = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -277,6 +288,7 @@ const emerging = (outer, inner) => (
 
 const energized = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -293,6 +305,7 @@ const energized = (outer, inner) => (
 
 const enhanced = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -319,6 +332,7 @@ const enhanced = (outer, inner) => (
 
 const expanding = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -342,6 +356,7 @@ const expanding = (outer, inner) => (
 
 const forPeople = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -363,6 +378,7 @@ const forPeople = (outer, inner) => (
 )
 const forward = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -379,6 +395,7 @@ const forward = (outer, inner) => (
 
 const forwardIi = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -399,6 +416,7 @@ const forwardIi = (outer, inner) => (
 
 const goals = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -428,6 +446,7 @@ const goals = (outer, inner) => (
 )
 const haven = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -451,6 +470,7 @@ const haven = (outer, inner) => (
 
 const inclusive = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -478,6 +498,7 @@ const inclusive = (outer, inner) => (
 
 const intersectional = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -505,6 +526,7 @@ const intersectional = (outer, inner) => (
 
 const invest = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -527,6 +549,7 @@ const invest = (outer, inner) => (
 
 const investIi = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -549,6 +572,7 @@ const investIi = (outer, inner) => (
 
 const movingTogether = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -588,6 +612,7 @@ const movingTogether = (outer, inner) => (
 
 const multiplication = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -612,6 +637,7 @@ const multiplication = (outer, inner) => (
 
 const navigating = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -628,6 +654,7 @@ const navigating = (outer, inner) => (
 
 const noBoundaries = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -651,6 +678,7 @@ const noBoundaries = (outer, inner) => (
 
 const open = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -679,6 +707,7 @@ const open = (outer, inner) => (
 
 const powerful = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -695,6 +724,7 @@ const powerful = (outer, inner) => (
 
 const reference = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -715,6 +745,7 @@ const reference = (outer, inner) => (
 
 const security = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -731,6 +762,7 @@ const security = (outer, inner) => (
 
 const stability = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -764,6 +796,7 @@ const stability = (outer, inner) => (
 
 const team = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -798,6 +831,7 @@ const team = (outer, inner) => (
 
 const transparent = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -842,6 +876,7 @@ const transparent = (outer, inner) => (
 
 const uplift = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -875,6 +910,7 @@ const uplift = (outer, inner) => (
 
 const value = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -917,6 +953,7 @@ const value = (outer, inner) => (
 
 const visibility = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
@@ -945,6 +982,7 @@ const visibility = (outer, inner) => (
 
 const warmth = (outer, inner) => (
   <svg
+    xmlns="http://www.w3.org/2000/svg"
     id="Layer_1"
     data-name="Layer 1"
     className={outer}
