@@ -39,7 +39,7 @@ const Article = () => {
   }, [id])
 
   return (
-    <section className="h-full pt-1 w-full lg:w-5/6 px-4 mx-auto overflow-auto">
+    <section className=" h-full w-full overflow-y-scroll pb-56 md:pb-20 scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
       {loading ? (
         <Loading />
       ) : error ? (
@@ -48,8 +48,8 @@ const Article = () => {
         data.article.articleContent.includes("docs.google.com/presentation") ? (
         <SlideShow url={data.article.articleContent} />
       ) : (
-        <>
-          <div className="w-full max-w-screen-md mx-auto relative">
+        <div className="w-full md:max-w-3xl mx-auto">
+          <div className="w-full relative">
             <div
               className="absolute letf-0 bottom-0 w-full h-full z-10 "
               style={{
@@ -59,31 +59,30 @@ const Article = () => {
             ></div>
             <img
               src={data.article.articleCover.url}
-              className="relative left-0 top-0 w-full h-full z-0 object-cover"
+              className="relative w-full h-full z-0 object-cover"
               alt="article cover"
             />
-
+            <button
+              onClick={() => history.goBack()}
+              className="absolute z-20 top-2 left-2 flex items-center shadow-2xl space-x-2 px-2 py-1 m-2 bg-flime text-black text-sm text-mono transition ease-in duration-200 hover:bg-fblue hover:text-white"
+            >
+              <ChevronLeftIcon className="w-4 h-4" />
+              <p className="hidden md:block text-mono text-sm">Back</p>
+            </button>
             <div
-              className="absolute w-full left-0 bottom-0 p-4 bottom-0 left-0 z-10  "
+              className="absolute w-full left-0 bottom-0 p-4 z-10  "
               style={{
                 backgroundImage:
                   "linear-gradient(180deg,transparent,rgba(0,0,0,.7))",
               }}
             >
-              <button
-                onClick={() => history.goBack()}
-                className="flex items-center shadow-2xl space-x-2 px-2 py-1 m-2 bg-flime text-black text-sm text-mono transition ease-in duration-200 hover:bg-fblue hover:text-white"
-              >
-                <ChevronLeftIcon className="w-4 h-4" />
-                <p className="text-mono text-sm">Back</p>
-              </button>
               {data.article.tags.map((tag) => (
-                <p className="mx-1 text-xs px-2 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2">
+                <p className="mx-1 cursor-default text-xs px-2 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2">
                   {tag}
                 </p>
               ))}
 
-              <h2 className="text-4xl font-semibold text-gray-100 leading-tight">
+              <h2 className="text-lg sm:text-xl md:text-4xl font-semibold text-gray-100 leading-tight">
                 {data.article.articleTitle}
               </h2>
               <div className="flex mt-3">
@@ -106,11 +105,10 @@ const Article = () => {
               </div>
             </div>
           </div>
-
-          <div className="max-w-3xl mx-auto my-4 px-6 py-8 text-justify text-base text-mono">
+          <div className="w-full my-2 px-4 md:px-6 py-4 text-justify text-sm md:text-base text-mono">
             <p>{data.article.articleDescription}</p>
           </div>
-          <div className="max-w-3xl mx-auto px-2 flex justify-center items-center pb-4">
+          <div className="w-full px-2 flex justify-center items-center pb-4">
             {data.article.articleType === "article" ? (
               <div
                 dangerouslySetInnerHTML={{
@@ -133,7 +131,7 @@ const Article = () => {
             )}
           </div>
           {data.article.sources.length > 0 && (
-            <div className="max-w-3xl mx-auto mt-6 px-6 p-2 text-justify text-sm border-t-2 border-gray-200">
+            <div className="w-full mt-6 px-6 p-2 text-justify text-sm border-t-2 border-gray-200">
               <p className="text-xs mt-1">Sources:</p>
               <ul className="list-outside list-disc text-xs py-2">
                 {data.article.sources.map((source) => (
@@ -146,13 +144,13 @@ const Article = () => {
               </ul>
             </div>
           )}
-          <footer className="max-w-3xl mx-auto border-t-2 border-gray-200 mt-1">
+          <footer className="w-full border-t-2 border-gray-200 mt-1 ">
             <p className="text-center text-xs py-2">
               Last updated -{" "}
               {moment(data.article.articleLastUpdated).format("DD MMMM YYYY")}
             </p>
           </footer>
-        </>
+        </div>
       )}
     </section>
   )

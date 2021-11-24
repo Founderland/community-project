@@ -25,7 +25,7 @@ const Pagination = ({ pageCount, currentPage, setPage }) => {
 
   //STYLES
   return (
-    <div className="flex flex-col items-center my-4">
+    <div className="flex flex-col items-center">
       <div className="flex text-gray-700">
         <button
           onClick={() => setPage(0)}
