@@ -142,14 +142,26 @@ export default function MapDisplay(props) {
   }
 
   const fetchIcon = (index) => {
-    return `data:image/svg+xml;utf8,${encodeURIComponent(
-      renderToStaticMarkup(
-        icons[Object.keys(icons)[8]](
-          "cursor-not-allowed w-6 h-6 text-white fill-current",
-          "text-white fill-current"
-        )
+    const colors = [
+      { outer: "#f6331c", inner: "#FFFFFF" },
+      { outer: "#0063e2", inner: "#FFFFFF" },
+      { outer: "#ee93b5", inner: "#FFFFFF" },
+      { outer: "#d7fb03", inner: "#000000" },
+      { outer: "#000000", inner: "#FFFFFF" },
+    ]
+    const iIndex = index > Object.keys(icons).length - 1 ? 0 : index
+    const cIndex = index > colors.length - 1 ? 0 : index
+    let icon = renderToStaticMarkup(
+      icons[Object.keys(icons)[iIndex]]("outer", "inner")
+    )
+      .replace(
+        'class="outer"',
+        `height="74" width="74" fill="${colors[cIndex].outer}"`
       )
-    )}`
+      .replace('class="fill-current"', `fill="${colors[cIndex].outer}"`)
+      .replace(/class="inner"/g, `fill="${colors[cIndex].inner}"`)
+
+    return `data:image/svg+xml;utf8,${encodeURIComponent(icon)}`
   }
 
   return (
@@ -224,7 +236,7 @@ export default function MapDisplay(props) {
                       anchor: new window.google.maps.Point(3, 3),
                     }
                   : {
-                      url: "/redDot.png",
+                      url: fetchIcon(index),
                       scaledSize: new window.google.maps.Size(30, 30),
                       origin: new window.google.maps.Point(0, 0),
                       anchor: new window.google.maps.Point(8, 6),
