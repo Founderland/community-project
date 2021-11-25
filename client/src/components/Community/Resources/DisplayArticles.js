@@ -87,7 +87,7 @@ const DisplayArticles = ({ category }) => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="h-full w-full flex flex-col">
+    <div className="fixed h-full w-full flex flex-col">
       <div
         className={`flex flex-none w-full h-16 md:h-40 xl:h-48 justify-between bg-${category.color} bg-opacity-90 shadow-lg items-center`}
       >
