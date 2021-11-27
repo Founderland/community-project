@@ -19,11 +19,12 @@ const Events = () => {
     if (category === "member") setHosting(true)
     scrollUp()
   }, [category])
+
   return (
-    <div className="relative flex flex-col w-full justify-center items-center">
+    <div className="fixed w-full h-full flex flex-col justify-start items-center">
       {!id && category !== "new" ? (
         <>
-          <div className="flex space-x-4">
+          <div className="w-full h-18 py-2 flex space-x-4 justify-center">
             <Switch.Group
               as="div"
               className="flex justify-center items-center space-x-4 pt-2"
@@ -101,15 +102,19 @@ const Events = () => {
               </Switch.Label>
             </Switch.Group>
           </div>
-          <div className="w-full md:w-5/6 px-4 outline-none">
-            <EventsList state={filter ? "past" : "future"} filter={hosting} />
-            <button
-              className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
-              onClick={() => history.push("/community/events/new")}
-            >
-              <PlusIcon className="h-5 w-5" />
-              <p className="text-mono text-sm">Host an event</p>
-            </button>
+          <div className="relative w-full md:w-5/6 h-full md:h-1/2 pb-10 px-4 overflow-hidden">
+            <div className="">
+              <EventsList state={filter ? "past" : "future"} filter={hosting} />
+            </div>
+            <div className="absolute bottom-0 pb-10 md:pb-0">
+              <button
+                className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                onClick={() => history.push("/community/events/new")}
+              >
+                <PlusIcon className="h-5 w-5" />
+                <p className="text-mono text-sm">Host an event</p>
+              </button>
+            </div>
           </div>
         </>
       ) : category === "new" ? (

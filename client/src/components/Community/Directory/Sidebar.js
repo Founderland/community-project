@@ -60,7 +60,7 @@ export default function Sidebar(props) {
             {sidebarDisplay[0]?.city.toUpperCase()}
           </h1>
         </div>
-        <div className="overflow-y-scroll h-full scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 dark:scrollbar-thumb-blue-100 dark:scrollbar-track-gray-700">
+        <div className="overflow-y-scroll h-full scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100">
           {sidebarDisplay?.map((item) => (
             <div className=" flex flex-col items-center md:items-stretch md:flex md:flex-row max-w-md bg-white shadow-lg rounded-sm overflow-hidden m-5">
               <div className="w-1/2 md:w-1/3 flex flex-col mt-2 md:mt-0 ">

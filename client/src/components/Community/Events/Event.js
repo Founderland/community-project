@@ -118,7 +118,7 @@ const Event = () => {
     }
   }
   return (
-    <div className="h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6">
+    <div className="h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 pb-10 mx-auto mt-6 overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -184,11 +184,11 @@ const Event = () => {
                 </div>
               </div>
             </div>
-            <div className=" w-full px-4 pt-2 flex flex-col md:flex-row text-xs justify-center items-center">
-              <div className="ml-4 flex space-x-6">
-                <div className=" mb-2 mx-auto">
+            <div className=" w-full px-4 md:px-8 pt-2 flex space-x-6 flex-col md:flex-row text-xs justify-between items-center">
+              <div className="flex flex-none w-full md:w-1/2 justify-center items-center space-x-6 mb-4">
+                <div className="mb-2">
                   <p className="text-xs text-grotesk">From</p>
-                  <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                  <div className="w-28 md:w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
                     <div className="block rounded-t overflow-hidden  text-center ">
                       <div className="bg-fblue text-white py-1">
                         {moment(data.dateStart).format("MMMM")}
@@ -211,9 +211,9 @@ const Event = () => {
                     </div>
                   </div>
                 </div>
-                <div className="mb-2 mx-auto">
+                <div className="mb-2">
                   <p className=" text-xs text-grotesk">To</p>
-                  <div className="w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
+                  <div className="w-28 md:w-32 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center shadow-lg ">
                     <div className="block rounded-t overflow-hidden text-center ">
                       <div className="bg-fred text-white py-1">
                         {moment(data.dateEnd).format("MMMM")}
@@ -237,15 +237,13 @@ const Event = () => {
                   </div>
                 </div>
               </div>
-              {data.type !== "online" ? (
-                <div className="h-40 mb-2 col-span-2 py-2 block items-center pt-8 ">
+              <div className="flex-none h-28 md:h-48 w-full md:w-1/2 pr-6">
+                {data.type !== "online" ? (
                   <MapDisplay location={data.geoLocation} zoom={data.zoom} />
-                </div>
-              ) : (
-                <div className="h-full mb-2 col-span-2 py-2 block items-center pt-8">
+                ) : (
                   <LinkPreview url={data.link} />
-                </div>
-              )}
+                )}
+              </div>
             </div>
             <hr className={`mt-6 border-b-1 border-gray-400`} />
             <div className="w-full flex flex-col px-4 py-2">
@@ -374,7 +372,15 @@ const Event = () => {
                         Address
                       </p>
                       <p className="text-sm mt-2 font-bold mb-1 uppercase text-mono">
-                        {data.address}
+                        <a
+                          href={`http://maps.google.com/?q=${
+                            data.location + "," + data.address + "," + data.city
+                          }`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {data.address}
+                        </a>
                       </p>
                     </>
                   )}

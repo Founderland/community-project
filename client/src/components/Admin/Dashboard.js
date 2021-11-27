@@ -149,7 +149,7 @@ const AdminDashboard = () => {
               {
                 title: "Name",
                 key: "applicantName",
-                style: "hidden md:table-cell text-left ",
+                style: "table-cell text-left ",
               },
               {
                 title: "Comments",

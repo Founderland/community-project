@@ -161,16 +161,16 @@ const AddEvent = ({ event, edit, setEdit }) => {
     )
   }
   return (
-    <div className='bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-3/6'>
-      <div className='w-full flex items-center justify-center z-20'>
+    <div className="bg-white px-4 md:px-8 pt-6 pb-10 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-3/6">
+      <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
-      <div className='w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4'>
+      <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
         Add new event
       </div>
-      <div className='md:flex w-full px-3'>
-        <div className='w-full md:w-1/2 mb-2 px-2'>
-          <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+      <div className="md:flex w-full px-3">
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Title
           </label>
           <input
@@ -183,21 +183,21 @@ const AddEvent = ({ event, edit, setEdit }) => {
             } appearance-none outline-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
               required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
             }`}
-            type='text'
+            type="text"
             onChange={(e) =>
               setData((prev) => ({ ...prev, title: e.target.value }))
             }
             value={data.title}
-            autoComplete='off'
+            autoComplete="off"
           />
         </div>
 
-        <div className=' w-full md:w-1/2 mb-2 px-2'>
-          <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+        <div className=" w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Date
           </label>
           <DateTimeRangePicker
-            className='flex flex-col sm:flex-row overflow-y-visible text-sm appearance-none outline-none w-full bg-grey-lighter border py-0.5 px-1 mb-3 z-20'
+            className="flex flex-col sm:flex-row overflow-y-visible text-sm appearance-none outline-none w-full bg-grey-lighter border py-0.5 px-1 mb-3 z-20"
             onChange={setDate}
             value={[data.dateStart, data.dateEnd]}
             disableClock={true}
@@ -207,16 +207,16 @@ const AddEvent = ({ event, edit, setEdit }) => {
           />
         </div>
       </div>
-      <div className='md:flex w-full px-3'>
-        <div className='w-full mb-2 px-2'>
-          <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+      <div className="md:flex w-full px-3">
+        <div className="w-full mb-2 px-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Description
           </label>
           <textarea
             className={`appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
               required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
             }`}
-            type='text'
+            type="text"
             onChange={(e) => {
               setData((prev) => ({ ...prev, description: e.target.value }))
             }}
@@ -224,12 +224,12 @@ const AddEvent = ({ event, edit, setEdit }) => {
           />
         </div>
       </div>
-      <div className='md:flex w-full px-3 mb-2'>
-        <div className='w-full md:w-1/2 mb-2 px-2'>
-          <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+      <div className="md:flex w-full px-3 mb-2">
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Type
           </label>
-          <div className='w-full'>
+          <div className="w-full">
             <ListOption
               options={types}
               choice={data.type}
@@ -237,13 +237,13 @@ const AddEvent = ({ event, edit, setEdit }) => {
             />
           </div>
         </div>
-        <div className='w-full md:w-1/2 mb-2 px-2'>
+        <div className="w-full md:w-1/2 mb-2 px-2">
           {data.type === "online" && (
             <>
-              <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
                 Link
               </label>
-              <div className='w-full'>
+              <div className="w-full">
                 <input
                   className={`${
                     data.link === ""
@@ -254,7 +254,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
                   } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3 ${
                     required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
                   }`}
-                  type='text'
+                  type="text"
                   onChange={(e) => {
                     setData((prev) => ({ ...prev, link: e.target.value }))
                   }}
@@ -266,42 +266,42 @@ const AddEvent = ({ event, edit, setEdit }) => {
         </div>
       </div>
       {data.type !== "online" && (
-        <div className='w-full grid sm:grid-cols-2 px-3'>
-          <div className='grid grid-cols-1'>
-            <div className='mb-2 px-2'>
-              <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+        <div className="w-full grid sm:grid-cols-2 px-3">
+          <div className="grid grid-cols-1">
+            <div className="mb-2 px-2">
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
                 Location
               </label>
               <input
                 className={`appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3 ${
                   required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
                 }`}
-                type='text'
+                type="text"
                 onChange={(e) => {
                   setData((prev) => ({ ...prev, location: e.target.value }))
                 }}
                 value={data.location}
               />
             </div>
-            <div className='relative mb-2 px-2'>
-              <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+            <div className="relative mb-2 px-2">
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
                 Address
               </label>
               <Places
                 setLocationValues={setLocationValues}
                 address={data.address}
               />
-              <SearchIcon className='w-6 h-6 absolute left-6 bottom-6' />
+              <SearchIcon className="w-6 h-6 absolute left-6 bottom-6" />
             </div>
-            <div className='mb-2 px-2'>
-              <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+            <div className="mb-2 px-2">
+              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
                 City
               </label>
               <input
                 className={`appearance-none outline-none block w-full bg-grey-lighter border border-grey-lighter py-3 px-4 mb-3 ${
                   required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
                 }`}
-                type='text'
+                type="text"
                 onChange={(e) => {
                   setData((prev) => ({ ...prev, city: e.target.value }))
                 }}
@@ -309,14 +309,14 @@ const AddEvent = ({ event, edit, setEdit }) => {
               />
             </div>
           </div>
-          <div className='hidden sm:block px-3 mb-2'>
+          <div className="hidden sm:block px-3 mb-2">
             <MapDisplay location={data.geoLocation} zoom={data.zoom} />
           </div>
         </div>
       )}
-      <div className='md:flex w-full px-3'>
-        <div className='w-full md:w-1/2 mb-2 px-2'>
-          <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+      <div className="md:flex w-full px-3">
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Cover Photo
           </label>
           <Dropzone
@@ -325,54 +325,40 @@ const AddEvent = ({ event, edit, setEdit }) => {
             }`}
             data={data}
             setData={setData}
-            type='eventCover'
-            fodler='Events'
+            type="eventCover"
+            fodler="Events"
             setUploadStatus={setUploadStatus}
             uploadStatus={uploadStatus}
           />
         </div>
-        <div className='w-full md:w-1/2 mb-2 px-2'>
-          <label className='block uppercase tracking-wide text-xs font-bold mb-2'>
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Tags
           </label>
-          <div className=''>
+          <div className="">
             <Tags tags={data.tags} pushTag={pushTag} popTag={popTag} />
           </div>
         </div>
       </div>
-      {data.eventCover?.public_id && (
-        <div className=' w-full px-3'>
-          <label
-            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
-              required ? "text-red-600 animate-pulse" : ""
-            }`}>
-            cover
-          </label>
-          <div
-            className='w-full h-20 sm:h-64 lg:h-72 xl:h-80 bg-top bg-cover'
-            style={{
-              backgroundImage: `url(${
-                data.eventCover?.url ? data.eventCover.url : null
-              }`,
-            }}></div>
-        </div>
-      )}
-      <div className='px-4 pt-6 flex flex-col-reverse sm:flex-row w-full items-center justify-around '>
+      <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row w-full items-center justify-around ">
         <button
-          className='px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4'
+          className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
           onClick={() => {
             edit ? setEdit(false) : history.goBack()
-          }}>
+          }}
+        >
           Cancel
         </button>
         <button
-          className='px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4'
-          onClick={save}>
+          className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+          onClick={save}
+        >
           {saving ? (
-            <div className='flex justify-center'>
+            <div className="flex justify-center">
               <div
                 style={{ borderTopColor: "transparent" }}
-                className='w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin'></div>
+                className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
+              ></div>
             </div>
           ) : (
             "Save"
