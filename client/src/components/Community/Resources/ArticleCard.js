@@ -17,6 +17,7 @@ const ArticleCard = ({ article }) => {
     video: <VideoCameraIcon className="w-4 h-4 text-black" />,
     picture: <PhotographIcon className="w-4 h-4 text-black" />,
   }
+
   return (
     <div className="group py-4 px-2">
       <div

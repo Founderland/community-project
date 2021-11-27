@@ -13,7 +13,7 @@ const Content = () => {
   let { view } = useParams()
   const { pageTop } = useContext(AdminContext)
   return (
-    <main className="overflow-x-hidden w-full h-screen md:px-4 ">
+    <main className="overflow-hidden w-full h-screen md:px-4 flex flex-col">
       <span ref={pageTop}></span>
       {view === "dashboard" && <Dashboard />}
       {view === "resources" && <Resources />}

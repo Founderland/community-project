@@ -6,11 +6,11 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
   // LOOP THROUGH TAB DATA
   let color = id ? "gray-400" : "black"
   return (
-    <>
+    <div className="flex-none w-full min-h-max sticky top-0 z-30">
       <div
         className={`${
           id ? "cursor-not-allowed opacity-20" : "cursor-pointer"
-        }  transition ease-in-out duration-200 max-w-max flex p-1 bg-${color} outline-none justify-start overflow-x-auto`}
+        }  flex-none transition ease-in-out duration-200 max-w-max flex p-1 bg-${color} outline-none justify-start overflow-x-scroll scrollbar scrollbar-thin scrollbar-track-gray-600 scrollbar-thumb-gray-900`}
       >
         {tabs?.map((tab) =>
           user.role.includes(tab.restricted) ? (
@@ -38,7 +38,7 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
       <div
         className={`w-full border mt-0 border-t border-5 border-black outline-none`}
       ></div>
-    </>
+    </div>
   )
 }
 

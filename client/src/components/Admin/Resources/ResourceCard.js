@@ -18,10 +18,10 @@ const types = {
 const ResourceCard = ({ resource }) => {
   const history = useHistory()
   return (
-    <div className="group py-5 px-3">
+    <div className="group py-4 px-2">
       <div
         onClick={() => history.push(`/admin/resources/id/${resource._id}`)}
-        className="cursor-pointer max-w-sm overflow-hidden shadow-lg hover:shadow-xl w-80 text-center "
+        className="relative cursor-pointer w-72 md:w-80 overflow-hidden shadow-lg hover:shadow-xl text-center "
       >
         <div className="flex ">
           <div
@@ -39,19 +39,17 @@ const ResourceCard = ({ resource }) => {
           </div>
         </div>
         <div className="px-2 py-2">
-          <div className="flex justify-center items-center font-bold text-black text-xl mb-2 h-16 font-mono">
+          <div className="flex items-center justify-center overflow-none font-bold text-black text-base md:text-xl mb-2 h-16 md:h-20 font-mono overflow-ellipsis">
             {resource.articleTitle}
           </div>
-          <p className="h-10 w-full px-2 text-black text-sm text-mono text-justify truncate">
+          <p className="h-10 px-2 mb-2 text-black text-xs md:text-sm text-mono overflow-ellipsis text-justify truncate">
             {resource.articleDescription}
           </p>
         </div>
-        <div className=" pl-6 pr-2 pt-2 pb-2 flex justify-between">
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mr-2 mb-2">
-            {types[resource.articleType]}
-          </span>
-          <ChevronDoubleRightIcon className="h-6 w-6 text-black group-hover:text-fblue" />
-        </div>
+        <span className="absolute top-2 left-2  inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700">
+          {types[resource.articleType]}
+        </span>
+        <ChevronDoubleRightIcon className="absolute bottom-2 right-2 h-6 w-6 text-black group-hover:text-fblue" />
       </div>
     </div>
   )
