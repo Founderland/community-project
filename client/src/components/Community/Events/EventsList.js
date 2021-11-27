@@ -87,63 +87,54 @@ const EventsList = ({ state, filter }) => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="w-full px-2 ">
-      <div className="max-w-max text-mono flex  space-x-2 items-center mt-3 pl-2">
-        <SearchIcon className="h-5 w-5 text-gray-800" />
-        {tags.length ? (
-          tags.map((tag) => {
-            const selected = searchTags.includes(tag)
-            return (
-              <div
-                key={tag}
-                className={`${
-                  selected
-                    ? "bg-green-700 text-flime"
-                    : "bg-gray-200 text-gray-600"
-                } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
-                onClick={() => filterTag(tag)}
-              >
-                <p className=" text-xs">{tag}</p>
-              </div>
-            )
-          })
-        ) : (
-          <p className="text-xs">No tags available</p>
-        )}
-      </div>
-      <div className="bg-white">
-        <div className="flex flex-wrap w-full justify-start overflow-auto">
-          {dataToDisplay.length ? (
-            dataToDisplay.map((event) => <EventCard event={event} />)
+    <div className="relative flex flex-col h-full pb-60 w-full overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
+      <div className="sticky top-0 z-50 bg-white w-full text-mono flex space-x-2 pl-2 py-2 items-center">
+        <SearchIcon className="flex-none h-4 w-4 md:h-6 md:w-6 text-gray-800" />
+        <div className="flex items-center py-1 space-x-2 overflow-x-scroll scrollbar scrollbar-thin scrollbar-thumb-flime scrollbar-track-green-100">
+          {tags.length ? (
+            tags.map((tag) => {
+              const selected = searchTags.includes(tag)
+              return (
+                <div
+                  key={tag}
+                  className={`${
+                    selected
+                      ? "bg-green-700 text-flime"
+                      : "bg-gray-200 text-gray-600"
+                  } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
+                  onClick={() => filterTag(tag)}
+                >
+                  <p className=" text-xs">{tag}</p>
+                </div>
+              )
+            })
           ) : (
-            <span className="font-medium flex space-x-4 items-center my-2 ml-2">
-              <EmojiSadIcon className="h-6 w-6" />
-              <p>Nothing to display</p>
-            </span>
+            <p className="flex-none text-mono text-xs py-1 px-2 ">
+              No tags available
+            </p>
           )}
         </div>
-        {data.length > perPage && searchTags.length === 0 ? (
-          <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
-            <div className="flex items-center justify-center">
-              <Pagination
-                setPage={setOffset}
-                currentPage={offset}
-                pageCount={pageCount}
-              />
-            </div>
-          </div>
-        ) : dataToDisplay.length > perPage ? (
-          <div className="border-b border-t mt-2 min-w-max w-full border-gray-200">
-            <div className="flex items-center justify-center">
-              <Pagination
-                setPage={setOffset}
-                currentPage={offset}
-                pageCount={pageCount}
-              />
-            </div>
-          </div>
+      </div>
+      {(data.length > perPage && searchTags.length === 0) ||
+      dataToDisplay.length > perPage ? (
+        <div className="fixed flex flex-start mt-10 z-50 pl-2 py-1 bg-white w-full ">
+          <Pagination
+            setPage={setOffset}
+            currentPage={offset}
+            pageCount={pageCount}
+          />
+        </div>
+      ) : (
+        ""
+      )}
+      <div className="flex flex-wrap w-full justify-start overflow-auto">
+        {dataToDisplay.length ? (
+          dataToDisplay.map((event) => <EventCard event={event} />)
         ) : (
-          ""
+          <span className="font-medium flex space-x-4 items-center my-2 ml-2">
+            <EmojiSadIcon className="h-6 w-6" />
+            <p>Nothing to display</p>
+          </span>
         )}
       </div>
     </div>

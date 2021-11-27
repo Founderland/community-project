@@ -55,9 +55,6 @@ const Dropzone = ({
             success: false,
             message: "",
           })
-          if (type.match(regex)) {
-            setPreviewSource(null)
-          }
         }, 2000)
       }
     } catch (e) {

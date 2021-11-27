@@ -124,7 +124,7 @@ const mapStyles = [
     featureType: "water",
     stylers: [
       {
-        color: "#4cb6eb",
+        color: "#0063e2",
       },
     ],
   },

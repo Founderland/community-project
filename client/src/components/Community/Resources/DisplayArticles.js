@@ -150,7 +150,7 @@ const DisplayArticles = ({ category }) => {
             ) : (
               ""
             )}
-            <div className="w-full flex justify-betweeen flex-wrap md:pl-4 pt-20 md:pt-24 ">
+            <div className="w-full flex justify-betweeen flex-wrap pl-4 pt-20 md:pt-24 ">
               {dataToDisplay.length ? (
                 dataToDisplay.map((article) => (
                   <ArticleCard article={article} />
