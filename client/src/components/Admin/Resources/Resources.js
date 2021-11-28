@@ -79,9 +79,11 @@ const Resources = () => {
       <ComponentModal>
         <AddCategory />
       </ComponentModal>
-      <ConfirmModal>
-        <ConfirmCategory data={tabs[selectedTab]} />
-      </ConfirmModal>
+      {!id && (
+        <ConfirmModal>
+          <ConfirmCategory data={tabs[selectedTab]} />
+        </ConfirmModal>
+      )}
       {tabs.length > 0 ? (
         <>
           <Tabs
@@ -90,7 +92,7 @@ const Resources = () => {
             setSelectedTab={setSelectedTab}
             id={id}
           />
-          <section className="relative flex flex-col bg-white outline-none pb-2 pt-2 md:px-4 overflow-hidden">
+          <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden">
             {!id ? (
               <>
                 <ResourcesList category={tabs[selectedTab].key} />
@@ -118,10 +120,12 @@ const Resources = () => {
                 </div>
               </>
             ) : id === "new" ? (
-              <AddResource
-                category={tabs[selectedTab].key}
-                categories={categories}
-              />
+              <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+                <AddResource
+                  category={tabs[selectedTab].key}
+                  categories={categories}
+                />
+              </section>
             ) : (
               <Resource
                 category={tabs[selectedTab].key}

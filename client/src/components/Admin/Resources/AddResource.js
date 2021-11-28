@@ -196,9 +196,9 @@ const AddResource = ({ categories, category, article, edit, setEdit }) => {
         <Banner message={banner} />
       </div>
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
-        Add new resource
+        {edit ? "Edit" : "Add new"} resource
       </div>
-      {data.articleCover?.public_id && (
+      {data.articleCover?.public_id && edit && (
         <div className=" w-full px-3">
           <label
             className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
@@ -230,7 +230,7 @@ const AddResource = ({ categories, category, article, edit, setEdit }) => {
                 : data.articleTitle.length <= 1
                 ? "border-l-4 border-fred"
                 : "border-l-4 border-flime"
-            } appearance-none outline-none outline-none block w-full border py-3 px-4 mb-3 ${
+            } appearance-none outline-none block w-full border py-3 px-4 mb-3 ${
               required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
             }`}
             type="text"
@@ -278,7 +278,7 @@ const AddResource = ({ categories, category, article, edit, setEdit }) => {
                 : data.articleDescription.length <= 1
                 ? "border-l-4 border-fred"
                 : "border-l-4 border-flime"
-            } appearance-none outline-none outline-none block w-full border py-3 px-4 mb-3 ${
+            } appearance-none outline-none  block w-full border py-3 px-4 mb-3 ${
               required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
             }`}
             type="text"

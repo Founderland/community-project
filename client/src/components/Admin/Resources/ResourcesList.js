@@ -83,7 +83,7 @@ const ResourcesList = ({ categories, category }) => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="relative h-full flex-none flex flex-col w-full overflow-hidden px-2 pb-10">
+    <div className="relative h-full flex-none flex flex-col w-full overflow-hidden px-2 pb-12">
       <div className="sticky z-20 bg-white w-full text-mono flex space-x-2 pl-2 py-2 items-center">
         <SearchIcon className="flex-none h-4 w-4 md:h-6 md:w-6 text-gray-800" />
         <div className="flex items-center py-1 space-x-2 overflow-x-scroll scrollbar scrollbar-thin scrollbar-thumb-flime scrollbar-track-green-100">
