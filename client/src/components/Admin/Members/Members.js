@@ -119,7 +119,9 @@ const Members = () => {
             </div>
           </>
         ) : id === "new" ? (
-          <AddMember role={tabs[selectedTab].role} />
+          <section className="h-full w-full lg:w-5/6 xl:w-4/6 md:px-4 mx-auto overflow-auto">
+            <AddMember role={tabs[selectedTab].role} />
+          </section>
         ) : (
           <MemberProfile />
         )}
