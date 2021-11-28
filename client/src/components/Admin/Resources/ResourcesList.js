@@ -14,7 +14,7 @@ const ResourcesList = ({ categories, category }) => {
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
-  const [perPage] = useState(6)
+  const [perPage] = useState(5)
   const [pageCount, setPageCount] = useState(0)
   const [tags, setTags] = useState([])
   const [searchTags, setSearchTags] = useState([])

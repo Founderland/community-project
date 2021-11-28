@@ -191,7 +191,7 @@ const AddResource = ({ categories, category, article, edit, setEdit }) => {
   }
   const regex = new RegExp("(?:link|video)", "g")
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col w-full xl:w-5/6">
+    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col w-full xl:w-5/6 2xl:w-3/6">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>

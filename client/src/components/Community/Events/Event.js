@@ -118,7 +118,7 @@ const Event = () => {
     }
   }
   return (
-    <div className="h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 pb-10 mx-auto mt-6 overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
+    <div className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -378,6 +378,7 @@ const Event = () => {
                           }`}
                           target="_blank"
                           rel="noreferrer"
+                          className="hover:text-fblue"
                         >
                           {data.address}
                         </a>
@@ -392,20 +393,22 @@ const Event = () => {
                   </p>
                 </div>
               )}
-              <div className="flex mt-2 pt-2 px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150 items-center">
+              <div className=" mt-2 pt-2 px-3 bg-white text-mono text-base w-full ease-linear transition-all duration-150 items-center">
                 <p className="text-xs">Event Tags:</p>
-                {data.tags.length ? (
-                  data.tags.map((tag) => (
-                    <div
-                      key={tag}
-                      className="bg-gray-200 text-gray-600  group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-"
-                    >
-                      <p className=" text-xs">{tag}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-xs ml-2">No tags</p>
-                )}
+                <div className="flex items-center py-1 space-x-2 overflow-x-scroll scrollbar scrollbar-thin scrollbar-thumb-flime scrollbar-track-green-100">
+                  {data.tags.length ? (
+                    data.tags.map((tag) => (
+                      <div
+                        key={tag}
+                        className={`bg-gray-200 text-gray-600 flex-none group py-1 px-2 text-center cursor-pointer`}
+                      >
+                        <p className="text-xs">{tag}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs ml-2">No tags</p>
+                  )}
+                </div>
               </div>
             </div>
             <footer className="w-full px-4 my-4 flex flex-col sm:flex-row items-center justify-around ">

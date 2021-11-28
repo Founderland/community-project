@@ -6,6 +6,7 @@ import AdminContext from "../../../contexts/Admin"
 import ListOption from "../Widgets/ListOption"
 import Banner from "../Widgets/Banner"
 import { SearchIcon } from "@heroicons/react/outline"
+import { Image } from "cloudinary-react"
 import Places from "./Places"
 import MapDisplay from "./MapDisplay"
 import Tags from "../Widgets/Tags"
@@ -159,16 +160,30 @@ const AddEvent = ({ event, edit, setEdit }) => {
       link
     )
   }
-  console.log(data)
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-3/6">
+    <div className="bg-white pt-6 pb-4 flex flex-col items-center justify-center w-full">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
-        Add new event
+        {edit ? "Edit" : "Add new"} event
       </div>
-
+      {data.eventCover?.public_id && edit && (
+        <div className=" w-full px-3">
+          <label
+            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
+              required ? "text-red-600 animate-pulse" : ""
+            }`}
+          >
+            cover
+          </label>
+          <Image
+            cloudName="founderland"
+            publicId={data.eventCover.public_id}
+            className="w-full px-8 pb-8 pt-2"
+          ></Image>
+        </div>
+      )}
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">
@@ -181,7 +196,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
                 : data.title.length <= 1
                 ? "border-l-4 border-fred"
                 : "border-l-4 border-flime"
-            } appearance-none outline-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
+            } appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
               required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
             }`}
             type="text"
@@ -226,7 +241,9 @@ const AddEvent = ({ event, edit, setEdit }) => {
         </div>
       </div>
       <div className="md:flex w-full px-3 mb-2">
-        <div className="w-full md:w-1/2 mb-2 px-2">
+        <div
+          className={`w-full ${data.type === "online" && "md:w-1/2"} mb-2 px-2`}
+        >
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Type
           </label>
@@ -238,33 +255,31 @@ const AddEvent = ({ event, edit, setEdit }) => {
             />
           </div>
         </div>
-        <div className="w-full md:w-1/2 mb-2 px-2">
-          {data.type === "online" && (
-            <>
-              <label className="block uppercase tracking-wide text-xs font-bold mb-2">
-                Link
-              </label>
-              <div className="w-full">
-                <input
-                  className={`${
-                    data.link === ""
-                      ? ""
-                      : !isLink(data.link)
-                      ? "border-l-4 border-fred"
-                      : "border-l-4 border-flime"
-                  } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3 ${
-                    required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
-                  }`}
-                  type="text"
-                  onChange={(e) => {
-                    setData((prev) => ({ ...prev, link: e.target.value }))
-                  }}
-                  value={data.link}
-                />
-              </div>
-            </>
-          )}
-        </div>
+        {data.type === "online" && (
+          <div className="w-full md:w-1/2 mb-2 px-2">
+            <label className="block uppercase tracking-wide text-xs font-bold mb-2">
+              Link
+            </label>
+            <div className="w-full">
+              <input
+                className={`${
+                  data.link === ""
+                    ? ""
+                    : !isLink(data.link)
+                    ? "border-l-4 border-fred"
+                    : "border-l-4 border-flime"
+                } appearance-none outline-none block w-full bg-grey-lighter focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3 ${
+                  required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
+                }`}
+                type="text"
+                onChange={(e) => {
+                  setData((prev) => ({ ...prev, link: e.target.value }))
+                }}
+                value={data.link}
+              />
+            </div>
+          </div>
+        )}
       </div>
       {data.type !== "online" && (
         <div className="w-full grid sm:grid-cols-2 px-3">
@@ -336,9 +351,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">
             Tags
           </label>
-          <div className="">
-            <Tags tags={data.tags} pushTag={pushTag} popTag={popTag} />
-          </div>
+          <Tags tags={data.tags} pushTag={pushTag} popTag={popTag} />
         </div>
       </div>
       <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row w-full items-center justify-around ">
