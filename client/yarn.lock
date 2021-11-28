@@ -10026,6 +10026,13 @@ react-tiny-link@^3.6.1:
   resolved "https://registry.yarnpkg.com/react-tiny-link/-/react-tiny-link-3.6.1.tgz#69da07660e16e2498c42458b09b02d4c41e6683c"
   integrity sha512-spQghU5GqBWsLE8rKOTYo/h6MNoZJn8Gqs6jpeQuo/eq2bALkeOke2FfSswVOhGN8z8riDY+TqaJ2eaoNKtrAw==
 
+react-to-print@^2.14.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.14.1.tgz#b6c74e9ed37520092a0863386ceb9b5525065941"
+  integrity sha512-2PWKhONAYHpWELAiclcGbyN3xG0Li37hnMVdNtSwGyOT3O6BpB+GiqaT4pqnvuDTPFTZdfjL4fmvY6HxcdQ6sw==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-window-size@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/react-window-size/-/react-window-size-1.2.2.tgz#4fd71ba91c512550cf8a4275fadd02480bcdbb14"

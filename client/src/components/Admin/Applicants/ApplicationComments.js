@@ -109,14 +109,14 @@ const ApplicationComments = ({
       <div className="w-full flex  justify-center items-center">
         <Banner message={banner} />
       </div>
-      <h6 className="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
+      <h6 className="text-gray-400 text-sm mt-3 mb-2 font-bold uppercase">
         Reviewer comments
       </h6>
       <div className="relative">
         <div
           className={
             commentsArray.length > 3
-              ? "h-60 overflow-y-auto  "
+              ? "h-60 overflow-y-auto"
               : "h-auto w-full flex flex-col items-center justify-center "
           }
         >
@@ -139,7 +139,7 @@ const ApplicationComments = ({
               />
             ))
           ) : (
-            <span className=" p-4">There are no comment yet</span>
+            <span className="p-4">There are no comments</span>
           )}
         </div>
       </div>
