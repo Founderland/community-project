@@ -175,8 +175,8 @@ const AdminDashboard = () => {
     fetchData()
   }, [])
   return (
-    <div className="flex flex-col w-full px-3 overflow-auto">
-      <div className="flex-none md:flex h-full w-full">
+    <div className="h-full flex flex-col w-full px-3 overflow-auto">
+      <div className="flex-none md:flex w-full">
         <CompactWidget
           loading={loading.foundersWidget}
           data={widgetData.foundersWidget}
@@ -190,7 +190,7 @@ const AdminDashboard = () => {
           data={widgetData.alliesWidget}
         />
       </div>
-      <div className="md:flex w-full bg-white">
+      <div className="w-full bg-white">
         {loading.pendingApplicants ? (
           <Loading />
         ) : (
