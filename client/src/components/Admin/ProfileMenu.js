@@ -13,7 +13,7 @@ const ProfileMenu = () => {
     history.push("/admin/settings")
   }
   return (
-    <Menu as="div" className="relative z-50">
+    <Menu as="div" className="relative">
       <Menu.Button className="group flex items-center space-x-3 relative outline-none">
         <h2 className="text-gray-800 text-bold text-sm lg:text-lg hidden sm:block">
           {user.firstName + " " + user.lastName}
@@ -36,7 +36,7 @@ const ProfileMenu = () => {
         <Menu.Items className="absolute z-50 outline-none w-40 bg-white overflow-hidden shadow-xl right-0">
           <Menu.Item
             as="button"
-            className="flex items-center w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
+            className="flex z-50 items-center w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
             onClick={() => goToProfile()}
           >
             <UserIcon className="w-6" />
@@ -44,7 +44,7 @@ const ProfileMenu = () => {
           </Menu.Item>
           <Menu.Item
             as="button"
-            className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-fred hover:text-white"
+            className="w-full z-50 px-4 py-2 text-sm text-gray-800 hover:bg-fred hover:text-white"
             onClick={() => logout()}
           >
             Logout

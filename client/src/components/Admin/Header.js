@@ -57,7 +57,7 @@ const AdminHeader = () => {
   if (view === "applicants") back = "/admin/applicants/new"
   else back = "/admin/" + view
   return (
-    <div className="flex justify-between items-center p-6 z-10">
+    <div className="flex justify-between items-center p-6 z-30">
       <div className="flex items-center space-x-4 lg:space-x-0">
         <button
           className="text-gray-800 focus:outline-none lg:hidden"
