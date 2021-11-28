@@ -1,8 +1,10 @@
 import { useState } from "react"
+import Banner from "../../Admin/Widgets/Banner"
 
 import BusinessAreaSelect from "../Profile/BusinessAreaSelect"
 
 const SecondStep = ({ data, setData, previousStep, nextStep }) => {
+  const [banner, setBanner] = useState({ show: false })
   const formatValue = (value) => {
     const newValue = value.trimStart()
     return newValue.replace(value[0], value[0]?.toUpperCase())
@@ -15,12 +17,29 @@ const SecondStep = ({ data, setData, previousStep, nextStep }) => {
             <h1 className='font-bold text-grotesk text-xl md:text-2xl lg:text-3xl'>
               You and your business
             </h1>
+            <span className='w-full flex justify-center items-center'>
+              <Banner message={banner} />
+            </span>
           </div>
           <div className=' h-full lg:w-full lg:h-5/6 flex '>
             <form
               onSubmit={(e) => {
                 e.preventDefault(e)
-                nextStep()
+                if (
+                  data.businessArea !== "Select the business area" &&
+                  data.businessArea !== "Other"
+                ) {
+                  nextStep()
+                } else {
+                  setBanner({
+                    success: 0,
+                    show: true,
+                    message: "Please fill out all the fields",
+                  })
+                  setTimeout(() => {
+                    setBanner((prev) => ({ ...prev, show: false }))
+                  }, 3000)
+                }
               }}
               className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
               <div className='w-screen md:w-1/2 p-4 py-6 '>
@@ -42,10 +61,13 @@ const SecondStep = ({ data, setData, previousStep, nextStep }) => {
                 <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
                   Business area
                 </label>
-
-                <BusinessAreaSelect profile={data} setProfile={setData} />
+                <BusinessAreaSelect
+                  profile={data}
+                  setProfile={setData}
+                  required={banner.show}
+                  bgColor={"bg-white"}
+                />
               </div>
-
               <div className='w-screen md:w-1/2 p-4 py-6 '>
                 <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
                   Company name
@@ -89,7 +111,7 @@ const SecondStep = ({ data, setData, previousStep, nextStep }) => {
                 <textarea
                   type='text'
                   className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
-                  required={true}
+                  required
                   value={data.companyBio}
                   placeholder='About you (max 3 sentences)'
                   onChange={(e) =>

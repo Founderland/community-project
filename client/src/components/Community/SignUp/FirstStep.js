@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
+import Banner from "../../Admin/Widgets/Banner"
+
 const config = {
   headers: {
     "X-CSCAPI-KEY": process.env.REACT_APP_COUNTRIES,
@@ -11,8 +13,9 @@ const config = {
 const FirstStep = ({ data, setData, nextStep }) => {
   const [countryList, setCountryList] = useState([])
   const [cityList, setCityList] = useState([])
-  const [selectedCountry, setSelectedCounty] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedCity, setSelectedCity] = useState(null)
+  const [banner, setBanner] = useState({ show: false })
 
   // get all the cities
   useEffect(() => {
@@ -26,7 +29,7 @@ const FirstStep = ({ data, setData, nextStep }) => {
 
   useEffect(() => {
     // check if the country entered is in our list
-    setSelectedCounty(
+    setSelectedCountry(
       countryList.find((country) => country.name === data.country)
     )
     // get list of cities in the selected country
@@ -56,7 +59,7 @@ const FirstStep = ({ data, setData, nextStep }) => {
         .then((res) => {
           setData({
             ...data,
-            geoLocation: { lat: res.data[0].lat, lon: res.data[0].lon },
+            geoLocation: { lat: res.data[0].lat, lng: res.data[0].lon },
           })
         })
         .catch((e) => console.log(e))
@@ -96,15 +99,28 @@ const FirstStep = ({ data, setData, nextStep }) => {
               Welcome to Founderland!
             </h1>
             <h1 className='text-grotesk text-xl lg:text-3xl  p-2'>
-              We'are thrilled to have you on board! Please fill out the
-              following fields with your informations in order to proceed.
+              We're thrilled to have you on board. Please fill out the following
+              fields with your information to get started on your journey with
+              our community.
             </h1>
+            <Banner message={banner} />
           </div>
           <div className=' h-full lg:w-full lg:h-5/6 flex '>
             <form
               onSubmit={(e) => {
                 e.preventDefault(e)
-                nextStep()
+                if (selectedCity && selectedCountry) {
+                  nextStep()
+                } else {
+                  setBanner({
+                    show: true,
+                    success: 0,
+                    message: "Please select a valid city & country",
+                  })
+                  setTimeout(() => {
+                    setBanner((prev) => ({ ...prev, show: false }))
+                  }, 4000)
+                }
               }}
               className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
               <div className='w-screen md:w-1/2  p-4 py-6 '>

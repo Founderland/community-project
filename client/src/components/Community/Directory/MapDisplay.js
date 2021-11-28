@@ -165,10 +165,10 @@ export default function MapDisplay(props) {
   }
 
   return (
-    <div className="relative w-full h-full">
-      <div className="absolute w-2/3 sm:w-1/2 z-40 md:w-1/3 m-4">
+    <div className='relative w-full h-full'>
+      <div className='absolute w-2/3 sm:w-1/2 z-40 md:w-1/3 m-4'>
         <Autocomplete
-          className=""
+          className=''
           getItemValue={(item) => `${item.firstName} ${item.lastName}`}
           items={memberDetails}
           shouldItemRender={(item, value) =>
@@ -182,27 +182,26 @@ export default function MapDisplay(props) {
           }}
           open={openSearchMenu}
           renderInput={(props) => (
-            <div className="relative w-full">
+            <div className='relative w-full'>
               <input
                 {...props}
-                type="text"
-                id="rounded-email"
-                className="w-full h-full border-flime-500 shadow-lg flex-1 appearance-none border-2  md:ml-10 mx-auto py-2 px-2 bg-white text-gray-700 text-sm md:text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono "
-                placeholder="Search Founder by name.."
+                type='text'
+                id='rounded-email'
+                className='w-full h-full border-flime-500 shadow-lg flex-1 appearance-none border-2  md:ml-10 mx-auto py-2 px-2 bg-white text-gray-700 text-sm md:text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fpink focus:border-transparent placeholder-black-100 text-mono '
+                placeholder='Search Founder by name..'
               />
             </div>
           )}
           renderMenu={(items, value, style) => (
             <div
               children={items}
-              className="w-full md:ml-10 max-h-64 overflow-y-scroll"
+              className='w-full md:ml-10 max-h-64 overflow-y-scroll'
             />
           )}
           renderItem={(item, isHighlighted) => (
             <div
-              className="p-4 border-b border-gray-400 text-sm md:text-base 2xl:text-lg cursor-pointer"
-              style={{ background: isHighlighted ? "lightgray" : "white" }}
-            >
+              className='p-4 border-b border-gray-400 text-sm md:text-base 2xl:text-lg cursor-pointer'
+              style={{ background: isHighlighted ? "lightgray" : "white" }}>
               {item.firstName + " " + item.lastName}
             </div>
           )}
@@ -217,8 +216,7 @@ export default function MapDisplay(props) {
         zoom={screenwidth < 600 ? 3 : 5.7}
         center={center}
         options={options}
-        onLoad={onMapLoad}
-      >
+        onLoad={onMapLoad}>
         {latlong.map((latlng, index) => {
           return (
             <Marker
@@ -244,13 +242,12 @@ export default function MapDisplay(props) {
               }
               onClick={() => clickHandler(latlng)}
               onMouseOver={() => handleMouseOver(latlng.lat, latlng.lng, index)}
-              onMouseOut={handleMouseExit}
-            >
+              onMouseOut={handleMouseExit}>
               {isHovered && index === hoverElement?.index && (
                 <InfoWindow>
-                  <div className="flex items-center space-x-2">
-                    <img className="w-8" src={womenImg} alt="icon" />
-                    <h2 className="text-2xl font-semibold "> {total} </h2>
+                  <div className='flex items-center space-x-2'>
+                    <img className='w-8' src={womenImg} alt='icon' />
+                    <h2 className='text-2xl font-semibold '> {total} </h2>
                   </div>
                 </InfoWindow>
               )}

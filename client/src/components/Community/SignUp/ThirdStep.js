@@ -9,6 +9,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/outline"
 import DropzoneCloudinary from "./DropzoneCloudinary"
+import Banner from "../../Admin/Widgets/Banner"
 
 const ThirdStep = ({ nextStep, previousStep, data, setData }) => {
   // const [previewSource, setPreviewSource] = useState(null)
@@ -16,6 +17,7 @@ const ThirdStep = ({ nextStep, previousStep, data, setData }) => {
     success: false,
     message: "",
   })
+  const [banner, setBanner] = useState({ show: false })
 
   return (
     <div className='h-screen w-screen flex flex-col  items-center  p-5  lg:w-full'>
@@ -38,6 +40,7 @@ const ThirdStep = ({ nextStep, previousStep, data, setData }) => {
             </div>
           )
         )}
+        <Banner message={banner} />
         <div className='flex flex-col  h-full w-full  lg:w-4/6 md:h-3/4 w-full justify-center items-center '>
           <div className='flex flex-col items-center justify-center h-full w-full md:h-2/4 md:w-2/4 lg:w-3/4 lg:h-1/2'>
             <h4 className='text-grotesk text-xl lg:text-2xl'>
@@ -80,7 +83,20 @@ const ThirdStep = ({ nextStep, previousStep, data, setData }) => {
           <button
             type='button'
             className='p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 '
-            onClick={() => nextStep()}>
+            onClick={() => {
+              if (data.photo?.url) {
+                nextStep()
+              } else {
+                setBanner({
+                  error: 1,
+                  show: true,
+                  message: "Please selected a picture for your profile",
+                })
+                setTimeout(() => {
+                  setBanner((prev) => ({ ...prev, show: false }))
+                }, 3000)
+              }
+            }}>
             Next
           </button>
         </div>

@@ -65,7 +65,6 @@ const Profile = () => {
     const loadProfile = async () => {
       try {
         if (id !== "new") {
-          console.log("reloading")
           setLoading(true)
           const getUser = await axios.get(
             id ? profileUrl + id : profileUrl + "user",
@@ -275,29 +274,27 @@ const Profile = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className=" h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6">
-          <div className="w-full flex items-center justify-center">
+        <div className=' h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6'>
+          <div className='w-full flex items-center justify-center'>
             <Banner message={banner} />
           </div>
-          <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-3/6 mb-6 shadow-lg border-0 px-4 md:px-6 ">
-            <div className="w-full px-3 flex items-center justify-center mb-2">
-              <Popover className="relative group">
+          <div className='relative self-center flex flex-col w-full xl:w-5/6 2xl:w-3/6 mb-6 shadow-lg border-0 px-4 md:px-6 '>
+            <div className='w-full px-3 flex items-center justify-center mb-2'>
+              <Popover className='relative group'>
                 <Popover.Button
-                  as="div"
-                  className={`w-40 h-40 md:w-52 md:h-52 rounded-2xl p-2 mb-3 border-2 border-gray-100 cursor-pointer transition duration-200 group-hover:border-fblue`}
-                >
+                  as='div'
+                  className={`w-40 h-40 md:w-52 md:h-52 rounded-2xl p-2 mb-3 border-2 border-gray-100 cursor-pointer transition duration-200 group-hover:border-fblue`}>
                   <div
-                    className={`rounded-full w-36 h-36 md:w-48 md:h-48 ${profile.avatar} flex justify-center items-center`}
-                  >
-                    <p className="text-6xl md:text-8xl text-mono">
+                    className={`rounded-full w-36 h-36 md:w-48 md:h-48 ${profile.avatar} flex justify-center items-center`}>
+                    <p className='text-6xl md:text-8xl text-mono'>
                       {avatarInitials(profile.firstName, profile.lastName)}
                     </p>
                   </div>
                 </Popover.Button>
-                <Popover.Button className="absolute bottom-0 outline-none right-0 bg-flime p-1 h-8 w-8 text-center rounded-full cursor-pointer transition duration-200 group-hover:bg-fblue group-hover:text-white">
-                  <ChevronDownIcon className="h-6 w-6" />
+                <Popover.Button className='absolute bottom-0 outline-none right-0 bg-flime p-1 h-8 w-8 text-center rounded-full cursor-pointer transition duration-200 group-hover:bg-fblue group-hover:text-white'>
+                  <ChevronDownIcon className='h-6 w-6' />
                 </Popover.Button>
-                <Popover.Panel className="absolute -bottom-32 z-20 right-3 md:right-2 rounded shadow-lg bg-white w-32 h-32 p-2 flex flex-wrap justify-between ">
+                <Popover.Panel className='absolute -bottom-32 z-20 right-3 md:right-2 rounded shadow-lg bg-white w-32 h-32 p-2 flex flex-wrap justify-between '>
                   {avatarColors.map((color) => (
                     <span
                       key={color}
@@ -306,71 +303,67 @@ const Profile = () => {
                           ? "border-green-600"
                           : "border-white"
                       }`}
-                      onClick={(e) => handleChange(color, "avatar")}
-                    ></span>
+                      onClick={(e) => handleChange(color, "avatar")}></span>
                   ))}
                 </Popover.Panel>
               </Popover>
             </div>
-            <div className="-mx-3 md:flex">
-              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className='-mx-3 md:flex'>
+              <div className='md:w-1/2 px-3 mb-6 md:mb-0'>
                 <label
-                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                  for="first-name"
-                >
+                  className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'
+                  for='first-name'>
                   First Name
                 </label>
                 <input
-                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red py-3 px-4 mb-3"
-                  id="first-name"
+                  className='appearance-none block w-full bg-grey-lighter text-grey-darker border border-red py-3 px-4 mb-3'
+                  id='first-name'
                   disabled={profile.isLocked}
-                  type="text"
+                  type='text'
                   value={profile.firstName}
                   onChange={(e) => handleChange(e.target.value, "firstName")}
                 />
               </div>
-              <div className="md:w-1/2 px-3">
+              <div className='md:w-1/2 px-3'>
                 <label
-                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                  for="last-name"
-                >
+                  className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'
+                  for='last-name'>
                   Last Name
                 </label>
                 <input
-                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4"
-                  id="last-name"
+                  className='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4'
+                  id='last-name'
                   disabled={profile.isLocked}
-                  type="text"
+                  type='text'
                   value={profile.lastName}
                   onChange={(e) => handleChange(e.target.value, "lastName")}
                 />
               </div>
             </div>
-            <div className="-mx-3 md:flex mb-6">
+            <div className='-mx-3 md:flex mb-6'>
               {id !== "new" ? (
-                <div className="relative md:w-full px-3">
+                <div className='relative md:w-full px-3'>
                   <label
-                    className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                    for="email"
-                  >
+                    className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'
+                    for='email'>
                     Email
                   </label>
                   <input
-                    className="appearance-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4"
-                    id="email"
-                    type="text"
+                    className='appearance-none block w-full bg-grey-lighter text-grey-darker border py-3 px-4'
+                    id='email'
+                    type='text'
                     value={profile.email}
                     disabled
                   />
                   {profile.isVerified ? (
-                    <ShieldCheckIcon className="absolute top-8 right-10 w-8 h-8 text-green-500" />
+                    <ShieldCheckIcon className='absolute top-8 right-10 w-8 h-8 text-green-500' />
                   ) : (
-                    <ShieldExclamationIcon className="absolute top-8 right-10 w-8 h-8 text-red-500" />
+                    <ShieldExclamationIcon className='absolute top-8 right-10 w-8 h-8 text-red-500' />
                   )}
                 </div>
               ) : (
-                <div className="md:w-full px-3 mb-2">
-                  <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+                <div className='md:w-full px-3 mb-2'>
+                  <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
                     Email
                   </label>
                   <input
@@ -381,7 +374,7 @@ const Profile = () => {
                         ? "border-l-4 border-fred"
                         : "border-l-4 border-flime"
                     } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3`}
-                    type="text"
+                    type='text'
                     onChange={(e) => {
                       handleChange(e.target.value, "email")
                     }}
@@ -392,67 +385,64 @@ const Profile = () => {
             </div>
             {!id ? (
               <>
-                <div className="-mx-3 px-3 md:flex mb-1">
+                <div className='-mx-3 px-3 md:flex mb-1'>
                   <label
-                    className="block uppercase tracking-wide text-grey-darker text-lg font-bold mb-2"
-                    for="password"
-                  >
+                    className='block uppercase tracking-wide text-grey-darker text-lg font-bold mb-2'
+                    for='password'>
                     Set a new password
                   </label>
                 </div>
-                <div className="-mx-3 md:flex mb-6">
-                  <div className="md:w-full px-3">
+                <div className='-mx-3 md:flex mb-6'>
+                  <div className='md:w-full px-3'>
                     <label
-                      className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                      for="password"
-                    >
+                      className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'
+                      for='password'>
                       Password
                     </label>
                     <input
                       className={`${checkPassword()} appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3`}
-                      id="password"
-                      type="password"
-                      autocomplete="new-password"
+                      id='password'
+                      type='password'
+                      autocomplete='new-password'
                       onChange={(e) => handleChange(e.target.value, "password")}
-                      placeholder="******************"
+                      placeholder='******************'
                     />
                   </div>
-                  <div className="md:w-full px-3">
+                  <div className='md:w-full px-3'>
                     <label
-                      className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                      for="password"
-                    >
+                      className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'
+                      for='password'>
                       Confirm Password
                     </label>
                     <input
                       className={`${checkConfirmPassword()} appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter py-3 px-4 mb-3`}
-                      id="confirmpassword"
-                      type="password"
-                      autocomplete="new-password"
+                      id='confirmpassword'
+                      type='password'
+                      autocomplete='new-password'
                       onChange={(e) =>
                         handleChange(e.target.value, "confirmPassword")
                       }
-                      placeholder="******************"
+                      placeholder='******************'
                     />
                   </div>
                 </div>
-                <div className="-mt-6 text-xs">
+                <div className='-mt-6 text-xs'>
                   *Minimum eight characters, at least one upper case letter, one
                   lower case letter and one number
                 </div>
               </>
             ) : profile.isLocked ? (
-              <div className=" flex justify-center items-center space-x-4  w-full -mx-3 mb-4">
-                <ExclamationIcon className="w-8 h-8 text-fred" />
-                <p className=" ">Access has been locked for this account</p>
+              <div className=' flex justify-center items-center space-x-4  w-full -mx-3 mb-4'>
+                <ExclamationIcon className='w-8 h-8 text-fred' />
+                <p className=' '>Access has been locked for this account</p>
               </div>
             ) : (
-              <div className="-mx-3  mb-4">
-                <div className="md:w-full px-3">
-                  <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+              <div className='-mx-3  mb-4'>
+                <div className='md:w-full px-3'>
+                  <label className='block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2'>
                     Role
                   </label>
-                  <div className="w-full">
+                  <div className='w-full'>
                     <ListOption
                       options={roles}
                       choice={profile.role}
@@ -462,39 +452,36 @@ const Profile = () => {
                 </div>
               </div>
             )}
-            <div className="-mx-3 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around -mb-3">
+            <div className='-mx-3 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around -mb-3'>
               {!profile.isVerified && id !== "new" ? (
                 <button
-                  className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                  className='flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4'
                   onClick={() => notify()}
-                  disabled={notified}
-                >
+                  disabled={notified}>
                   {notifying ? (
-                    <div className="flex justify-center">
+                    <div className='flex justify-center'>
                       <div
                         style={{ borderTopColor: "transparent" }}
-                        className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                      ></div>
+                        className='w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin'></div>
                     </div>
                   ) : notified ? (
                     <>
-                      <ShieldCheckIcon className="w-6 h-6" />
+                      <ShieldCheckIcon className='w-6 h-6' />
                       <p>User notified</p>
                     </>
                   ) : (
                     <>
-                      <ShieldCheckIcon className="w-6 h-6" />
+                      <ShieldCheckIcon className='w-6 h-6' />
                       <p>Verify Email</p>
                     </>
                   )}
                 </button>
               ) : id === "new" ? (
                 <button
-                  className="px-8 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                  className='px-8 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4'
                   onClick={() => {
                     history.goBack()
-                  }}
-                >
+                  }}>
                   Cancel
                 </button>
               ) : (
@@ -502,15 +489,13 @@ const Profile = () => {
               )}
               {id !== "new" && id ? (
                 <button
-                  className="px-10 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
-                  onClick={() => lock()}
-                >
+                  className='px-10 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center '
+                  onClick={() => lock()}>
                   {locking ? (
-                    <div className="flex justify-center">
+                    <div className='flex justify-center'>
                       <div
                         style={{ borderTopColor: "transparent" }}
-                        className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                      ></div>
+                        className='w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin'></div>
                     </div>
                   ) : profile.isLocked ? (
                     "Unlock Access"
@@ -523,15 +508,13 @@ const Profile = () => {
               )}
               {!profile.isLocked && update && (
                 <button
-                  className="px-8 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                  onClick={() => save()}
-                >
+                  className='px-8 py-2 mx-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4'
+                  onClick={() => save()}>
                   {saving ? (
-                    <div className="flex justify-center">
+                    <div className='flex justify-center'>
                       <div
                         style={{ borderTopColor: "transparent" }}
-                        className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                      ></div>
+                        className='w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin'></div>
                     </div>
                   ) : id === "new" ? (
                     "Save"

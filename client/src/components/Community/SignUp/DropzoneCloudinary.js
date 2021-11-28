@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
 import { config } from "dotenv"
+import { useParams } from "react-router"
 
 const DropzoneCloudinary = ({
   data,
@@ -13,15 +14,17 @@ const DropzoneCloudinary = ({
 }) => {
   const [previewSource, setPreviewSource] = useState(null)
   const [loading, setLoading] = useState(false)
+  const { token } = useParams()
 
   const config = useMemo(() => {
     return {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     }
   }, [])
+  console.log(config)
 
   // CLOUDINARY
   const onDrop = useCallback((acceptedFiles) => {
@@ -68,7 +71,7 @@ const DropzoneCloudinary = ({
         }, 4000)
       }
     } catch (e) {
-      console.log(e)
+      console.log(e.response)
       setUploadStatus({
         success: false,
         message: e.response?.data.message || "Sorry something went wrong",
