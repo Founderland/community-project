@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/outline"
 import { Popover } from "@headlessui/react"
 import { useParams, useHistory } from "react-router-dom"
-import { useContext, useEffect, useState, useMemo } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
 import Banner from "../Widgets/Banner"
@@ -275,7 +275,7 @@ const Profile = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className=" h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6">
+        <div className="h-full w-full flex flex-col items-center justify-start lg:w-5/6 md:px-4 mx-auto overflow-auto">
           <div className="w-full flex items-center justify-center">
             <Banner message={banner} />
           </div>

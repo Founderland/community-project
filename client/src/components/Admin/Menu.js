@@ -123,7 +123,7 @@ const Menu = () => {
               <Link
                 to={`/admin/${key}`}
                 onClick={() => handleMenu()}
-                className={`block group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black  flex items-center text-sm tracking-wider ${
+                className={`group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black  flex items-center text-sm tracking-wider ${
                   view === key
                     ? "border-gray-200 bg-white text-black"
                     : "border-transparent"

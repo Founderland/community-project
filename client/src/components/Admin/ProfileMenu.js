@@ -13,7 +13,7 @@ const ProfileMenu = () => {
     history.push("/admin/settings")
   }
   return (
-    <Menu as="div" className="relative">
+    <Menu as="div" className="relative z-50">
       <Menu.Button className="group flex items-center space-x-3 relative outline-none">
         <h2 className="text-gray-800 text-bold text-sm lg:text-lg hidden sm:block">
           {user.firstName + " " + user.lastName}
@@ -33,7 +33,7 @@ const ProfileMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute outline-none w-40 bg-white overflow-hidden shadow-xl right-0">
+        <Menu.Items className="absolute z-50 outline-none w-40 bg-white overflow-hidden shadow-xl right-0">
           <Menu.Item
             as="button"
             className="flex items-center w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"

@@ -6,7 +6,7 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
   // LOOP THROUGH TAB DATA
   let color = id ? "gray-400" : "black"
   return (
-    <div className="flex-none w-full min-h-max sticky top-0 z-30">
+    <div className="flex-none w-full min-h-max sticky top-0 z-20">
       <div
         className={`${
           id ? "cursor-not-allowed opacity-20" : "cursor-pointer"
