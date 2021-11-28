@@ -31,12 +31,12 @@ const MembersList = ({ role, setMembersData }) => {
       {
         title: "Notified on",
         key: "notifiedOn",
-        style: "text-center text-sm",
+        style: "hidden md:table-cell text-center text-sm",
       },
       {
         title: "Signed up on",
         key: "confirmedOn",
-        style: "text-center text-sm",
+        style: "hidden md:table-cell text-center text-sm",
       },
       { title: "", key: "-", style: "text-center text-sm" },
     ],

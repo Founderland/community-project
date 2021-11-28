@@ -1,9 +1,7 @@
 import {
   EmojiSadIcon,
   FilterIcon,
-  SearchCircleIcon,
-  EyeIcon,
-  PencilAltIcon,
+  SearchIcon,
   XIcon,
 } from "@heroicons/react/outline"
 import { useState, useEffect, useContext } from "react"
@@ -24,7 +22,7 @@ const ListWidget = ({
 }) => {
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
-  const [perPage] = useState(showing)
+  const [perPage] = useState(2)
   const [pageCount, setPageCount] = useState(0)
   const { view } = useParams()
   const { selectedTab } = useContext(AdminContext)
@@ -41,12 +39,13 @@ const ListWidget = ({
       setDataToDisplay([])
     }
   }, [data, offset])
+
   return (
-    <div className="w-full px-2 ">
+    <div className="relative h-full flex-none flex flex-col w-full overflow-hidden px-2 pb-12">
       <p className="text-mono">{title}</p>
-      <div className="flex items-center">
+      <div className="sticky z-20 bg-white w-full text-mono flex space-x-2 pl-2 py-2 items-center">
         {filter.filter((filter) => filter.search !== "").length > 0 && (
-          <SearchCircleIcon className="h-6 w-6" />
+          <SearchIcon className="flex-none h-4 w-4 md:h-6 md:w-6 text-gray-800" />
         )}
         {filter?.map((item, index) =>
           item.search.length ? (
