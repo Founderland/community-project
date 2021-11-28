@@ -175,8 +175,8 @@ const AdminDashboard = () => {
     fetchData()
   }, [])
   return (
-    <div className="flex flex-col w-full px-3">
-      <div className=" md:flex h-full w-full overflow-auto">
+    <div className="flex flex-col w-full px-3 overflow-auto">
+      <div className="flex-none md:flex h-full w-full">
         <CompactWidget
           loading={loading.foundersWidget}
           data={widgetData.foundersWidget}
