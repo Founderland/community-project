@@ -77,7 +77,10 @@ const ListWidget = ({
           <thead>
             <tr className=" bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
               {data.header?.map((header, index) => (
-                <th key={header.title} className={`py-2 ${header.style}`}>
+                <th
+                  key={header.title + index}
+                  className={`py-2 ${header.style}`}
+                >
                   <div className="flex relative items-center justify-center space-x-4">
                     <p>{header.title}</p>
                     {view !== "dashboard" &&

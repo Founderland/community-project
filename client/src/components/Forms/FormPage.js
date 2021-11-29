@@ -65,9 +65,9 @@ const FormPage = (props) => {
   return (
     <div>
       {gify && (
-        <div classname='absolute w-screen h-screen '>
-          <img src={gif} alt='gif' />
-          <p className='text-4xl font-monserrat font-semibold m-10'>
+        <div classname="absolute w-screen h-screen pb-10">
+          <img src={gif} alt="gif" />
+          <p className="text-4xl font-monserrat font-semibold m-10">
             You Form is getting Submitted !!
           </p>
         </div>
@@ -77,24 +77,22 @@ const FormPage = (props) => {
         <div
           className={
             !gify
-              ? "max-h-screen w-screen md:w-full flex justify-center flex-col overflow-y-scroll no-scrollbar "
+              ? "max-h-screen w-screen md:w-full flex justify-center flex-col overflow-hidden"
               : "hidden"
-          }>
-          <div className=' flex flex-col justify-between  p-10 h-screen '>
-            <div className='flex  justify-between md:justify-end mb-7'>
-              <div className='md:hidden mt-3'>
-                {" "}
-                <img src={smallLogo} alt='logo' className='w-20 pr-5' />{" "}
+          }
+        >
+          <div className=" flex flex-col justify-between p-10 h-screen overflow-hidden">
+            <div className="flex  justify-between md:justify-end mb-7">
+              <div className="md:hidden mt-3">
+                <img src={smallLogo} alt="logo" className="w-20 pr-5" />
               </div>
-
-              <div className=' '>
-                {/* md:max-w-xs md:pl-24 */}
-                <h2 className=' hidden md:flex md:mt-5 text-mono font-semibold md:text-xl lg:text-xl xl:text-2xl md:tracking-wider'>
-                  DISRUPTING THE PIPELINE FOR INVESTORS{" "}
+              <div className=" ">
+                <h2 className=" hidden md:flex md:mt-5 text-mono font-semibold md:text-xl lg:text-xl xl:text-2xl md:tracking-wider">
+                  DISRUPTING THE PIPELINE FOR INVESTORS
                 </h2>
               </div>
             </div>
-            <div>
+            <div className="w-full h-full overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue pb-10">
               {questions.map((question, i) => (
                 <Question
                   key={i}
@@ -105,17 +103,18 @@ const FormPage = (props) => {
                 />
               ))}
             </div>
-            <div className='p-10 '>
+            <div className="px-5 py-4 mb:py-8 ">
               {!isFirst && (
                 <button
-                  type='button'
-                  className='z-10 py-2 px-4 xl:py-4 float-left bg-fblue opacity-80 hover:bg-fblue-dark focus:ring-fblue focus:ring-offset-white text-white text-mono w-2/5 md:w-1/3 xl:w-1/4 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 '
-                  onClick={previous}>
+                  type="button"
+                  className="z-10 py-2 px-4 xl:py-4 float-left bg-fblue opacity-80 hover:bg-fblue-dark focus:ring-fblue focus:ring-offset-white text-white text-mono w-2/5 md:w-1/3 xl:w-1/4 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 "
+                  onClick={previous}
+                >
                   Prev
                 </button>
               )}
               <button
-                type='submit'
+                type="submit"
                 disabled={isLast && props.questionPreview}
                 className={
                   "py-2 px-4  xl:py-4 float-right focus:ring-offset-white text-white text-mono w-2/5 md:w-1/3 xl:w-1/4 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 " +
@@ -124,7 +123,8 @@ const FormPage = (props) => {
                     : "bg-fblue hover:bg-fblue-dark focus:ring-fblue") +
                   (isLast && props.questionPreview && " opacity-30")
                 }
-                onClick={nextClicked}>
+                onClick={nextClicked}
+              >
                 {isLast ? "Submit" : "next"}
               </button>
             </div>

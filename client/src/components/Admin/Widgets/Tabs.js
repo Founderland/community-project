@@ -15,6 +15,7 @@ const Tabs = ({ tabs, selectedTab, setSelectedTab, id }) => {
         {tabs?.map((tab) =>
           user.role.includes(tab.restricted) ? (
             <div
+              key={tab.name}
               className={`min-w-max transition ease-in-out duration-200 px-3 py-0.5 text-${color} text-mono tracking-wide breaksfont-medium outline-none flex justify-center items-center ${
                 selectedTab === tab.index
                   ? "font-bold bg-white shadow text-black"
