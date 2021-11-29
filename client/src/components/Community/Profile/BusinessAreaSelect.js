@@ -39,7 +39,7 @@ const formatValue = (value) => {
   return newValue.replace(value[0], value[0]?.toUpperCase())
 }
 
-const BusinessAreaSelect = ({ profile, setProfile, required }) => {
+const BusinessAreaSelect = ({ profile, setProfile, required, bgColor }) => {
   const [businessAreas, setbusinessAreas] = useState([...defaultBusinessAreas])
   const inputRef = useRef(null)
 
@@ -69,7 +69,13 @@ const BusinessAreaSelect = ({ profile, setProfile, required }) => {
       <ListOption
         options={businessAreas}
         required={true}
-        color={required ? "bg-red-200 animate-pulse " : "bg-sky-50 "}
+        color={
+          required
+            ? "bg-red-200 animate-pulse "
+            : bgColor
+            ? bgColor
+            : "bg-sky-50"
+        }
         choice={
           isSelectionIncluded(businessAreas)
             ? profile.businessArea || "Select your business area"

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, useContext } from "react"
 import { useParams, useHistory } from "react-router-dom"
 
 import jwt from "jsonwebtoken"
@@ -15,6 +15,7 @@ import SecondStep from "./SecondStep"
 import ThirdStep from "./ThirdStep"
 import FourthStep from "./FourthStep"
 import { EmojiSadIcon } from "@heroicons/react/outline"
+import { CommunityContext } from "../../../contexts/CommunityProvider"
 
 const signUpURL = "/api/auth/signup"
 const getProfileURL = "/api/users/community/profile"
@@ -52,6 +53,8 @@ const SignUp = () => {
       },
     }
   }, [token])
+
+  const { setRefreshData } = useContext(CommunityContext)
 
   //Get token from URL
   useEffect(() => {
@@ -106,6 +109,7 @@ const SignUp = () => {
       if (res.access_token) {
         localStorage.setItem("authToken", res.access_token)
         setAccountCreated(true)
+        setRefreshData((prev) => prev + 1)
         //redirect to community
         setTimeout(() => {
           history.push("/community")

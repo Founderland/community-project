@@ -1,5 +1,6 @@
 import { EmojiHappyIcon, XCircleIcon } from "@heroicons/react/outline"
 import { useState } from "react"
+import Banner from "../../Admin/Widgets/Banner"
 
 const FourthStep = ({
   data,
@@ -10,19 +11,33 @@ const FourthStep = ({
   error: submissionError,
 }) => {
   const [error, setError] = useState("")
+  const [banner, setBanner] = useState({ show: false })
+
   const isPassSecure = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(
     data.password
   )
   const checkPasswordsAndSumbit = () => {
     if (!isPassSecure) {
-      setError("Password doesn't meet the minimum requirements")
+      setError(true)
+      setBanner({
+        success: 0,
+        show: true,
+        message: "Password doesn't meet the minimum requirements",
+      })
       setTimeout(() => {
-        setError("")
+        setError(false)
+        setBanner((prev) => ({ ...prev, show: false }))
       }, 4000)
     } else if (!(data.password === data.confirmPassword)) {
-      setError("Passwords do not match")
+      setError(true)
+      setBanner({
+        success: 0,
+        show: true,
+        message: "Passwords do not match",
+      })
       setTimeout(() => {
-        setError("")
+        setError(false)
+        setBanner((prev) => ({ ...prev, show: false }))
       }, 4000)
     } else {
       handleSubmit()
@@ -65,13 +80,21 @@ const FourthStep = ({
         </h1>
         Please enter a log-in password to access into the Founderland Community
       </div>
-      {error ||
-        (submissionError && (
-          <div className='w-full md:w-3/4  lg:w-4/6 bg-red-400 flex items-center p-5 font-bold'>
-            <XCircleIcon className='w-8 h-8 mr-3' />
-            {error || submissionError}
-          </div>
-        ))}
+      {(error || submissionError) && (
+        <div className='w-full md:w-3/4  lg:w-4/6  flex items-center justify-center font-bold mt-5 '>
+          <Banner
+            message={
+              submissionError
+                ? {
+                    success: 0,
+                    show: true,
+                    message: submissionError,
+                  }
+                : banner
+            }
+          />
+        </div>
+      )}
       <div className='w-full h-full lg:h-5/6 lg:w-4/6 xl:w-5/6 flex flex-col items-center justify-start md:justify-around p-4'>
         <form
           onSubmit={(e) => {
