@@ -34,7 +34,7 @@ const Tags = ({ tags, pushTag, popTag }) => {
     setShowSuggestions(false)
   }
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col ">
       <div className="flex items-center relative flex-grow-0">
         <input
           className="appearance-none outline-none block w-full bg-grey-lighter text-grey-darker focus:ring-2 ring-fblue border border-grey-lighter py-3 px-4 mb-3"
@@ -63,7 +63,7 @@ const Tags = ({ tags, pushTag, popTag }) => {
           ))}
         </div>
       </div>
-      <div className="flex-grow p-1 flex flex-wrap ">
+      <div className="flex items-center py-1 space-x-2 overflow-x-scroll scrollbar scrollbar-thin scrollbar-thumb-flime scrollbar-track-green-100">
         {tags.map((tag) => (
           <div
             className=" group flex items-center space-x-2 w-max h-6 bg-gray-200 text-gray-600 py-1 pl-2 pr-1 m-1 text-center cursor-pointer"

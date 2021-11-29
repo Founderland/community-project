@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useMemo } from "react"
+import { useState, useEffect, useContext } from "react"
 import AdminContext from "../../../contexts/Admin"
 import Loading from "../Widgets/Loading"
 import axios from "axios"
@@ -23,39 +23,10 @@ const FormsList = ({ role, reload }) => {
     { key: "rank", search: "", show: false, type: "text" },
   ])
   const formsURL = `/api/form/${role}/questions`
-
+  console.log(role)
   const [listData, setListData] = useState({
     data: [],
-    header: [
-      {
-        title: "Question",
-        key: "question",
-        style: "text-left table-cell text-sm break-normal md:break-all",
-      },
-      {
-        title: "Category",
-        key: "category",
-        style: "text-center table-cell text-xs w-20",
-      },
-      {
-        title: "Type",
-        key: "type",
-        style: "text-center hidden md:table-cell text-xs w-20",
-      },
-      {
-        title: "Rank",
-        key: "rank",
-        style:
-          role === "founder"
-            ? "flex justify-center items-center hidden lg:table-cell text-sm w-40"
-            : "hidden",
-      },
-      {
-        title: "Actions",
-        key: "-",
-        style: "text-xs text-center w-20",
-      },
-    ],
+    header: [],
     colSize: [
       <colgroup>
         <col style={{ width: "40vw" }} />
@@ -70,17 +41,67 @@ const FormsList = ({ role, reload }) => {
     const fetchData = async () => {
       try {
         const result = await axios.get(formsURL, config)
-        if (typeof result.data === "string") return
         let filteredData = [...result.data]
         filter.forEach(
           (term) =>
             (filteredData = [
-              ...filteredData.filter((item) =>
-                item[term.key].toLowerCase().includes(term.search.toLowerCase())
-              ),
+              ...filteredData.filter((item) => {
+                console.log(
+                  term.key !== "rank"
+                    ? item[term.key]
+                        .toLowerCase()
+                        .includes(term.search.toLowerCase())
+                    : item
+                )
+                if (role === "founder") {
+                  return item[term.key]
+                    .toLowerCase()
+                    .includes(term.search.toLowerCase())
+                } else {
+                  return term.key !== "rank"
+                    ? item[term.key]
+                        .toLowerCase()
+                        .includes(term.search.toLowerCase())
+                    : item
+                }
+              }),
             ])
         )
-        setListData({ ...listData, data: [...filteredData] })
+        let header = [
+          {
+            title: "Question",
+            key: "question",
+            style: "text-left table-cell text-sm break-normal md:break-all",
+          },
+          {
+            title: "Category",
+            key: "category",
+            style: "text-center table-cell text-xs w-20",
+          },
+          {
+            title: "Type",
+            key: "type",
+            style: "text-center hidden md:table-cell text-xs w-20",
+          },
+          {
+            title: "Rank",
+            key: "rank",
+            style:
+              role === "founder"
+                ? "flex justify-center items-center hidden lg:table-cell text-sm w-40"
+                : "hidden",
+          },
+          {
+            title: "Actions",
+            key: "-",
+            style: "text-xs text-center w-20",
+          },
+        ]
+        setListData({
+          ...listData,
+          data: [...filteredData],
+          header: [...header],
+        })
         setLoading(false)
       } catch (e) {
         console.log(e)
@@ -88,7 +109,7 @@ const FormsList = ({ role, reload }) => {
     }
     fetchData()
   }, [reload, selectedTab, filter])
-
+  console.log(listData)
   return loading ? (
     <Loading />
   ) : (

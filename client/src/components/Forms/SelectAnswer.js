@@ -46,30 +46,30 @@ export default function SelectAnswer({
       role="option"
       aria-selected
       onClick={() => itemClicked(item, index)}
-      className="text-gray-900 cursor-default hover:bg-fblue hover:text-white select-none relative py-2 pl-3 pr-9 border-gray-300 border-b"
+      className=" text-sm md:text-base 2xl:text-xl text-gray-900 cursor-default hover:bg-fblue hover:text-white select-none relative py-2 pl-3 pr-9 border-gray-300 border-b"
     >
       <div className="flex items-center ">
-        <span className="ml-3 block font-normal  break-word">
+        <span className="ml-3 block  text-sm md:text-base 2xl:text-xl  break-word">
           {item.answer}
         </span>
       </div>
     </li>
   )
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="w-11/12 md:w-3/5">
-        <div className="mt-1 relative">
+    <div className="flex flex-col w-full">
+      <div className="w-11/12 md:w-4/5">
+        <div className=" relative">
           <button
             type="button"
             ref={selectButton}
             onClick={() => setShowList(!showList)}
             className={
-              "relative w-full bg-white mt-1 border-2  pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue sm:text-sm md:text-lg " +
+              "relative w-full bg-white border-2 pl-2 pr-10 py-2 md:py-4 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue text-base md:text-base 2xl:text-xl " +
               (selectValidation ? "border-gray" : "border-fred")
             }
           >
             <span className="flex items-center">
-              <span className="ml-3 block truncate">
+              <span className="ml-3 block truncate text-base md:text-base 2xl:text-xl">
                 {selectedItem ? selectedItem : "Select Item"}
               </span>
             </span>
@@ -94,14 +94,14 @@ export default function SelectAnswer({
           {showList && (
             <div
               ref={panelResultElement}
-              className="absolute mt-1 w-full z-10 rounded-md bg-white shadow-lg"
+              className="absolute w-full  bg-white shadow-lg"
             >
               <ul
                 tabIndex={-1}
                 role="listbox"
                 aria-labelledby="listbox-label"
                 aria-activedescendant="listbox-item-3"
-                className="max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm md:text-md xl:text-lg"
+                className="max-h-56 py-1 text-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm md:text-md xl:text-lg"
               >
                 {answers.map((item, index) => listItem(item, index))}
               </ul>
@@ -109,11 +109,11 @@ export default function SelectAnswer({
           )}
         </div>
       </div>
-      <div className="flex md:ml-5 mt-4 md:mt-0">
+      <div className="w-11/12 md:w-4/5">
         {selectedItem === "Other" && (
           <input
             type="text"
-            className="flex-1 appearance-none text-sm md:text-md border  border-gray-400 px-4  d:px-4 bg-white text-gray-700 placeholder-gray-400  text-base focus:outline-none focus:ring-2 focus:ring-fblue-light focus:border-transparent"
+            className="mt-4 flex-1 text-sm md:text-base 2xl:text-xl appearance-none border border-gray-300 w-11/12 md:w-4/5 px-2 py-2 md:py-4 md:px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-fblue-light focus:border-transparent"
             name="firstname"
             placeholder="Type your answer... "
             id={answers[0]._id}

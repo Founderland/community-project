@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useParams } from "react-router"
 import axios from "axios"
 import moment from "moment"
@@ -9,6 +9,7 @@ import ApproveApplicant from "./ApproveApplicant"
 import ApplicationComments from "./ApplicationComments"
 import { Link } from "react-router-dom"
 import { ChevronRightIcon } from "@heroicons/react/outline"
+import { useReactToPrint } from "react-to-print"
 
 const styles = {
   founder: { bg: "fblue ", text: "white ", border: "fblue " },
@@ -36,6 +37,7 @@ const Application = () => {
   const [error, setError] = useState(null)
   const [commentsArray, setCommentsArray] = useState([])
   const [confirm, setConfirm] = useState("")
+  const toPrint = useRef()
   //GET DATA FROM DB WITH APPLICATIONID FROM URL
   useEffect(() => {
     axios
@@ -60,9 +62,10 @@ const Application = () => {
     setConfirm(status)
     setCModal(true)
   }
+  const handlePrint = useReactToPrint({ content: () => toPrint.current })
 
   return (
-    <section className="h-full py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6">
+    <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
       {loading ? (
         <Loading />
       ) : error ? (
@@ -72,7 +75,10 @@ const Application = () => {
           <ComponentModal>
             <ApproveApplicant data={data} confirm={confirm} />
           </ComponentModal>
-          <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg border-0">
+          <div
+            className="relative flex flex-col min-w-0 break-words w-full shadow-lg border-0"
+            ref={toPrint}
+          >
             <div
               className={`border-${
                 styles[data?.data.role]?.border
@@ -83,15 +89,15 @@ const Application = () => {
                   className={`text-2xl font-bold uppercase flex flex-col justify-between`}
                 >
                   {data.data.firstName + " " + data.data.lastName}
-                  <span
+                  <div
                     className={`mx-auto bg-${
                       styles[data?.data.role]?.bg
                     }  py-1 px-2 text-${styles[data?.data.role]?.text} text-xs`}
                   >
                     {data.data.role}
-                  </span>
+                  </div>
                 </div>
-                <div className="hidden md:block flex-grow flex flex-col justify-center items-center"></div>
+                <div className="hidden md:flex flex-grow flex-col justify-center items-center"></div>
                 <div className="flex items-center">
                   {data.data.totalScore ? (
                     <div
@@ -161,9 +167,9 @@ const Application = () => {
                   <p className=" text-xs text-grotesk">&nbsp;</p>
                   <Link
                     to={`/admin/members/id/${data.data.memberId}`}
-                    className="flex items-center justify-center px-2 text-base hover:text-sky-600"
+                    className="flex items-center justify-center px-2 text-base md:text-sm hover:text-sky-600"
                   >
-                    <p>Go to Member Profile</p>
+                    <p>View Profile</p>
                     <ChevronRightIcon className="h-4 w-4" />
                   </Link>
                 </div>
@@ -203,7 +209,9 @@ const Application = () => {
                                 {item.answer_value.length ? (
                                   item.answer_value
                                 ) : (
-                                  <p className="text-xs">No answer</p>
+                                  <p className="text-xs text-gray-600">
+                                    No answer
+                                  </p>
                                 )}
                               </div>
                             </div>
@@ -222,35 +230,39 @@ const Application = () => {
               commentsArray={commentsArray}
               setCommentsArray={setCommentsArray}
             />
-            <footer className="p-4 mt-2">
-              {data.data.status === "new" || data.data.status === "pending" ? (
-                <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-                  <button
-                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
-                    onClick={() => updateApplication("rejected")}
-                  >
-                    Reject
-                  </button>
-                  <button
-                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                    onClick={() => updateApplication("approved")}
-                  >
-                    Approve
-                  </button>
-                </div>
-              ) : data.data.status === "rejected" ? (
-                <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-                  <button
-                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                    onClick={() => updateApplication("approved")}
-                  >
-                    Approve
-                  </button>
-                </div>
-              ) : (
-                ""
-              )}
-            </footer>
+          </div>
+          <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+            {data.data.status === "new" || data.data.status === "pending" ? (
+              <>
+                <button
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                  onClick={() => updateApplication("rejected")}
+                >
+                  Reject
+                </button>
+                <button
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                  onClick={() => updateApplication("approved")}
+                >
+                  Approve
+                </button>
+              </>
+            ) : data.data.status === "rejected" ? (
+              <button
+                className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                onClick={() => updateApplication("approved")}
+              >
+                Approve
+              </button>
+            ) : (
+              ""
+            )}
+            <button
+              className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fblue text-white transition duration-200 hover:bg-flime hover:text-black mb-4"
+              onClick={handlePrint}
+            >
+              Export
+            </button>
           </div>
         </>
       )}

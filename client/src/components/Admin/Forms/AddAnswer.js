@@ -11,7 +11,7 @@ const AddAnswer = ({
 
   return (
     <>
-      <div className="flex flex-col w-full p-3">
+      <div className="relative flex flex-col w-full p-3">
         <div className="w-full px-2">
           <label
             HtmlFor="newAnswer"
@@ -20,7 +20,7 @@ const AddAnswer = ({
             Answer Options
           </label>
         </div>
-        <div className="flex flex-col md:flex-row w-full px-2">
+        <div className=" flex flex-col md:flex-row w-full px-2">
           <div className="w-full md:w-9/12 mb-2 mt-2 px-2">
             <label
               HtmlFor="newAnswer"
@@ -86,23 +86,23 @@ const AddAnswer = ({
               </div>
             </>
           )}
-          <div className="flex justify-center items-center w-full md:w-4/12 mb-2 mt-2 px-2">
-            <button
-              type="button"
-              className="flex justify-center items-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-max bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-              onClick={() => {
-                if (addField.current.value.length === 0) {
-                  addField.current.focus()
-                } else {
-                  handleNewAnswer(addField)
-                  addField.current.focus()
-                }
-              }}
-            >
-              <PlusIcon className="h-4 w-4" />{" "}
-              <p className="md:text-sm">Add Answer</p>
-            </button>
-          </div>
+        </div>
+        <div className="absolute top-0 right-0 flex justify-center items-center w-max p-2">
+          <button
+            type="button"
+            className="flex justify-center items-center space-x-4 px-8 py-2 w-full shadow bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+            onClick={() => {
+              if (addField.current.value.length === 0) {
+                addField.current.focus()
+              } else {
+                handleNewAnswer(addField)
+                addField.current.focus()
+              }
+            }}
+          >
+            <PlusIcon className="h-4 w-4" />{" "}
+            <p className="hidden md:block md:text-sm">Add Answer</p>
+          </button>
         </div>
       </div>
     </>

@@ -253,247 +253,245 @@ const AddMember = ({ role }) => {
   }
 
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-4 flex rounded flex-col w-full md:w-5/6 lg:w-2/3">
+    <div className="bg-white pt-6 pb-4 flex flex-col items-center justify-center w-full">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
-          Add new {role}
-        </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              First Name
-            </label>
-            <input
-              className={`${
-                data.firstName === ""
-                  ? ""
-                  : data.firstName.length <= 1
-                  ? "border-l-4 border-fred"
-                  : "border-l-4 border-flime"
-              } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
-              type="text"
-              onChange={(e) =>
-                setData((prev) => ({ ...prev, firstName: e.target.value }))
-              }
-              value={data.firstName}
-              autoComplete="off"
-            />
-          </div>
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Last Name
-            </label>
-            <input
-              className={`${
-                data.lastName === ""
-                  ? ""
-                  : data.lastName.length <= 1
-                  ? "border-l-4 border-fred"
-                  : "border-l-4 border-flime"
-              } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
-              type="text"
-              onChange={(e) =>
-                setData((prev) => ({ ...prev, lastName: e.target.value }))
-              }
-              value={data.lastName}
-              autoComplete="off"
-            />
-          </div>
-        </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Title
-            </label>
-            <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
-              type="text"
-              onChange={(e) => {
-                setData((prev) => ({ ...prev, title: e.target.value }))
-              }}
-              value={data.title}
-            />
-          </div>
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Email
-            </label>
-            <input
-              className={`${
-                data.email === ""
-                  ? ""
-                  : !checkEmail()
-                  ? "border-l-4 border-fred"
-                  : "border-l-4 border-flime"
-              } appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 outline-none`}
-              type="text"
-              onChange={(e) => {
-                setData((prev) => ({ ...prev, email: e.target.value }))
-              }}
-              value={data.email}
-              autoComplete="email"
-            />
-          </div>
-        </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Country
-            </label>
-            <input
-              className={
-                checkCountry() +
-                " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
-              }
-              type="text"
-              list="countries"
-              onChange={(e) => {
-                setData((prev) => ({
-                  ...prev,
-                  country: formatValue(e.target.value),
-                }))
-              }}
-              value={data.country}
-            />
-            <datalist id="countries">
-              {countryList.length > 0 &&
-                countryList
-                  .filter((country) => country.name.startsWith(data.country))
-                  .splice(0, 10)
-                  .map((country, i) => <option key={i}>{country.name}</option>)}
-            </datalist>
-          </div>
-
-          {/* City */}
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              City
-            </label>
-            <input
-              className={
-                checkCity() +
-                " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
-              }
-              type="text"
-              list="cities"
-              onChange={(e) => {
-                setData((prev) => ({
-                  ...prev,
-                  city: formatValue(e.target.value),
-                }))
-              }}
-              value={data.city}
-            />
-            <datalist id="cities">
-              {cityList.length > 0 &&
-                cityList
-                  .filter((city) => city.name.startsWith(data.city))
-                  .splice(0, 10)
-                  .map((city, i) => <option key={i}>{city.name}</option>)}
-            </datalist>
-          </div>
-        </div>
-        <div className="md:flex w-full px-3">
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Company Name
-            </label>
-            <input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-              type="text"
-              onChange={(e) => {
-                setData((prev) => ({ ...prev, companyName: e.target.value }))
-              }}
-              value={data.companyName}
-            />
-          </div>
-          <div className="w-full md:w-1/2 mb-2 px-2">
-            <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-              Sector
-            </label>
-            <div className="w-full">
-              <ListOption
-                options={businessAreas}
-                choice={data.businessArea}
-                setChoice={setBusinessArea}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-center items-center w-full px-3">
-          <div className="w-full md:w-1/4 mb-2 px-2">
-            <Switch.Group
-              as="div"
-              className="flex md:flex-col mt-2 justify-center items-center py-2"
-            >
-              <Switch.Label className="mt-2 uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
-                Send Welcome Email
-              </Switch.Label>
-              <Switch
-                as="button"
-                checked={data.connect}
-                onChange={() =>
-                  setData((prev) => ({ ...prev, connect: !data.connect }))
-                }
-                className={`${
-                  data.connect ? "bg-flime-600" : "bg-gray-200"
-                } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}
-              >
-                {({ checked }) => (
-                  <span
-                    className={`${
-                      checked ? "translate-x-5" : "translate-x-0"
-                    } inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
-                  >
-                    <CheckIcon className={checked ? "" : "hidden"} />
-                  </span>
-                )}
-              </Switch>
-            </Switch.Group>
-          </div>
-        </div>
-        {data.connect && (
-          <EmailNotification
-            firstName={data.firstName}
-            lastName={data.lastName}
-            template={data.template}
-            setTemplate={setTemplate}
-            setEmail={setEmail}
-            subject={data.subject}
-            body={data.body}
-            signOff={data.signOff}
-            required={required}
+      <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
+        Add new {role}
+      </div>
+      <div className="md:flex w-full px-3">
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            First Name
+          </label>
+          <input
+            className={`${
+              data.firstName === ""
+                ? ""
+                : data.firstName.length <= 1
+                ? "border-l-4 border-fred"
+                : "border-l-4 border-flime"
+            } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
+            type="text"
+            onChange={(e) =>
+              setData((prev) => ({ ...prev, firstName: e.target.value }))
+            }
+            value={data.firstName}
+            autoComplete="off"
           />
-        )}
-        <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-          <button
-            className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
-            onClick={() => {
-              history.goBack()
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-            onClick={save}
-          >
-            {saving ? (
-              <div className="flex justify-center">
-                <div
-                  style={{ borderTopColor: "transparent" }}
-                  className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                ></div>
-              </div>
-            ) : (
-              "Save"
-            )}
-          </button>
         </div>
-      </form>
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            Last Name
+          </label>
+          <input
+            className={`${
+              data.lastName === ""
+                ? ""
+                : data.lastName.length <= 1
+                ? "border-l-4 border-fred"
+                : "border-l-4 border-flime"
+            } appearance-none outline-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3`}
+            type="text"
+            onChange={(e) =>
+              setData((prev) => ({ ...prev, lastName: e.target.value }))
+            }
+            value={data.lastName}
+            autoComplete="off"
+          />
+        </div>
+      </div>
+      <div className="md:flex w-full px-3">
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            Title
+          </label>
+          <input
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
+            type="text"
+            onChange={(e) => {
+              setData((prev) => ({ ...prev, title: e.target.value }))
+            }}
+            value={data.title}
+          />
+        </div>
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            Email
+          </label>
+          <input
+            className={`${
+              data.email === ""
+                ? ""
+                : !checkEmail()
+                ? "border-l-4 border-fred"
+                : "border-l-4 border-flime"
+            } appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3 outline-none`}
+            type="text"
+            onChange={(e) => {
+              setData((prev) => ({ ...prev, email: e.target.value }))
+            }}
+            value={data.email}
+            autoComplete="email"
+          />
+        </div>
+      </div>
+      <div className="md:flex w-full px-3">
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            Country
+          </label>
+          <input
+            className={
+              checkCountry() +
+              " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
+            }
+            type="text"
+            list="countries"
+            onChange={(e) => {
+              setData((prev) => ({
+                ...prev,
+                country: formatValue(e.target.value),
+              }))
+            }}
+            value={data.country}
+          />
+          <datalist id="countries">
+            {countryList.length > 0 &&
+              countryList
+                .filter((country) => country.name.startsWith(data.country))
+                .splice(0, 10)
+                .map((country, i) => <option key={i}>{country.name}</option>)}
+          </datalist>
+        </div>
+
+        {/* City */}
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            City
+          </label>
+          <input
+            className={
+              checkCity() +
+              " appearance-none block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4 mb-3"
+            }
+            type="text"
+            list="cities"
+            onChange={(e) => {
+              setData((prev) => ({
+                ...prev,
+                city: formatValue(e.target.value),
+              }))
+            }}
+            value={data.city}
+          />
+          <datalist id="cities">
+            {cityList.length > 0 &&
+              cityList
+                .filter((city) => city.name.startsWith(data.city))
+                .splice(0, 10)
+                .map((city, i) => <option key={i}>{city.name}</option>)}
+          </datalist>
+        </div>
+      </div>
+      <div className="md:flex w-full px-3">
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            Company Name
+          </label>
+          <input
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+            type="text"
+            onChange={(e) => {
+              setData((prev) => ({ ...prev, companyName: e.target.value }))
+            }}
+            value={data.companyName}
+          />
+        </div>
+        <div className="w-full md:w-1/2 mb-2 px-2">
+          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+            Sector
+          </label>
+          <div className="w-full">
+            <ListOption
+              options={businessAreas}
+              choice={data.businessArea}
+              setChoice={setBusinessArea}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-center items-center w-full px-3">
+        <div className="w-full md:w-1/4 mb-2 px-2">
+          <Switch.Group
+            as="div"
+            className="flex md:flex-col mt-2 justify-center items-center py-2"
+          >
+            <Switch.Label className="mt-2 uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+              Send Email
+            </Switch.Label>
+            <Switch
+              as="button"
+              checked={data.connect}
+              onChange={() =>
+                setData((prev) => ({ ...prev, connect: !data.connect }))
+              }
+              className={`${
+                data.connect ? "bg-flime-600" : "bg-gray-200"
+              } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline ml-4 md:ml-0`}
+            >
+              {({ checked }) => (
+                <span
+                  className={`${
+                    checked ? "translate-x-5" : "translate-x-0"
+                  } inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
+                >
+                  <CheckIcon className={checked ? "" : "hidden"} />
+                </span>
+              )}
+            </Switch>
+          </Switch.Group>
+        </div>
+      </div>
+      {data.connect && (
+        <EmailNotification
+          firstName={data.firstName}
+          lastName={data.lastName}
+          template={data.template}
+          setTemplate={setTemplate}
+          setEmail={setEmail}
+          subject={data.subject}
+          body={data.body}
+          signOff={data.signOff}
+          required={required}
+        />
+      )}
+      <div className="w-full px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
+        <button
+          className="px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
+          onClick={() => {
+            history.goBack()
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+          onClick={save}
+        >
+          {saving ? (
+            <div className="flex justify-center">
+              <div
+                style={{ borderTopColor: "transparent" }}
+                className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
+              ></div>
+            </div>
+          ) : (
+            "Save"
+          )}
+        </button>
+      </div>
     </div>
   )
 }

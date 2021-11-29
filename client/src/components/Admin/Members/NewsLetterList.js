@@ -26,12 +26,12 @@ const NewsLetterList = ({ role, newsletterDataHandler }) => {
       {
         title: "Interest",
         key: "interests",
-        style: "text-center text-sm",
+        style: "hidden md:table-cell text-center text-sm",
       },
       {
         title: "Subscribed On",
         key: "subscribedOn",
-        style: "text-center text-sm",
+        style: "text-center text-sm px-2",
       },
     ],
     data: [],

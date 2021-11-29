@@ -162,7 +162,7 @@ const MemberProfile = () => {
   }
 
   return (
-    <section className="h-full py-1 bg-white w-full xl:w-5/6 px-4 mx-auto mt-4">
+    <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
       {loading ? (
         <Loading />
       ) : (
@@ -173,7 +173,7 @@ const MemberProfile = () => {
           <ComponentModal>
             <Notify member={profile} />
           </ComponentModal>
-          <div className="sm:flex no-wrap md:-mx-2">
+          <div className="w-full flex-none sm:flex no-wrap md:-mx-2">
             <div
               className={`w-full sm:w-1/2 md:w-3/12 md:mx-2 shadow bg-white p-3 border-t-8 ${
                 profile.role === "founder"
@@ -193,18 +193,20 @@ const MemberProfile = () => {
               <h1 className="text-gray-900 uppercase font-bold text-xl my-2">
                 {profile.firstName} {profile.lastName}
               </h1>
-              <h3 className="text-gray-600 text-ls font-semibold mb-1">
+              <h3 className="text-gray-600 text-lg font-semibold mb-1">
                 {profile.title}
               </h3>
               <h4 className="text-gray-600 text-base">{profile.companyName}</h4>
               <h4 className="mb-1">
                 {profile.companyLink ? (
-                  <Link
-                    to={profile.companyLink}
+                  <a
+                    href={profile.companyLink}
                     className="text-xs text-gray-600 hover:text-sky-600"
+                    rel="noreferrer"
+                    target="_blank"
                   >
                     {profile.companyLink}
-                  </Link>
+                  </a>
                 ) : (
                   ""
                 )}
@@ -296,22 +298,26 @@ const MemberProfile = () => {
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       First Name
                     </div>
-                    <div className="p-2 text-base">{profile.firstName}</div>
+                    <div className="p-2 text-sm md:text-base">
+                      {profile.firstName}
+                    </div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Last Name
                     </div>
-                    <div className="p-2 text-base">{profile.lastName}</div>
+                    <div className="p-2 text-sm md:text-base">
+                      {profile.lastName}
+                    </div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Email
                     </div>
-                    <div className="p-2 text-sm break-all">
+                    <div className="p-2  text-xs md:text-base break-all">
                       <a
                         href={`mailto:${profile.email}`}
-                        className="hover:text-sky-600"
+                        className="hover:text-sky-600 "
                       >
                         {profile.email}
                       </a>
@@ -322,7 +328,7 @@ const MemberProfile = () => {
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Location
                     </div>
-                    <div className="p-2 text-base">
+                    <div className="p-2 text-sm md:text-base">
                       {profile.city}
                       {profile.country.length ? `, ${profile.country}` : ""}
                     </div>
@@ -331,7 +337,9 @@ const MemberProfile = () => {
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Business Area
                     </div>
-                    <div className="p-2 text-base">{profile.businessArea}</div>
+                    <div className="p-2 text-xs md:text-base">
+                      {profile.businessArea}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -369,7 +377,7 @@ const MemberProfile = () => {
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Host
                     </div>
-                    <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                    <div className="w-full max-h-80 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
                       {events.own.length ? (
                         events.own.map((event) => (
                           <EventPreview key={event._id} event={event} />
@@ -385,7 +393,7 @@ const MemberProfile = () => {
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Interested/Going
                     </div>
-                    <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                    <div className="w-full max-h-80 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
                       {events.going.length || events.interested.length ? (
                         <>
                           {events.going.map((event) => (
@@ -406,10 +414,10 @@ const MemberProfile = () => {
               </div>
             </div>
           </div>
-          <div className="-mx-3 mt-8 px-4 py-4 flex flex-col-reverse sm:flex-row items-center justify-around ">
+          <div className="my-4 flex flex-col sm:flex-row items-center justify-around ">
             {!profile.confirmed ? (
               <button
-                className="flex items-center justify-center space-x-4 px-8 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+                className="flex items-center justify-center space-x-4 px-8 py-2 w-5/6 shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
                 onClick={() => setCModal(true)}
               >
                 <ShieldCheckIcon className="w-6 h-6" />
@@ -420,7 +428,7 @@ const MemberProfile = () => {
             )}
             {user.role.search("admin") && (
               <button
-                className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-full shadow-lg sm:w-1/4  mb-4"
+                className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-5/6 shadow-lg sm:w-1/3  mb-4"
                 onClick={() => lock()}
               >
                 {locking ? (

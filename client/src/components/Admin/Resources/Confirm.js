@@ -28,12 +28,14 @@ const Confirm = ({ data }) => {
           message: "Resource deleted! Redirecting..",
         })
         setTimeout(() => {
-          setCCModal(false)
-          history.push("/admin/resources/")
           setReload(reload + 1)
+          history.push("/admin/resources/")
+          setCCModal(false)
         }, 2000)
       } else {
-        throw new Error("Sorry, something went wrong while saving")
+        await Promise.reject(
+          new Error("Sorry, something went wrong while saving")
+        )
       }
     } catch (e) {
       setSaving(false)

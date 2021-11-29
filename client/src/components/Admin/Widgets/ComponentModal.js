@@ -9,7 +9,7 @@ const ComponentModal = ({ children }) => {
       <Dialog
         as="div"
         onClose={() => setCModal(false)}
-        className="fixed z-10 inset-1 overflow-auto h-screen"
+        className="fixed z-50 inset-1 overflow-auto h-screen"
       >
         <div className="flex justify-center items-center h-screen">
           <Transition.Child

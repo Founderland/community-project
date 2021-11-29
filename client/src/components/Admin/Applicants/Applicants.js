@@ -30,23 +30,21 @@ const Applicants = () => {
   ]
 
   return (
-    <div className="w-full flex flex-col ">
+    <>
       <Tabs
         tabs={tabs}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
+      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden">
         {!id ? (
-          <div className="w-full px-4 outline-none">
-            <ApplicantsList role={tabs[selectedTab].role} />
-          </div>
+          <ApplicantsList role={tabs[selectedTab].role} />
         ) : (
           <Application />
         )}
       </section>
-    </div>
+    </>
   )
 }
 

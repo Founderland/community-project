@@ -70,16 +70,16 @@ const Members = () => {
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <>
       <Tabs
         tabs={tabs}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="flex justify-center bg-white outline-none pt-4 pb-8">
+      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden">
         {!id ? (
-          <div className="w-full px-4 outline-none">
+          <>
             {selectedTab === 3 ? (
               <NewsLetterList
                 reload={reload}
@@ -93,8 +93,8 @@ const Members = () => {
                 setMembersData={setMembersData}
               />
             )}
-            <div className="flex ">
-              <button className="flex items-center px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white text-mono text-sm">
+            <div className="absolute bottom-0 md:bottom-5 lg:bottom-60 right-0 md:left-4 space-x-2">
+              <button className="flex px-8 py-2 w-52 space-x-2 shadow-xl m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white">
                 <CloudDownloadIcon className="h-5 w-5" />
                 <CsvDownload
                   data={
@@ -109,7 +109,7 @@ const Members = () => {
               </button>
               {selectedTab !== 3 && (
                 <button
-                  className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
+                  className="flex px-8 py-2 w-52 space-x-2 shadow-xl m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                   onClick={() => handleTask()}
                 >
                   <UserAddIcon className="h-5 w-5" />
@@ -117,14 +117,16 @@ const Members = () => {
                 </button>
               )}
             </div>
-          </div>
+          </>
         ) : id === "new" ? (
-          <AddMember role={tabs[selectedTab].role} />
+          <section className="h-full w-full lg:w-5/6 xl:w-4/6 md:px-4 mx-auto overflow-auto">
+            <AddMember role={tabs[selectedTab].role} />
+          </section>
         ) : (
           <MemberProfile />
         )}
       </section>
-    </div>
+    </>
   )
 }
 

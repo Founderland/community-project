@@ -120,7 +120,9 @@ const Events = () => {
       ) : category === "new" ? (
         <AddEvent />
       ) : (
-        <Event />
+        <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+          <Event />
+        </section>
       )}
     </div>
   )

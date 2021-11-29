@@ -33,10 +33,10 @@ const ProfileMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute outline-none w-40 bg-white overflow-hidden shadow-xl right-0">
+        <Menu.Items className="absolute z-50 outline-none w-40 bg-white overflow-hidden shadow-xl right-0">
           <Menu.Item
             as="button"
-            className="flex items-center w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
+            className="flex z-50 items-center w-full px-4 py-2 text-sm text-gray-800 hover:bg-flime"
             onClick={() => goToProfile()}
           >
             <UserIcon className="w-6" />
@@ -44,7 +44,7 @@ const ProfileMenu = () => {
           </Menu.Item>
           <Menu.Item
             as="button"
-            className="w-full px-4 py-2 text-sm text-gray-800 hover:bg-fred hover:text-white"
+            className="w-full z-50 px-4 py-2 text-sm text-gray-800 hover:bg-fred hover:text-white"
             onClick={() => logout()}
           >
             Logout

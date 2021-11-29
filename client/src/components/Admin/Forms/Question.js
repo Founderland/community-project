@@ -214,7 +214,7 @@ const Question = ({ role }) => {
   return (
     <div
       ref={mainDiv}
-      className="relative py-1 bg-white w-full lg:w-5/6 px-4 mx-auto mt-6 flex justify-center "
+      className="relative py-1 bg-white w-full px-4 mx-auto flex justify-center "
     >
       {checkForIdentityQuestion(questionInfo.question) && (
         <div className="bg-white opacity-50 h-screen w-screen absolute z-10 cursor-not-allowed"></div>
@@ -225,8 +225,8 @@ const Question = ({ role }) => {
           {checkForIdentityQuestion(questionInfo.question)
             ? "This question can't be edited"
             : id !== "new"
-            ? "Edit"
-            : "Add new"}{" "}
+            ? "Edit "
+            : "Add new "}
           {!checkForIdentityQuestion(questionInfo.question) &&
             `Question for ${role} applicants`}
         </h1>
@@ -272,10 +272,7 @@ const Question = ({ role }) => {
               </div>
             </div>
             <div className=" w-full md:w-1/4 mb-3 px-2">
-              <label
-                HtmlFor="newQuestion"
-                className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-              >
+              <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
                 Category Page
               </label>
               <ListOption

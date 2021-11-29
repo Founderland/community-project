@@ -49,7 +49,7 @@ const Menu = () => {
       <Link
         to={`/admin/${view}/${key}`}
         onClick={() => handleMenu()}
-        className={`block group border-l-4 text-left py-2.5 pl-6 w-full transition duration-200 hover:bg-white hover:text-black flex items-center text-xs ${
+        className={` group border-l-4 text-left py-2.5 pl-6 w-full transition duration-200 hover:bg-white hover:text-black flex items-center text-xs ${
           category === key
             ? "border-gray-200 bg-gray-300 text-black"
             : "border-transparent"
@@ -72,11 +72,11 @@ const Menu = () => {
       <div
         className={`${
           menuToggle ? "block " : "hidden "
-        }fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden`}
+        }fixed z-40 inset-0 bg-black opacity-50 transition-opacity lg:hidden`}
         onClick={() => setMenuToggle(false)}
       ></div>
       <div
-        className={`fixed z-30 inset-y-0 left-0 w-60 transition duration-300 transform bg-gray-900 overflow-y-auto ${
+        className={`fixed z-40 inset-y-0 left-0 w-60 transition duration-300 transform bg-gray-900 overflow-y-auto ${
           !menuToggle && "-translate-x-full"
         } lg:translate-x-0 lg:static lg:inset-0`}
       >
@@ -84,11 +84,11 @@ const Menu = () => {
         <nav className="text-white text-mono pt-6 text-md">
           {Object.keys(views).map((key, index) =>
             views[key].categories ? (
-              <Disclosure>
+              <Disclosure key={key}>
                 {({ open }) => (
                   <>
                     <Disclosure.Button
-                      className={` block group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black flex text-sm items-center ${
+                      className={` group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black flex text-sm items-center ${
                         view === key
                           ? "border-gray-200 bg-white text-black"
                           : "border-transparent"
@@ -121,9 +121,10 @@ const Menu = () => {
               </Disclosure>
             ) : (
               <Link
+                key={key}
                 to={`/admin/${key}`}
                 onClick={() => handleMenu()}
-                className={`block group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black  flex items-center text-sm tracking-wider ${
+                className={`group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black  flex items-center text-sm tracking-wider ${
                   view === key
                     ? "border-gray-200 bg-white text-black"
                     : "border-transparent"
