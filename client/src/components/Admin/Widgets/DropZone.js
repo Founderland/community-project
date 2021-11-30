@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext, useEffect } from "react"
+import { useState, useCallback, useContext } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"

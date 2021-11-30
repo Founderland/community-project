@@ -11,7 +11,6 @@ import Places from "../../Admin/Events/Places"
 import MapDisplay from "../../Admin/Events/MapDisplay"
 import Tags from "../../Admin/Widgets/Tags"
 import Dropzone from "../Widgets/DropZone"
-import { Image } from "cloudinary-react"
 
 let types = [
   { name: "Online", value: "online" },
@@ -180,7 +179,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
                 : data.title.length <= 1
                 ? "border-l-4 border-fred"
                 : "border-l-4 border-flime"
-            } appearance-none outline-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
+            } appearance-none outline-none block w-full bg-grey-lighter border py-3 px-4 mb-3 ${
               required ? "bg-red-200 animate-pulse" : "bg-grey-lighter "
             }`}
             type="text"

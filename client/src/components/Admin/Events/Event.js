@@ -257,9 +257,10 @@ const Event = () => {
                           }`}
                           target="_blank"
                           rel="noreferrer"
-                          className="hover:text-fblue"
+                          className="hover:text-fblue flex space-x-2"
                         >
-                          {data.address}
+                          <p>{data.address}</p>
+                          <MapIcon className="w-3 h-3" />
                         </a>
                       </p>
                     </>

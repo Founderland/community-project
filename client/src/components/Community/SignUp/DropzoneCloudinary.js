@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
-import { config } from "dotenv"
 import { useParams } from "react-router"
 
 const DropzoneCloudinary = ({

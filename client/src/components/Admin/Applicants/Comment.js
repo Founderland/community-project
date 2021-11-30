@@ -1,7 +1,6 @@
 import { TrashIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
-import { useContext, useRef, useState } from "react"
-import axios from "axios"
+import { useContext } from "react"
 
 const Comment = ({
   _id: commentId,
@@ -31,16 +30,6 @@ const Comment = ({
     let initials =
       user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()
     return initials
-  }
-
-  const getRoleStyle = (role) => {
-    const roleStyles = {
-      sadmin: "text-green-700 bg-green-100 border border-green-300 ",
-      admin:
-        "text-fblue-700 bg-fblue-100 border border-fblue-300 bg-opacity-30",
-      user: "text-fpink-700 bg-fpink-100 border border-fpink-300 bg-opacity-30",
-    }
-    return roleStyles[role]
   }
 
   return (
