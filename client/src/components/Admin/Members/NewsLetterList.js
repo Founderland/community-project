@@ -64,7 +64,6 @@ const NewsLetterList = ({ role, newsletterDataHandler }) => {
           (term) =>
             (filteredData = [
               ...filteredData.filter((item) => {
-                console.log(item, term)
                 return item[term.key]
                   ?.toLowerCase()
                   .includes(term.search?.toLowerCase())

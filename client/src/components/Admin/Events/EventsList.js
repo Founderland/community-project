@@ -40,7 +40,6 @@ const EventsList = ({ state }) => {
   }, [reload, selectedTab])
 
   useEffect(() => {
-    console.log(data)
     let filteredData = [...data]
     //FILTER BY TAGS
     if (searchTags.length) {
@@ -120,7 +119,7 @@ const EventsList = ({ state }) => {
       ) : (
         ""
       )}
-      <div className="flex flex-col md:pl-4 md:flex-row w-full justify-start overflow-hidden overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100">
+      <div className="flex flex-col md:pl-4 md:flex-row w-full justify-start overflow-hidden overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
         {dataToDisplay.length ? (
           dataToDisplay.map((event) => (
             <EventCard key={event._id} event={event} />

@@ -58,7 +58,6 @@ const ApproveApplicant = ({ data, confirm }) => {
         body: notify.body,
         signOff: notify.signOff,
       }
-      console.log(updateData)
       const updateUrl =
         confirm === "approved"
           ? "/api/applicants/response/approve/"

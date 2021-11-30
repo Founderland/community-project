@@ -96,7 +96,7 @@ const Resources = () => {
             {!id ? (
               <>
                 <ResourcesList category={tabs[selectedTab].key} />
-                <div className="absolute bottom-0 md:bottom-5 lg:bottom-60 right-0 md:left-4 space-x-2">
+                <div className="md:flex absolute bottom-0 md:bottom-5 right-0 md:left-4 space-x-2">
                   <button
                     className="flex px-8 py-2 w-60 space-x-2 shadow-xl m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                     onClick={() => handleTask()}

@@ -65,7 +65,6 @@ const Profile = () => {
     const loadProfile = async () => {
       try {
         if (id !== "new") {
-          console.log("reloading")
           setLoading(true)
           const getUser = await axios.get(
             id ? profileUrl + id : profileUrl + "user",
@@ -240,7 +239,6 @@ const Profile = () => {
 
   //HELPER FUNCTIONS
   const handleChange = (v, target) => {
-    console.log(v, target)
     setUpdate(true)
     if (target) setProfile((prev) => ({ ...prev, [target]: v }))
     else setProfile((prev) => ({ ...prev, role: v }))
@@ -275,7 +273,7 @@ const Profile = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="h-full w-full flex flex-col items-center justify-start lg:w-5/6 md:px-4 mx-auto overflow-auto">
+        <div className=" h-full py-1 bg-white flex flex-col items-center justify-start w-full lg:w-11/12 px-4 mx-auto mt-6">
           <div className="w-full flex items-center justify-center">
             <Banner message={banner} />
           </div>

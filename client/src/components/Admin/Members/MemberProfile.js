@@ -111,7 +111,6 @@ const MemberProfile = () => {
         console.log(e)
       })
   }, [id])
-
   const lock = async () => {
     setLocking(true)
     try {
@@ -426,7 +425,7 @@ const MemberProfile = () => {
             ) : (
               ""
             )}
-            {user.role.search("admin") && (
+            {user.role.search("admin") >= 0 && (
               <button
                 className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-5/6 shadow-lg sm:w-1/3  mb-4"
                 onClick={() => lock()}

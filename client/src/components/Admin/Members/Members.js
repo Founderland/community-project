@@ -12,7 +12,7 @@ import CsvDownload from "react-json-to-csv"
 const Members = () => {
   const history = useHistory()
   const { id } = useParams()
-  const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const { reload, selectedTab, setSelectedTab, user } = useContext(AdminContext)
   const [newsLetterData, setNewsLetterData] = useState([])
   const [membersData, setMembersData] = useState([])
   const tabs = [
@@ -77,7 +77,7 @@ const Members = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden">
+      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden pb-4">
         {!id ? (
           <>
             {selectedTab === 3 ? (
@@ -93,7 +93,7 @@ const Members = () => {
                 setMembersData={setMembersData}
               />
             )}
-            <div className="absolute bottom-0 md:bottom-5 lg:bottom-60 right-0 md:left-4 space-x-2">
+            <div className="absolute md:flex bottom-0 md:bottom-5 right-0 md:left-4 space-x-2">
               <button className="flex px-8 py-2 w-52 space-x-2 shadow-xl m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white">
                 <CloudDownloadIcon className="h-5 w-5" />
                 <CsvDownload
@@ -107,7 +107,7 @@ const Members = () => {
                   }
                 />
               </button>
-              {selectedTab !== 3 && (
+              {selectedTab !== 3 && user.role.search("admin") >= 0 && (
                 <button
                   className="flex px-8 py-2 w-52 space-x-2 shadow-xl m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                   onClick={() => handleTask()}

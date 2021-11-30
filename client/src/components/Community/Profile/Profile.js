@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useMemo, useRef } from "react"
+import { useState, useContext, useEffect, useRef } from "react"
 import { useHistory, useRouteMatch } from "react-router-dom"
 import UserContext from "../../../contexts/User"
 import axios from "axios"
@@ -11,7 +11,6 @@ import {
   CheckCircleIcon,
   ArrowLeftIcon,
   XCircleIcon,
-  TrendingUpIcon,
 } from "@heroicons/react/outline"
 
 import Socialmedia from "./Socialmedia"
@@ -21,6 +20,7 @@ import Banner from "../../Admin/Widgets/Banner"
 import DropzoneCloudinary from "../SignUp/DropzoneCloudinary"
 import BusinessAreaSelect from "./BusinessAreaSelect"
 import EventPreview from "./EventPreview"
+import { CommunityContext } from "../../../contexts/CommunityProvider"
 
 const defaultProfile = {
   photo: null,
@@ -72,6 +72,7 @@ const Profile = () => {
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedCity, setSelectedCity] = useState(null)
   const [required, setRequired] = useState(false)
+  const { setRefreshData } = useContext(CommunityContext)
 
   const triggerBanner = ({ message, success }) => {
     setBanner({
@@ -166,6 +167,7 @@ const Profile = () => {
           profile,
           config
         )
+        setRefreshData((prev) => prev + 1)
         if (result) {
           initialData.current = { ...profile }
           setUser((prev) => ({ ...prev, photo: profile.photo }))

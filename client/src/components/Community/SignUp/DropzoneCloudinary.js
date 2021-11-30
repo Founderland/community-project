@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
-import { config } from "dotenv"
+import { useParams } from "react-router"
 
 const DropzoneCloudinary = ({
   data,
@@ -13,11 +13,12 @@ const DropzoneCloudinary = ({
 }) => {
   const [previewSource, setPreviewSource] = useState(null)
   const [loading, setLoading] = useState(false)
+  const { token } = useParams()
 
   const config = useMemo(() => {
     return {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     }
@@ -68,7 +69,7 @@ const DropzoneCloudinary = ({
         }, 4000)
       }
     } catch (e) {
-      console.log(e)
+      console.log(e.response)
       setUploadStatus({
         success: false,
         message: e.response?.data.message || "Sorry something went wrong",
@@ -87,24 +88,26 @@ const DropzoneCloudinary = ({
     <>
       <div
         {...getRootProps()}
-        className=' h-3/5 md:h-5/6 w-4/5 xl:w-4/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl'>
+        className=" h-3/5 md:h-5/6 w-4/5 xl:w-4/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl"
+      >
         <input {...getInputProps()} />
         {loading && (
-          <div className='flex justify-center'>
+          <div className="flex justify-center">
             <span
               style={{ borderTopColor: "transparent" }}
-              className='w-16 h-16 border-8 border-black  border-dotted rounded-full animate-spin'></span>
+              className="w-16 h-16 border-8 border-black  border-dotted rounded-full animate-spin"
+            ></span>
           </div>
         )}
         {!loading && previewSource && (
           <img
             src={previewSource}
             style={{ width: "200px", height: "200px" }}
-            alt='chosen'
-            className=' p-4 object-cover rounded-full'
+            alt="chosen"
+            className=" p-4 object-cover rounded-full"
           />
         )}
-        <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
+        <p className="block uppercase text-gray-600 text-md font-bold mb-2">
           Drag and drop your photo here, or click to select it
         </p>
       </div>

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react"
+import { useContext } from "react"
 import { useHistory, useParams } from "react-router"
 import { PlusIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
@@ -10,7 +10,6 @@ const Forms = () => {
   const history = useHistory()
   const { id } = useParams()
   const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
-  const [role, setRole] = useState("founder")
   const tabs = [
     {
       index: 0,
@@ -44,7 +43,7 @@ const Forms = () => {
         {!id ? (
           <>
             <FormsList role={tabs[selectedTab].role} reload={reload} />
-            <div className="absolute bottom-2 lg:bottom-10 right-0 md:left-4 space-x-2">
+            <div className="absolute bottom-0 md:bottom-5 right-0 md:left-4 space-x-2">
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                 onClick={() => history.push("/admin/forms/id/new")}
