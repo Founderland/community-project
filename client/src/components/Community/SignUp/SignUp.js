@@ -8,7 +8,7 @@ import { ReactComponent as SmallLogo } from "../../../assets/small.svg"
 import gifLogo from "../../../assets/images/Logo-Transform.gif"
 import whiteLogo from "../../../assets/images/logo_md_white.png"
 
-import founder from "../../../assets/images/founder-laptop.png"
+import founder from "../../../assets/images/founders-community.jpg"
 import StepWizard from "react-step-wizard"
 import FirstStep from "./FirstStep"
 import SecondStep from "./SecondStep"
@@ -59,7 +59,6 @@ const SignUp = () => {
   //Get token from URL
   useEffect(() => {
     const jwtDecoded = jwt.decode(token)
-
     //Get data from token and fetch DB data
     if (jwtDecoded?.email) {
       //check if token is expired or load the data
@@ -83,6 +82,7 @@ const SignUp = () => {
             }
           })
           .catch((err) => {
+            console.log(err)
             setLoading(false)
             setError("Invalid Token - err on fetch profile")
           })
@@ -105,6 +105,7 @@ const SignUp = () => {
     try {
       //receive new login token and forward to community app
       const { data: res } = await axios.post(signUpURL, data, config)
+
       setLoading(false)
       if (res.access_token) {
         localStorage.setItem("authToken", res.access_token)
@@ -139,7 +140,6 @@ const SignUp = () => {
 
   //Render form with data from database
   //RENDER WELCOME MESSAGE -> 3s
-
   if (loading) {
     return (
       <div className='h-screen w-screen flex items-center justify-center'>
@@ -158,12 +158,12 @@ const SignUp = () => {
         <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative '>
           <img
             src={founder}
-            className='h-full w-full object-cover '
+            className='h-full w-full object-cover  object-center'
             alt='founder'
           />
           <img
             src={whiteLogo}
-            className=' w-full xl:w-5/6 p-3 object-contain absolute object-bottom'
+            className=' w-full xl:w-5/6 max-h-36 p-6 pb-3 object-contain absolute object-bottom'
             alt='founder'
           />
         </div>
