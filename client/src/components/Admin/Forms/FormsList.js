@@ -23,7 +23,6 @@ const FormsList = ({ role, reload }) => {
     { key: "rank", search: "", show: false, type: "text" },
   ])
   const formsURL = `/api/form/${role}/questions`
-  console.log(role)
   const [listData, setListData] = useState({
     data: [],
     header: [],
@@ -46,13 +45,6 @@ const FormsList = ({ role, reload }) => {
           (term) =>
             (filteredData = [
               ...filteredData.filter((item) => {
-                console.log(
-                  term.key !== "rank"
-                    ? item[term.key]
-                        .toLowerCase()
-                        .includes(term.search.toLowerCase())
-                    : item
-                )
                 if (role === "founder") {
                   return item[term.key]
                     .toLowerCase()
@@ -109,7 +101,6 @@ const FormsList = ({ role, reload }) => {
     }
     fetchData()
   }, [reload, selectedTab, filter])
-  console.log(listData)
   return loading ? (
     <Loading />
   ) : (

@@ -12,7 +12,7 @@ import CsvDownload from "react-json-to-csv"
 const Members = () => {
   const history = useHistory()
   const { id } = useParams()
-  const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
+  const { reload, selectedTab, setSelectedTab, user } = useContext(AdminContext)
   const [newsLetterData, setNewsLetterData] = useState([])
   const [membersData, setMembersData] = useState([])
   const tabs = [
@@ -107,7 +107,7 @@ const Members = () => {
                   }
                 />
               </button>
-              {selectedTab !== 3 && (
+              {selectedTab !== 3 && user.role.search("admin") >= 0 && (
                 <button
                   className="flex px-8 py-2 w-52 space-x-2 shadow-xl m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                   onClick={() => handleTask()}

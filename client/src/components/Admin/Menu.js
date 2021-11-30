@@ -84,7 +84,7 @@ const Menu = () => {
         <nav className="text-white text-mono pt-6 text-md">
           {Object.keys(views).map((key, index) =>
             views[key].categories ? (
-              <Disclosure key={key}>
+              <Disclosure key={key + index}>
                 {({ open }) => (
                   <>
                     <Disclosure.Button
@@ -121,7 +121,7 @@ const Menu = () => {
               </Disclosure>
             ) : (
               <Link
-                key={key}
+                key={key + "L" + index}
                 to={`/admin/${key}`}
                 onClick={() => handleMenu()}
                 className={`group border-l-4 text-left py-2.5 px-4 w-full transition duration-200 hover:bg-white hover:text-black  flex items-center text-sm tracking-wider ${

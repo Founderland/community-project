@@ -17,7 +17,7 @@ const EventCard = ({ event }) => {
   return (
     <div className="group py-4 px-2">
       <div
-        className=" w-72 md:w-80 overflow-hidden flex items-center justify-center group cursor-pointer flex-col bg-white shadow-lg hover:shadow-2xl"
+        className=" w-72 md:w-80 overflow-hidden flex items-center justify-center group cursor-pointer flex-col bg-white shadow-md hover:shadow-lg"
         onClick={() => {
           history.push(`/admin/events/id/${event._id}`)
         }}

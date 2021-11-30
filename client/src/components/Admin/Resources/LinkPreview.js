@@ -1,9 +1,8 @@
-import { ReactTinyLink, useScrapper } from "react-tiny-link"
+import { ReactTinyLink } from "react-tiny-link"
 
 const LinkPreview = ({ url }) => {
-  const [result, loading, error] = useScrapper({
-    url: url,
-  })
+  const proxy = "https://fl-link-preview.herokuapp.com"
+
   return (
     <ReactTinyLink
       cardSize="small"
@@ -11,7 +10,7 @@ const LinkPreview = ({ url }) => {
       maxLine={2}
       minLine={1}
       url={url}
-      proxyUrl={"https://fl-link-preview.herokuapp.com"}
+      proxyUrl={proxy}
     />
   )
 }

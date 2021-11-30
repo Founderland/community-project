@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react"
+import { useContext } from "react"
 import { useHistory, useParams } from "react-router"
 import { PlusIcon } from "@heroicons/react/outline"
 import AdminContext from "../../../contexts/Admin"
@@ -10,7 +10,6 @@ const Forms = () => {
   const history = useHistory()
   const { id } = useParams()
   const { reload, selectedTab, setSelectedTab } = useContext(AdminContext)
-  const [role, setRole] = useState("founder")
   const tabs = [
     {
       index: 0,

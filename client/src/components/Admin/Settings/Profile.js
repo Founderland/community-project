@@ -239,7 +239,6 @@ const Profile = () => {
 
   //HELPER FUNCTIONS
   const handleChange = (v, target) => {
-    console.log(v, target)
     setUpdate(true)
     if (target) setProfile((prev) => ({ ...prev, [target]: v }))
     else setProfile((prev) => ({ ...prev, role: v }))
