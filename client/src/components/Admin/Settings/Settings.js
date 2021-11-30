@@ -93,7 +93,7 @@ const Settings = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden pt-4">
+      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden py-4">
         {loading ? (
           <Loading />
         ) : !id && selectedTab !== 0 ? (
@@ -107,7 +107,7 @@ const Settings = () => {
               filter={filter}
               setFilter={setFilter}
             />
-            <div className="absolute bottom-0 md:bottom-5 lg:bottom-60 right-0 md:left-4 space-x-2">
+            <div className="absolute bottom-0 md:bottom-5 right-0 md:left-4 space-x-2">
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                 onClick={() => history.push("settings/id/new")}
