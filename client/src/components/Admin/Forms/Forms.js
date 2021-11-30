@@ -44,7 +44,7 @@ const Forms = () => {
         {!id ? (
           <>
             <FormsList role={tabs[selectedTab].role} reload={reload} />
-            <div className="absolute bottom-2 lg:bottom-10 right-0 md:left-4 space-x-2">
+            <div className="absolute bottom-0 md:bottom-5 right-0 md:left-4 space-x-2">
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                 onClick={() => history.push("/admin/forms/id/new")}
