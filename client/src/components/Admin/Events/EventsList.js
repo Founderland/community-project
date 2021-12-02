@@ -14,7 +14,7 @@ const EventsList = ({ state }) => {
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
-  const [perPage] = useState(5)
+  const [perPage] = useState(4)
   const [pageCount, setPageCount] = useState(0)
   const [tags, setTags] = useState([])
   const [searchTags, setSearchTags] = useState([])

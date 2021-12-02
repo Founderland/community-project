@@ -8,6 +8,7 @@ import LinkPreview from "../../Admin/Resources/LinkPreview"
 import ReactPlayer from "react-player"
 import SlideShow from "./SlideShow"
 import { ChevronLeftIcon } from "@heroicons/react/outline"
+import "react-quill/dist/quill.snow.css"
 
 const resourceUrl = "/api/resources/id/"
 
@@ -111,6 +112,8 @@ const Article = () => {
           <div className="w-full px-2 flex justify-center items-center pb-4">
             {data.article.articleType === "article" ? (
               <div
+                className="w-full ql-editor"
+                style={{ padding: 0 }}
                 dangerouslySetInnerHTML={{
                   __html: data.article.articleContent,
                 }}

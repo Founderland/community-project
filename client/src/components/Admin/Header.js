@@ -97,7 +97,7 @@ const AdminHeader = () => {
             <div
               className={`${
                 id ? "hidden" : ""
-              } flex justify-center items-center px-8 py-2 space-x-4 m-2`}
+              } flex justify-center items-center px-4 py-2 space-x-4 m-2`}
             >
               {icons[views[view]?.icon]}
               <p className="text-grotesk text-lg md:text-xl">

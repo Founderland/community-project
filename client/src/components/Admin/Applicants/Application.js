@@ -31,7 +31,7 @@ const responseURL = "/api/applicants/response/"
 
 const Application = () => {
   const { id } = useParams()
-  const { config, setCModal } = useContext(AdminContext)
+  const { config, setCModal, user } = useContext(AdminContext)
   const [data, setData] = useState({ categories: "", data: "", task: "" })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -65,7 +65,7 @@ const Application = () => {
   const handlePrint = useReactToPrint({ content: () => toPrint.current })
 
   return (
-    <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+    <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 pb-6 shadow-lg border-0">
       {loading ? (
         <Loading />
       ) : error ? (
@@ -232,31 +232,32 @@ const Application = () => {
             />
           </div>
           <div className="px-4 pt-6 flex flex-col-reverse sm:flex-row items-center justify-around ">
-            {data.data.status === "new" || data.data.status === "pending" ? (
-              <>
-                <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
-                  onClick={() => updateApplication("rejected")}
-                >
-                  Reject
-                </button>
+            {user.role.includes("admin") &&
+              (data.data.status === "new" || data.data.status === "pending" ? (
+                <>
+                  <button
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                    onClick={() => updateApplication("rejected")}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                    onClick={() => updateApplication("approved")}
+                  >
+                    Approve
+                  </button>
+                </>
+              ) : data.data.status === "rejected" ? (
                 <button
                   className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
                   onClick={() => updateApplication("approved")}
                 >
                   Approve
                 </button>
-              </>
-            ) : data.data.status === "rejected" ? (
-              <button
-                className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                onClick={() => updateApplication("approved")}
-              >
-                Approve
-              </button>
-            ) : (
-              ""
-            )}
+              ) : (
+                ""
+              ))}
             <button
               className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fblue text-white transition duration-200 hover:bg-flime hover:text-black mb-4"
               onClick={handlePrint}
@@ -266,7 +267,7 @@ const Application = () => {
           </div>
         </>
       )}
-    </section>
+    </div>
   )
 }
 

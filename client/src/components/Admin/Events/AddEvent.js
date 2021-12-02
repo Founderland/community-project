@@ -161,7 +161,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
     )
   }
   return (
-    <div className="bg-white pt-6 pb-4 flex flex-col items-center justify-center w-full">
+    <div className="bg-white pt-6 pb-4 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-4/6">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>

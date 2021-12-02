@@ -10,6 +10,7 @@ import Confirm from "./Confirm"
 import AddResource from "./AddResource"
 import LinkPreview from "./LinkPreview"
 import ReactPlayer from "react-player"
+import "react-quill/dist/quill.snow.css"
 
 const resourceUrl = "/api/resources/id/"
 
@@ -41,7 +42,7 @@ const Resource = ({ category, categories }) => {
   }, [id, reload])
 
   return (
-    <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+    <section className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 pb-6 shadow-lg border-0">
       <ConfirmModal>
         <Confirm data={data} />
       </ConfirmModal>
@@ -114,7 +115,8 @@ const Resource = ({ category, categories }) => {
           <div className="max-w-3xl mx-auto px-2 flex justify-center items-center pb-4">
             {data.article.articleType === "article" ? (
               <div
-                className="w-full"
+                className="w-full ql-editor"
+                style={{ padding: 0 }}
                 dangerouslySetInnerHTML={{
                   __html: data.article.articleContent,
                 }}
@@ -154,16 +156,17 @@ const Resource = ({ category, categories }) => {
               {moment(data.article.articleLastUpdated).format("DD MMMM YYYY")}
             </p>
           </footer>
-          <div className="px-4 pt-6 flex flex-col sm:flex-row-reverse items-center justify-around ">
-            <button
-              className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-              onClick={() => {
-                setEdit(true)
-              }}
-            >
-              Edit
-            </button>
-            {user.role.includes("admin") ? (
+          {user.role.includes("admin") && (
+            <div className="px-4 pt-6 flex flex-col sm:flex-row-reverse items-center justify-around ">
+              <button
+                className="px-8 py-2 w-full shadow-lg sm:w-1/3 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                onClick={() => {
+                  setEdit(true)
+                }}
+              >
+                Edit
+              </button>
+
               <button
                 className="flex justify-center items-center px-10 py-2 w-full shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4"
                 onClick={() => {
@@ -173,10 +176,8 @@ const Resource = ({ category, categories }) => {
                 <TrashIcon className="h-5 w-5" />
                 Delete
               </button>
-            ) : (
-              ""
-            )}
-          </div>
+            </div>
+          )}
         </>
       )}
     </section>

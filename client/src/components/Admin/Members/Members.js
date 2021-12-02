@@ -107,7 +107,7 @@ const Members = () => {
                   }
                 />
               </button>
-              {selectedTab !== 3 && user.role.search("admin") >= 0 && (
+              {selectedTab !== 3 && user.role.includes("admin") && (
                 <button
                   className="flex px-8 py-2 w-52 space-x-2 shadow-xl m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                   onClick={() => handleTask()}

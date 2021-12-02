@@ -71,7 +71,7 @@ const ListWidget = ({
           )
         )}
       </div>
-      <div className="bg-white shadow-md my-4 overflow-auto">
+      <div className="bg-white shadow-md my-4 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
         <table className="min-w-max w-full table-auto">
           {colSize}
           <thead>

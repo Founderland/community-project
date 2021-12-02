@@ -93,7 +93,7 @@ const Settings = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden py-4">
+      <section className="relative h-full w-full flex md:px-4  items-center flex-col bg-white outline-none overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
         {loading ? (
           <Loading />
         ) : !id && selectedTab !== 0 ? (

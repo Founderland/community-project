@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState, useMemo } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useHistory, useParams } from "react-router"
 import axios from "axios"
 import AnswerSection from "./AnswerSection"
@@ -66,15 +66,7 @@ const types = [
 const Question = ({ role }) => {
   const { id } = useParams()
   const history = useHistory()
-  const { token, setSelectedTab } = useContext(AdminContext)
-  const config = useMemo(() => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  }, [token])
+  const { config, setSelectedTab, user } = useContext(AdminContext)
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
   const [answersList, setAnswersList] = useState([])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
@@ -212,16 +204,13 @@ const Question = ({ role }) => {
   }
 
   return (
-    <div
-      ref={mainDiv}
-      className="relative py-1 bg-white w-full px-4 mx-auto flex justify-center "
-    >
+    <div ref={mainDiv} className="relative flex justify-center ">
       {checkForIdentityQuestion(questionInfo.question) && (
         <div className="bg-white opacity-50 h-screen w-screen absolute z-10 cursor-not-allowed"></div>
       )}
       <Banner message={banner} />
-      <div className="w-full flex flex-col justify-center items-center bg-white p-4 shadow-md ">
-        <h1 className="font-bold p-3 text-xl text-mono">
+      <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 pb-6 shadow-lg border-0">
+        <h1 className="w-full text-center font-bold p-4 text-xl text-mono">
           {checkForIdentityQuestion(questionInfo.question)
             ? "This question can't be edited"
             : id !== "new"
@@ -373,28 +362,32 @@ const Question = ({ role }) => {
             >
               Preview
               {<EyeIcon className="w-6 h-6 ml-2" />}
-            </button>{" "}
-            <button
-              disabled={checkForIdentityQuestion(questionInfo.question)}
-              type="button"
-              className="flex justify-center items-center px-8 py-2 w-full shadow-lg sm:w-1/5 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-              onClick={handleSubmit}
-            >
-              Save
             </button>
-            <button
-              disabled={checkForIdentityQuestion(questionInfo.question)}
-              type="button"
-              className={
-                id !== "new"
-                  ? `flex justify-center items-center px-8 py-2 w-full shadow-lg sm:w-1/5 bg-gray-700 transition duration-200 hover:bg-fred text-white mb-4`
-                  : "hidden"
-              }
-              onClick={handleDelete}
-            >
-              Delete
-              {<TrashIcon className="w-6 h-6 ml-2" />}
-            </button>
+            {user.role.includes("admin") && (
+              <>
+                <button
+                  disabled={checkForIdentityQuestion(questionInfo.question)}
+                  type="button"
+                  className="flex justify-center items-center px-8 py-2 w-full shadow-lg sm:w-1/5 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                  onClick={handleSubmit}
+                >
+                  Save
+                </button>
+                <button
+                  disabled={checkForIdentityQuestion(questionInfo.question)}
+                  type="button"
+                  className={
+                    id !== "new"
+                      ? `flex justify-center items-center px-8 py-2 w-full shadow-lg sm:w-1/5 bg-gray-700 transition duration-200 hover:bg-fred text-white mb-4`
+                      : "hidden"
+                  }
+                  onClick={handleDelete}
+                >
+                  Delete
+                  {<TrashIcon className="w-6 h-6 ml-2" />}
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
