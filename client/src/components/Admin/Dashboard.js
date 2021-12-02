@@ -43,7 +43,7 @@ const AdminDashboard = () => {
     { key: "role", search: "", show: false, type: "list" },
   ])
   const lastWeek = new Date()
-  lastWeek.setDate(lastWeek.getDate() - 8)
+  lastWeek.setDate(lastWeek.getDate() - 7)
   //GET FOUNDERS COUNT
   useEffect(() => {
     axios
@@ -51,8 +51,7 @@ const AdminDashboard = () => {
       .then((res) => {
         //# from LAST 7 DAYS
         const newInvestors = res.data.data.filter(
-          (founder) =>
-            new Date(founder.created).toString() >= lastWeek.toString()
+          (founder) => new Date(founder.created).valueOf() >= lastWeek.valueOf()
         )
         const data = {
           label: "Founders",
@@ -74,7 +73,7 @@ const AdminDashboard = () => {
         //# from LAST 7 DAYS
         const newInvestors = res.data.data.filter(
           (investor) =>
-            new Date(investor.created).toString() >= lastWeek.toString()
+            new Date(investor.created).valueOf() >= lastWeek.valueOf()
         )
         const data = {
           label: "Investors",
@@ -95,7 +94,7 @@ const AdminDashboard = () => {
       .then((res) => {
         //# from LAST 7 DAYS
         const newAllies = res.data.data.filter(
-          (ally) => new Date(ally.created).toString() >= lastWeek.toString()
+          (ally) => new Date(ally.created).valueOf() >= lastWeek.valueOf()
         )
         const data = {
           label: "Allies",
