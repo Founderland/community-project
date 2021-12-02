@@ -11,6 +11,7 @@ import Places from "../../Admin/Events/Places"
 import MapDisplay from "../../Admin/Events/MapDisplay"
 import Tags from "../../Admin/Widgets/Tags"
 import Dropzone from "../Widgets/DropZone"
+import { Image } from "cloudinary-react"
 
 let types = [
   { name: "Online", value: "online" },
@@ -160,13 +161,29 @@ const AddEvent = ({ event, edit, setEdit }) => {
     )
   }
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-10 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-3/6">
+    <div className="bg-white px-4 md:px-8 pt-6 pb-10 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-3/6  overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>
       <div className="w-full uppercase font-bold tracking-wider text-xl flex items-center justify-center mb-4">
-        Add new event
+        {edit ? "Edit" : "Add new"} event
       </div>
+      {data.eventCover?.public_id && edit && (
+        <div className=" w-full px-3">
+          <label
+            className={`block uppercase tracking-wide text-xs font-bold mb-2 ${
+              required ? "text-red-600 animate-pulse" : ""
+            }`}
+          >
+            cover
+          </label>
+          <Image
+            cloudName="founderland"
+            publicId={data.eventCover.public_id}
+            className="w-full px-8 pb-8 pt-2"
+          ></Image>
+        </div>
+      )}
       <div className="md:flex w-full px-3">
         <div className="w-full md:w-1/2 mb-2 px-2">
           <label className="block uppercase tracking-wide text-xs font-bold mb-2">

@@ -118,7 +118,7 @@ const Event = () => {
     }
   }
   return (
-    <div className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+    <div className="flex-none h-full w-full lg:w-5/6 md:px-4 mx-auto  overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 pb-8">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -135,13 +135,20 @@ const Event = () => {
         <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
-          <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 mb-6 shadow-lg border-0">
+          <div className="relative self-center flex flex-col w-full pb-10 shadow border-0">
             <div
               className="relative w-full h-40 sm:h-64 lg:h-72 xl:h-80 bg-top bg-cover"
               style={{
                 backgroundImage: `url(${data.eventCover?.url}`,
               }}
             >
+              <button
+                onClick={() => history.goBack()}
+                className="absolute top-0 z-40 flex items-center shadow-2xl space-x-2 px-2 py-1 m-2 bg-flime text-black text-sm text-mono transition ease-in duration-200 hover:bg-fblue hover:text-white"
+              >
+                <ChevronLeftIcon className="w-4 h-4" />
+                <p className="text-mono text-sm">Back</p>
+              </button>
               {data.isCanceled && (
                 <div className="absolute w-full h-full bg-white bg-opacity-30 ">
                   <div className="absolute bottom-0 flex items-center justify-end space-x-2">
@@ -152,14 +159,8 @@ const Event = () => {
                   </div>
                 </div>
               )}
-              <AddToCalendar event={data} />
-              <button
-                onClick={() => history.goBack()}
-                className="flex items-center shadow-2xl space-x-2 px-2 py-1 m-2 bg-flime text-black text-sm text-mono transition ease-in duration-200 hover:bg-fblue hover:text-white"
-              >
-                <ChevronLeftIcon className="w-4 h-4" />
-                <p className="text-mono text-sm">Back</p>
-              </button>
+              {!data.isCanceled && <AddToCalendar event={data} />}
+
               <div className="absolute mr-4 justify-end bottom-0 right-0 w-full mb-4 flex">
                 <p className={`${styles[data.type]} shadow-2xl`}>{data.type}</p>
               </div>
@@ -411,44 +412,44 @@ const Event = () => {
                 </div>
               </div>
             </div>
-            <footer className="w-full px-4 my-4 flex flex-col sm:flex-row items-center justify-around ">
-              {!data.isCanceled &&
-                user.id === data.member._id &&
-                new Date(data.dateEnd) > new Date() && (
-                  <button
-                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
-                    onClick={() => {
-                      setCModal(true)
-                    }}
-                  >
-                    Cancel Event
-                  </button>
-                )}
-              {!edit && user.id === data.member._id && !data.isCanceled && (
-                <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                  onClick={() => {
-                    setEdit(true)
-                  }}
-                >
-                  Edit
-                </button>
-              )}
-              {user.id === data.member._id ? (
-                <button
-                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
-                  onClick={() => {
-                    setCCModal(true)
-                  }}
-                >
-                  <TrashIcon className="h-5 w-5" />
-                  Delete
-                </button>
-              ) : (
-                ""
-              )}
-            </footer>
           </div>
+          <footer className="w-full px-4 my-4 flex flex-col sm:flex-row items-center justify-around ">
+            {!data.isCanceled &&
+              user.id === data.member._id &&
+              new Date(data.dateEnd) > new Date() && (
+                <button
+                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-fred-300 transition duration-200 hover:bg-fred-800 text-white mb-4"
+                  onClick={() => {
+                    setCModal(true)
+                  }}
+                >
+                  Cancel Event
+                </button>
+              )}
+            {!edit && user.id === data.member._id && !data.isCanceled && (
+              <button
+                className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                onClick={() => {
+                  setEdit(true)
+                }}
+              >
+                Edit
+              </button>
+            )}
+            {user.id === data.member._id ? (
+              <button
+                className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
+                onClick={() => {
+                  setCCModal(true)
+                }}
+              >
+                <TrashIcon className="h-5 w-5" />
+                Delete
+              </button>
+            ) : (
+              ""
+            )}
+          </footer>
         </>
       )}
     </div>

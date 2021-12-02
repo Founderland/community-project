@@ -87,47 +87,50 @@ const EventsList = ({ state, filter }) => {
   return loading ? (
     <Loading />
   ) : (
-    <div className="relative flex flex-col h-full pb-60 w-full overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
-      <div className="sticky top-0 z-50 bg-white w-full text-mono flex space-x-2 pl-2 py-2 items-center">
-        <SearchIcon className="flex-none h-4 w-4 md:h-6 md:w-6 text-gray-800" />
-        <div className="flex items-center py-1 space-x-2 overflow-x-scroll scrollbar scrollbar-thin scrollbar-thumb-flime scrollbar-track-green-100">
-          {tags.length ? (
-            tags.map((tag) => {
-              const selected = searchTags.includes(tag)
-              return (
-                <div
-                  key={tag}
-                  className={`${
-                    selected
-                      ? "bg-green-700 text-flime"
-                      : "bg-gray-200 text-gray-600"
-                  } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
-                  onClick={() => filterTag(tag)}
-                >
-                  <p className=" text-xs">{tag}</p>
-                </div>
-              )
-            })
-          ) : (
-            <p className="flex-none text-mono text-xs py-1 px-2 ">
-              No tags available
-            </p>
-          )}
+    <div className="relative h-full flex-none flex flex-col w-full overflow-hidden px-2 pb-12">
+      <div className="sticky flex-none z-20 bg-white w-full text-mono flex flex-col overflow-hidden">
+        <div className="flex-none w-full flex space-x-2 pl-2 py-2 items-center overflow-hidden">
+          <SearchIcon className="flex-none h-4 w-4 md:h-6 md:w-6 text-gray-800" />
+          <div className="flex items-center py-1 space-x-2 overflow-x-scroll scrollbar scrollbar-thin scrollbar-thumb-flime scrollbar-track-green-100">
+            {tags.length ? (
+              tags.map((tag) => {
+                const selected = searchTags.includes(tag)
+                return (
+                  <div
+                    key={tag}
+                    className={`${
+                      selected
+                        ? "bg-green-700 text-flime"
+                        : "bg-gray-200 text-gray-600"
+                    } group flex items-center space-x-2 w-max h-6 py-1 px-2 m-1 text-center cursor-pointer`}
+                    onClick={() => filterTag(tag)}
+                  >
+                    <p className=" text-xs">{tag}</p>
+                  </div>
+                )
+              })
+            ) : (
+              <p className="flex-none text-mono text-xs py-1 px-2 ">
+                No tags available
+              </p>
+            )}
+          </div>
         </div>
+        {(data.length > perPage && searchTags.length === 0) ||
+        dataToDisplay.length > perPage ? (
+          <div className="flex-none flex justify-center pl-2 py-1 bg-white w-full ">
+            <Pagination
+              setPage={setOffset}
+              currentPage={offset}
+              pageCount={pageCount}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
-      {(data.length > perPage && searchTags.length === 0) ||
-      dataToDisplay.length > perPage ? (
-        <div className="fixed flex flex-start mt-10 z-50 pl-2 py-1 bg-white w-full ">
-          <Pagination
-            setPage={setOffset}
-            currentPage={offset}
-            pageCount={pageCount}
-          />
-        </div>
-      ) : (
-        ""
-      )}
-      <div className="flex flex-wrap w-full justify-start overflow-auto">
+
+      <div className="flex flex-col md:flex-wrap w-full justify-start overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
         {dataToDisplay.length ? (
           dataToDisplay.map((event) => <EventCard event={event} />)
         ) : (
