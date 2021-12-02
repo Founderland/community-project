@@ -21,7 +21,7 @@ const Events = () => {
   }, [category])
 
   return (
-    <div className="fixed w-full h-full flex flex-col justify-start items-center">
+    <div className="absolute top-0 w-full h-full flex flex-col justify-start items-center overflow-hidden">
       {!id && category !== "new" ? (
         <>
           <div className="w-full h-18 py-2 flex space-x-4 justify-center">
@@ -102,11 +102,9 @@ const Events = () => {
               </Switch.Label>
             </Switch.Group>
           </div>
-          <div className="relative w-full md:w-5/6 h-full md:h-1/2 pb-10 px-4 overflow-hidden">
-            <div className="">
-              <EventsList state={filter ? "past" : "future"} filter={hosting} />
-            </div>
-            <div className="absolute bottom-0 pb-10 md:pb-0">
+          <div className="relative w-full md:w-5/6 h-full pb-10 px-4 overflow-hidden">
+            <EventsList state={filter ? "past" : "future"} filter={hosting} />
+            <div className="absolute bottom-0 md:bottom-5 right-0 md:left-4 space-x-2 pb-10 md:pb-0">
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                 onClick={() => history.push("/community/events/new")}
@@ -118,7 +116,9 @@ const Events = () => {
           </div>
         </>
       ) : category === "new" ? (
-        <AddEvent />
+        <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+          <AddEvent />
+        </section>
       ) : (
         <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
           <Event />
