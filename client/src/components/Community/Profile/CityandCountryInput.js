@@ -104,18 +104,17 @@ const CityandCountryInput = ({
   }
   return (
     <>
-      <div className='grid grid-cols-2 md:grid-cols-1 '>
-        <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center '>
+      <div className="grid grid-cols-2 md:grid-cols-1 ">
+        <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center ">
           City
-          {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
+          {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
         </label>
         <input
           required
-          list='cities'
-          disabled={disableEdit}
-          className={`p-2 text-base outline-none my-1 md:my-0  ${checkCity()} ${
+          list="cities"
+          className={`p-2 text-base text-mono text-gray-800 outline-none my-1 md:my-0  ${checkCity()} ${
             disableEdit
-              ? "bg-white "
+              ? "bg-white  outline-none focus:outline-none cursor-default"
               : required
               ? "bg-red-200 animate-pulse"
               : "bg-sky-50"
@@ -128,7 +127,7 @@ const CityandCountryInput = ({
             })
           }}
         />
-        <datalist id='cities'>
+        <datalist id="cities">
           {cityList.length > 0 &&
             cityList
               .filter((city) => city.name.startsWith(profile.city))
@@ -136,19 +135,18 @@ const CityandCountryInput = ({
               .map((city, i) => <option key={i}>{city.name}</option>)}
         </datalist>
       </div>
-      <div className='grid grid-cols-2 md:grid-cols-1 md:px-1 '>
-        <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center  '>
+      <div className="grid grid-cols-2 md:grid-cols-1 md:px-1 ">
+        <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center  ">
           Country
-          {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
+          {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
         </label>
 
         <input
           required
-          list='countries'
-          disabled={disableEdit}
-          className={`p-2 text-base outline-none my-1 md:my-0  ${checkCountry()} ${
+          list="countries"
+          className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0  ${checkCountry()} ${
             disableEdit
-              ? "bg-white "
+              ? "bg-white outline-none focus:outline-none cursor-default"
               : required
               ? "bg-red-200 animate-pulse"
               : "bg-sky-50"
@@ -161,7 +159,7 @@ const CityandCountryInput = ({
             })
           }}
         />
-        <datalist id='countries'>
+        <datalist id="countries">
           {countryList.length > 0 &&
             countryList
               .filter((country) => country.name.startsWith(profile.country))

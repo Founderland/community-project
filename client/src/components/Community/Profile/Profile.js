@@ -12,7 +12,7 @@ import {
   ArrowLeftIcon,
   XCircleIcon,
 } from "@heroicons/react/outline"
-
+import moment from "moment"
 import Socialmedia from "./Socialmedia"
 import Input from "./Input"
 import CityandCountryInput from "./CityandCountryInput"
@@ -194,7 +194,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="h-full pt-1 pb-28 w-full lg:w-5/6 px-4 mx-auto overflow-auto">
+    <div className="h-full pb-28 w-full md:px-4 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
       <div className="w-full flex items-center justify-center absolute  ">
         <Banner message={banner} />
       </div>
@@ -238,11 +238,13 @@ const Profile = () => {
           <h1 className="text-gray-900 uppercase font-bold text-xl my-2">
             {profile.firstName} {profile.lastName}
           </h1>
-          <h3 className="text-gray-600 text-ls font-semibold mb-1">
+          <h3 className="text-gray-700 text-ls font-semibold mb-1 text-mono">
             {profile.title}
           </h3>
-          <h4 className="text-gray-600 text-base">{profile.companyName}</h4>
-          <h4 className="mb-1">
+          <h4 className="text-gray-700 text-base text-mono">
+            {profile.companyName}
+          </h4>
+          <h4 className="text-gray-700 text-base">
             {profile.companyLink ? (
               <a
                 target="_blank"
@@ -256,14 +258,13 @@ const Profile = () => {
               ""
             )}
           </h4>
-          <div className=" text-gray-700 py-1 px-3 mt-3 divide-y ">
+          <div className=" text-gray-700 py-1 pl-3 pr-6 mt-2 divide-y ">
             <div className="flex flex-row items-start justify-center py-3">
-              <p className="w-1/2 uppercase text-sm text-grotesk">
+              <p className="w-1/2 uppercase text-sm font-bold text-gray-400 ">
                 Member since
               </p>
-              <p className="w-1/2 h-full text-sm text-grotesk text-right">
-                {" "}
-                {new Date(profile.created).toLocaleDateString("de-DE")}
+              <p className="w-1/2 h-full text-sm text-mono text-right text-gray-800 ">
+                {moment(new Date(profile.created)).format("DD/MM/YYYY")}
               </p>
             </div>
             <Socialmedia
@@ -276,7 +277,7 @@ const Profile = () => {
         </div>
 
         <div
-          className="w-full sm:w-1/2 md:w-9/12  shadow bg-white p-3 border-t-8 border-fpink 
+          className="w-full sm:w-1/2 md:w-8/12 shadow bg-white p-3 border-t-8 border-fpink 
             "
         >
           <div className="bg-white p-3 text-base text-gray-700 ">
@@ -286,7 +287,7 @@ const Profile = () => {
                 Details
               </span>
               {isMyProfile && (
-                <span className="flex flex-row-reverse">
+                <span className="flex flex-row-reverse text-xs">
                   <button
                     type={!disableEdit ? "button" : "submit"}
                     className={
@@ -312,7 +313,7 @@ const Profile = () => {
                     <button
                       type="button"
                       onClick={cancelChanges}
-                      className="mr-4 flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 px-4 bg-black transition duration-200 text-white hover:bg-fred hover:text-black "
+                      className="mr-2 flex items-center cursor-pointer w-auto uppercase text-grotesk font-semibold shadow-md p-2 px-4 bg-black transition duration-200 text-white hover:bg-fred hover:text-black "
                     >
                       Cancel
                       <XCircleIcon className=" ml-1 w-6 h-6" />
@@ -330,22 +331,17 @@ const Profile = () => {
                 <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
                   First Name
                 </label>
-                <input
-                  disabled
-                  className="p-2 text-base bg-white "
-                  value={profile.firstName}
-                />
+                <p className="appearance-none p-2 text-base bg-white text-mono text-gray-800 ">
+                  {profile.firstName}
+                </p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-1 md:px-1">
                 <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
                   Last Name
                 </label>
-                <input
-                  disabled
-                  required
-                  className="p-2 text-base bg-white "
-                  value={profile.lastName}
-                />
+                <p className="p-2 text-base  bg-white text-mono text-gray-800 ">
+                  {profile.lastName}
+                </p>
               </div>
 
               {isMyProfile && (
@@ -355,14 +351,14 @@ const Profile = () => {
                       Email
                     </label>
                     <div
-                      className={`p-2 text-base ${
+                      className={`p-2 text-sm text-mono text-gray-800  ${
                         !disableEdit && "cursor-not-allowed"
                       }`}
                     >
                       {profile.email}
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-1 ">
+                  <div className="grid grid-cols-2 md:grid-cols-1 text-mono  text-gray-800 ">
                     <Input
                       label="Position"
                       value={"title"}
@@ -373,7 +369,7 @@ const Profile = () => {
                       required={required}
                     />
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-1 md:px-1 ">
+                  <div className="grid grid-cols-2 md:grid-cols-1 md:px-1 text-mono text-gray-800  ">
                     <Input
                       label="company"
                       value={"companyName"}
@@ -387,14 +383,14 @@ const Profile = () => {
                   <div className="grid grid-cols-2 md:grid-cols-1 ">
                     {disableEdit ? (
                       <>
-                        <label className="p-2  uppercase text-xs font-bold text-gray-400 flex items-center">
+                        <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center">
                           Company Website
                         </label>
 
                         <a
                           target="_blank"
                           href={profile.companyLink}
-                          className="text-base text-gray-600 hover:text-sky-600 p-2"
+                          className="text-sm text-gray-800  hover:text-sky-600 p-2 text-mono"
                           rel="noreferrer"
                         >
                           {profile.companyLink}
@@ -438,7 +434,10 @@ const Profile = () => {
                     required={required}
                   />
                 ) : (
-                  <div className="p-2 text-base">{profile.businessArea}</div>
+                  <div className="p-2 text-base text-mono text-gray-800 ">
+                    {profile.businessArea !== "Select the business area" &&
+                      profile.businessArea}
+                  </div>
                 )}
               </div>
             </div>
@@ -459,7 +458,6 @@ const Profile = () => {
                 <textarea
                   required
                   rows="4"
-                  disabled={disableEdit}
                   value={profile.bio}
                   onChange={(e) =>
                     setProfile({
@@ -467,9 +465,9 @@ const Profile = () => {
                       bio: formatValue(e.target.value),
                     })
                   }
-                  className={`p-2 text-base resize-none ${
+                  className={`p-2 text-base text-mono text-gray-800  resize-none ${
                     disableEdit
-                      ? "bg-white "
+                      ? "bg-white outline-none focus:outline-none cursor-default"
                       : required
                       ? "bg-red-200 animate-pulse"
                       : "bg-sky-50"
@@ -486,7 +484,6 @@ const Profile = () => {
                 <textarea
                   required
                   rows="4"
-                  disabled={disableEdit}
                   value={profile.companyBio}
                   onChange={(e) =>
                     setProfile({
@@ -494,9 +491,9 @@ const Profile = () => {
                       companyBio: formatValue(e.target.value),
                     })
                   }
-                  className={`p-2 text-base resize-none ${
+                  className={`p-2 text-base text-mono text-gray-800 resize-none ${
                     disableEdit
-                      ? "bg-white "
+                      ? "bg-white outline-none focus:outline-none cursor-default"
                       : required
                       ? "bg-red-200 animate-pulse"
                       : "bg-sky-50"
@@ -515,7 +512,7 @@ const Profile = () => {
                 <div className="p-2 uppercase text-xs font-bold text-gray-400">
                   Host
                 </div>
-                <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                <div className="w-full  max-h-80  flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
                   {events.mine.length ? (
                     events.mine.map((event) => (
                       <EventPreview key={event._id} event={event} />
@@ -531,7 +528,7 @@ const Profile = () => {
                 <div className="p-2 uppercase text-xs font-bold text-gray-400">
                   Interested/Going
                 </div>
-                <div className="w-full h-60 flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
+                <div className="w-full  max-h-80  flex flex-col justify-start px-2 mt-1 overflow-y-auto overflow-x-hidden">
                   {events.going.length || events.interested.length ? (
                     <>
                       {events.going.map((event) => (
