@@ -355,7 +355,7 @@ const MemberProfile = () => {
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Bio
                     </div>
-                    <div className="p-2 text-base">{profile.about}</div>
+                    <div className="p-2 text-base">{profile.bio}</div>
                   </div>
                   <div className="grid grid-cols-1">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">

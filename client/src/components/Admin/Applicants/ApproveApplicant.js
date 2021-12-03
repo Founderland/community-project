@@ -77,9 +77,7 @@ const ApproveApplicant = ({ data, confirm }) => {
           setReload(reload + 1)
           setCModal(false)
           setBanner((prev) => ({ ...prev, show: false }))
-          data.task === "approved"
-            ? history.push("/admin/members")
-            : history.push("/admin/applicants/rejected")
+          history.push("/admin/applicants/" + confirm)
         }, 2000)
       } else {
         throw new Error("Sorry, something went wrong while saving")
