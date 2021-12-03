@@ -22,18 +22,9 @@ const EventsList = ({ state, filter }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(eventsUrl + state, config)
-        let eventsFiltered
-        if (filter) {
-          eventsFiltered = response.data.data.filter(
-            (item) => item.member._id === user.id
-          )
-        } else {
-          eventsFiltered = [...response.data.data]
-        }
-        setData(eventsFiltered)
-        const allEvents = await axios.get(eventsUrl + "all", config)
-        const allTags = allEvents.data.data
+        const eventsFiltered = await axios.get(eventsUrl + state, config)
+        if (eventsFiltered.data.data) setData(eventsFiltered.data.data)
+        const allTags = eventsFiltered.data.data
           .map((item) => item.tags)
           .flat(1)
           .filter((item, i, self) => i === self.indexOf(item))
@@ -59,6 +50,7 @@ const EventsList = ({ state, filter }) => {
           ])
       )
     }
+    if (filteredData.length <= perPage) setOffset(0)
     //SORT DATA BY DATES
     const slice = filteredData
       .slice(offset * perPage, offset * perPage + perPage)

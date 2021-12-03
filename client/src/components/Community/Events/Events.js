@@ -21,7 +21,7 @@ const Events = () => {
   }, [category])
 
   return (
-    <div className="absolute top-0 w-full h-full flex flex-col justify-start items-center overflow-hidden">
+    <div className="absolute top-0 w-full h-full flex flex-col justify-start items-center  overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100">
       {!id && category !== "new" ? (
         <>
           <div className="w-full h-18 py-2 flex space-x-4 justify-center">
@@ -120,9 +120,7 @@ const Events = () => {
           <AddEvent />
         </section>
       ) : (
-        <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
-          <Event />
-        </section>
+        <Event />
       )}
     </div>
   )

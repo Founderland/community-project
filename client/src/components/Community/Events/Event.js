@@ -118,7 +118,7 @@ const Event = () => {
     }
   }
   return (
-    <div className="flex-none h-full w-full lg:w-5/6 md:px-4 mx-auto  overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 pb-8">
+    <div className="flex-none h-full w-full lg:w-5/6 xl:w-4/6 md:px-4 mx-auto pb-8">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -238,7 +238,7 @@ const Event = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex-none h-28 md:h-48 w-full md:w-1/2 pr-6">
+              <div className="flex items-center flex-none h-28 md:h-48 w-full md:w-1/2 pr-6">
                 {data.type !== "online" ? (
                   <MapDisplay location={data.geoLocation} zoom={data.zoom} />
                 ) : (
