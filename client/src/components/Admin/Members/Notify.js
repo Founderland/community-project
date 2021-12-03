@@ -55,7 +55,11 @@ const Notify = ({ member }) => {
       setBanner({
         error: 1,
         show: true,
-        message: e.message ? e.message : "Error notifying the user!",
+        message: e.response.data.message
+          ? e.response.data.message
+          : e.message
+          ? e.message
+          : "Error notifying the user!",
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))

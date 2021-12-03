@@ -9,7 +9,7 @@ const sendCustomEmail = async (req, res, next) => {
   const { email, _id, firstName, lastName } = req.newMember
   const { subject, body, signOff, template } = req.body
   const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
+    expiresIn: subject.includes("Reset") ? "15m" : "1d",
   })
 
   // config for mailserver and mail
