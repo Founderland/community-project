@@ -161,7 +161,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
     )
   }
   return (
-    <div className="bg-white px-4 md:px-8 pt-6 pb-10 flex flex-col items-center justify-center w-full xl:w-5/6 2xl:w-3/6  overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
+    <div className="bg-white px-4 md:px-8 pt-6 pb-10 flex flex-col items-center justify-center w-full overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>

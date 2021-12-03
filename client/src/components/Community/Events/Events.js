@@ -116,7 +116,7 @@ const Events = () => {
           </div>
         </>
       ) : category === "new" ? (
-        <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+        <section className="h-full w-full lg:w-4/6 md:px-4 mx-auto overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100">
           <AddEvent />
         </section>
       ) : (

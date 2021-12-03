@@ -118,7 +118,7 @@ const Event = () => {
     }
   }
   return (
-    <div className="flex-none h-full w-full lg:w-5/6 xl:w-4/6 md:px-4 mx-auto pb-8">
+    <div className="flex-none h-full w-full lg:w-5/6 xl:w-4/6 md:px-4 mx-auto pb-20">
       <ConfirmModal>
         <ConfirmDelete data={data} />
       </ConfirmModal>
@@ -413,7 +413,7 @@ const Event = () => {
               </div>
             </div>
           </div>
-          <footer className="w-full px-4 my-4 flex flex-col sm:flex-row items-center justify-around ">
+          <footer className="w-full px-4 my-4 flex flex-col sm:flex-row items-center justify-around pb-10">
             {!data.isCanceled &&
               user.id === data.member._id &&
               new Date(data.dateEnd) > new Date() && (
