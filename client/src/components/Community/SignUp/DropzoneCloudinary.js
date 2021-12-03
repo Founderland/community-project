@@ -47,7 +47,9 @@ const DropzoneCloudinary = ({
         {
           data: base64EncodedImage,
           public_id: `${type}`, //-${Date.now()}
-          folder: `${data.firstName}-${data.lastName}-${data._id || data.id}`,
+          folder: `profiles/${data.firstName}-${data.lastName}-${
+            data._id || data.id
+          }`,
         },
         config
       )
