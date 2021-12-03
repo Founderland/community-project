@@ -162,7 +162,7 @@ const Event = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex-none h-28 md:h-48 w-full md:w-1/2 pr-6">
+              <div className="flex items-center flex-none h-28 md:h-48 w-full md:w-1/2 pr-6">
                 {data.type !== "online" ? (
                   <MapDisplay location={data.geoLocation} zoom={data.zoom} />
                 ) : (
