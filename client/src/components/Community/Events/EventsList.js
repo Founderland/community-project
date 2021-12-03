@@ -22,9 +22,17 @@ const EventsList = ({ state, filter }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const eventsFiltered = await axios.get(eventsUrl + state, config)
-        if (eventsFiltered.data.data) setData(eventsFiltered.data.data)
-        const allTags = eventsFiltered.data.data
+        const allEvents = await axios.get(eventsUrl + state, config)
+        let eventsFiltered
+        if (filter) {
+          eventsFiltered = allEvents.data.data.filter(
+            (item) => item.member._id === user.id
+          )
+        } else {
+          eventsFiltered = [...allEvents.data.data]
+        }
+        if (eventsFiltered) setData(eventsFiltered)
+        const allTags = eventsFiltered
           .map((item) => item.tags)
           .flat(1)
           .filter((item, i, self) => i === self.indexOf(item))
