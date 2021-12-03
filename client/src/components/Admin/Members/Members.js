@@ -77,7 +77,7 @@ const Members = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden pb-4">
+      <section className="relative h-full w-full flex md:px-4  items-center flex-col bg-white outline-none overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
         {!id ? (
           <>
             {selectedTab === 3 ? (
@@ -119,9 +119,9 @@ const Members = () => {
             </div>
           </>
         ) : id === "new" ? (
-          <section className="h-full w-full lg:w-5/6 xl:w-4/6 md:px-4 mx-auto overflow-auto">
+          <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 pb-6 shadow-lg border-0">
             <AddMember role={tabs[selectedTab].role} />
-          </section>
+          </div>
         ) : (
           <MemberProfile />
         )}

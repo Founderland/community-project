@@ -342,7 +342,7 @@ const AddEvent = ({ event, edit, setEdit }) => {
             data={data}
             setData={setData}
             type="eventCover"
-            fodler="Events"
+            folder="events"
             setUploadStatus={setUploadStatus}
             uploadStatus={uploadStatus}
           />

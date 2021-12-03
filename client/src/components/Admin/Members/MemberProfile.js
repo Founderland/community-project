@@ -161,7 +161,7 @@ const MemberProfile = () => {
   }
 
   return (
-    <section className="h-full w-full lg:w-5/6 md:px-4 mx-auto overflow-auto">
+    <section className="h-full w-full lg:w-5/6 xl:w-4/6 mx-auto">
       {loading ? (
         <Loading />
       ) : (
@@ -174,7 +174,7 @@ const MemberProfile = () => {
           </ComponentModal>
           <div className="w-full flex-none sm:flex no-wrap md:-mx-2">
             <div
-              className={`w-full sm:w-1/2 md:w-3/12 md:mx-2 shadow bg-white p-3 border-t-8 ${
+              className={`w-full sm:w-1/2 md:w-4/12 md:mx-2 shadow bg-white p-3 border-t-8 ${
                 profile.role === "founder"
                   ? "border-fblue"
                   : profile.role === "investor"
@@ -281,7 +281,7 @@ const MemberProfile = () => {
             </div>
             <div className="my-4"></div>
             <div
-              className={`w-full sm:w-1/2 md:w-9/12 md:mx-2 shadow bg-white p-3 border-t-8 border-${
+              className={`w-full sm:w-1/2 md:w-8/12 md:mx-1 shadow bg-white p-3 border-t-8 border-${
                 styles[profile.role]
               }`}
             >
@@ -309,11 +309,11 @@ const MemberProfile = () => {
                       {profile.lastName}
                     </div>
                   </div>
-                  <div className="grid grid-cols-2">
+                  <div className="grid grid-cols-2 md:grid-cols-1">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Email
                     </div>
-                    <div className="p-2  text-xs md:text-base break-all">
+                    <div className="p-2  text-sm md:text-base break-all">
                       <a
                         href={`mailto:${profile.email}`}
                         className="hover:text-sky-600 "
@@ -323,7 +323,7 @@ const MemberProfile = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2">
+                  <div className="grid grid-cols-2 md:grid-cols-1">
                     <div className="p-2 uppercase text-xs font-bold text-gray-400">
                       Location
                     </div>
