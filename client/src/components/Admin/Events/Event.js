@@ -302,16 +302,18 @@ const Event = () => {
                   Cancel Event
                 </button>
               )}
-              {!edit && !data.isCanceled && user.role.includes("admin") && (
+              {!edit && user.role.includes("admin") && (
                 <>
-                  <button
-                    className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                    onClick={() => {
-                      setEdit(true)
-                    }}
-                  >
-                    Edit
-                  </button>
+                  {!data.isCanceled && (
+                    <button
+                      className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                      onClick={() => {
+                        setEdit(true)
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
                   <button
                     className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
                     onClick={() => {
