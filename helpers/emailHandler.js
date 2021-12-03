@@ -9,7 +9,7 @@ const sendCustomEmail = async (req, res, next) => {
   const { email, _id, firstName, lastName } = req.newMember
   const { subject, body, signOff, template } = req.body
   const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
-    expiresIn: "5d",
+    expiresIn: "1d",
   })
 
   // config for mailserver and mail
@@ -70,7 +70,7 @@ const sendConnectEmail = async (req, res, next) => {
   console.log("sending email")
   const { email, _id, firstName, lastName } = req.newMember
   const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
-    expiresIn: "5d",
+    expiresIn: "1d",
   })
 
   // config for mailserver and mail
@@ -131,7 +131,7 @@ const sendVerifyEmail = async (req, res, next) => {
     { email, id: _id, avatar: true },
     process.env.JWT_SECRET,
     {
-      expiresIn: "1d",
+      expiresIn: "15m",
     }
   )
 
@@ -363,7 +363,7 @@ const sendResetEmail = async (req, res, next) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "10m",
+      expiresIn: "15m",
     }
   )
   // config for mailserver and mail

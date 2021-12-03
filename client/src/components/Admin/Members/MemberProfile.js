@@ -16,6 +16,7 @@ import {
   UserIcon,
   CalendarIcon,
   ChevronRightIcon,
+  MailIcon,
 } from "@heroicons/react/outline"
 
 const memberUrl = "/api/users/community/profile/"
@@ -414,17 +415,13 @@ const MemberProfile = () => {
             </div>
           </div>
           <div className="my-4 flex flex-col sm:flex-row items-center justify-around ">
-            {!profile.confirmed ? (
-              <button
-                className="flex items-center justify-center space-x-4 px-8 py-2 w-5/6 shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
-                onClick={() => setCModal(true)}
-              >
-                <ShieldCheckIcon className="w-6 h-6" />
-                <p>Notify Member</p>
-              </button>
-            ) : (
-              ""
-            )}
+            <button
+              className="flex items-center justify-center space-x-4 px-8 py-2 w-5/6 shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+              onClick={() => setCModal(true)}
+            >
+              <MailIcon className="w-6 h-6" />
+              <p>Notify by Email</p>
+            </button>
             {user.role.search("admin") >= 0 && (
               <button
                 className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-5/6 shadow-lg sm:w-1/3  mb-4"
