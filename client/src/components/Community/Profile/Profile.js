@@ -195,7 +195,7 @@ const Profile = () => {
 
   return (
     <div className="h-full pb-28 w-full md:px-4 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
-      <div className="w-full flex items-center justify-center absolute  ">
+      <div className="w-full flex items-center justify-center absolute top-8">
         <Banner message={banner} />
       </div>
       <form
@@ -458,6 +458,7 @@ const Profile = () => {
                 <textarea
                   required
                   rows="4"
+                  readOnly={disableEdit}
                   value={profile.bio}
                   onChange={(e) =>
                     setProfile({
@@ -483,6 +484,7 @@ const Profile = () => {
                 </label>
                 <textarea
                   required
+                  readOnly={disableEdit}
                   rows="4"
                   value={profile.companyBio}
                   onChange={(e) =>

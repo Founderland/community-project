@@ -109,24 +109,33 @@ const CityandCountryInput = ({
           City
           {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
         </label>
-        <input
-          required
-          list="cities"
-          className={`p-2 text-base text-mono text-gray-800 outline-none my-1 md:my-0  ${checkCity()} ${
-            disableEdit
-              ? "bg-white  outline-none focus:outline-none cursor-default"
-              : required
-              ? "bg-red-200 animate-pulse"
-              : "bg-sky-50"
-          }`}
-          value={profile.city}
-          onChange={(e) => {
-            setProfile({
-              ...profile,
-              city: formatValue(e.target.value),
-            })
-          }}
-        />
+        {!disableEdit ? (
+          <input
+            required
+            readOnly={disableEdit}
+            list="cities"
+            className={`p-2 text-base text-mono text-gray-800 outline-none my-1 md:my-0  ${checkCity()} ${
+              disableEdit
+                ? "bg-white  outline-none focus:outline-none cursor-default"
+                : required
+                ? "bg-red-200 animate-pulse"
+                : "bg-sky-50"
+            }`}
+            value={profile.city}
+            onChange={(e) => {
+              setProfile({
+                ...profile,
+                city: formatValue(e.target.value),
+              })
+            }}
+          />
+        ) : (
+          <p
+            className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0}`}
+          >
+            {profile.city}
+          </p>
+        )}
         <datalist id="cities">
           {cityList.length > 0 &&
             cityList
@@ -140,25 +149,32 @@ const CityandCountryInput = ({
           Country
           {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
         </label>
-
-        <input
-          required
-          list="countries"
-          className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0  ${checkCountry()} ${
-            disableEdit
-              ? "bg-white outline-none focus:outline-none cursor-default"
-              : required
-              ? "bg-red-200 animate-pulse"
-              : "bg-sky-50"
-          }`}
-          value={profile.country}
-          onChange={(e) => {
-            setProfile({
-              ...profile,
-              country: formatValue(e.target.value),
-            })
-          }}
-        />
+        {!disableEdit ? (
+          <input
+            required
+            list="countries"
+            className={`p-2 text-base text-mono disabled:opacity-0 text-gray-800  outline-none my-1 md:my-0  ${checkCountry()} ${
+              disableEdit
+                ? "bg-white outline-none focus:outline-none cursor-default"
+                : required
+                ? "bg-red-200 animate-pulse"
+                : "bg-sky-50"
+            }`}
+            value={profile.country}
+            onChange={(e) => {
+              setProfile({
+                ...profile,
+                country: formatValue(e.target.value),
+              })
+            }}
+          />
+        ) : (
+          <p
+            className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0}`}
+          >
+            {profile.country}
+          </p>
+        )}
         <datalist id="countries">
           {countryList.length > 0 &&
             countryList
