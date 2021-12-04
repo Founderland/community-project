@@ -11,11 +11,10 @@ const sendCustomEmail = async (req, res, next) => {
   const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
     expiresIn: "5d",
   })
-
   // config for mailserver and mail
   const config = {
     mailserver: {
-      service: "outlook",
+      service: process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -76,7 +75,7 @@ const sendConnectEmail = async (req, res, next) => {
   // config for mailserver and mail
   const config = {
     mailserver: {
-      service: "outlook",
+      service: process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -138,7 +137,7 @@ const sendVerifyEmail = async (req, res, next) => {
   // config for mailserver and mail
   const config = {
     mailserver: {
-      service: "outlook",
+      service: process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -195,7 +194,7 @@ const sendApplicantEmail = async (req, res, next) => {
   // config for mailserver and mail
   const config = {
     mailserver: {
-      service: "outlook",
+      service: process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -250,7 +249,7 @@ const sendRejected = async (req, res, next) => {
   // config for mailserver and mail
   const config = {
     mailserver: {
-      service: "outlook",
+      service: process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -305,7 +304,7 @@ const sendThankYou = async (req, res, next) => {
   // config for mailserver and mail
   const config = {
     mailserver: {
-      service: "outlook",
+      service: process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -369,7 +368,7 @@ const sendResetEmail = async (req, res, next) => {
   // config for mailserver and mail
   const config = {
     mailserver: {
-      service: "outlook",
+      service: process.env.EMAIL_PROVIDER,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
