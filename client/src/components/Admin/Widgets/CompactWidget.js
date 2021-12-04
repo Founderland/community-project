@@ -24,7 +24,7 @@ const CompactWidget = ({ data, loading }) => {
                   }`}
                 >
                   <p className="text-xs leading-tight">
-                    {data?.new} new this week
+                    {data?.new} new last 7 days
                   </p>
                 </div>
               </>

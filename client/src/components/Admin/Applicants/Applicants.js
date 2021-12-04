@@ -37,7 +37,7 @@ const Applicants = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden">
+      <section className="relative h-full w-full flex md:px-4  items-center flex-col bg-white outline-none overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
         {!id ? (
           <ApplicantsList role={tabs[selectedTab].role} />
         ) : (

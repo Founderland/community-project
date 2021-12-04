@@ -188,19 +188,25 @@ const confirmUser = async (req, res, next) => {
 const updateNotified = async (req, res) => {
   const { _id } = req.newMember
   const date = Date.now()
-  const update = await Member.findOneAndUpdate(
-    { _id },
-    { notified: date },
-    { new: true }
-  )
-  if (update) {
-    update.hashedPassword = ""
-    res.status(200).json({ success: 1, message: "User notified", data: update })
-  } else {
-    res.status(500).json({
-      error: 1,
-      message: "User notified but database not updated",
-    })
+  try {
+    const update = await Member.findOneAndUpdate(
+      { _id, confirmed: null },
+      { notified: date },
+      { new: true }
+    )
+    if (update) {
+      update.hashedPassword = ""
+      res
+        .status(200)
+        .json({ success: 1, message: "User notified", data: update })
+    } else {
+      res.status(500).json({
+        error: 1,
+        message: "User notified but database not updated",
+      })
+    }
+  } catch (e) {
+    console.log(e)
   }
 }
 

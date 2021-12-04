@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useMemo } from "react"
+import { useContext, useEffect, useState } from "react"
 import { UserAddIcon } from "@heroicons/react/outline"
 import axios from "axios"
 import AdminContext from "../../../contexts/Admin"
@@ -93,7 +93,7 @@ const Settings = () => {
         setSelectedTab={setSelectedTab}
         id={id}
       />
-      <section className="relative h-full flex flex-col bg-white outline-none md:px-4 overflow-hidden pt-4">
+      <section className="relative h-full w-full flex md:px-4  items-center flex-col bg-white outline-none overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
         {loading ? (
           <Loading />
         ) : !id && selectedTab !== 0 ? (
@@ -107,7 +107,7 @@ const Settings = () => {
               filter={filter}
               setFilter={setFilter}
             />
-            <div className="absolute bottom-0 md:bottom-5 lg:bottom-60 right-0 md:left-4 space-x-2">
+            <div className="absolute bottom-0 md:bottom-5 right-0 md:left-4 space-x-2">
               <button
                 className="flex px-8 py-2 space-x-2 shadow-lg m-2 bg-flime transition duration-200 hover:bg-fblue hover:text-white"
                 onClick={() => history.push("settings/id/new")}

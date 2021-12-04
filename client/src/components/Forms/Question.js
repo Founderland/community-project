@@ -46,7 +46,6 @@ const Question = ({
       score: score,
     })
   }
-  const [checked, setChecked] = useState(false)
 
   const handleCheck = (item) => {
     let scoreSum = Number(answerData.score)
@@ -76,9 +75,6 @@ const Question = ({
     })
   }
 
-  const handleChange = () => {
-    setChecked(!checked)
-  }
   return (
     <div className="p-2 text-grotesk mt-1 xl:mt-5">
       <label className="text-sm md:text-base lg:text-lg xl:text-xl  py-3 text-justify">

@@ -4,7 +4,7 @@ import { useParams } from "react-router"
 import AdminContext from "../../../contexts/Admin"
 import axios from "axios"
 import Banner from "../Widgets/Banner"
-import { ShieldCheckIcon } from "@heroicons/react/outline"
+import { MailIcon } from "@heroicons/react/outline"
 import EmailNotification from "../Widgets/EmailNotification"
 
 const Notify = ({ member }) => {
@@ -55,7 +55,11 @@ const Notify = ({ member }) => {
       setBanner({
         error: 1,
         show: true,
-        message: e.message ? e.message : "Error notifying the user!",
+        message: e.response.data.message
+          ? e.response.data.message
+          : e.message
+          ? e.message
+          : "Error notifying the user!",
       })
       setTimeout(() => {
         setBanner((prev) => ({ ...prev, show: false }))
@@ -117,8 +121,8 @@ const Notify = ({ member }) => {
             </div>
           ) : (
             <>
-              <ShieldCheckIcon className="w-6 h-6" />
-              <p>Notify</p>
+              <MailIcon className="w-6 h-6" />
+              <p>Send Email</p>
             </>
           )}
         </button>

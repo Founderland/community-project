@@ -1,8 +1,7 @@
 import { Menu, Transition } from "@headlessui/react"
-import { Fragment, useContext, useEffect, useMemo, useState } from "react"
+import { Fragment, useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import UserContext from "../../contexts/User"
-import { Image, Transformation } from "cloudinary-react"
 import axios from "axios"
 
 const ProfileMenu = () => {

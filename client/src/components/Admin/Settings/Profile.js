@@ -239,7 +239,6 @@ const Profile = () => {
 
   //HELPER FUNCTIONS
   const handleChange = (v, target) => {
-    console.log(v, target)
     setUpdate(true)
     if (target) setProfile((prev) => ({ ...prev, [target]: v }))
     else setProfile((prev) => ({ ...prev, role: v }))
@@ -274,7 +273,7 @@ const Profile = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className=" h-full py-1 bg-white flex flex-col items-center justify-center w-full lg:w-11/12 px-4 mx-auto mt-6">
+        <div className=" h-full py-1 bg-white flex flex-col items-center justify-start w-full lg:w-11/12 px-4 mx-auto mt-6">
           <div className="w-full flex items-center justify-center">
             <Banner message={banner} />
           </div>

@@ -4,7 +4,6 @@ import { useParams, useHistory } from "react-router-dom"
 
 import jwt from "jsonwebtoken"
 import { ReactComponent as LogoLines } from "../../../assets/line.svg"
-import { ReactComponent as SmallLogo } from "../../../assets/small.svg"
 import gifLogo from "../../../assets/images/Logo-Transform.gif"
 import whiteLogo from "../../../assets/images/logo_md_white.png"
 
@@ -144,7 +143,7 @@ const SignUp = () => {
     return (
       <div className='h-screen w-screen flex items-center justify-center'>
         <div className='flex flex-col items-center justify-center w-screen  h-1/4 '>
-          <h1 className='text-hanson text-xl md:text-4xl lg:text-7xl lg:text-4xl text-center w-3/5'>
+          <h1 className='text-hanson text-xl md:text-4xl lg:text-7xl text-center w-3/5'>
             WELCOME TO OUR COMMUNITY
           </h1>
           <img src={gifLogo} alt='founderland logo' />

@@ -57,57 +57,55 @@ export default function SelectAnswer({
   )
   return (
     <div className="flex flex-col w-full">
-      <div className="w-11/12 md:w-4/5">
-        <div className=" relative">
-          <button
-            type="button"
-            ref={selectButton}
-            onClick={() => setShowList(!showList)}
-            className={
-              "relative w-full bg-white border-2 pl-2 pr-10 py-2 md:py-4 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue text-base md:text-base 2xl:text-xl " +
-              (selectValidation ? "border-gray" : "border-fred")
-            }
-          >
-            <span className="flex items-center">
-              <span className="ml-3 block truncate text-base md:text-base 2xl:text-xl">
-                {selectedItem ? selectedItem : "Select Item"}
-              </span>
+      <div className="relative w-11/12 md:w-4/5">
+        <button
+          type="button"
+          ref={selectButton}
+          onClick={() => setShowList(!showList)}
+          className={
+            "z-40 relative w-full bg-white border-2 pl-2 pr-10 py-2 md:py-4 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-fblue focus:border-fblue text-base md:text-base 2xl:text-xl " +
+            (selectValidation ? "border-gray" : "border-fred")
+          }
+        >
+          <span className="flex items-center">
+            <span className="ml-3 block truncate text-base md:text-base 2xl:text-xl">
+              {selectedItem ? selectedItem : "Select Item"}
             </span>
+          </span>
 
-            <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-              <svg
-                className="h-5 w-5 text-gray-400"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-          </button>
-
-          {showList && (
-            <div
-              ref={panelResultElement}
-              className="absolute w-full  bg-white shadow-lg"
+          <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+            <svg
+              className="h-5 w-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
             >
-              <ul
-                tabIndex={-1}
-                role="listbox"
-                aria-labelledby="listbox-label"
-                aria-activedescendant="listbox-item-3"
-                className="max-h-56 py-1 text-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm md:text-md xl:text-lg"
-              >
-                {answers.map((item, index) => listItem(item, index))}
-              </ul>
-            </div>
-          )}
-        </div>
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </span>
+        </button>
+
+        {showList && (
+          <div
+            ref={panelResultElement}
+            className="absolute w-full z-50 bg-white shadow-lg"
+          >
+            <ul
+              tabIndex={-1}
+              role="listbox"
+              aria-labelledby="listbox-label"
+              aria-activedescendant="listbox-item-3"
+              className=" max-h-56 py-1 text-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm md:text-md xl:text-lg"
+            >
+              {answers.map((item, index) => listItem(item, index))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="w-11/12 md:w-4/5">
         {selectedItem === "Other" && (

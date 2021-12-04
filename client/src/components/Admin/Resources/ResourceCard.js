@@ -21,7 +21,7 @@ const ResourceCard = ({ resource }) => {
     <div className="group py-4 px-2">
       <div
         onClick={() => history.push(`/admin/resources/id/${resource._id}`)}
-        className="relative cursor-pointer w-72 md:w-80 overflow-hidden shadow-lg hover:shadow-2xl text-center "
+        className="relative cursor-pointer w-72 md:w-80 overflow-hidden shadow-md hover:shadow-lg text-center "
       >
         <div className="flex ">
           <div

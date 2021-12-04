@@ -68,7 +68,7 @@ const Event = () => {
         <AddEvent event={data} edit={edit} setEdit={setEdit} />
       ) : (
         <>
-          <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 mb-6 shadow-lg border-0">
+          <div className="relative self-center flex flex-col w-full xl:w-5/6 2xl:w-4/6 pb-6 shadow-lg border-0">
             <div
               className="relative w-full h-40 sm:h-64 lg:h-72 xl:h-80 bg-top bg-cover"
               style={{
@@ -162,7 +162,7 @@ const Event = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex-none h-28 md:h-48 w-full md:w-1/2 pr-6">
+              <div className="flex items-center flex-none h-28 md:h-48 w-full md:w-1/2 pr-6">
                 {data.type !== "online" ? (
                   <MapDisplay location={data.geoLocation} zoom={data.zoom} />
                 ) : (
@@ -179,7 +179,7 @@ const Event = () => {
                 )}
               </h6>
 
-              <div className="px-3 bg-white text-lg text-mono w-full ease-linear transition-all duration-150">
+              <div className="px-3 bg-white text-base md:text-lg text-mono w-full ease-linear transition-all duration-150 text-justify">
                 {data.description}
               </div>
 
@@ -257,9 +257,10 @@ const Event = () => {
                           }`}
                           target="_blank"
                           rel="noreferrer"
-                          className="hover:text-fblue"
+                          className="hover:text-fblue flex space-x-2"
                         >
-                          {data.address}
+                          <p>{data.address}</p>
+                          <MapIcon className="w-3 h-3" />
                         </a>
                       </p>
                     </>
@@ -301,28 +302,28 @@ const Event = () => {
                   Cancel Event
                 </button>
               )}
-              {!edit && !data.isCanceled && (
-                <button
-                  className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
-                  onClick={() => {
-                    setEdit(true)
-                  }}
-                >
-                  Edit
-                </button>
-              )}
-              {user.role.includes("admin") ? (
-                <button
-                  className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
-                  onClick={() => {
-                    setCCModal(true)
-                  }}
-                >
-                  <TrashIcon className="h-5 w-5" />
-                  Delete
-                </button>
-              ) : (
-                ""
+              {!edit && user.role.includes("admin") && (
+                <>
+                  {!data.isCanceled && (
+                    <button
+                      className="px-8 py-2 w-full shadow-lg sm:w-1/4 bg-flime transition duration-200 hover:bg-fblue hover:text-white mb-4"
+                      onClick={() => {
+                        setEdit(true)
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
+                  <button
+                    className="px-10 py-2 w-full shadow-lg sm:w-1/4 bg-gray-700 transition duration-200 hover:bg-fred-200 text-white mb-4 flex justify-center items-center "
+                    onClick={() => {
+                      setCCModal(true)
+                    }}
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                    Delete
+                  </button>
+                </>
               )}
             </footer>
           </div>

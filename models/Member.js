@@ -46,12 +46,7 @@ const userSchema = new mongoose.Schema({
     required: "Email is required",
   },
   hashedPassword: { type: String },
-  created: {
-    type: Date,
-    default: Date.now(),
-  },
-  confirmed: { type: Date, default: null },
-  lastUpdate: { type: Date },
+
   bio: {
     type: String,
     trim: true,
@@ -78,8 +73,12 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  confirmed: { type: Date, default: null },
   applicationId: { type: mongoose.Schema.ObjectId },
+  created: {
+    type: Date,
+    default: Date.now(),
+  },
+  confirmed: { type: Date, default: null },
   notified: { type: Date, default: null },
   lastUpdate: { type: Date },
   events: {

@@ -5,19 +5,12 @@ import { useHistory } from "react-router"
 import { XIcon } from "@heroicons/react/outline"
 
 export default function Sidebar(props) {
-  const {
-    memberDetails,
-    sidebarHandler,
-    isSidebarSelected,
-    isNameSelected,
-    isNameSelectedEvent,
-  } = useContext(CommunityContext)
+  const { memberDetails, sidebarHandler, isNameSelectedEvent } =
+    useContext(CommunityContext)
   const [sidebarDisplay, setSidebarDisplay] = useState([])
-  const [isCardSelected, setIsCardSelected] = useState(false)
   // const [selectedMember, setSelectedMember] = useState({})
   const history = useHistory()
   useEffect(() => {
-    setIsCardSelected(false)
     const fiteredArray = memberDetails.filter((items) => {
       return (
         props.data?.lat === items.geoLocation?.lat &&
@@ -36,9 +29,6 @@ export default function Sidebar(props) {
   const closeHandler = () => {
     sidebarHandler(false)
     isNameSelectedEvent(false)
-  }
-  const memberBackHandler = () => {
-    setIsCardSelected(false)
   }
 
   const profileButtonHandler = (id) => {

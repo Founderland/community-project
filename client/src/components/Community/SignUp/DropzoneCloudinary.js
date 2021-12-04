@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
-import { config } from "dotenv"
 import { useParams } from "react-router"
 
 const DropzoneCloudinary = ({
@@ -24,7 +23,6 @@ const DropzoneCloudinary = ({
       },
     }
   }, [])
-  console.log(config)
 
   // CLOUDINARY
   const onDrop = useCallback((acceptedFiles) => {
@@ -49,7 +47,9 @@ const DropzoneCloudinary = ({
         {
           data: base64EncodedImage,
           public_id: `${type}`, //-${Date.now()}
-          folder: `${data.firstName}-${data.lastName}-${data._id || data.id}`,
+          folder: `profiles/${data.firstName}-${data.lastName}-${
+            data._id || data.id
+          }`,
         },
         config
       )
@@ -90,24 +90,26 @@ const DropzoneCloudinary = ({
     <>
       <div
         {...getRootProps()}
-        className=' h-3/5 md:h-5/6 w-4/5 xl:w-4/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl'>
+        className=" h-3/5 md:h-5/6 w-4/5 xl:w-4/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl"
+      >
         <input {...getInputProps()} />
         {loading && (
-          <div className='flex justify-center'>
+          <div className="flex justify-center">
             <span
               style={{ borderTopColor: "transparent" }}
-              className='w-16 h-16 border-8 border-black  border-dotted rounded-full animate-spin'></span>
+              className="w-16 h-16 border-8 border-black  border-dotted rounded-full animate-spin"
+            ></span>
           </div>
         )}
         {!loading && previewSource && (
           <img
             src={previewSource}
             style={{ width: "200px", height: "200px" }}
-            alt='chosen'
-            className=' p-4 object-cover rounded-full'
+            alt="chosen"
+            className=" p-4 object-cover rounded-full"
           />
         )}
-        <p className='block uppercase text-gray-600 text-md font-bold mb-2'>
+        <p className="block uppercase text-gray-600 text-md font-bold mb-2">
           Drag and drop your photo here, or click to select it
         </p>
       </div>

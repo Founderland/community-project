@@ -3,13 +3,12 @@ import arrow from "../../assets/images/arrow.svg"
 import symbolVerticalBig from "../../assets/images/symbols_vertical_big.svg"
 import logoLgWhite from "../../assets/images/logo_large_white.png"
 import founderlandGif from "../../assets/images/founderlandThankyou.gif"
-import { Link } from "react-router-dom"
 const Thankyou = () => {
   return (
     <div>
       <div className=" h-screen flex flex-col justify-end ">
         <div className="flex w-screen justify-end h-4/5 md:h-full relative">
-          <div className="flex flex-col max-w-xs  md:max-w-full  justify-evenly justify-evenly">
+          <div className="flex flex-col max-w-xs  md:max-w-full justify-evenly ">
             <div className="text-right flex justify-end pt-8 pr-6 md:pl-24 md:py-10 md:justify-start">
               <img
                 className="xl:w-64 2xl:w-72 md:w-56 w-20 "
@@ -46,7 +45,7 @@ const Thankyou = () => {
             />
           </div>
 
-          <div className="max-w-20 w-20  self-end md:w-2/12 lg:w-2/12 relative">
+          <div className=" self-end md:w-2/12 lg:w-1/12 relative">
             <img
               className="md:w-full md:object-fit"
               src={symbolVerticalBig}

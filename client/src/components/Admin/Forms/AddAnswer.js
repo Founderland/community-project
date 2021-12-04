@@ -1,5 +1,7 @@
 import { PlusIcon } from "@heroicons/react/outline"
+import { useContext } from "react"
 import { useRef } from "react"
+import AdminContext from "../../../contexts/Admin"
 
 const AddAnswer = ({
   setNewAnswer,
@@ -8,8 +10,8 @@ const AddAnswer = ({
   memberType,
 }) => {
   const addField = useRef()
-
-  return (
+  const { user } = useContext(AdminContext)
+  return user.role.includes("admin") ? (
     <>
       <div className="relative flex flex-col w-full p-3">
         <div className="w-full px-2">
@@ -87,6 +89,7 @@ const AddAnswer = ({
             </>
           )}
         </div>
+
         <div className="absolute top-0 right-0 flex justify-center items-center w-max p-2">
           <button
             type="button"
@@ -106,6 +109,8 @@ const AddAnswer = ({
         </div>
       </div>
     </>
+  ) : (
+    ""
   )
 }
 

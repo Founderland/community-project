@@ -253,7 +253,7 @@ const AddMember = ({ role }) => {
   }
 
   return (
-    <div className="bg-white pt-6 pb-4 flex flex-col items-center justify-center w-full">
+    <div className="bg-white pt-6 pb-4 flex flex-col items-center justify-center w-full mx-auto">
       <div className="w-full flex items-center justify-center z-20">
         <Banner message={banner} />
       </div>

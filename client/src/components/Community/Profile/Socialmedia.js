@@ -23,21 +23,24 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
     <div
       className={`flex ${
         isMyProfile ? "flex-col items-start " : "justify-center items-center"
-      }  py-3`}>
-      <p className='w-full uppercase text-sm text-grotesk text-center'>
+      }  py-3`}
+    >
+      <p className="w-full uppercase text-sm font-bold text-gray-400 ">
         Socialmedia
       </p>
       <div
         className={`
             flex w-full items-center   ${!isMyProfile && " justify-center"}
-          `}>
+          `}
+      >
         <a
-          target='_blank'
+          target="_blank"
           disabled
           href={profile.socialmedia?.instagram || null}
-          rel='noreferrer'>
+          rel="noreferrer"
+        >
           <InstagramLogo
-            className={`w-10 h-10 ${
+            className={`w-8 h-8 ${
               !profile.socialmedia?.instagram && " opacity-30 "
             }`}
           />
@@ -58,25 +61,27 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
                 },
               })
             }
-            className={`p-2 text-base w-3/4 xl:w-full outline-none ${getLinkstyle(
+            className={`p-2 text-xs w-3/4 xl:w-full outline-none ${getLinkstyle(
               profile.socialmedia?.instagram
             )} ${disableEdit ? "bg-white " : "bg-sky-50"}`}
           />
         )}
-        {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
+        {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
       </div>
       <div
         className={`
             flex w-full items-center  py-2 ${
               !isMyProfile && " justify-center py-0"
             }
-          `}>
+          `}
+      >
         <a
-          target='_blank'
+          target="_blank"
           href={profile.socialmedia?.linkedin || null}
-          rel='noreferrer'>
+          rel="noreferrer"
+        >
           <LinkedinLogo
-            className={`w-10 h-10 ${
+            className={`w-8 h-8 ${
               !profile.socialmedia?.linkedin && " opacity-30"
             }`}
           />
@@ -97,20 +102,21 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
                 },
               })
             }
-            className={`p-2 text-base w-3/4 xl:w-full outline-none ${getLinkstyle(
+            className={`p-2 text-xs w-3/4 xl:w-full outline-none ${getLinkstyle(
               profile.socialmedia?.linkedin
             )} ${disableEdit ? "bg-white " : "bg-sky-50"}`}
           />
         )}
-        {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
+        {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
       </div>
       <div
         className={`
             flex w-full items-center   ${!isMyProfile && " justify-center"}
-          `}>
+          `}
+      >
         <a href={profile.socialmedia?.twitter || null}>
           <TwitterLogo
-            className={`w-10 h-10 ${
+            className={`w-8 h-8 ${
               !profile.socialmedia?.twitter && " opacity-30"
             }`}
           />
@@ -131,12 +137,12 @@ const Socialmedia = ({ isMyProfile, profile, setProfile, disableEdit }) => {
                 },
               })
             }
-            className={`p-2 text-base w-3/4 xl:w-full outline-none ${getLinkstyle(
+            className={`p-2 text-xs w-3/4 xl:w-full outline-none ${getLinkstyle(
               profile.socialmedia?.twitter
             )} ${disableEdit ? "bg-white " : "bg-sky-50"}`}
           />
         )}
-        {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
+        {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
       </div>
     </div>
   )

@@ -3,7 +3,9 @@ import {
   PencilAltIcon,
   TrashIcon,
 } from "@heroicons/react/outline"
+import { useContext } from "react"
 import { useState, useRef } from "react"
+import AdminContext from "../../../contexts/Admin"
 
 const style = {
   disabledDiv: "group hover:bg-gray-300",
@@ -22,6 +24,7 @@ const Answer = ({
   const [disabled, setDisabled] = useState(true)
   const [updated, setUpdated] = useState({ ...answer })
   const answerInput = useRef()
+  const { user } = useContext(AdminContext)
   return (
     <div
       className={`relative flex flex-col xl:flex-row text-center justify-between items-center xl:items-end w-full bg-gray-200 py-3 px-5 ${
@@ -97,42 +100,44 @@ const Answer = ({
           }}
         />
       </div>
-      <div className="flex absolute md:block top-0 right-0 z-20">
-        <button
-          className={`group w-1/2 p-2 ${!disabled && "hidden"}`}
-          onClick={() => {
-            setDisabled(!disabled)
-            setTimeout(() => {
-              answerInput.current.focus()
-            }, 0)
-          }}
-        >
-          <PencilAltIcon
-            className={`h-6 w-6 hover:${
-              disabled ? "text-fblue" : "text-filme"
+      {user.role.includes("admin") && (
+        <div className="flex absolute md:block top-0 right-0 z-20">
+          <button
+            className={`group w-1/2 p-2 ${!disabled && "hidden"}`}
+            onClick={() => {
+              setDisabled(!disabled)
+              setTimeout(() => {
+                answerInput.current.focus()
+              }, 0)
+            }}
+          >
+            <PencilAltIcon
+              className={`h-6 w-6 hover:${
+                disabled ? "text-fblue" : "text-filme"
+              }`}
+            />
+          </button>
+          <button
+            className={`w-1/2 p-2  ${
+              disabled ? style.disabeldDiv + " hidden" : style.enabledDiv
+            } `}
+            onClick={() => {
+              handleAnswerChange(i, updated)
+              setDisabled(!disabled)
+            }}
+          >
+            <CheckCircleIcon className={`h-6 w-6 hover:text-green-500`} />
+          </button>
+          <button
+            className={`w-1/2 p-2  ${
+              disabled ? style.disabledDiv : style.enableDiv
             }`}
-          />
-        </button>
-        <button
-          className={`w-1/2 p-2  ${
-            disabled ? style.disabeldDiv + " hidden" : style.enabledDiv
-          } `}
-          onClick={() => {
-            handleAnswerChange(i, updated)
-            setDisabled(!disabled)
-          }}
-        >
-          <CheckCircleIcon className={`h-6 w-6 hover:text-green-500`} />
-        </button>
-        <button
-          className={`w-1/2 p-2  ${
-            disabled ? style.disabledDiv : style.enableDiv
-          }`}
-          onClick={() => handleDelete(i)}
-        >
-          <TrashIcon className={`h-6 w-6 hover:text-fred`} />
-        </button>
-      </div>
+            onClick={() => handleDelete(i)}
+          >
+            <TrashIcon className={`h-6 w-6 hover:text-fred`} />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
