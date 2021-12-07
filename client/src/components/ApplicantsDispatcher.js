@@ -14,7 +14,7 @@ const ApplicantsDispatcher = () => {
           <a
             href='https://www.founderland.org/'
             className='absolute left-4 top-4 xl:top-6 xl:left-6 '>
-            <SmallLogo className=' w-12 h-12 lg:w-16 lg:h-16 p-1 text-white bg-black  transform duration-400 hover:bg-white hover:text-black' />
+            <SmallLogo className=' w-12 h-12 lg:w-16 lg:h-16 p-1 text-white bg-black  transform duration-500 hover:bg-white hover:text-black' />
           </a>
           <FullLogo className='hidden md:flex w-screen h-44 lg:h-60 xl:w-screen' />
           <TwoLinesLogo className=' flex md:hidden h-auto w-screen ' />
