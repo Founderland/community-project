@@ -23,14 +23,6 @@ mongoose
   .then(() => console.log("Connected to MONGO ATLAS"))
   .catch((err) => console.log(err))
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-  })
-)
-
 passportMiddleware(app)
 setupRoutes(app)
 app.use((req, res) =>
