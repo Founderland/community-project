@@ -20,12 +20,11 @@ const ListWidget = ({
   filter,
   setFilter,
 }) => {
-  const [offset, setOffset] = useState(0)
   const [dataToDisplay, setDataToDisplay] = useState([])
   const [perPage] = useState(showing)
   const [pageCount, setPageCount] = useState(0)
   const { view } = useParams()
-  const { selectedTab } = useContext(AdminContext)
+  const { selectedTab, offset, setOffset } = useContext(AdminContext)
   useEffect(() => {
     let newFilter = [...filter]
     newFilter.forEach((item) => (item.show = false))

@@ -76,9 +76,7 @@ const AdminHeader = () => {
             leaveTo="-translate-x-full"
           >
             <button
-              onClick={() =>
-                history.action === "POP" ? history.push(back) : history.goBack()
-              }
+              onClick={() => history.push(back)}
               className="flex justify-center items-center bg-fblue text-gray-200 px-8 py-2 space-x-2 shadow-lg m-2 transition duration-200 hover:bg-fblue-900 hover:text-white"
             >
               <ChevronLeftIcon className="w-5 h-5" />

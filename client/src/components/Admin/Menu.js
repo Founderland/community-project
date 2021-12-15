@@ -41,7 +41,7 @@ const Menu = () => {
     ),
   }
   const { view, category } = useParams()
-  const { views, setMenuToggle, menuToggle, setSelectedTab } =
+  const { views, setMenuToggle, menuToggle, setSelectedTab, setOffset } =
     useContext(AdminContext)
 
   const getCategories = (view) => {
@@ -64,6 +64,7 @@ const Menu = () => {
   const handleMenu = () => {
     setMenuToggle(false)
     setSelectedTab(0)
+    setOffset(0)
   }
 
   return (

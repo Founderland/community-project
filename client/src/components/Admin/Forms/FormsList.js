@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react"
+import { useHistory } from "react-router-dom"
 import AdminContext from "../../../contexts/Admin"
 import Loading from "../Widgets/Loading"
 import axios from "axios"
@@ -14,6 +15,7 @@ const styles = {
 }
 
 const FormsList = ({ role, reload }) => {
+  const history = useHistory()
   const [loading, setLoading] = useState(true)
   const { config, selectedTab } = useContext(AdminContext)
   const [filter, setFilter] = useState([
@@ -34,13 +36,14 @@ const FormsList = ({ role, reload }) => {
       </colgroup>,
     ],
   })
-
+  console.log(history)
   //FETCH DATA
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await axios.get(formsURL, config)
         let filteredData = [...result.data]
+        console.log(filteredData)
         filter.forEach(
           (term) =>
             (filteredData = [
@@ -59,6 +62,10 @@ const FormsList = ({ role, reload }) => {
               }),
             ])
         )
+        filteredData.forEach((question) => {
+          question.categoryDisplay =
+            question.category + " #" + question.categoryPage
+        })
         let header = [
           {
             title: "Question",
@@ -66,21 +73,21 @@ const FormsList = ({ role, reload }) => {
             style: "text-left table-cell text-sm break-normal md:break-all",
           },
           {
-            title: "Category",
-            key: "category",
-            style: "text-center table-cell text-xs w-20",
+            title: "Category/Page",
+            key: "categoryDisplay",
+            style: "text-center table-cell text-xs",
           },
           {
             title: "Type",
             key: "type",
-            style: "text-center hidden md:table-cell text-xs w-20",
+            style: "text-center hidden md:table-cell text-xs",
           },
           {
             title: "Rank",
             key: "rank",
             style:
               role === "founder"
-                ? "flex justify-center items-center hidden lg:table-cell text-sm w-40"
+                ? "flex justify-center items-center hidden lg:table-cell text-sm"
                 : "hidden",
           },
           {

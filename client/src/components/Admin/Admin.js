@@ -30,6 +30,7 @@ const rolesLabel = {
 }
 
 const Admin = () => {
+  const [offset, setOffset] = useState(0)
   const history = useHistory()
   const { isExact } = useRouteMatch()
   const pageTop = useRef()
@@ -138,6 +139,8 @@ const Admin = () => {
         rolesLabel,
         avatarInitials,
         clearTimeOut,
+        offset,
+        setOffset,
       }}
     >
       {user ? <Main /> : <Login isAdminLogin />}
