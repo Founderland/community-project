@@ -2,7 +2,7 @@ import { Listbox, Transition } from "@headlessui/react"
 import { ChevronDownIcon, CheckIcon } from "@heroicons/react/outline"
 import { Fragment } from "react"
 
-const ListOption = ({ options, choice, setChoice, format, color }) => {
+const ListOption = ({ options, choice, setChoice, format, color, extra }) => {
   return (
     <Listbox value={choice} onChange={setChoice}>
       <div className={"relative mt-1 " + format}>
@@ -29,7 +29,7 @@ const ListOption = ({ options, choice, setChoice, format, color }) => {
           leaveTo="opacity-0"
         >
           <Listbox.Options className="absolute z-40 w-full py-1 mt-1 overflow-auto text-base bg-white shadow-lg max-h-40 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            {options.map((choice) => (
+            {options.map((choice, index) => (
               <Listbox.Option
                 key={choice.value}
                 className={({ active }) =>
@@ -44,13 +44,16 @@ const ListOption = ({ options, choice, setChoice, format, color }) => {
               >
                 {({ selected, active }) => (
                   <>
-                    <span
+                    <div
                       className={`${
                         selected ? "text-md" : "font-normal"
-                      } block truncate`}
+                      } flex justify-between truncate`}
                     >
-                      {choice.name}
-                    </span>
+                      <p> {choice.name}</p>
+                      <p classname="text-right text-xs">
+                        {extra ? "Total: " + extra[index] : ""}
+                      </p>
+                    </div>
                     {selected ? (
                       <span className="text-fblue absolute inset-y-0 left-0 flex items-center pl-3">
                         <CheckIcon className="w-5 h-5" aria-hidden="true" />

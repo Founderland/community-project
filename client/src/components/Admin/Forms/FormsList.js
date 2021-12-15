@@ -36,14 +36,12 @@ const FormsList = ({ role, reload }) => {
       </colgroup>,
     ],
   })
-  console.log(history)
   //FETCH DATA
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await axios.get(formsURL, config)
         let filteredData = [...result.data]
-        console.log(filteredData)
         filter.forEach(
           (term) =>
             (filteredData = [
@@ -73,7 +71,7 @@ const FormsList = ({ role, reload }) => {
             style: "text-left table-cell text-sm break-normal md:break-all",
           },
           {
-            title: "Category/Page",
+            title: "Category #Page",
             key: "categoryDisplay",
             style: "text-center table-cell text-xs",
           },
@@ -112,7 +110,7 @@ const FormsList = ({ role, reload }) => {
     <Loading />
   ) : (
     <ListWidget
-      title={""}
+      title={"Number of questions: " + listData.data.length}
       data={listData}
       showing={10}
       colSize={listData.colSize}

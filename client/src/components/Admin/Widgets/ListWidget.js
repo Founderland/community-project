@@ -41,7 +41,7 @@ const ListWidget = ({
 
   return (
     <div className="relative h-full flex-none flex flex-col w-full overflow-hidden px-2 pb-12">
-      <p className="text-mono">{title}</p>
+      <p className="text-mono pt-1 text-sm">{title}</p>
       <div className="sticky z-20 bg-white w-full text-mono flex space-x-2 pl-2 py-2 items-center">
         {filter.filter((filter) => filter.search !== "").length > 0 && (
           <SearchIcon className="flex-none h-4 w-4 md:h-6 md:w-6 text-gray-800" />
@@ -70,7 +70,7 @@ const ListWidget = ({
           )
         )}
       </div>
-      <div className="bg-white shadow-md my-4 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
+      <div className="bg-white shadow-md mb-4 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-blue-100 scrollbar-thumb-fblue">
         <table className="min-w-max w-full table-auto">
           {colSize}
           <thead>

@@ -67,6 +67,12 @@ const Question = ({ role }) => {
   const { id } = useParams()
   const history = useHistory()
   const { config, setSelectedTab, user, token } = useContext(AdminContext)
+  const [totalCategories, setTotalCategories] = useState([0, 0, 0])
+  const [totalPages, setTotalPages] = useState([
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+  ])
   const [questionInfo, setQuestionInfo] = useState(defaultQuestion)
   const [answersList, setAnswersList] = useState([])
   const [newAnswer, setNewAnswer] = useState(defaultAnswer)
@@ -75,33 +81,67 @@ const Question = ({ role }) => {
   const mainDiv = useRef()
 
   useEffect(() => {
-    if (id !== "new") {
+    const fetchQuestion = async () => {
       const questionURL = `/api/form/${role}/question/${id}`
-      axios
-        .get(questionURL, config)
-        .then((res) => {
-          if (res.data) {
-            setQuestionInfo({ ...res.data })
-            setAnswersList(res.data.answers)
-          } else {
-            setBanner({ error: 1, show: true, message: "Question not found" })
-            setTimeout(() => {
-              setBanner((prev) => ({ ...prev, show: false }))
-              history.push("/admin/forms")
-            }, 2000)
-          }
-        })
-        .catch((err) => {
-          setBanner({
-            error: 1,
-            show: true,
-            message: "Sorry, something went wrong",
-          })
+      try {
+        const result = await axios.get(questionURL, config)
+        if (result.data) {
+          setQuestionInfo({ ...result.data })
+          setAnswersList(result.data.answers)
+        } else {
+          setBanner({ error: 1, show: true, message: "Question not found" })
           setTimeout(() => {
             setBanner((prev) => ({ ...prev, show: false }))
-          }, 4000)
+            history.push("/admin/forms")
+          }, 2000)
+        }
+      } catch (err) {
+        setBanner({
+          error: 1,
+          show: true,
+          message: err.message,
         })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 4000)
+      }
     }
+    const fetchCategories = async () => {
+      try {
+        const result = await axios.get(`/api/form/${role}/questions`, config)
+        let updateTotal = []
+        let updatePages = []
+        categories.forEach((category, index) => {
+          let filteredData = result.data.filter(
+            (item) => item.category === category.value
+          )
+          const totalCategory = filteredData.length
+          let pages = []
+          for (let i = 1; i <= 5; i++) {
+            pages.push(
+              filteredData.filter((item) => item.categoryPage === i).length
+            )
+          }
+          updatePages.push(pages)
+          updateTotal.push(totalCategory)
+        })
+        setTotalCategories(updateTotal)
+        setTotalPages(updatePages)
+      } catch (e) {
+        setBanner({
+          error: 1,
+          show: true,
+          message: e.message,
+        })
+        setTimeout(() => {
+          setBanner((prev) => ({ ...prev, show: false }))
+        }, 4000)
+      }
+    }
+    if (id !== "new") {
+      fetchQuestion()
+    }
+    fetchCategories()
   }, [id])
 
   const handleNewAnswer = () => {
@@ -207,6 +247,8 @@ const Question = ({ role }) => {
     )
   }
 
+  console.log(categories.map((e) => e.value).indexOf(questionInfo.category))
+
   return (
     <>
       {checkForIdentityQuestion(questionInfo.question) && (
@@ -256,6 +298,7 @@ const Question = ({ role }) => {
               <div className="w-full">
                 <ListOption
                   options={categories}
+                  extra={totalCategories}
                   format={"w-full"}
                   choice={questionInfo.category}
                   setChoice={(value) => {
@@ -279,6 +322,13 @@ const Question = ({ role }) => {
                   { name: "4", value: 4 },
                   { name: "5", value: 5 },
                 ]}
+                extra={
+                  totalPages[
+                    categories
+                      .map((e) => e.value)
+                      .indexOf(questionInfo.category)
+                  ]
+                }
                 format={"w-full"}
                 choice={questionInfo.categoryPage}
                 setChoice={(value) =>
