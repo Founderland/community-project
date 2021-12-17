@@ -58,7 +58,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
           if (header.key !== "-") {
             if (Array.isArray(item[header.key])) {
               return (
-                <td className={`py-3 px-5 ${header.style}`}>
+                <td key={header.key} className={`py-3 px-5 ${header.style}`}>
                   <div className={`flex items-center px-2 ${header.style}`}>
                     <div className="flex flex-row-reverse items-center">
                       {displayReviews(item[header.key])}
@@ -68,7 +68,10 @@ const RowsWidget = ({ headers, item, styles, link }) => {
               )
             } else {
               return (
-                <td className={`relative  py-3 px-5  max-w-sm ${header.style}`}>
+                <td
+                  key={header.key}
+                  className={`relative  py-3 px-5  max-w-sm ${header.style}`}
+                >
                   <p
                     className={
                       styles[
@@ -91,7 +94,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
             }
           } else {
             return (
-              <td className="max-w p-3 text-center">
+              <td key={header.key} className="max-w p-3 text-center">
                 <div className="flex justify-center items-center">
                   <Link
                     to={

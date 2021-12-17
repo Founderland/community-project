@@ -12,9 +12,9 @@ const styles = {
   reviewed:
     "bg-purple-200 text-purple-600 mx-auto py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl capitalize",
   founder:
-    "bg-fblue bg-opacity-50 text-blue-900  mx-auto py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl capitalize",
-  investor:
     "bg-fred bg-opacity-50 text-red-900  mx-auto py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl capitalize",
+  investor:
+    "bg-fblue bg-opacity-50 text-blue-900  mx-auto py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl capitalize",
   ally: "bg-flime bg-opacity-50  mx-auto py-1 px-2 text-xs text-center w-max flex justify-center items-center rounded-xl capitalize",
   sadmin: "border border-green-600",
   admin: "border-fblue",

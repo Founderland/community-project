@@ -62,8 +62,9 @@ const ApplicantsList = ({ role }) => {
         )
         let userData = result.data.map((item) => {
           const userLocation = item.answerData.filter(
-            (x) => x.question.search("City") === 0
+            (x) => x.question.search("City") !== -1
           )
+          console.log(userLocation)
           let finalObject = {
             ...item,
             name: `${item.firstName} ${item.lastName}`,
