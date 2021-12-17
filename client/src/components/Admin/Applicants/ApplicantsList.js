@@ -6,9 +6,9 @@ import axios from "axios"
 import moment from "moment"
 import ListWidget from "../Widgets/ListWidget"
 const styles = {
-  founder:
+  founder: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
+  investor:
     "bg-fblue bg-opacity-50 text-blue-900 py-1 px-3 rounded-full text-xs",
-  investor: "bg-fred bg-opacity-50 text-red-900 py-1 px-3 rounded-full text-xs",
   ally: "bg-flime bg-opacity-50 py-1 px-3 rounded-full text-xs",
 }
 

@@ -12,8 +12,8 @@ import { ChevronRightIcon } from "@heroicons/react/outline"
 import { useReactToPrint } from "react-to-print"
 
 const styles = {
-  founder: { bg: "fblue ", text: "white ", border: "fblue " },
-  investor: { bg: "fred ", text: "black ", border: "fred " },
+  founder: { bg: "fred ", text: "black ", border: "fred " },
+  investor: { bg: "fblue ", text: "white ", border: "fblue " },
   ally: { bg: "flime ", text: "black ", border: "flime " },
   low: { bg: "red-200 ", text: "red-900 " },
   med: { bg: "yellow-200 ", text: "yellow-900 " },

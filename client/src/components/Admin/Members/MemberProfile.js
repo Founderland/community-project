@@ -49,8 +49,8 @@ const defaultProfile = {
   lastUpdate: null,
 }
 const styles = {
-  founder: "fblue",
-  investor: "fred",
+  founder: "fred",
+  investor: "fblue",
   ally: "flime",
 }
 
@@ -177,9 +177,9 @@ const MemberProfile = () => {
             <div
               className={`w-full sm:w-1/2 md:w-4/12 md:mx-2 shadow bg-white p-3 border-t-8 ${
                 profile.role === "founder"
-                  ? "border-fblue"
-                  : profile.role === "investor"
                   ? "border-fred"
+                  : profile.role === "investor"
+                  ? "border-fblue"
                   : "border-flime"
               }`}
             >

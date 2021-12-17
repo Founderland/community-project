@@ -90,7 +90,7 @@ const EmailNotification = ({
     </div>`,
     },
     {
-      name: "Thank you",
+      name: "Thank you Founder",
       value: "thankyou",
       subject: "Thank You!",
       top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
@@ -98,6 +98,24 @@ const EmailNotification = ({
       <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Thank you for your interest in joining Founderland's growing community.</span></p>
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>`,
       signOff: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">We review applications on a regular basis and will get back to you soon. </span></p>
+      <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
+      <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Sincerely,</span></p>
+      <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
+      <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Team Founderland</span></p>`,
+      note: `
+      <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
+<p style="font-size: 10px; line-height: 100%;">If you didn't request to sign-up, please click here to contact us</p>
+      `,
+    },
+    {
+      name: "Thank you Investor/Ally",
+      value: "thankyouallies",
+      subject: "Thank You!",
+      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
+      body: `<p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
+      <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Thank you for your interest in supporting Founderland.</span></p>
+      <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>`,
+      signOff: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">We are a small team, but we will be in touch soon. </span></p>
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
       <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Sincerely,</span></p>
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
