@@ -64,11 +64,12 @@ const ApplicantsList = ({ role }) => {
           const userLocation = item.answerData.filter(
             (x) => x.question.search("City") !== -1
           )
-          console.log(userLocation)
           let finalObject = {
             ...item,
             name: `${item.firstName} ${item.lastName}`,
-            location: userLocation[0].answer_value,
+            location: userLocation[0].answer_value
+              ? userLocation[0].answer_value
+              : "",
             submittedOn: getTimeDifference(item.submissionDate),
           }
           if (category !== "new") {
