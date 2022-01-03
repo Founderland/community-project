@@ -1,11 +1,7 @@
 const UserRouter = require("express").Router()
 const userController = require("../controllers/user")
 const memberController = require("../controllers/member")
-const {
-  sendConnectEmail,
-  sendVerifyEmail,
-  sendCustomEmail,
-} = require("../helpers/emailHandler")
+const { sendVerifyEmail, sendCustomEmail } = require("../helpers/emailHandler")
 const passport = require("passport")
 
 const {

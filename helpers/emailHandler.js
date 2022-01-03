@@ -5,9 +5,9 @@ const hbs = require("nodemailer-express-handlebars")
 
 //Send the connect email template
 const sendCustomEmail = async (req, res, next) => {
-  console.log("sending email")
   const { email, _id, firstName, lastName } = req.newMember
   const { subject, body, signOff, template } = req.body
+  console.log("Composing email - " + template + "/" + subject)
   const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
     expiresIn: subject.includes("Reset") ? "15m" : "1d",
   })
@@ -40,7 +40,13 @@ const sendCustomEmail = async (req, res, next) => {
   const sendMail = async ({ mailserver, mail }) => {
     // create a nodemailer transporter using smtp
     let transporter = nodemailer.createTransport(mailserver)
-
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log("Server is ready to take our messages")
+      }
+    })
     transporter.use(
       "compile",
       hbs({
@@ -59,70 +65,13 @@ const sendCustomEmail = async (req, res, next) => {
 
   const result = await sendMail(config)
   try {
+    console.log("Email sent")
     return next()
   } catch (e) {
     console.log(e)
   }
 }
 
-const sendConnectEmail = async (req, res, next) => {
-  console.log("sending email")
-  const { email, _id, firstName, lastName } = req.newMember
-  const token = jwt.sign({ email, id: _id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  })
-
-  // config for mailserver and mail
-  const config = {
-    mailserver: {
-      service: process.env.EMAIL_PROVIDER,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    },
-    mail: {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Welcome to Founderland!",
-      template: "connect",
-      context: {
-        token,
-        subject: "Welcome to Founderland!",
-        firstName,
-        lastName,
-        host: process.env.HOST,
-      },
-    },
-  }
-
-  const sendMail = async ({ mailserver, mail }) => {
-    // create a nodemailer transporter using smtp
-    let transporter = nodemailer.createTransport(mailserver)
-
-    transporter.use(
-      "compile",
-      hbs({
-        viewEngine: {
-          partialsDir: "./emails/",
-          defaultLayout: "",
-        },
-        viewPath: "./emails/",
-        extName: ".hbs",
-      })
-    )
-
-    // send mail using transporter
-    return await transporter.sendMail(mail)
-  }
-
-  const result = await sendMail(config)
-  try {
-    return next()
-  } catch (e) {
-    console.log(e)
-  }
-}
 const sendVerifyEmail = async (req, res, next) => {
   console.log("sending email")
   const { email, _id, firstName, lastName } = req.unverified
@@ -178,116 +127,6 @@ const sendVerifyEmail = async (req, res, next) => {
     return await transporter.sendMail(mail)
   }
 
-  const result = await sendMail(config)
-  try {
-    return next()
-  } catch (e) {
-    return next(e)
-  }
-}
-
-const sendApplicantEmail = async (req, res, next) => {
-  const { email, firstName, lastName, status, custom, body, signOff } = req.body
-  console.log("sending email")
-  let template = status
-  if (custom) template = "generic"
-  // config for mailserver and mail
-  const config = {
-    mailserver: {
-      service: process.env.EMAIL_PROVIDER,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    },
-    mail: {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Update from Founderland!",
-      template: template,
-      context: {
-        firstName,
-        lastName,
-        subject: "Update from Founderland!",
-        body,
-        signOff,
-        host: process.env.HOST,
-      },
-    },
-  }
-
-  const sendMail = async ({ mailserver, mail }) => {
-    // create a nodemailer transporter using smtp
-    let transporter = nodemailer.createTransport(mailserver)
-
-    transporter.use(
-      "compile",
-      hbs({
-        viewEngine: {
-          partialsDir: "./emails/",
-          defaultLayout: "",
-        },
-        viewPath: "./emails/",
-        extName: ".hbs",
-      })
-    )
-
-    // send mail using transporter
-    await transporter.sendMail(mail)
-  }
-  const result = await sendMail(config)
-  try {
-    return next()
-  } catch (e) {
-    return next(e)
-  }
-}
-
-const sendRejected = async (req, res, next) => {
-  const { email, firstName, lastName } = req.body
-  console.log("sending email")
-  // config for mailserver and mail
-  const config = {
-    mailserver: {
-      service: process.env.EMAIL_PROVIDER,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    },
-    mail: {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Update from Founderland!",
-      template: "rejected",
-      context: {
-        firstName,
-        lastName,
-        subject: "Update from Founderland!",
-        host: process.env.HOST,
-      },
-    },
-  }
-
-  const sendMail = async ({ mailserver, mail }) => {
-    // create a nodemailer transporter using smtp
-    let transporter = nodemailer.createTransport(mailserver)
-
-    transporter.use(
-      "compile",
-      hbs({
-        viewEngine: {
-          partialsDir: "./emails/",
-          defaultLayout: "",
-        },
-        viewPath: "./emails/",
-        extName: ".hbs",
-      })
-    )
-
-    // send mail using transporter
-    await transporter.sendMail(mail)
-  }
   const result = await sendMail(config)
   try {
     return next()
@@ -418,10 +257,7 @@ const sendResetEmail = async (req, res, next) => {
 
 module.exports = {
   sendCustomEmail,
-  sendConnectEmail,
   sendThankYou,
-  sendRejected,
   sendResetEmail,
   sendVerifyEmail,
-  sendApplicantEmail,
 }
