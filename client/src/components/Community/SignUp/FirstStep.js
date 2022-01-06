@@ -51,20 +51,20 @@ const FirstStep = ({ data, setData, nextStep }) => {
     setSelectedCity(cityList.find((city) => city.name === data.city))
 
     // get city coordinates
-    if (data.country.length & data.city.length) {
+    if (selectedCity && data.city) {
       axios
         .get(
           `https://api.openweathermap.org/geo/1.0/direct?q=${data.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
         )
-        .then((res) => {
+        .then(({ data: [location] }) => {
           setData({
             ...data,
-            geoLocation: { lat: res.data[0].lat, lng: res.data[0].lon },
+            geoLocation: { lat: location?.lat, lon: location?.lon },
           })
         })
         .catch((e) => console.log(e))
     }
-  }, [data.city, cityList, selectedCountry])
+  }, [data.city, selectedCity])
 
   // trim initial white spaces and makes first letter cap
   const formatValue = (value) => {

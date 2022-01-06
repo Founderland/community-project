@@ -58,25 +58,20 @@ const CityandCountryInput = ({
     setSelectedCity(cityList.find((city) => city.name === profile.city))
 
     // get city coordinates
-    if (
-      profile.country?.length &&
-      selectedCity &&
-      selectedCountry &&
-      profile.city?.length
-    ) {
+    if (selectedCity && profile.city) {
       axios
         .get(
           `https://api.openweathermap.org/geo/1.0/direct?q=${profile.city},${selectedCountry?.iso2}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER}`
         )
-        .then((res) => {
+        .then(({ data: [location] }) => {
           setProfile({
             ...profile,
-            geoLocation: { lat: res.data[0].lat, lng: res.data[0].lon },
+            geoLocation: { lat: location?.lat, lng: location?.lon },
           })
         })
         .catch((e) => console.log(e))
     }
-  }, [profile.city, profile.country, cityList, selectedCountry, selectedCity])
+  }, [profile.city, selectedCity])
 
   const checkCountry = () => {
     if (disableEdit) return null
@@ -104,16 +99,16 @@ const CityandCountryInput = ({
   }
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-1 ">
-        <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center ">
+      <div className='grid grid-cols-2 md:grid-cols-1 '>
+        <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center '>
           City
-          {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
+          {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
         </label>
         {!disableEdit ? (
           <input
             required
             readOnly={disableEdit}
-            list="cities"
+            list='cities'
             className={`p-2 text-base text-mono text-gray-800 outline-none my-1 md:my-0  ${checkCity()} ${
               disableEdit
                 ? "bg-white  outline-none focus:outline-none cursor-default"
@@ -131,12 +126,11 @@ const CityandCountryInput = ({
           />
         ) : (
           <p
-            className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0}`}
-          >
+            className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0}`}>
             {profile.city}
           </p>
         )}
-        <datalist id="cities">
+        <datalist id='cities'>
           {cityList.length > 0 &&
             cityList
               .filter((city) => city.name.startsWith(profile.city))
@@ -144,15 +138,15 @@ const CityandCountryInput = ({
               .map((city, i) => <option key={i}>{city.name}</option>)}
         </datalist>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-1 md:px-1 ">
-        <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center  ">
+      <div className='grid grid-cols-2 md:grid-cols-1 md:px-1 '>
+        <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center  '>
           Country
-          {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
+          {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
         </label>
         {!disableEdit ? (
           <input
             required
-            list="countries"
+            list='countries'
             className={`p-2 text-base text-mono disabled:opacity-0 text-gray-800  outline-none my-1 md:my-0  ${checkCountry()} ${
               disableEdit
                 ? "bg-white outline-none focus:outline-none cursor-default"
@@ -170,12 +164,11 @@ const CityandCountryInput = ({
           />
         ) : (
           <p
-            className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0}`}
-          >
+            className={`p-2 text-base text-mono text-gray-800  outline-none my-1 md:my-0}`}>
             {profile.country}
           </p>
         )}
-        <datalist id="countries">
+        <datalist id='countries'>
           {countryList.length > 0 &&
             countryList
               .filter((country) => country.name.startsWith(profile.country))
