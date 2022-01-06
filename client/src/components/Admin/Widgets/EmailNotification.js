@@ -17,7 +17,7 @@ const EmailNotification = ({
       name: "Welcome with Community Link",
       value: "approved",
       subject: "Welcome to Founderland!",
-      top: `<p style="font-size: 10px;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
+      top: `<p style="font-size: 10px;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName},</span></p>`,
       body: `
       <p style="font-size: 10px; "><span style="font-size: 10px;  color: #666666;">We are thrilled to welcome you to the Founderland community.</span></p>
       <p style="font-size: 10px;"><span style="font-size: 10px;  color: #666666;">In order to be an active member of our Community, please follow the link below to register.  </span></p>`,
@@ -36,7 +36,7 @@ const EmailNotification = ({
       name: "Rejected",
       value: "rejected",
       subject: "Update from Founderland!",
-      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px; color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
+      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px; color: #666666;">Hello ${firstName},</span></p>`,
       body: `
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
       <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Founderland exists to accelerate the success of women of colour founders across Europe and the UK. We foster a peer community of founders, offer educational programming on fundraising, and connect our member founders with capital. Doing so creates new, diverse representations of entrepreneurship for the next generation of founders. We aim to level the playing field for all entrepreneurs, by addressing the most underrepresented.</span></p>
@@ -74,7 +74,7 @@ const EmailNotification = ({
       name: "Reset password Link",
       value: "reset",
       subject: "Password reset",
-      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
+      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName},</span></p>`,
       body: `<p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
       <span style="font-size: 10px;  color: #666666;">This email has been sent following your request to reset your password on Founderland's Community.</span>
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
@@ -93,7 +93,7 @@ const EmailNotification = ({
       name: "Thank you Founder",
       value: "thankyou",
       subject: "Thank You!",
-      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
+      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName},</span></p>`,
       body: `<p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
       <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Thank you for your interest in joining Founderland's growing community.</span></p>
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>`,
@@ -111,7 +111,7 @@ const EmailNotification = ({
       name: "Thank you Investor/Ally",
       value: "thankyouallies",
       subject: "Thank You!",
-      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
+      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName},</span></p>`,
       body: `<p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
       <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Thank you for your interest in supporting Founderland.</span></p>
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>`,
@@ -129,7 +129,7 @@ const EmailNotification = ({
       name: "Thank you for signing up",
       value: "thankyounewsletter",
       subject: "Thank You!",
-      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName} ${lastName},</span></p>`,
+      top: `<p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Hello ${firstName},</span></p>`,
       body: `<p style="font-size: 10px; line-height: 100%;">&nbsp;</p>
       <p style="font-size: 10px; line-height: 100%;"><span style="font-size: 10px;  color: #666666;">Thank you for your interest in joining Founderland's growing community.</span></p>
       <p style="font-size: 10px; line-height: 100%;">&nbsp;</p>`,
