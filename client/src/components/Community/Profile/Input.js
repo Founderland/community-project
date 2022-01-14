@@ -35,9 +35,9 @@ const Input = ({
 
   return (
     <>
-      <label className='p-2 uppercase text-xs font-bold text-gray-400 flex items-center  '>
+      <label className="p-2 uppercase text-xs font-bold text-gray-400 flex items-center  ">
         {label}
-        {!disableEdit && <PencilIcon className='w-4 h-4 ml-2 text-black ' />}
+        {!disableEdit && <PencilIcon className="w-4 h-4 ml-2 text-black " />}
       </label>
 
       <input
@@ -58,7 +58,7 @@ const Input = ({
             ? "bg-red-200 animate-pulse"
             : "bg-sky-50"
         }`}
-        value={profile[value]}
+        value={profile[value] ? profile[value] : ""}
       />
     </>
   )

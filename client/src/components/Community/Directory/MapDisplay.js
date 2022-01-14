@@ -215,7 +215,7 @@ export default function MapDisplay(props) {
 
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={screenwidth < 600 ? 3 : 5.7}
+        zoom={screenwidth < 600 ? 3.5 : 4.5}
         center={center}
         options={options}
         onLoad={onMapLoad}

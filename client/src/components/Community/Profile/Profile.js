@@ -150,7 +150,7 @@ const Profile = () => {
         await Promise.reject("Update failed ! Please enter a vaild Country")
       } else if (!profile.companyLink.length || !isLink(profile.companyLink)) {
         await Promise.reject(
-          "Update failed ! Please enter vaild link for your company website"
+          "Update failed ! Please enter valid link for your company website"
         )
       } else if (
         !profile.title.length ||
@@ -167,6 +167,7 @@ const Profile = () => {
           profile,
           config
         )
+        console.log(result)
         setRefreshData((prev) => prev + 1)
         if (result) {
           initialData.current = { ...profile }
