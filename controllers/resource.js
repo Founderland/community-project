@@ -127,6 +127,7 @@ const editResource = async (req, res) => {
     articleFile,
     articleType,
     articleSubmittedDate,
+    categoryKey,
     sources,
     tags,
     _id,
@@ -147,14 +148,33 @@ const editResource = async (req, res) => {
       articleLastUpdateDate: new Date(),
     }
     const updatedResource = await Resource.updateOne(
-      { articles: { $elemMatch: { _id } } },
+      { articles: { $elemMatch: { _id: _id } } },
       { $set: { "articles.$": { ..."articles.$", ...article } } },
       { new: true }
     )
     if (!updatedResource) {
       await Promise.reject("Error saving resource")
     }
-    return res.status(200).json({ success: true, resource: updatedResource })
+    const result = await Resource.findOne({
+      articles: { $elemMatch: { _id } },
+    })
+    if (result.categoryKey !== categoryKey) {
+      const article = result.articles.filter((article) =>
+        article._id.equals(_id)
+      )
+      const deletedResource = await Resource.updateOne(
+        { categoryKey: result.categoryKey },
+        {
+          $pull: { articles: { _id } },
+        },
+        { new: true }
+      )
+      const addArticle = await Resource.updateOne(
+        { categoryKey },
+        { $push: { articles: article } }
+      )
+    }
+    return res.status(200).json({ success: true, resource: article })
   } catch (e) {
     console.log(e)
     return res.status(404).json({ e })

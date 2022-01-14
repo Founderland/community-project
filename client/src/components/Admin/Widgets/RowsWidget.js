@@ -14,7 +14,7 @@ const RowsWidget = ({ headers, item, styles, link }) => {
         reviewsDisplay = [
           ...reviews.map((review) => (
             <div
-              className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-lg text-mono border-r-2 border-white ${
+              className={`cursor-default flex relative w-8 h-8 justify-center items-center m-1 mr-2 -ml-3 rounded-full text-sm text-mono border-r-2 border-white ${
                 review.user.avatar
               } ${styles[String(review.user.role)]}`}
             >

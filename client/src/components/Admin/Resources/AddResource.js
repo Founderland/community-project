@@ -61,7 +61,7 @@ const AddResource = ({ categories, category, article, edit, setEdit }) => {
   const { config, reload, setReload } = useContext(AdminContext)
   const save = async () => {
     setSaving(true)
-
+    console.log(data)
     if (data.articleTitle && data.articleDescription && data.articleCover) {
       try {
         if (
