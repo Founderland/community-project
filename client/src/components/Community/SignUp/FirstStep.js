@@ -59,7 +59,7 @@ const FirstStep = ({ data, setData, nextStep }) => {
         .then(({ data: [location] }) => {
           setData({
             ...data,
-            geoLocation: { lat: location?.lat, lon: location?.lon },
+            geoLocation: { lat: location?.lat, lng: location?.lon },
           })
         })
         .catch((e) => console.log(e))

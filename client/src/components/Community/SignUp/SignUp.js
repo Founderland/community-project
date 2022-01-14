@@ -54,7 +54,7 @@ const SignUp = () => {
   }, [token])
 
   const { setRefreshData } = useContext(CommunityContext)
-
+  console.log(data)
   //Get token from URL
   useEffect(() => {
     const jwtDecoded = jwt.decode(token)
@@ -197,7 +197,12 @@ const SignUp = () => {
           </div>
           <div className=" w-full flex flex-col justify-center items-center text-lg text-center">
             {data.confirmed !== null ? (
-              "It looks like you have already registered."
+              <div className="flex space-x-4">
+                <p>It looks like you have already registered.</p>
+                <a href="/community" className="hover:text-fblue">
+                  Go to Community login
+                </a>
+              </div>
             ) : (
               <>
                 <EmojiSadIcon className="w-10 h-10 " /> Sorry something went

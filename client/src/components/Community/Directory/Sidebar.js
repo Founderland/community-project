@@ -37,7 +37,7 @@ export default function Sidebar(props) {
   }
 
   return (
-    <div className="absolute right-0 top-0 bottom-0 pb-3 z-50 m-2 md:mr-4 max-w-lg">
+    <div className="absolute right-0 top-0 bottom-0 pb-3 z-40 m-2 md:mr-4 max-w-lg">
       <div className="h-full px-5 py-4 mt-2 bg-gray-900 opacity-90 shadow-xl flex flex-col items-evenly">
         <div className="flex justify-end" onClick={closeHandler}>
           <XIcon className="w-6 h-6 text-white" />

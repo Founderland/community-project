@@ -43,7 +43,7 @@ const ThirdStep = ({ nextStep, previousStep, data, setData }) => {
               ? "Your picture has been uploaded"
               : "Select a photo for your profile"}
           </h4>
-          <div className="w-full flex justify-center h-60">
+          <div className="w-full flex justify-center h-60 p-6">
             <DropzoneCloudinary
               data={data}
               setData={setData}

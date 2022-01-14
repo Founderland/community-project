@@ -122,6 +122,7 @@ const confirmUser = async (req, res, next) => {
     companyBio,
     companyLink,
   } = req.body
+  console.log(geoLocation)
   try {
     if (!errorsAfterValidation.isEmpty()) {
       await Promise.reject("VALIDATION_FAILED")
