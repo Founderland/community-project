@@ -308,7 +308,20 @@ const updateAttendance = async (req, res, next) => {
     }
   }
 }
-
+const removeEventsFromUser = async (req, res) => {
+  const { id } = req.params
+  try {
+    const removeEvents = await Event.deleteMany({ member: id })
+    console.log(removeEvents)
+    if (!removeEvents) await Promise.reject("UPDATE_FAILED")
+    res
+      .status(200)
+      .json({ success: 1, message: "Member and their events removed" })
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({ message: "Sorry something went wrong" })
+  }
+}
 module.exports = {
   findAll,
   findFuture,
@@ -319,4 +332,5 @@ module.exports = {
   cancelEvent,
   deleteEvent,
   updateAttendance,
+  removeEventsFromUser,
 }

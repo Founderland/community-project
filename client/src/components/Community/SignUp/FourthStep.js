@@ -61,7 +61,7 @@ const FourthStep = ({
   }
 
   return accountCreated ? (
-    <div className="h-screen w-screen  flex flex-col justify-start lg:justify-center items-center ">
+    <div className="h-full flex flex-col justify-around items-center w-full bg-white p-3">
       <div className="flex flex-col items-center justify-center mt-10 text-grotesk text-xl md:text-2xl xl:text-4xl text-center h-1/4 md:w-4/6 lg:w-2/6 p-2 ">
         <span></span>
         <span className="font-bold pb-2">
@@ -73,12 +73,18 @@ const FourthStep = ({
       </div>
     </div>
   ) : (
-    <div className="h-screen w-screen  flex flex-col justify-around items-center ">
+    <div className="h-full flex flex-col justify-around items-center w-full bg-white p-3">
       <div className="flex flex-col text-grotesk text-xl lg:text-2xl text-center lg:w-4/6 p-2">
         <h1 className="font-bold text-xl md:text-2xl lg:text-3xl text-grotesk mb-3 text-center">
           Choose a Password
         </h1>
-        Please enter a log-in password to access into the Founderland Community
+        <p className="text-base">
+          Please create your login password below Community
+        </p>
+        <p className="text-sm">
+          *Minimum eight characters, at least one upper case letter, one lower
+          case letter and one number
+        </p>
       </div>
       {(error || submissionError) && (
         <div className="w-full md:w-3/4  lg:w-4/6  flex items-center justify-center font-bold mt-5 ">
@@ -117,10 +123,6 @@ const FourthStep = ({
               placeholder="Enter password"
               onChange={(e) => setData({ ...data, password: e.target.value })}
             />
-            <p className="text-xs">
-              * Minimum eight characters, at least one upper case letter, one
-              lower case letter and one number
-            </p>
           </div>
           <div className="w-full xl:w-4/5  px-2  py-6 ">
             <label className="block uppercase text-gray-400 text-md font-bold mb-2">
@@ -140,17 +142,17 @@ const FourthStep = ({
             />
           </div>
 
-          <div className="w-full flex justify-between pt-10  xl:w-5/6 ">
+          <div className="w-full flex justify-between p-4">
             <button
               type="button"
-              className="p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6  lg:w-1/6 "
+              className="px-5 py-2 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 w-1/3"
               onClick={() => previousStep()}
             >
               Back
             </button>
             <button
               type="submit"
-              className="p-5 bg-black font-bold text-lg text-white transition duration-200 hover:bg-flime hover:text-black md:w-1/6 lg:w-2/6"
+              className="px-5 py-2 bg-black font-bold text-lg text-white transition duration-200 hover:bg-flime hover:text-black w-1/3"
             >
               Create account
             </button>

@@ -141,34 +141,33 @@ const SignUp = () => {
   //RENDER WELCOME MESSAGE -> 3s
   if (loading) {
     return (
-      <div className='h-screen w-screen flex items-center justify-center'>
-        <div className='flex flex-col items-center justify-center w-screen  h-1/4 '>
-          <h1 className='text-hanson text-xl md:text-4xl lg:text-7xl text-center w-3/5'>
-            WELCOME TO OUR COMMUNITY
-          </h1>
-          <img src={gifLogo} alt='founderland logo' />
-        </div>
+      <div className="h-screen w-screen mt-10 flex flex-col items-center justify-center">
+        <h1 className="p-4 text-hanson text-xl lg:text-3xl xl:text-4xl text-center w-full">
+          WELCOME TO OUR COMMUNITY
+        </h1>
+        <img src={gifLogo} alt="founderland logo" className="max-h-80" />
       </div>
     )
   } else if (showForm && data.confirmed === null) {
     return (
-      <div className='h-full w-full lg:h-screen flex flex-col lg:flex-row justify-start overflow-hidden '>
-        <LogoLines className='w-full h-1/5 lg:hidden' />
-        <div className='hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative '>
+      <div className="h-screen w-screen flex flex-col lg:flex-row justify-start overflow-hidden">
+        <LogoLines className="w-full h-1/5 lg:hidden" />
+        <div className="hidden lg:flex items-end justify-center h-full w-1/3 z-30 relative">
           <img
             src={founder}
-            className='h-full w-full object-cover  object-center'
-            alt='founder'
+            className="h-full w-full object-cover object-center"
+            alt="founders"
           />
           <img
             src={whiteLogo}
-            className=' w-full xl:w-5/6 max-h-36 p-6 pb-3 object-contain absolute object-bottom'
-            alt='founder'
+            className=" w-full xl:w-5/6 max-h-36 p-6 pb-3 object-contain absolute object-bottom"
+            alt="founderland logo"
           />
         </div>
         <StepWizard
           initialStep={1}
-          className='h-full md:h-screen lg:w-2/3 flex flex-col justify-center lg:justify-start items-center'>
+          className="h-full w-full lg:w-2/3  overflow-x-hidden overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100"
+        >
           <FirstStep data={data} setData={setData} />
           <SecondStep data={data} setData={setData} />
           <ThirdStep data={data} setData={setData} />
@@ -184,24 +183,24 @@ const SignUp = () => {
     )
   } else {
     return (
-      <div className='w-full h-full flex flex-col justify-center items-center'>
-        <div className='sm:shadow w-full h-full sm:w-1/2 p-5'>
-          <div className='flex justify-center'>
-            <LogoLines className='w-5/6' />
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        <div className="sm:shadow w-full h-full sm:w-1/2 p-5">
+          <div className="flex justify-center">
+            <LogoLines className="w-5/6" />
           </div>
-          <div className='my-3 flex items-center justify-between'>
-            <span className='border-b w-1/5 lg:w-1/4'></span>
-            <p className='text-grotesk text-center text-blue-500 uppercase'>
+          <div className="my-3 flex items-center justify-between">
+            <span className="border-b w-1/5 lg:w-1/4"></span>
+            <p className="text-grotesk text-center text-blue-500 uppercase">
               Community
             </p>
-            <span className='border-b w-1/5 lg:w-1/4'></span>
+            <span className="border-b w-1/5 lg:w-1/4"></span>
           </div>
-          <div className=' w-full flex flex-col justify-center items-center text-lg text-center'>
+          <div className=" w-full flex flex-col justify-center items-center text-lg text-center">
             {data.confirmed !== null ? (
               "It looks like you have already registered."
             ) : (
               <>
-                <EmojiSadIcon className='w-10 h-10 ' /> Sorry something went
+                <EmojiSadIcon className="w-10 h-10 " /> Sorry something went
                 wrong. Please contact us via email to admin@founderland.org
               </>
             )}{" "}

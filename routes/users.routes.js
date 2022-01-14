@@ -1,6 +1,8 @@
 const UserRouter = require("express").Router()
 const userController = require("../controllers/user")
 const memberController = require("../controllers/member")
+const eventController = require("../controllers/event")
+const resourceController = require("../controllers/resource")
 const { sendVerifyEmail, sendCustomEmail } = require("../helpers/emailHandler")
 const passport = require("passport")
 
@@ -74,6 +76,12 @@ UserRouter.put(
   "/community/lock",
   passport.authenticate("jwt", { session: false }),
   memberController.lockProfile
+)
+UserRouter.delete(
+  "/community/remove/:id",
+  passport.authenticate("jwt", { session: false }),
+  memberController.removeProfile,
+  eventController.removeEventsFromUser
 )
 
 //COMMUNITY

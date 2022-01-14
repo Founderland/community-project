@@ -7,11 +7,15 @@ import Banner from "../Widgets/Banner"
 import Loading from "../Widgets/Loading"
 import EventPreview from "../../Community/Profile/EventPreview"
 import ComponentModal from "../Widgets/ComponentModal"
+import ConfirmModal from "../Widgets/ConfirmModal"
+import ConfirmRemove from "./ConfirmRemove"
 import Notify from "./Notify"
 
 import moment from "moment"
 import {
-  ShieldCheckIcon,
+  LockOpenIcon,
+  LockClosedIcon,
+  TrashIcon,
   HashtagIcon,
   UserIcon,
   CalendarIcon,
@@ -62,7 +66,8 @@ const MemberProfile = () => {
 
   const [banner, setBanner] = useState({ show: false })
   const { id } = useParams()
-  const { config, user, reload, setCModal } = useContext(AdminContext)
+  const { config, user, reload, setCModal, setCCModal } =
+    useContext(AdminContext)
 
   useEffect(() => {
     setLoading(true)
@@ -160,19 +165,24 @@ const MemberProfile = () => {
       }, 4000)
     }
   }
-
+  const remove = async () => {
+    setCCModal(true)
+  }
   return (
     <section className="h-full w-full lg:w-5/6 xl:w-4/6 mx-auto">
       {loading ? (
         <Loading />
       ) : (
         <>
-          <div className="w-full flex items-center justify-center z-20">
-            <Banner message={banner} />
-          </div>
           <ComponentModal>
             <Notify member={profile} />
           </ComponentModal>
+          <ConfirmModal>
+            <ConfirmRemove data={profile} />
+          </ConfirmModal>
+          <div className="pt-8 w-full flex items-center justify-center z-20">
+            <Banner message={banner} />
+          </div>
           <div className="w-full flex-none sm:flex no-wrap md:-mx-2">
             <div
               className={`w-full sm:w-1/2 md:w-4/12 md:mx-2 shadow bg-white p-3 border-t-8 ${
@@ -279,6 +289,31 @@ const MemberProfile = () => {
                   </div>
                 )}
               </div>
+              {user.role.search("admin") >= 0 && (
+                <button
+                  className="flex items-center justify-center space-x-2 px-8 py-2 w-full bg-gray-700 transition duration-200 hover:bg-fred text-white mb-4 "
+                  onClick={() => lock()}
+                >
+                  {locking ? (
+                    <div className="flex justify-center">
+                      <div
+                        style={{ borderTopColor: "transparent" }}
+                        className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
+                      ></div>
+                    </div>
+                  ) : profile.locked ? (
+                    <>
+                      <LockOpenIcon className="w-6 h-6" />
+                      <p className="text-sm md:text-base">Unlock Access</p>
+                    </>
+                  ) : (
+                    <>
+                      <LockClosedIcon className="w-6 h-6" />
+                      <p className="text-sm md:text-base">Lock Access</p>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
             <div className="my-4"></div>
             <div
@@ -416,29 +451,20 @@ const MemberProfile = () => {
           </div>
           <div className="my-4 flex flex-col sm:flex-row items-center justify-around ">
             <button
-              className="flex items-center justify-center space-x-4 px-8 py-2 w-5/6 shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4"
+              className="flex items-center justify-center space-x-2 px-8 py-2 w-5/6 shadow-lg sm:w-1/3 bg-gray-700 transition duration-200 hover:bg-fblue text-white mb-4 "
               onClick={() => setCModal(true)}
             >
               <MailIcon className="w-6 h-6" />
-              <p>Notify by Email</p>
+              <p className="text-sm md:text-base">Notify by Email</p>
             </button>
-            {user.role.search("admin") >= 0 && (
+
+            {user.role.includes("sadmin") && id !== "61814cbf5f7dd7305e7615f5" && (
               <button
-                className="bg-gray-700 transition duration-200 hover:bg-fred text-white px-8 py-2 w-5/6 shadow-lg sm:w-1/3  mb-4"
-                onClick={() => lock()}
+                className="flex items-center justify-center space-x-2 px-8 py-2 w-5/6 shadow-lg sm:w-1/3 bg-fred-700 transition duration-200 hover:bg-fred-100 text-white mb-4 "
+                onClick={() => remove()}
               >
-                {locking ? (
-                  <div className="flex justify-center">
-                    <div
-                      style={{ borderTopColor: "transparent" }}
-                      className="w-6 h-6 border-4 border-white border-dotted rounded-full animate-spin"
-                    ></div>
-                  </div>
-                ) : profile.locked ? (
-                  "Unlock Access"
-                ) : (
-                  "Lock Access"
-                )}
+                <TrashIcon className="w-6 h-6" />
+                <p className="text-sm md:text-base">Remove Member</p>
               </button>
             )}
           </div>

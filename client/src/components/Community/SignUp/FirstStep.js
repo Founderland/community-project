@@ -91,160 +91,154 @@ const FirstStep = ({ data, setData, nextStep }) => {
   }
 
   return (
-    <>
-      <div className='h-full md:h-screen  w-full flex flex-col lg:flex-row justify-center items-center z-0 '>
-        <div className=' flex flex-col justify-around items-center h-full w-screen  lg:w-full xl:w-5/6  bg-white  p-3'>
-          <div className='md:p-8 lg:w-full flex flex-col justify-center items-center'>
-            <h1 className='font-bold text-xl md:text-2xl lg:text-4xl p-3 text-hanson text-center'>
-              Welcome to Founderland!
-            </h1>
-            <h1 className='text-grotesk text-xl lg:text-3xl  p-2'>
-              We're thrilled to have you on board. Please fill out the following
-              fields with your information to get started on your journey with
-              our community.
-            </h1>
-            <Banner message={banner} />
-          </div>
-          <div className=' h-full lg:w-full lg:h-5/6 flex '>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault(e)
-                if (selectedCity && selectedCountry) {
-                  nextStep()
-                } else {
-                  setBanner({
-                    show: true,
-                    success: 0,
-                    message: "Please select a valid city & country",
-                  })
-                  setTimeout(() => {
-                    setBanner((prev) => ({ ...prev, show: false }))
-                  }, 4000)
-                }
-              }}
-              className='flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold'>
-              <div className='w-screen md:w-1/2  p-4 py-6 '>
-                <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
-                  First name
-                </label>
-                <input
-                  type='text'
-                  className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
-                  required={true}
-                  placeholder='First name'
-                  value={data.firstName}
-                  onChange={(e) =>
-                    setData({ ...data, firstName: formatValue(e.target.value) })
-                  }
-                />
-              </div>
-
-              <div className='w-screen md:w-1/2  p-4 py-6 '>
-                <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
-                  Last name
-                </label>
-                <input
-                  type='text'
-                  className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
-                  required={true}
-                  placeholder='Last name'
-                  value={data.lastName}
-                  onChange={(e) =>
-                    setData({ ...data, lastName: formatValue(e.target.value) })
-                  }
-                />
-              </div>
-
-              <div className='w-screen md:w-1/2 p-4 py-6 '>
-                <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
-                  Country
-                </label>
-                <input
-                  type='text'
-                  className={
-                    checkCountry() +
-                    " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
-                  }
-                  required={true}
-                  list='countries'
-                  value={data.country}
-                  placeholder='Country'
-                  onChange={(e) => {
-                    setData({
-                      ...data,
-                      country: formatValue(e.target.value),
-                    })
-                  }}
-                />
-                <datalist id='countries'>
-                  {countryList.length > 0 &&
-                    countryList
-                      .filter((country) =>
-                        country.name.startsWith(data.country)
-                      )
-                      .splice(0, 10)
-                      .map((country, i) => (
-                        <option key={i}>{country.name}</option>
-                      ))}
-                </datalist>
-              </div>
-              <div className='w-screen md:w-1/2 p-4 py-6 '>
-                <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
-                  City
-                </label>
-                <input
-                  type='text'
-                  className={
-                    checkCity() +
-                    " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
-                  }
-                  list='cities'
-                  required={true}
-                  value={data.city}
-                  placeholder='City'
-                  onChange={(e) => {
-                    setData({
-                      ...data,
-                      city: formatValue(e.target.value),
-                    })
-                  }}
-                />
-                <datalist id='cities'>
-                  {cityList.length > 0 &&
-                    cityList
-                      .filter((city) => city.name.startsWith(data.city))
-                      .splice(0, 10)
-                      .map((city, i) => <option key={i}>{city.name}</option>)}
-                </datalist>
-              </div>
-              <div className='w-full p-4 py-6  '>
-                <label className='block uppercase text-gray-400 text-md font-bold mb-2'>
-                  Bio
-                </label>
-                <textarea
-                  type='text'
-                  className='w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none'
-                  required={true}
-                  value={data.bio}
-                  placeholder='About you (max 3 sentences)'
-                  onChange={(e) =>
-                    setData({ ...data, bio: formatValue(e.target.value) })
-                  }
-                />
-              </div>
-
-              <div className='w-full flex justify-end pt-10 pr-5'>
-                <button
-                  type='submit'
-                  className='p-5 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 '>
-                  Next{" "}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+    <div className="h-full flex flex-col justify-around items-center w-full bg-white p-3">
+      <div className="w-full flex flex-col justify-center items-center">
+        <h1 className="font-bold text-xl md:text-2xl lg:text-4xl p-3 text-hanson text-center">
+          Welcome to Founderland!
+        </h1>
+        <h1 className="text-grotesk text-xl lg:text-3xl p-2">
+          We're thrilled to have you on board. Please fill out the following
+          fields with your information to get started on your journey with our
+          community.
+        </h1>
+        <Banner message={banner} />
       </div>
-    </>
+      <div className="w-full flex">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault(e)
+            if (selectedCity && selectedCountry) {
+              nextStep()
+            } else {
+              setBanner({
+                show: true,
+                success: 0,
+                message: "Please select a valid city & country",
+              })
+              setTimeout(() => {
+                setBanner((prev) => ({ ...prev, show: false }))
+              }, 4000)
+            }
+          }}
+          className="flex flex-wrap h-5/6 justify-center items-center md:px-5 text-grotesk font-bold"
+        >
+          <div className="w-screen md:w-1/2  p-4 py-6 ">
+            <label className="block uppercase text-gray-400 text-md font-bold mb-2">
+              First name
+            </label>
+            <input
+              type="text"
+              className="w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+              required={true}
+              placeholder="First name"
+              value={data.firstName}
+              onChange={(e) =>
+                setData({ ...data, firstName: formatValue(e.target.value) })
+              }
+            />
+          </div>
+
+          <div className="w-screen md:w-1/2  p-4 py-6 ">
+            <label className="block uppercase text-gray-400 text-md font-bold mb-2">
+              Last name
+            </label>
+            <input
+              type="text"
+              className="w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+              required={true}
+              placeholder="Last name"
+              value={data.lastName}
+              onChange={(e) =>
+                setData({ ...data, lastName: formatValue(e.target.value) })
+              }
+            />
+          </div>
+
+          <div className="w-screen md:w-1/2 p-4 py-6 ">
+            <label className="block uppercase text-gray-400 text-md font-bold mb-2">
+              Country
+            </label>
+            <input
+              type="text"
+              className={
+                checkCountry() +
+                " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+              }
+              required={true}
+              list="countries"
+              value={data.country}
+              placeholder="Country"
+              onChange={(e) => {
+                setData({
+                  ...data,
+                  country: formatValue(e.target.value),
+                })
+              }}
+            />
+            <datalist id="countries">
+              {countryList.length > 0 &&
+                countryList
+                  .filter((country) => country.name.startsWith(data.country))
+                  .splice(0, 10)
+                  .map((country, i) => <option key={i}>{country.name}</option>)}
+            </datalist>
+          </div>
+          <div className="w-screen md:w-1/2 p-4 py-6 ">
+            <label className="block uppercase text-gray-400 text-md font-bold mb-2">
+              City
+            </label>
+            <input
+              type="text"
+              className={
+                checkCity() +
+                " w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+              }
+              list="cities"
+              required={true}
+              value={data.city}
+              placeholder="City"
+              onChange={(e) => {
+                setData({
+                  ...data,
+                  city: formatValue(e.target.value),
+                })
+              }}
+            />
+            <datalist id="cities">
+              {cityList.length > 0 &&
+                cityList
+                  .filter((city) => city.name.startsWith(data.city))
+                  .splice(0, 10)
+                  .map((city, i) => <option key={i}>{city.name}</option>)}
+            </datalist>
+          </div>
+          <div className="w-full p-4 py-6  ">
+            <label className="block uppercase text-gray-400 text-md font-bold mb-2">
+              Bio
+            </label>
+            <textarea
+              type="text"
+              className="w-full text-2xl appearance-none bg-grey-50 text-grey-500 border p-3 outline-none"
+              required={true}
+              value={data.bio}
+              placeholder="About you (max 3 sentences)"
+              onChange={(e) =>
+                setData({ ...data, bio: formatValue(e.target.value) })
+              }
+            />
+          </div>
+
+          <div className="w-full flex justify-end p-4 pr-5">
+            <button
+              type="submit"
+              className="px-5 py-2 bg-fblue font-bold text-lg text-white transition duration-200 hover:bg-blue-700 md:w-1/6 "
+            >
+              Next{" "}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   )
 }
 

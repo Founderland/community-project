@@ -234,6 +234,22 @@ const lockProfile = async (req, res) => {
   }
 }
 
+const removeProfile = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    const removeMember = await Member.deleteOne({ _id: id })
+    if (!removeMember)
+      await Promise.reject(new Error("something went wrong removing member"))
+    next()
+  } catch (e) {
+    console.log(e)
+    res.status(500).json({
+      error: 1,
+      message: "Something went wrong",
+    })
+  }
+}
+
 const updateMember = async (req, res) => {
   const { _id } = req.body
   try {
@@ -270,4 +286,5 @@ module.exports = {
   updateNotified,
   lockProfile,
   updateMember,
+  removeProfile,
 }

@@ -90,7 +90,7 @@ const DropzoneCloudinary = ({
     <>
       <div
         {...getRootProps()}
-        className=" h-3/5 md:h-5/6 w-4/5 xl:w-4/6  flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl"
+        className=" w-full h-full flex flex-col justify-center items-center border-dashed border-4 border-black-600 p-4 m-3 rounded-xl"
       >
         <input {...getInputProps()} />
         {loading && (

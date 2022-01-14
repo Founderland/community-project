@@ -42,7 +42,7 @@ const Members = () => {
     },
   ]
   const handleTask = () => {
-    history.push("members/id/new")
+    history.push("/admin/members/id/new")
   }
   const newsletterDataHandler = (val) => {
     setNewsLetterData(val)
