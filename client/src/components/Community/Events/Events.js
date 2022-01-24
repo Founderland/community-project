@@ -7,6 +7,7 @@ import Event from "./Event"
 import AddEvent from "./AddEvent"
 import { PlusIcon } from "@heroicons/react/outline"
 import { CommunityContext } from "../../../contexts/CommunityProvider"
+import UserContext from "../../../contexts/User"
 
 const Events = () => {
   const { category, id } = useParams()
@@ -14,6 +15,7 @@ const Events = () => {
   const [filter, setFilter] = useState(false)
   const [hosting, setHosting] = useState(false)
   const { scrollUp } = useContext(CommunityContext)
+  const { isMobile, isRunningStandalone } = useContext(UserContext)
 
   useEffect(() => {
     if (category === "member") setHosting(true)
@@ -21,7 +23,11 @@ const Events = () => {
   }, [category])
 
   return (
-    <div className="absolute top-0 w-full h-full flex flex-col justify-start items-center  overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100">
+    <div
+      className={`absolute top-0 w-full h-full flex flex-col justify-start items-center overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ${
+        isMobile && isRunningStandalone() ? "pb-10" : "pb-6"
+      }`}
+    >
       {!id && category !== "new" ? (
         <>
           <div className="w-full h-18 py-2 flex space-x-4 justify-center">

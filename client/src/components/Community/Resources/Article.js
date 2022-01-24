@@ -15,7 +15,7 @@ const resourceUrl = "/api/resources/id/"
 const Article = () => {
   const { id } = useParams()
   const history = useHistory()
-  const { config } = useContext(UserContext)
+  const { config, isMobile, isRunningStandalone } = useContext(UserContext)
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -40,7 +40,11 @@ const Article = () => {
   }, [id])
 
   return (
-    <section className=" h-full w-full overflow-y-scroll pb-56 md:pb-20 scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ">
+    <section
+      className={`h-full w-full overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ${
+        isMobile && isRunningStandalone() ? "pb-60" : "pb-20"
+      }`}
+    >
       {loading ? (
         <Loading />
       ) : error ? (
