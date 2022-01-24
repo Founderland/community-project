@@ -6,17 +6,15 @@ import { Switch, Route, useRouteMatch } from "react-router"
 const Main = () => {
   const { path } = useRouteMatch()
   return (
-    <Switch>
-      <Route exact path={`${path}/:view/:category?/:id?/`}>
-        <div className="flex h-screen">
-          <Menu />
-          <div className="w-full flex flex-col overflow-hidden">
-            <Header />
-            <Content />
-          </div>
+    <Route exact path={`${path}/:view/:category?/:id?/`}>
+      <div className="flex h-screen">
+        <Menu />
+        <div className="w-full flex flex-col overflow-hidden">
+          <Header />
+          <Content />
         </div>
-      </Route>
-    </Switch>
+      </div>
+    </Route>
   )
 }
 

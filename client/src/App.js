@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom"
 import ApplicantsDispatcher from "./components/ApplicantsDispatcher"
 import Form from "./components/Form"
 import Thankyou from "./components/Forms/Thankyou"
@@ -13,23 +18,27 @@ import NewsLetter from "./components/Forms/NewsLetter"
 function App() {
   return (
     <Router>
-      <AnswersProvider>
-        <Route
-          exact
-          path='/join-our-community'
-          component={ApplicantsDispatcher}
-        />
-        <Route exact path='/newsletter' component={NewsLetter} />
-        <Route exact path='/form/:memberType' component={Form} />
-        <Route exact path='/thankyou' component={Thankyou} />
-        <Route path='/admin' component={Admin} />
-      </AnswersProvider>
-      <Route exact path='/verify/:token' component={Verify} />
-
-      <CommunityProvider>
-        <Route exact path='/signup/:token' component={SignUp} />
-        <Route path='/community' component={Community} />
-      </CommunityProvider>
+      <Switch>
+        <CommunityProvider>
+          <AnswersProvider>
+            <Route
+              exact
+              path="/join-our-community"
+              component={ApplicantsDispatcher}
+            />
+            <Route exact path="/newsletter" component={NewsLetter} />
+            <Route exact path="/form/:memberType" component={Form} />
+            <Route exact path="/thankyou" component={Thankyou} />
+            <Route exact path="/verify/:token" component={Verify} />
+            <Route exact path="/signup/:token" component={SignUp} />
+            <Route path="/admin" component={Admin} />
+            <Route path="/community" component={Community} />
+            <Route exact path="/">
+              <Redirect to="/community" />
+            </Route>
+          </AnswersProvider>
+        </CommunityProvider>
+      </Switch>
     </Router>
   )
 }
