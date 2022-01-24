@@ -42,7 +42,7 @@ const Article = () => {
   return (
     <section
       className={`h-full w-full overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-fblue scrollbar-track-blue-100 ${
-        isMobile && isRunningStandalone() ? "pb-60" : "pb-20"
+        isMobile && isRunningStandalone() ? "pb-64" : "pb-60"
       }`}
     >
       {loading ? (
