@@ -21,7 +21,6 @@ const Menu = () => {
   const { view } = useParams()
   let selectedView = view
   if (!view) selectedView = "community"
-  console.log(isRunningStandalone())
   return (
     <div
       className="fixed

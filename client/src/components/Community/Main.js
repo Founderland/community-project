@@ -9,14 +9,13 @@ import UserContext from "../../contexts/User"
 
 const Main = () => {
   const { isMobile, isRunningStandalone } = useContext(UserContext)
-  console.log(isMobile)
   const [isOpen, setIsOpen] = useState(isMobile && !isRunningStandalone())
   const closeModal = () => {
     setIsOpen(false)
   }
   return (
     <Route exact path={`/community/:view?/:category?/:id?/`}>
-      <div className={`flex flex-col h-screen`}>
+      <div className={`flex flex-col h-screen overflow-hidden`}>
         <Header />
         <Content />
         <Menu />
